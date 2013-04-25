@@ -76,7 +76,7 @@ If you use Markdown, it is good to know that GitHub uses its own flavour. To pla
 
 * Do not use new lines in paragraphs. Write a paragraph as a single link (soft wrapped in the editor).
 
-* Do not use underscore for bold/italic, used asterisks instead. * \*Italic\* * and ** \*\*Bold\*\* **. We will escape undersocres so that they can be used do document CONSTANTS\_WITH\_UNDERSCORES.
+* Do not use underscore for bold/italic, used asterisks instead. \*Italic\* and \*\*Bold\*\*. We will escape undersocres so that they can be used do document CONSTANTS\_WITH\_UNDERSCORES.
 
 Markdown guide: http://daringfireball.net/projects/markdown/
 
