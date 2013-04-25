@@ -75,7 +75,7 @@ On the generated website, relative URLs are used to the greatest possible extent
 
 URLs used as links should begin with the string "RELATIVE\_DOC\_PATH" and then the full path to the page under the docs directory should follow. Here is an example:
 
-    <a href="RELATIVE\_DOC\_PATH/cpp/examples/nativeuidemo/index.html>NativeUIDemo</a>
+    <a href="TEMPLATE\_DOC\_PATH/cpp/examples/nativeuidemo/index.html>NativeUIDemo</a>
 
 ## Flavour of Markdown
 
