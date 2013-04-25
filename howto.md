@@ -26,31 +26,38 @@ See example below.
 The documentation uses the following folder structure:
 
     docs
-      cpp
-        examples
-        guides
-        tutorials
-      js
-        examples
-        guides
-        tutorials
       sdk
-        guides
+        cpp
+          examples
+          guides
+          tutorials
+        js
+          examples
+          guides
+          tutorials
         release-notes
+        tools
+          guides
+          references
 
 Under each directory are subdirectories for different topics.
 
 To give an example, these are the files for an actual documentation page:
 
     docs
-      cpp
-        ads
-          using-advertising-library-and-api
-            images
-              advertising-android-annotated.png
-            index.html
+      sdk
+        cpp
+          ads
+            using-advertising-library-and-api
+              images
+                advertising-android-annotated.png
+              index.html
 
 It should be noted that the actual classification of document categories is specified in the file scripts/structure.rb. It is however essential to maintain the directory structure and place documents where they logically belong, to make it easy to update and manage documentation files.
+
+## Guides vs. Tutorials
+
+The difference is not clear in the current documentation, but here is a characterisation. A guide and is shorter than a tutorial, and covers a specific topic. A tutorial is longer and can have a broader scope. A tutorial can also be more of a step-by-step description compared to a guide.
 
 ## Images
 
@@ -66,9 +73,9 @@ Here is an example of an image tag:
 
 On the generated website, relative URLs are used to the greatest possible extent. To make this work, while at the same time having a system that allows for pages to be moved and links to be updated, a special syntax is used. 
 
-URLs used as links should begin with the string "RELATIVE_DOC_PATH" and then the full path to the page under the docs directory should follow. Here is an example:
+URLs used as links should begin with the string "RELATIVE\_DOC\_PATH" and then the full path to the page under the docs directory should follow. Here is an example:
 
-    <a href="RELATIVE_DOC_PATH/cpp/examples/nativeuidemo/index.html>NativeUIDemo</a>
+    <a href="RELATIVE\_DOC\_PATH/cpp/examples/nativeuidemo/index.html>NativeUIDemo</a>
 
 ## Flavour of Markdown
 
@@ -76,7 +83,7 @@ If you use Markdown, it is good to know that GitHub uses its own flavour. To pla
 
 * Do not use new lines in paragraphs. Write a paragraph as a single link (soft wrapped in the editor).
 
-* Do not use underscore for bold/italic, used asterisks instead. \*Italic\* and \*\*Bold\*\*. We will escape undersocres so that they can be used do document CONSTANTS\_WITH\_UNDERSCORES.
+* Do not use underscore for bold/italics, used asterisks instead. \*Italics\* and \*\*Bold\*\*. We will escape underscores so that they can be used do document CONSTANTS\_WITH\_UNDERSCORES.
 
 Markdown guide: http://daringfireball.net/projects/markdown/
 
