@@ -60,7 +60,7 @@ Image formats/extensions used are ".png" or ".jpg".
 
 Here is an example of an image tag:
 
-    %lt;img src="images/advertising-android-annotated.png" /%gt;
+    <img src="images/advertising-android-annotated.png" />
 
 ## Links
 
@@ -68,7 +68,7 @@ On the generated website, relative URLs are used to the greatest possible extent
 
 URLs used as links should begin with the string "RELATIVE_DOC_PATH" and then the full path to the page under the docs directory should follow. Here is an example:
 
-    %lt;a href="RELATIVE_DOC_PATH/cpp/examples/nativeuidemo/index.html"%gt;NativeUIDemo%lt;/a%gt;
+    <a href="RELATIVE_DOC_PATH/cpp/examples/nativeuidemo/index.html>NativeUIDemo</a>
 
 ## Flavour of Markdown
 
@@ -76,13 +76,15 @@ If you use Markdown, it is good to know that GitHub uses its own flavour. To pla
 
 * Do not use new lines in paragraphs. Write a paragraph as a single link (soft wrapped in the editor).
 
-* Do not use underscore for bold/italic, used asterisks instead. *\*Italic\** and **\*\*Bold\*\***. We will escape undersocres so that they can be used do document CONSTANTS\_WITH\_UNDERSCORES.
+* Do not use underscore for bold/italic, used asterisks instead. * \*Italic\* * and ** \*\*Bold\*\* **. We will escape undersocres so that they can be used do document CONSTANTS\_WITH\_UNDERSCORES.
+
+Markdown guide: http://daringfireball.net/projects/markdown/
 
 ## Scripts
 
 The scripts directory contains scripts for building the documentation web site, and for managing analysing the documentation.
 
-This directory also contains a central script called "structure.rb" with contains a list of all pages in the documentation. When adding a new page, it needs to be added to this script. Further details about how to do this will follow. In the mean time, ask the docuemnation administrator to do this.
+This directory also contains a central script called "structure.rb" with contains a list of all pages in the documentation. When adding a new page, it needs to be added to this script. Further details about how to do this will follow. In the mean time, ask the documentation administrator to do this.
 
 ## Attitude
 
