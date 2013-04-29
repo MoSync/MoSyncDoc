@@ -1,0 +1,119 @@
+<html>
+<head>
+<title>Detecting Events</title>
+</head>
+<body>
+<h1>Detecting Events</h1>
+<p>Throughout the execution of your program, the MoSync SDK can supply it with events. These are typically things which is happening to the phone. For instance, a button has been pressed or the screen has been touched. They also cover more advanced functions such as 'nothing has happened for a few seconds' or 'the phone has a new location from the GPS'.</p>
+<p><!--break--></p>
+<p>This example is a simple "Hello World!" program. &nbsp;Console-type applications that exit when they finish are quite uncommon on mobile devices, so we show in this example how provide an event loop that keeps the application running until the user presses a key, in this case the zero (0) key.</p>
+<p>It waits for an event to occur using the&nbsp;<strong>maWait()</strong>&nbsp;function. &nbsp;It then creates an&nbsp;<strong>MAEvent</strong>&nbsp;struct. &nbsp;These&nbsp;<strong>MAEvent</strong>&nbsp;objects contain the details of the event which has occurred. &nbsp;You can query them to see the type of event that has occurred, and also for any relevant data to that event, such as which key has been pressed, where the screen has been touched and what the new location is.</p>
+<p>This example also shows how to detect&nbsp;<strong>close&nbsp;</strong>events. &nbsp;A close event is an event that is generated when a user attempts to forcibly terminate the application in some (platform-dependent) way, commonly by using some type of task manager. The purpose of the close event is to notify the application that it will be closed down very shortly (the exact amount of time being platform-dependent) and that it should perform emergency shutdown operations, such as saving critical data.</p>
+<p>Here is an example in C:</p>
+<div>
+<pre class="mosync-code-cpp">/**
+* This program shows that how can we handle events in MoSync. 
+* Here we are handling Close event using the C code.
+* 
+* @file EventHandlingCProgram.C
+*
+* @author Chris Hughes
+*/
+
+#include &lt;ma.h&gt;   // the standard MoSync header
+#include &lt;conprint.h&gt;   // provides printf()
+
+int MAMain() 
+{
+    printf("Hello world!\n");
+    
+    // Declare a MoSync event struct.
+    MAEvent MyEvent;
+    while(1) 
+    {
+        // Wait for an event
+        maWait(0);
+    
+        // Store the latest event in the event struct.
+        maGetEvent(&amp;MyEvent);
+
+        // determine whether or not it is a key press
+        if(MyEvent.type == EVENT_TYPE_KEY_PRESSED) 
+        {
+            // ...and whether it was the '0' key.
+            if(MyEvent.key == MAK_0)
+            {
+                // ...in which case we exit.
+                maExit(0);
+            }
+        }
+        else if(MyEvent.type == EVENT_TYPE_CLOSE) 
+        {
+            // ...and also if we get a close event.
+            maExit(0);
+        }
+    }
+    return 0;
+}</pre>
+</div>
+<p>&nbsp;</p>
+<p>The function&nbsp;<strong>maGetEvent()</strong>&nbsp;populates your&nbsp;<strong>MAEvent</strong>&nbsp;object with the relevant data. &nbsp;You can then test the property&nbsp;<strong>type</strong>&nbsp;to see what is the event which has occurred. &nbsp;The values in&nbsp;<strong>type</strong>&nbsp;are defined in&nbsp;<strong>maapi.h</strong>, and cover key presses, screen touching, location, your application being sent to the background, the phone changing from landscape to portrait (and vice versa) and closing. &nbsp;By testing the&nbsp;<strong>type</strong>&nbsp;of the event, you only have to code for the events you are interested in.</p>
+<p>Event handling in C++ can be quite different. &nbsp;You can make use of these C functions if you wish in C++ code, but if you are building an application on the MoSync SDK in C++ then there is an event-based framework already available to you.</p>
+<p>The basis of this framework is the&nbsp;<strong>Moblet</strong>&nbsp;class, which is a C++ class which can handle your main application loop. &nbsp;The&nbsp;<strong>Moblet</strong>&nbsp;class already has virtual methods built in for handling common system events. including key presses, key releases, screen touches, screen movement and screen releases as well close events and 'custom events' for location and other events in the future.</p>
+<p>If you are using&nbsp;<strong>Moblet</strong>&nbsp;to build your application, then you will create a new class which inherits from the&nbsp;<strong>Moblet</strong>&nbsp;base class. &nbsp;<strong>Moblet</strong>&nbsp;only provides virtual methods for event handling, so you'll have to supply your own code, but it is a much cleaner way of processing these system events.</p>
+<p>For instance, if you want to capture the key presses from the C example above, you would implement&nbsp;<strong>keyPressEvent(int keycode, int nativeCode).</strong>&nbsp;&nbsp;You can then compare the value of button pressed with the value you are looking for.</p>
+<blockquote><p>As an aside, when you capture key presses you get two values. &nbsp;The first (referred to as&nbsp;<strong>keyCode</strong>) is a platform independent value. &nbsp;There is a long list of keys which you can handle in this way defined in&nbsp;<strong>maapi.h</strong>. &nbsp;In the example below, we are looking for the 0 key, so we can compare it with&nbsp;<strong>MAK_0</strong>. &nbsp;This way, we don't need to have code to check the key value for the 0 key on each platform. &nbsp;There are also some keys which may be implemented on just a few handsets. &nbsp;The Android 'back' key, or volume keys on a phone are not implemented in the platform independent way as their are so few phones which support them. &nbsp;You can still handle key presses from these buttons through, by accessing the&nbsp;<strong>nativeCode</strong>&nbsp;value of the button, which is platform specific.</p>
+</blockquote><p>And here is a similar example in C++ which makes use of MoSync's moblet framework:</p>
+<pre class="mosync-code-cpp">/**
+* This is another program for handling events using C++ syntax.
+* 
+* @file EventHandlingCPPProgram.cpp
+*
+* @author Chris Hughes
+*/
+
+#include &lt;MAUtil/Moblet.h&gt;
+
+using namespace MAUtil;
+
+// Moblet class declaration.
+class MyMoblet : public Moblet 
+{
+public:
+    MyMoblet() 
+    {
+        maSetColor(0xFFFFFF);
+        maDrawText(0, 32, "Hello World!");
+        maUpdateScreen();
+    }
+    
+    // Handles key press event.
+    void keyPressEvent(int keyCode, int nativeCode) 
+    {
+        if(keyCode == MAK_0) 
+        {
+            closeEvent();
+            close();
+        }
+    }
+    
+        // Handles key release event.
+        void keyReleaseEvent(int keyCode, int nativeCode) 
+        {
+    
+        }
+};
+
+/*
+* Programs main functionality starts here.
+*/
+extern "C" int MAMain() 
+{
+    Moblet::run(new MyMoblet());
+    return 0;
+}</pre>
+<div id="highlighter_155484" class="syntaxhighlighter nogutter  cpp"><p>&nbsp;</p>
+<p>It's not just&nbsp;<strong>Moblet</strong>&nbsp;which has methods for handling system events. &nbsp;In the MoSync SDK User Interface Library&nbsp;<strong>MAUI</strong>, the&nbsp;<strong>Screen&nbsp;</strong>class also has similar methods for handling system events, so you can process these events differently depending on which part of your application the user is using.</p>
+</div>
+</body>
+</html>

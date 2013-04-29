@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>Using MoSync SDK with Visual Studio 2005</title>
+</head>
+<body>
+<h1>Using MoSync SDK with Visual Studio 2005</h1>
+<p>You can use MoSync with Microsoft Visual Studio although, of course, much of the functionality concerning building for mobile devices will be lost this way. The gain is that you will be able to use the fully-featured debugger in Visual Studio. Here we describe how to set up Visual Studio, and how to use it to build and debug an application.</p>
+<p><!--break--></p>
+<p>It is only possible to use <strong>Microsoft</strong><sup><strong>®</strong></sup><strong> Visual Studio C++ 2005 Express Edition</strong> at this time. You will also need the <strong>Microsoft<sup>®</sup> Windows Server 2003 SP1 Platform SDK</strong>.</p>
+<p>Our win32 library for Visual Studio 2005 implements the MoSync syscall APIs. This enables developers to build MoSync projects using Visual C++ and use all of Visual Studio's features, including its debugging facilities.</p>
+<p>You should be aware that Visual Studio produces a <strong>native windows application</strong>, which is fundamentally different from a real MoSync application. For starters, a different compiler is used, which has a number of implications, including a different layout of code and data. Furthermore, if you use the native Win32 libraries (including the Win32 API itself) <em>the resulting source code will not work in MoSync</em>.</p>
+<p>(Our win32 library was originally provided because MoSync lacked a proper debugger, and although the debugging experience would be inaccurate with respect to when the application is built for the MoSync architecture, it was considered better than nothing. Today, we would encourage you to use the debugger provided in the MoSync IDE. It is still not perfect, but we are working hard to improve it and are grateful for any feedback or bug reports.)</p>
+<h2>Setting up Visual Studio</h2>
+<p>If you haven't installed Visual Studio 2005 you will need to install it first. <br> Also check so that you have installed the Platform SDK. <br> <br> <img src="images/userguide_vs_1.png"><br> <br> First we need to add the correct search paths to Visual Studio. Choose <em>Options</em> from the <em>Tools</em> menu. <br> <br> <img src="images/userguide_vs_2.png"><br> <br> Expand <em>Projects and Solutions</em> and choose <em>VC++ Directories</em>. Add the search path for the <em>MoSync</em> library files as shown. <br> <br> <img src="images/userguide_vs_4.png"><br> <br> Choose 'Include Files' and add the path for MoSync include files. <br> <br> <strong>If you use the Visual Studio 2005 Express edition you will need to follow these steps before closing the dialog</strong> <br> <br> To be able to build you will also need to add the following search paths for the Windows Platform SDK:</p>
+<ul>
+<li>To executable files<br>C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\Bin</li>
+<li>To include files<br>C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\Include</li>
+<li>To library files<br>C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\Lib</li>
+</ul>
+<p>Now you have added all the correct search paths so that Visual Studio will be able to build your applications. <br> <br> Close the <strong>Options </strong>window by clicking <strong>OK</strong>.</p>
+<p>Now you just have to make one more adjustment before you will be able to create new projects. Inside the directory <em>C:\Program Files\Microsoft Visual Studio 8\VC\VCProjectDefaults</em> you will need to edit the file <em>corewin_express.vsprops</em>. Find the following string:</p>
+<pre>AdditionalDependencies="kernel32.lib"</pre>
+<p>You will need to change that line to:</p>
+<pre>AdditionalDependencies="kernel32.lib user32.lib gdi32.lib winspool.lib 
+comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"</pre>
+<p>More information about this can be found at <a href="http://msdn.microsoft.com/en-us/vstudio/aa700755.aspx">http://msdn.microsoft.com/en-us/vstudio/aa700755.aspx</a></p>
+<h2>Configuring a MoSync project in Visual C++</h2>
+<p>Start with a Win32 project.</p>
+<p>In the Application Wizard, in Application Settings, select Empty Project.</p>
+<ul>
+<li>Add a C/C++ file. This allows you to access C/C++ project properties.</li>
+</ul>
+<p>In Project Properties:</p>
+<ul>
+<li>Select All Configurations.</li>
+</ul>
+<p>In General:</p>
+<ul>
+<li>Change Output Directory from $(SolutionDir) to $(ProjectDir).</li>
+<li>Change Character Set to Not Set</li>
+</ul>
+<p>In C/C++, General:</p>
+<ul>
+<li>Set Detect 64-bit Portability Issues to No</li>
+<li>Optional but Recommended: Set Treat Warnings As Errors to Yes.</li>
+</ul>
+<p>In Linker, add the libraries needed (mosynclib.lib and MAStd.lib are required) Input:</p>
+<ul>
+<li>Set Additional Dependencies to mosynclib.lib MAStd.lib MAUtil.lib MAUI.lib</li>
+</ul>
+<p>In Linker, System:</p>
+<ul>
+<li>Set SubSystem to Windows</li>
+</ul>
+<h2>Building and debugging an application</h2>
+<p>If you build and run your project, the MoSync emulator will start with your project running in it. You will also be able to debug your application using the Visual Studio debugger so you are able to set breakpoints and single step through your code. Note that the program is compiled as pure x86 code, so the execution envionment may be more forgiving to badly behaved code.</p>
+</body>
+</html>

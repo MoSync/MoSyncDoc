@@ -1,0 +1,332 @@
+<html>
+<head>
+<title>Interacting With Users Through JavaScript</title>
+</head>
+<body>
+<h1>Interacting With Users Through JavaScript</h1>
+<p>Letting your users know how things are progressing is a vital aspect of an app's usability. Users hate it when an app "just goes quiet" on them. Has the app crashed? Is there something they must do? Should they just wait? In this JavaScript beginner's tutorial we are going to take a look at some of the ways you can let your user know what's going on.</p>
+<p><!--break--></p>
+<p></p>
+<h2>Getting Your User's Attention</h2>
+<p>Changes to your main application screens will most likely provide the bulk of the feedback from you app to your user. Changes to screen elements, like the colour and content of widgets are great ways to signal changes to an application's status. Prompts and messages boxes can pop-up if something important happens or data needs to be entered. <br><br>In addition, you may choose to provide your users with auditory and tactile cues, or send notifications and emails to let the user know something has happened or needs to be done. A brief list of the possible ways you might interact with the user in just a simple app might look like this:<br><br>Buttons and fields</p>
+<ul>
+<li>Greyed in or greyed out (to show selectability)</li>
+<li>On-click changes to button (to acknowledge user input)</li>
+<li>Changes to another UI element (to signal usage paths)</li>
+</ul>
+<p>Prompts</p>
+<ul>
+<li>Alert boxes (to inform and warn the user)</li>
+<li>Confirmation boxes (to make sure)</li>
+<li>Progress bars (to show the user something is still happening)</li>
+<li>Prompting for input (to gather important data)</li>
+</ul>
+<p>Beeps and buzzes</p>
+<ul>
+<li>Beeps (to alert the user)</li>
+<li>Vibrations (to alert the user)</li>
+</ul>
+<p>Notifications</p>
+<ul>
+<li>Push notifications (to send server messages and updates)</li>
+<li>Local notifications (to say when something is ready)</li>
+<li>Emails (for a whole host of reasons)</li>
+</ul>
+<p>Surprisingly, many of these basic things don't work out-of-the-box with JavaScript implementations on mobile platforms. Often you will need to find a workaround. Let's take a look at some simple implementations of these interactive methods, focusing on alerts and prompts, and take a look at some of the basic options you have when deciding how to implement them in JavaScript.</p>
+<h2>Simple JavaScript Events and Alerts</h2>
+<p>JavaScript is an event-driven language. Pretty much nothing happens in your JavaScript code until some event triggers the interpretation of a portion of the code. A typical trigger is the click of a graphical button on the screen. <br><br>The HTML button tag provides us with a very simple mechanism for triggering JavaScript code from the onclick event:</p>
+<pre class="mosync-code-cpp">&lt;button onclick="myFunction()"&gt;Click me&lt;/button&gt; </pre>
+<p>When this button is clicked, the JavaScript function <strong>myFunction</strong> gets called. Here is a very simple implementation:</p>
+<pre class="mosync-code-js">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+     &lt;meta http-equiv="Content-type" content="text/html; charset=utf-8"&gt;
+     &lt;title&gt;Basic Onclick Example&lt;/title&gt;
+     &lt;script type="text/javascript"&gt;
+     function myFunction(){
+        alert("You clicked me!")
+     }
+     &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+     &lt;button onclick="myFunction()"&gt;Click me&lt;/button&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>Try loading this HTML page in your favourite desktop browser. You should see:</p>
+<p><img src="images/you-clicked-me.png" align="none" width="313" height="203"></p>
+<h2>Cross-Platform Issues</h2>
+<p>In the HTML code above we made use of the<strong> alert()</strong> function as a simple method of giving our user feedback. Even as a beginner to JavaScript you may wondering why we are bothering to show you something so completely trivial. The reason is simple: try loading this page in a browser on your Windows Phone 7 smartphone. <br><br><em>Surprise, surprise, it doesn't work!</em> <br><br>That's because common JavaScript browser-blocking functions like <strong>alert()</strong> and <strong>confirm()</strong> aren't supported on the Windows Phone 7 platform. There <em>are</em> ways to pop-up message boxes on Windows Phone 7, but the JavaScript <strong>alert()</strong> function isn't one of them. Straight away we have hit upon the problem that the MoSync application framework is designed to solve: how to build apps that are truly "cross-platform" without writing a whole lot of conditional code.</p>
+<blockquote><p>If you are developing your app in the MoSync SDK or MoSync Reload, the <a href="TEMPLATE_DOC_PATH/sdk/js/guides/wormhole/html5-javascript-wormhole/index.html">MoSync Wormhole JavaScript Library</a> automatically takes care of the lack of<strong> alert()</strong> support on Windows Phone 7 for you, by catching any call to that function and replacing it with a generic <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/mosync-bridge.js.html#mosync.notification.messageBox">notification message box</a>. More on this later.</p>
+</blockquote><h2>Getting Third-Party Help</h2>
+<p>If you want to get fancy with cross-platform dialog boxes in your app there is an easy solution: call on outside help. There are many pre-written JavaScript libraries out there that can do the work for you. One of the most popular libraries is jQuery and its add-on for mobile platforms <a href="http://jquerymobile.com/">jQuery Mobile</a>. To add such libraries, download them, store them with your project and simply include them through script references in your HTML page like this:</p>
+<pre class="mosync-code-js">&lt;!-- Include the jQuery Framework (see http://jquery.com/)--&gt;
+&lt;script type="text/javascript" src="js/jquery-1.7.1.min.js"&gt;&lt;/script&gt;
+
+&lt;!-- Include the jQuery Mobile Framework (see http://jquery.com/)--&gt;
+&lt;script type="text/javascript" src="js/jquery.mobile-1.1.0.min.js"&gt;&lt;/script&gt;</pre>
+<h2>A Typical JavaScript Framework</h2>
+<p>jQuery with jQuery Mobile provides many useful tools for building JavaScript user interface elements, including a variety of message boxes. The implementation is a little more complicated that the alert box we saw above. jQuery Mobile uses <strong>&lt;div&gt;</strong> tags and HTML5 <strong>data-</strong> &nbsp;attributes to allow for markup-based initialization and for the configuration of widgets.<br><br>In the following example we give a simple example of a loading message implemented through the jQuery Mobile framework:</p>
+<pre class="mosync-code-js">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+   &lt;meta http-equiv="Content-type" content="text/html; charset=utf-8"&gt;
+   &lt;title&gt;Loading Example&lt;/title&gt;
+   
+   &lt;!-- Link to the jQuery Mobile Framework stylesheet --&gt;
+   &lt;link rel="stylesheet" href="css/jquery.mobile.min.css" /&gt;
+
+   &lt;!-- Include the jQuery Framework (see http://jquery.com/) --&gt;
+   &lt;script src="js/jquery.min.js"&gt;&lt;/script&gt;
+
+   &lt;!-- Override the jQuery Mobile text visibility config setting
+   for loading message boxes, otherwise we won't see it. (Such
+   configuration has to be done before loading the jQuery Mobile
+   framework.) --&gt;    
+   &lt;script&gt;
+       $(document).bind("mobileinit", function(){
+           $.mobile.loadingMessageTextVisible = true;
+       });
+   &lt;/script&gt;
+   
+   &lt;!-- Include the jQuery Mobile Framework (see http://jquery.com/) --&gt;
+   &lt;script src="js/jquery.mobile.min.js"&gt;&lt;/script&gt;
+   
+&lt;/head&gt;
+&lt;body&gt;
+
+   &lt;!-- jQuery Mobile uses &lt;div&gt; tags and HTML5 data-  attributes
+   to allow for markup-based initialization and the configuration
+   of widgets. --&gt;
+
+   &lt;div data-role="page"&gt;
+   
+       &lt;script&gt;
+           $(document).on("click", ".show-loading-msg", function() {
+               $.mobile.showPageLoadingMsg('a', 'Loading', false);
+           })
+           .on("click", ".hide-loading-msg", function() {
+               $.mobile.hidePageLoadingMsg();
+           });
+       &lt;/script&gt;
+       
+       &lt;div data-role="content"&gt;
+
+           &lt;p&gt;Click the buttons to show/hide the loading message dialog.
+           &lt;br /&gt; &lt;br /&gt; Note that in this example the message box is not "modal"
+           (i.e., it does &lt;br /&gt;not block the browser and you can still click the
+           Stop button, even while the loading message shows.)&lt;/p&gt;
+           
+           &lt;button class="show-loading-msg" data-inline="true"&gt;Load&lt;/button&gt;
+           &lt;button class="hide-loading-msg" data-inline="true"&gt;Stop&lt;/button&gt;
+         
+       &lt;/div&gt;
+   &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+<p>If you have the needed local files, loading this HTML5 page in a browser and clicking the <strong>Load</strong> button will give you this result, with a pretty spinning loading icon:</p>
+<p><img src="images/loading-icon_0.png" align="none" width="289" height="368"><br><br>Third-party libraries like jQuery and jQuery Mobile work well with MoSync's own JavaScript libraries, and you should have no problem mixing them together in the same app. There are a few limitations, however, and that's that your user interface components are going to look the same on all platforms, and may be different from the UI elements that the user expects to see on his native platform.</p>
+<h2>The MoSync NativeUI JavaScript API</h2>
+<p>So what do you do if you want each user to see user interface elements that look the same as for other apps on his or her device? The MoSync <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/index.html">Wormhole JavaScript Library</a> has within it an API that provides dialog box functionality that works across all supported platforms (Android, iOS, Windows Phone, etc). Wormhole's <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/nativeui.md.html#Native%20UI">NativeUI JavaScript API</a> provides widgets that adapt themselves for each of the different platforms, so that users get the native look-and-feel they expect.<br><br>To use this API's functions you need to include the Wormhole library in your HTML code, just like you would for any other third party library:</p>
+<pre class="mosync-code-js">&lt;!-- Include the MoSync Wormhole Library --&gt;
+
+&lt;script type="text/javascript" charset="utf-8" src="js/wormhole.js"&gt;&lt;/script&gt;</pre>
+<blockquote><p>If you create your app using one of the MoSync SDK's <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/projects-and-templates/index.html">HTML5/JS templates</a>, all the necessary scripts for Wormhole and NativeUI and the underlying layers are included in your project.</p>
+</blockquote><p>Using the NativeUI API, you can create custom dialog boxes using the <strong>ModalDialog</strong> widget type. Here is an example of the HTML markup you need:</p>
+<pre class="mosync-code-js">&lt;div class="pane" id="heading"&gt;Customized Wormhole Technology&lt;/div&gt;
+&lt;div id="NativeUI"&gt;
+&nbsp;&nbsp; &nbsp;&lt;!-- the element with id="mainScreen" is loaded to the device screen&nbsp; by default --&gt;
+&nbsp;&nbsp; &nbsp;&lt;div data-widgetType="ModalDialog" id="myDialog" data-title="MY Dialog Title"&gt;
+&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;div data-widgetType="VerticalLayout" id="mainLayout" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-width="FILL_AVAILABLE_SPACE" data-height="FILL_AVAILABLE_SPACE"&gt;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;div data-widgetType="Label" id="myLabel" data-width="FILL_AVAILABLE_SPACE" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-text="Here is a Label" data-fontSize="19"&gt;&lt;/div&gt;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;div data-widgetType="Button" id="myButton" data-width="100%" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-text="Ok !" data-onevent="doSomething();"&gt;&lt;/div&gt;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;/div&gt;
+&nbsp;&nbsp; &nbsp;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+<p>&nbsp;To access this dialog box from JavaScript, you create an object that contains it, Then you can show it.</p>
+<pre class="mosync-code-js">&lt;!-- Create my dialog as an object --&gt;
+var myDialog = document.getNativeElementById(“myDialog”)
+
+&lt;!-- Show my dialog --&gt;
+myDialog.showDialog();</pre>
+<p>Here is a complete implementation, based on the NativeUI Template that comes with <a href="http://www.mosync.com/reload">MoSync Reload</a>:<br><br></p>
+<pre class="mosync-code-js">&lt;!DOCTYPE html&gt;
+&lt;!--
+* @file index.html
+*
+* Template application that provides Native UI functionality in
+* HTML5 and JavaScript.
+--&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta http-equiv="Content-type" content="text/html; charset=utf-8"&gt;
+    &lt;script type="text/javascript" charset="utf-8" src="js/wormhole.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"&gt;
+        /**
+         * Called by the NativeUI library when the UI is ready to
+         * be shown. Show the main screen here.
+         *
+         * Here we illustrate how to add events to widgets and how to
+         * create widgets from JavaScript code.
+         */
+        mosync.nativeui.UIReady = function()
+        {
+            // First get the screen we want to show.
+            var mainScreen = document.getNativeElementById("mainScreen");
+
+            // Show the screen.
+            mainScreen.show();
+
+            // Get an instance of the vibrate button created in the markup.
+            var vibrateButton = document.getNativeElementById("vibrateButton");
+
+            // Add an event listener to it. This is an alternative to
+            // specify a function name in the markup.
+            vibrateButton.addEventListener("Clicked", function()
+            {
+                navigator.notification.vibrate(1000);
+            });
+
+            // Create a button in JavaScript.
+            var helloButton = mosync.nativeui.create("Button", "helloButton",
+            {
+                // Declarative way of setting properties.
+                "width": "FILL_AVAILABLE_SPACE",
+                "text": "Open Dialog"
+            });
+
+            // Here is how to set properties in code.
+            helloButton.setProperty("fontSize", "20");
+
+            // Setting the clicked function.
+            helloButton.addEventListener("Clicked", function()
+            {
+                myFunction();
+            });
+
+            // Add button to layout.
+            helloButton.addTo("mainLayout");
+        }
+
+        /**
+         * Number of clicks on counterButton.
+         */
+        var clickCounter = 0;
+
+        /**
+         * Called when counterButton is clicked.
+         */
+        function counterButtonClicked()
+        {
+            var label = document.getNativeElementById("textLabel");
+            ++clickCounter;
+            label.setProperty("text", "No. of clicks: " + clickCounter);
+        }
+        
+          function myFunction()
+          {
+          var myDialog = document.getNativeElementById("myDialog");
+             myDialog.showDialog();
+          }
+
+        // Register event listeners.
+
+        // The "deviceready" event is sent when the system
+        // has finished loading. Here we initialise the UI.
+        document.addEventListener(
+            "deviceready",
+            function()
+            {
+                // Will call mosync.nativeui.UIReady when
+                // all Native UI widgets have been created.
+                mosync.nativeui.initUI();
+            },
+            true);
+
+        // Close the application when the back key is pressed.
+        document.addEventListener(
+            "backbutton",
+            function()
+            {
+                mosync.app.exit();
+            },
+            true);
+    &lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;!-- All of the mosync.nativeui widgets should be wrapped inside a
+        tag with id="NativeUI" --&gt;
+    &lt;div id="NativeUI"&gt;
+        &lt;div data-widgetType="ModalDialog" id="myDialog" data-title="MY Dialog Title"&gt;
+             &lt;div data-widgetType="VerticalLayout" id="mainDialogLayout" data-width="FILL_AVAILABLE_SPACE" data-height="FILL_AVAILABLE_SPACE"&gt;
+                  &lt;div data-widgetType="Label" id="SecondLabel" data-width="FILL_AVAILABLE_SPACE" data-text="Here is a Label" data-fontSize="19"&gt;&lt;/div&gt;
+               &lt;div data-widgetType="Button" id="SecondButton" data-width="100%" data-text="Ok !" data-onevent="doSomething();"&gt;&lt;/div&gt;
+            &lt;/div&gt;   
+       &lt;/div&gt;
+   
+        &lt;!-- The element with id="mainScreen" contains the main UI screen.
+            In this app the main screen has two tabs with screens. --&gt;
+        &lt;div data-widgetType="TabScreen" id="mainScreen"&gt;
+            &lt;!-- First Screen --&gt;
+            &lt;div data-widgetType="Screen"
+                id="widgetScreen"
+                data-title="Widgets"
+                data-icon_android="img/Android_TabIconDevice.png"
+                data-icon_iOS="img/IOS_TabIconDevice.png"&gt;
+                &lt;div data-widgetType="VerticalLayout"
+                    id="mainLayout"
+                    data-width="FILL_AVAILABLE_SPACE"
+                    data-height="FILL_AVAILABLE_SPACE"&gt;
+                    &lt;div widgetType="Label"
+                         id="textLabel"
+                        data-width="FILL_AVAILABLE_SPACE"
+                        data-text="Native UI in JavaScript"
+                        data-fontSize="26"&gt;
+                    &lt;/div&gt;
+                    &lt;div data-widgetType="Button"
+                        id="counterButton"
+                        data-width="FILL_AVAILABLE_SPACE"
+                        data-text="Click Me!"
+                        data-fontSize="20"
+                        data-onevent="counterButtonClicked()"&gt;
+                    &lt;/div&gt;
+                    &lt;div data-widgetType="Button"
+                        id="vibrateButton"
+                        data-width="FILL_AVAILABLE_SPACE"
+                        data-text="Vibrate"
+                        data-fontSize="20"&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;!-- Second Screen --&gt;
+            &lt;div data-widgetType="Screen"
+                data-id="webScreen"
+                data-title="Web"
+                data-icon_android="img/Android_TabIconWebView.png"
+                data-icon_iOS="img/IOS_TabIconWebView.png"&gt;
+                &lt;div data-widgetType="WebView"
+                    id="webBrowser"
+                    data-width="FILL_AVAILABLE_SPACE"
+                    data-height="FILL_AVAILABLE_SPACE"
+                    data-url="http://www.google.com"&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+       
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+<p>If you create this project and run it on a mobile device, you will see a native modal dialog box appear when you click the button:</p>
+<p><img src="images/modal-dialog_0.png" align="none" width="250" height="437"></p>
+<p>We suggest you create this project in MoSync Reload, and then run it on other mobile device platforms, like iOS and WIndows Phone. On those devices you will see the platform's native equivalent of a modal dialog box. Try it!</p>
+</body>
+</html>

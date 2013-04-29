@@ -1,0 +1,194 @@
+<html>
+<head>
+<title>Managing In-App Purchases</title>
+</head>
+<body>
+<h1>Managing In-App Purchases</h1>
+<p>With our Purchase C API and its C++ Library wrapper you can easily offer your user in-app purchases, and manage their transaction and refund status and history. Products that you offer your users can include subscriptions to content, software upgrades, and related products. In this tutorial we will lead you through the steps of creating an app that uses the Purchase C++ Library.<!--break--><br></p>
+<h2 dir="ltr">About In-App Purchasing/Billing</h2>
+<p><a href="http://developer.android.com/guide/market/billing/index.html">In-App Billing</a> is a Google Play service that lets you sell digital content from inside your Android apps. Apple offer a similar service called <a href="https://developer.apple.com/library/mac/#documentation/NetworkingInternet/Conceptual/StoreKitGuide/Introduction/Introduction.html">In-App Purchasing</a> for iOS apps through iTunes.<br><br>When your app uses one of these services, it sends a billing request for a specific product. The service then handles all of the checkout details for the transaction, including requesting and validating the form of payment and processing the financial transaction. <br><br>When the checkout process is complete, the service sends your application the purchase details, such as the order number, the order date and time, and the price paid. <br><br>At no point does your application need to handle any financial transactions; that is all done by the Google Play or Apple iTunes service.</p>
+<h2 dir="ltr">MoSync Guides and Examples</h2>
+<p>As well as this tutorial, we provide other resources that can be helpful when creating an app that uses in-app purchasing/billing:</p>
+<ul>
+<li><a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/libs/purchase-library-and-api/index.html">The Purchase Library and API</a>&nbsp;— an overview of the MoSync C++ classes and methods, and the C syscall functions available for managing in-app purchases/billing. Here you will find some important information (including prerequisites) for both Apple's In-App Purchasing service and Google Play's In-App Billing service.</li>
+<li><a href="http://www.mosync.com/files/imports/doxygen/latest/html/namespace_i_a_p.html">Purchase C++ Library</a> and <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___purchase_a_p_i.html">Purchase C API</a> — our reference manuals detailing all the classes, methods, functions, etc. in the MySync Purchase module.</li>
+<li><a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/purchaseexample/index.html">PurchaseExample</a> — an example application, included with the MoSync SDK, that demonstrates the presentation of products, the handling of purchases, and the return of receipts. (Note that this example requires some configuration to work.)</li>
+</ul>
+<h2 dir="ltr">Creating and Configuring Your Project</h2>
+<p>Start by creating a new NativeUI project:</p>
+<ol>
+<li>Open the MoSync IDE.</li>
+<li>Select <strong>File</strong> &gt; <strong>New</strong> &gt; <strong>Project</strong>.</li>
+<li>Select <strong>MoSync Project</strong>.</li>
+<li>Click <strong>Next</strong>.</li>
+<li>Select the <strong>C/C++</strong> template folder, then select <strong>C++ NativeUI Project</strong>.</li>
+<li>Click <strong>Next</strong>.</li>
+<li>Enter a name for your project, for example "IAPDemo".</li>
+<li>Click <strong>Finish</strong>. The main.cpp file of your project will open in the IDE.</li>
+</ol>
+<p>Now, for Android devices, you should set the application permissions for in-app purchases so that your app can register and receive Google Play messages. (This setting is not required by iOS devices, but should be set for a true cross-platform app.) To do this:</p>
+<ol start="9"><li>Right-click on your project in the Project Explorer view and select <strong>Properties</strong>. The properties dialog will open.</li>
+<li>Select <strong>MoSync Project</strong> &gt; <strong>Application Permissions</strong>.</li>
+<li>Check the <strong>In-App Purchase</strong> box:</li>
+</ol>
+<p><img src="images/in-app-purchase-permissions.png" align="none" width="634" height="457"></p>
+<ol start="9"><li>Click <strong>Apply</strong>.</li>
+</ol>
+<p>For iOS projects you need to do two things. First set the bundle identifier. This is the ID that will be used to uniquely identify your application package on an iOS device (for example "com.MyCoolApps.IAPDemo"):</p>
+<ol start="13"><li>In the properties dialog, select <strong>iPhone OS</strong>.</li>
+<li>Enter a unique bundle identifier:</li>
+</ol>
+<p><img src="images/in-app-purchase-bundle-id.png" align="none" width="634" height="457"></p>
+<ol start="13"><li>Click <strong>Apply</strong>.</li>
+</ol>
+<p>Second, for iOS, set up the project's provisioning profile by pointing it to the provision file -- that's the file that you get when you have registered with Apple as a developer and go through the iOS Provisioning Portal:</p>
+<ol start="16"><li>In the properties dialog, select <strong>iPhone OS</strong> &gt; <strong>Provisioning</strong>.</li>
+<li>Browse to your provision file and select it:</li>
+</ol>
+<p><img src="images/in-app-purchase-provisioning-file.png" align="none" width="634" height="457"></p>
+<ol start="16"><li>Click <strong>Apply</strong>.</li>
+<li>Click <strong>OK</strong>.</li>
+</ol>
+<h2 dir="ltr">Coding Your App</h2>
+<p dir="ltr">The main things you need to do in your application code are:</p>
+<ul>
+<li>Check if in-app purchasing is supported on the device.</li>
+<li>Create a user interface for displaying a list of available products and also a history of the transactions and receipts.</li>
+<li>Set the Android developer public key, and iOS store URL, for receipt validation.</li>
+<li>Create an <strong>Application</strong> controller class to handle all purchase related events, and notify the user interface of progress.</li>
+<li>Make a purchase and follow the application’s flow.</li>
+</ul>
+<blockquote><p>You might also want to store all your purchase information to a database, so the users will see how many products (and of which type) they have purchased, even if the application gets closed. See <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/storage/sql-database-api/index.html">Database API</a> for more information.</p>
+</blockquote><h3 dir="ltr">Checking for in-app purchase support</h3>
+<p dir="ltr">In the <strong>main.cpp</strong> file in the project, add the <strong>#include</strong> directive for the <strong>PurchaseManager</strong> and the IAP namespace, then use the <strong>checkPurchaseSupported</strong> method to check that in-app purchasing/billing is supported on the device.</p>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;IX_WIDGET.h&gt;
+#include &lt;Purchase/PurchaseManager.h&gt;
+
+using namespace MAUtil;
+using namespace IAP;
+
+NativeUIMoblet()
+{
+   int result = PurchaseManager::getInstance()-&gt;checkPurchaseSupported();
+   if ( result != MA_PURCHASE_RES_OK )
+   {
+      maAlert("Error", “Purchase is not supported”, "OK", NULL, NULL);
+   }
+
+   else
+   {
+      // Create Application controller.
+      mController = new ApplicationController();
+   }
+}</pre>
+<h3 dir="ltr">Creating the user interface</h3>
+<p>The layout of your user interface will of course reflect the purpose of your app. Take a look at our <span style="color: #ff0000;"></span><a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/purchaseexample/index.html">PurchaseExample</a> application to see how we did it. There we created a <strong>MainScreen</strong> class to serve as our user interface. The <strong>MainScreen</strong> class has two sections:</p>
+<ul>
+<li>A "Buy" section with a <strong>Buy</strong> button and a list of the available items for sale.</li>
+<li>A "History" section with a list of already purchased items.</li>
+</ul>
+<p>For each purchased item a receipt is available. When one of the purchased items is selected, a dialog shows its receipt details.</p>
+<h3 dir="ltr">Setting the keys/URLs needed for receipt validation</h3>
+<p>Before any purchase request can be made from Google Play, you need to set your Android developer public Key. (This is available in your <a href="https://accounts.google.com/ServiceLogin?service=androiddeveloper">Android Developer Console</a>. Always check that the key you provide is not malformed: the syscall should return MA_PURCHASE_RES_OK).<br><br>And before a purchase request can be made to Apple iTunes you need to set the iOS store URL for receipt validation.</p>
+<pre class="mosync-code-cpp">PurchaseManager::getInstance()-&gt;setPublicKey(“Your key here”); 
+PurchaseManager::getInstance()-&gt;setStoreURL(sAppStoreSandboxURL);</pre>
+<h3 dir="ltr">Handling purchase-related events</h3>
+<p>Create a class for handling all events that are related to in-app purchases. This will be the <strong>ApplicationController</strong> class and it will be responsible for updating the UI whenever a purchase event is detected.<br><br>To create this class, first add the <strong>#include</strong> directives for the Purchase library files:</p>
+<pre class="mosync-code-cpp">#include &lt;Purchase/Purchase.h&gt;
+#include &lt;Purchase/PurchaseListener.h&gt;
+#include &lt;Purchase/PurchaseManager.h&gt;
+#include &lt;Purchase/Receipt.h&gt;</pre>
+<p>(If you want, you can also include <strong>PurchaseManagerListener.h</strong> to listen for events that notify the user of restored transactions or refunds.)<br><br>Then add the <strong>PurchaseListener</strong> to the <strong>ApplicationController</strong> class:</p>
+<pre class="mosync-code-cpp">class ApplicationController:
+   public PurchaseListener
+{</pre>
+<p>Now, implement the listener methods:</p>
+<pre class="mosync-code-cpp">virtual void productValid(const Purchase&amp; purchase)
+{
+    // Product has been validated. We can now request a purchase:
+    mPurchase-&gt;requestPurchase();
+}
+virtual void productInvalid(const Purchase&amp; purchase)
+{
+    // Notify UI that the product cannot be purchased.
+    mMainScreen-&gt;productError("Product " + purchase.getProductId() + “ is invalid!”);
+}
+virtual void requestInProgress(const Purchase&amp; purchase)
+{
+    mMainScreen-&gt;productEvent(“Server receive request, in progress...”);
+}
+virtual void requestCompleted(const Purchase&amp; purchase)
+{
+    // Notify the UI that a product was pruchased.
+    mMainScreen-&gt;productPurchased(purchase.getProductId);
+}
+virtual void requestFailed(const Purchase&amp; purchase)
+{
+    mMainScreen-&gt;productError("Purchase failed for product " + purchase.getProductId()) ;
+}
+virtual void receiptValid(const Purchase&amp; purchase,Receipt&amp; receipt)
+{
+       // Display the dialog containing the receipt information.
+       mMainScreen-&gt;fillReceiptDialog(receipt.getAppID(), receipt.getProductID(),
+               receipt.getTransactionDate(), receipt.getTransactionID(),
+               receipt.getVersionExternalID(), receipt.getBID());
+}
+virtual void receiptInvalid(const Purchase&amp; purchase)
+{
+    mMainScreen-&gt;productError("Product " + purchase.getProductId()+ " has an invalid receipt!");
+}
+
+virtual void receiptError(const Purchase&amp; purchase, const int errorCode)
+{
+    mMainScreen-&gt;productError("Product " + purchase.getProductId()+ " does not have a receipt!");
+}
+</pre>
+<h3 dir="ltr">The main purchase flow</h3>
+<p>Now add the code that leads the user through a purchase. This consists of several steps, generally performed in the following order:</p>
+<ol>
+<li>Create a <strong>Purchase</strong> object based on a <strong>productId</strong>.</li>
+<li>Wait for <strong>PurchaseListener</strong> <strong>productValid</strong> and <strong>productInvalid</strong> events.</li>
+<li>When a product is validated, request a purchase using <strong>mCurrentPurchase-&gt;requestPurchase()</strong>.</li>
+<li>Wait for the <strong>PurchaseListener</strong> events <strong>requestInProgress</strong>, <strong>requestCompleted</strong> and <strong>requestFailed</strong>.</li>
+<li>When our application receives the <strong>requestCompleted</strong> event, get the receipt by calling <strong>mPurchase-&gt;verifyReceipt()</strong>.</li>
+<li>Wait for the <strong>PurchaseListener</strong> events <strong>receiptValid</strong>, <strong>receiptInvalid</strong> and <strong>receiptError</strong>.</li>
+<li>If the Receipt is valid, your application can get all the transaction information, like <strong>applicationId</strong>, <strong>productId</strong>, transaction date, and <strong>transactionID</strong>.</li>
+</ol>
+<p>In our <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/purchaseexample/index.html">PurchaseExample</a> application there is a list of available products from which you can choose:</p>
+<pre class="mosync-code-cpp">void MainScreen::createProductIdList()
+{
+   if ( getPlatform() == ANDROID )
+   {
+       /**
+        * This Android test productId can be bought multiple times.
+        * If you want to run the example for your own product ids,
+        * add them to the mProductIdList list.
+        */
+       mProductIdList.add(sGooglePlayPurchasedProductId);
+   }
+   else
+   {
+      // Add you own product Ids, even if it’s just for testing.
+      mProductIdList.add("Your own product ID");
+   }
+}</pre>
+<p>When a product is selected, and the <strong>Buy</strong> button is pressed, the <strong>ApplicationController</strong> will create a <strong>Purchase</strong> object with that <strong>productId</strong>.</p>
+<p>The <strong>Purchase</strong> constructor sets the parent as the listener so that it will receive purchase events: <strong>PurchaseListener::productValid</strong>, and <strong>PurchaseListener::productInvalid</strong>.</p>
+<pre class="mosync-code-cpp">void ApplicationController::buttonClicked(Widget* button)
+{
+Purchase* purchaseObj = new Purchase(
+               mMainScreen-&gt;getSelectedAvailableProduct(), this);
+       mPurchases.add(purchaseObj);
+       mCurrentPurchase = mPurchases.size()-1;
+}</pre>
+<p>From now on, the current purchase object will point to <strong>mCurrentPurchase</strong>, and all purchases will be held in the <strong>mPurchases</strong> vector.</p>
+<p>After the product assigned to <strong>mCurrentPurchase</strong> is validated ( receives PurchaseListener::<strong>productValid</strong> event), the ApplicationController will call mCurrentPurchase-&gt;<strong>requestPurchase()</strong> that will launch the checkoutUI ( the platform independent UI that handles the financial transaction details).</p>
+<h2 dir="ltr">Running the application</h2>
+<p>First, make sure that you have met the <a href="about:blank">prerequisites </a>for running your application.<br><br>When you test on Android, make sure you follow the steps listed in the official help page for testing <a href="http://developer.android.com/guide/market/billing/billing_testing.html">http://developer.android.com/guide/market/billing/billing_testing.html</a> , so that you will be able to test both reserved products and your own products.<br><br>Transfer the application to a device and run it. If the device supports in-app purchasing/billing, you will see a list of your available products. In our example app, when the user selects one of the available products, the checkout UI launches and enables the user to enter his personal credit card information:</p>
+<p><img src="images/in-app-purchase-visa_0.png" align="none" width="210" height="350"></p>
+<p>If everything goes OK the history list of purchased items is updated.</p>
+<p><img src="images/in-app-purchase-products-and-history.png" align="none" width="210" height="350"></p>
+<p>There is a receipt available for each purchase (except for the unmanaged products), and the user can check it by selecting one of them:<br><br><img src="images/in-app-purchase-receipt.png" align="none" width="210" height="350"><br><br></p>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>Using the MoSync SDK with Visual Studio 2010</title>
+</head>
+<body>
+<h1>Using the MoSync SDK with Visual Studio 2010</h1>
+<p>You can use MoSync with Microsoft Visual Studio although much of the functionality concerning building for mobile devices will be lost this way. The gain is that you will be able to use the fully-featured debugger in Visual Studio. Here we describe how to set up Visual Studio, and how to use it to build and debug an application.</p>
+<p><!--break--></p>
+<p>MoSync supports <strong>Microsoft</strong><sup><strong>®</strong></sup><strong> Visual Studio C++ 2010</strong> at this time. You can download it here:</p>
+<ul>
+<li><a href="http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-cpp-express">Visual Studio 2010 Express</a></li>
+</ul>
+<p>Our library for Visual Studio implements the MoSync syscall APIs. This enables developers to build MoSync projects using Visual C++ and use all of Visual Studio's features, including its debugging facilities.</p>
+<p>You should be aware that Visual Studio produces a <strong>native windows application</strong>, which is fundamentally different from a real MoSync application. For starters, a different compiler is used, which has a number of implications, including a different layout of code and data. Furthermore, if you use any other native Win32 libraries (including the Win32 API itself) <em>the resulting source code will not work in MoSync</em>.</p>
+<p>(Our win32 library was originally provided because MoSync lacked a proper debugger, and although the debugging experience would be inaccurate with respect to when the application is built for the MoSync architecture, it was considered better than nothing. Today, we would encourage you to use the debugger provided in the MoSync IDE. It is still not perfect, but we are working hard to improve it and are grateful for any feedback or bug reports.)</p>
+<h2>Configuring a MoSync project in Visual C++</h2>
+<p>Start with a Win32 project.</p>
+<p><img src="images/VS2010E.001.png" align="none" width="650" height="462"></p>
+<p><img src="images/VS2010E.002.png" align="none" width="615" height="520"></p>
+<p>In the Application Wizard, in Application Settings, select Empty Project.</p>
+<ul>
+<li>Add a C/C++ file. This allows you to access C/C++ project properties.</li>
+</ul>
+<p>In Project Properties:</p>
+<ul>
+<li>Select All Configurations.</li>
+</ul>
+<p>In General:</p>
+<ul>
+<li>Change Output Directory from $(SolutionDir) to $(ProjectDir).</li>
+<li>Change Character Set to Not Set</li>
+</ul>
+<p><img src="images/VS2010E.004.png" align="none" width="650" height="459"></p>
+<p>In VC++ Directories:</p>
+<ul>
+<li>Add MoSync\include to Include Directories.</li>
+<li>Add MoSync\libs\vs2010 to Library Directories.</li>
+</ul>
+<p><img src="images/VS2010E.007.png" align="none" width="640" height="452"></p>
+<p>In C/C++, General:</p>
+<ul>
+<li>Optional but Recommended: Set Treat Warnings As Errors to Yes.</li>
+</ul>
+<p>In Linker, add the libraries needed (mosynclib.lib and MAStd.lib are required) Input:</p>
+<ul>
+<li>Set Additional Dependencies to mosynclib.lib mastd.lib mautil.lib</li>
+</ul>
+<p><img src="images/VS2010E.008.png" align="none" width="640" height="452"></p>
+<h2>Building and debugging an application</h2>
+<p>If you build and run your project, the MoSync emulator will start with your project running in it. You will also be able to debug your application using the Visual Studio debugger so you are able to set breakpoints and single step through your code. Note that the program is compiled as pure x86 code, so the execution envionment may be more forgiving to badly behaved code.</p>
+<p><img src="images/VS2010E.009.png" align="none" width="640" height="480"></p>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<html>
+<head>
+<title>MoSync Glossary</title>
+</head>
+<body>
+<h1>MoSync Glossary</h1>
+<p>MoSync introduces a few new terms, and uses some others in a new way. Here we briefly explain these terms and how we interpret them.</p>
+<h3>API</h3>
+<p>A set of syscalls and other low-level functions that provide access to one or more basic features of a device. We sometimes use this term rather broadly. Examples include the Sockets API and the Map API.</p>
+<p><!--break--></p>
+<h3>Connection</h3>
+<p>A serial connection to a remote machine, identified by a Handle. There are different types of connections, including TCP, HTTP and Bluetooth.</p>
+<h3>Device</h3>
+<p>A model of machine that can execute arbitrary programs, typically a mobile phone (cell phone).</p>
+<h3>Event</h3>
+<p>MoSync Events deliver notification of keypresses, stylus movements and the results of asynchronous operations like networking and Bluetooth scans.</p>
+<h3>Handle</h3>
+<p>An identifier to a resource (e.g. binary file) or object (e.g. a connection) managed by the runtime. There are different types of handles, not interchangable.</p>
+<h3>Panic</h3>
+<p>A notification sent when an unrecoverable error occurs in a MoSync runtime, library, or user application. See the <a href="/content/api-reference">Panics Reference Guide</a>.</p>
+<h3>Pipe-tool</h3>
+<p>Pipe-tool is our powerful code transformation engine. It takes the output of the GCC compiler, links it with the MoSync libraries, and outputs binary code and/or Java source code depending on the target platforms and devices. Pipe-tool combines the functions of a resource compiler, linker, and code optimizer. It is configured through <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/build-configurations/index.html">build configurations</a>.</p>
+<h3>Placeholder</h3>
+<p>A resource handle that doesn't identify any resource. It is used in the creation of new resources. The concept of a "placeholder" is used in two contexts. The first is in resource files, to specify "markers" to identify ranges of resources. The second is to create handles for dynamically allocated data objects (using maCreatePlaceholder/maDestoryPlaceholder).</p>
+<h3>Platform</h3>
+<p>An operating system, or version thereof, that is used by one or more devices. Examples include J2ME, Symbian Series 60, Android, and Windows Mobile.</p>
+<h3>Resource</h3>
+<p>A piece of data managed by the runtime, for example an image, an audio file, or a binary data file. Each resource is identified by a handle. Resources are compiled with the rest of the program and loaded at startup. They can also be created and destroyed when the program is executing.</p>
+<h3>Runtime</h3>
+<p>Libraries or programs that execute MoSync programs on a given target device. They also provide a uniform interface to low-level system APIs, including graphics, audio, event handling and communications.&nbsp; Platforms supported by MoSync have different runtimes.</p>
+<h3>Syscall</h3>
+<p>System Call - a function that is implemented by a MoSync runtime in code native to a platform.</p>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>WebViewTwitter</title>
+</head>
+<body>
+<h1>WebViewTwitter</h1>
+<p>The WebViewTwitter example application is a Twitter client that displays tweets of selected users. Users can be added to a favorites list, which is stored on the device. The app uses the jQuery and jQuery Mobile JavaScript libraries, and the MoSync Wormhole C++ library.<!--break--></p>
+<table class="doclayout" border="0"><tbody><tr><td>&nbsp;<img src="images/WebViewTwitter1_0.png" align="none" width="220" height="367"></td><td>&nbsp;<img src="images/WebViewTwitter2_0.png" align="none" width="220" height="367"></td></tr>
+<tr><td><em>&nbsp;First screen (Android)</em></td><td><em>&nbsp;Second screen (Android)</em></td></tr>
+</tbody></table>
+<p>This example is included in the MoSync SDK installation in the /examples folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<h2>Behavior</h2>
+<p>When started, the example application displays the main application screen. On this screen you can enter the username of a Twitter user. When tapping the button&nbsp; <strong>View Tweets by this user</strong>, a second screen is displayed showing that user's recent tweets. Tapping the <strong>Back</strong> button goes back to first screen. On Android you can also use the hardware back key to go back. On the main screen you also can add the username to a Favourites List. You can then tap on an entry in the Favourites List to view that user's tweets.</p>
+<h2>In the Code</h2>
+<p>You can <a href="https://github.com/MoSync/MoSync/tree/ThreeTwo/examples/html5/WebViewTwitter">browse the source code</a> of the application online in the MoSync GitHub repository.</p>
+<p>The following technologies are used in this application:</p>
+<ul>
+<li>HTML and Javascript, and jQuery Mobile for the user-interface.</li>
+</ul>
+<ul>
+<li>The JQuery getJSON function to call the Twitter API and parse the JSON document that is returned as a result.</li>
+</ul>
+<ul>
+<li>The MoSync Wormhole Library is used for bi-directional communication between MoSync C++ code and JavaScript.</li>
+</ul>
+<ul>
+<li>The MoSync File API (C++) to write to and read from the device's file system.</li>
+</ul>
+<p>Included in the example is a set of wrapper functions for accessing the MoSync File API from Javascript. This library is meant to illustrate how to extend a hybrid app with custom C++ functionality. If you prefer, you can use the PhoneGap File API, rather than the File API included in the example.<br><br><em>WebViewTwitter.cpp</em> is the main file of the app. The implementation extends class <strong>HybridMoblet</strong>. The example application uses a custom message handling function to process and respond to messages coming from JavaScript.<br> <br>All of the HTML5 and JavaScript-related files and libraries are located in the <em>LocalFiles</em> directory, and are bundled with the application and extracted to the local file system of the device the first time the application launches<br><br>The <em>Resources.lst</em> file has an entry for the bundled files that must be the first entry in the resource file. Do not move this resource entry if you should add your own resources.<br><br><br><br></p>
+</body>
+</html>

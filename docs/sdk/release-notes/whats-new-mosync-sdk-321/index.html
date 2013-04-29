@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>What's New in MoSync SDK 3.2.1</title>
+</head>
+<body>
+<h1>What's New in MoSync SDK 3.2.1</h1>
+<p>MoSync SDK release 3.2.1 is an update of release 3.2 that features updates to the Wormhole JavaScript library, along with several bug fixes and improvements.</p>
+<p><span></span><!--break--></p>
+<blockquote><p><strong>Update your existing HTML5/JS projects:</strong> I you use the Wormhole library and have HTML5/JS projects created with previous versions of MoSync SDK, make sure to<strong> update the file wormhole.js</strong> to the latest version and to <strong>update the supporting C++ code in main.cpp</strong>.</p>
+</blockquote><h2>Overview</h2>
+<p><strong></strong>The MoSync SDK 3.2.1 release is an incremental update of the previous MoSync SDK 3.2 release. Kindly consult the <a href="TEMPLATE_DOC_PATH/sdk/release-notes/whats-new-mosync-sdk-32/index.html">Release Notes for MoSync SDK 3.2</a> for a complete list of the many new features and updates that were introduced in this release. This document list the updates made for MoSync SDK 3.2.1.</p>
+<h2>Updating Existing Wormhole Projects</h2>
+<p>If you have HTML5/JavaScript projects that use the Wormhole library, you need to update the file wormhole.js and in some cases also the file main.cpp. For detailed instructions, please read the <strong><a href="TEMPLATE_DOC_PATH/sdk/js/guides/wormhole/update-wormhole/index.html">Wormhole Upgrade Guide</a></strong>.</p>
+<h3>Updating wormhole.js</h3>
+<p>For your existing HTML5/JS projects to work in the MoSync SDK 3.2.1, you must update the file <strong>wormhole.js</strong> to the most recent version. You can make a copy of this file from a project created with the new version of the SDK, and paste it into your existing project to replace the old version.</p>
+<h3>Updating your C++ code</h3>
+<p>You need to update the code in file main.cpp if you have HTML5/JS projects created with MoSync SDK 3.1.1 or earlier versions. Class WebAppMoblet (deprecated) has been replaced by class HybridMoblet. If you just created an HTML5 project from a template without modifying any C++ code, you can create a new project using MoSync SKD 3.2.1 and paste your HTML/JS files and resources into the new project. That should work out-of-the-box.</p>
+<p>If you have modified the code in main.cpp, you need to manually update the code. For further details, see the <a href="TEMPLATE_DOC_PATH/sdk/js/guides/wormhole/update-wormhole/index.html">Wormhole Upgrade Guide</a>.</p>
+<h2>New Functionality in the Wormhole Library</h2>
+<p>The MoSync JavaScript library has been updated with new functionality. Updating Wormhole apps is essential if you have existing apps developed with previous MoSync SDK versions.</p>
+<h3>Screen Orientation Support in JavaScript</h3>
+<p>There is a new function for setting the screen orientation of the device called<strong> mosync.app.screenSetOrientation()</strong>. This function allows you to set the screen orientation to portrait, landscape, or dynamic mode. Examples:</p>
+<pre class="mosync-code-js">mosync.app.setScreenOrientation(mosync.SCREEN_ORIENTATION_DYNAMIC);
+mosync.app.setScreenOrientation(mosync.SCREEN_ORIENTATION_PORTRAIT);
+mosync.app.setScreenOrientation(mosync.SCREEN_ORIENTATION_LANDSCAPE);</pre>
+<h3>Open External Web Browser from JavaScript</h3>
+<p>If you want to open an external website from your app, you can open a URL in the web browser of the device using the new function <strong>mosync.app.openExternalURL()</strong>. Opening the URL&nbsp;directly in a WebView widget is also possible, but may not provide the support users need, like web navigation. You can also use this function to dial a telephone number directly from your app. Examples:</p>
+<pre class="mosync-code-cpp">mosync.app.openExternalURL("http://maps.google.com/");
+mosync.app.openExternalURL("tel:046850510300");</pre>
+<h2>Improved Power Usage by Hybrid Moblets</h2>
+<p>We have improved the power usage of the <a href="http://www.mosync.com/files/imports/doxygen/latest/html/class_wormhole_1_1_hybrid_moblet.html">HybridMoblet</a> in the Wormhole C++ Library, dramatically reducing battery drain when an app is sent to the background. To take advantage of this improvement, you will need to rebuild your apps using MoSync SDK 3.2.1.</p>
+<h2>Known Limitations and Fixed Bugs in MoSync SDK 3.2.1</h2>
+<ul>
+<li>The Camera API is not supported on Samsung Galaxy SII running Android 2.3. It is however supported on Samsung Galaxy SII running Android 4.</li>
+<li><a href="http://jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&amp;requestId=11110">All issues fixed in MoSync SDK release 3.2.1</a></li>
+<li>Also see the list of Known Limitations in the <a href="TEMPLATE_DOC_PATH/sdk/release-notes/whats-new-mosync-sdk-32/index.html">Release notes for MoSync SDK 3.2</a></li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

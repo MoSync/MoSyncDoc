@@ -1,0 +1,57 @@
+<html>
+<head>
+<title>Building the MoSync SDK from Source on Linux</title>
+</head>
+<body>
+<h1>Building the MoSync SDK from Source on Linux</h1>
+<p>This guide explains how to build the MoSync SDK from source on Linux. It shows you how to set up your build environment and how to build GCC, Pipe-Tool, and the MoRE Emulator.</p>
+<p><!--break--></p>
+<p>Please remember that support for Linux is limited and the build system was made for Windows. At the moment, it is only possible to build the MoRE Emulator on Linux, and to run some example programs in the Emulator. It is <em>not</em> possible to build the entire MoSync package (with its IDE) on Linux.</p>
+<p>The distributions that we ourselves run at MoSync AB are Ubuntu 8.10/9.04/9.10 and Xubuntu 9.10. This description may work with those distributions. If you're using any other distribution, you may need to adapt these instructions.</p>
+<h2>Prerequisites</h2>
+<p>There are a few prerequisites to building the MoSync SDK. In Ubuntu, they can be installed by:</p>
+<pre class="mosync-code-xml">sudo apt-get install gcc g++ bison flex ruby rake subversion rpm libgtk2.0-dev libexpat1-dev
+sudo apt-get install libbluetooth3-dev libsdl1.2-dev libsdl-image1.2-dev libsdl-ttf2.0-dev
+sudo apt-get install libfreeimage-dev gperf</pre>
+<p>Note that, since the MoSync SDK is continuously evolving, there may be additional dependencies.</p>
+<h2><a name="1_Setting_up_your_environment_16421233879073993" id="1_Setting_up_your_environment_16421233879073993"></a>Setting up your Build Environment</h2>
+<p>The first step is to set up a directory where the compiled binaries, libraries and SDK header files will reside. From now on we will refer to this directory as the installation directory. The installation directory, which resides wherever you want, should contain the following directory structure:<br><br>&nbsp;/<em>&lt;installation-directory&gt;</em><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>/bin</em><br><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /include</em><br><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /lib</em><br><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /libexec/gcc/mapip/3.4.6</em></p>
+<p>The <em>/include</em> and <em>/lib</em> directories will be created automatically during compilation, but the other directories should be created manually because we need to compile GCC before the MoSync SDK can be compiled.</p>
+<p>Once you have created the directory structure, the environment variable&nbsp;<strong>MOSYNCDIR</strong>&nbsp;should point to the installation directory. If you use <strong>bash </strong>then this is accomplished by adding the following line to your&nbsp;<em>.bashrc</em>:</p>
+<pre class="mosync-code-cpp">export MOSYNCDIR=&lt;installation-directory&gt;</pre>
+<p>or in&nbsp;<em>csh</em>&nbsp;by adding the following line to&nbsp;<em>.cshrc</em>:</p>
+<pre class="mosync-code-cpp">setenv MOSYNCDIR&nbsp; &lt;installation-directory&gt;</pre>
+<p>When the lines have been added to your <em>.bashrc</em> or <em>.cshrc</em> the shell must be restarted, you can accomplish this by closing the terminal window and opening it again.</p>
+<h2><a name="2_Building_GCC_22495593536407155" id="2_Building_GCC_22495593536407155"></a>Building GCC</h2>
+<p>MoSync uses its own GCC backend that generates source code for the MoSync virtual machine. In order to build the MoSync GCC we start by downloading the source code from Google Code, the source code can be placed wherever you want, in this example we are using a directory called&nbsp;<em>gcc_trunk</em>. To download the code run svn:</p>
+<pre class="mosync-code-cpp">git clone git://github.com/MoSync/gcc.git gcc_trunk</pre>
+<p>Now go into&nbsp;<em>gcc_trunk</em>&nbsp;and build the compiler, the compilation will fail when trying to compile&nbsp;<em>libgcc</em>&nbsp;since we do not use the standard linker. But the compiler will already have been built and will be placed in<em>&nbsp;gcc_trunk/build/gcc/gcc/</em>.</p>
+<p>We build the compiler by performing the following steps:</p>
+<pre class="mosync-code-cpp">cd gcc_trunk
+./configure-linux.sh
+cd build/gcc
+make</pre>
+<p>Remember that the compilation will fail when trying to build&nbsp;<em>libgcc</em>, on my Ubuntu machine the error output begins with:</p>
+<pre class="mosync-code-cpp">libgcc2.s: Assembler messages:
+libgcc2.s:1: Error: unknown pseudo-op: `.model'
+libgcc2.s:2: Error: unknown pseudo-op: `.code'
+...</pre>
+<p>In order for the build scripts to find MoSync GCC it has to be moved to the installation directory:</p>
+<pre class="mosync-code-cpp">cp gcc/xgcc gcc/cpp $MOSYNCDIR/bin
+cp gcc/cc1 gcc/cc1plus $MOSYNCDIR/libexec/gcc/mapip/3.4.6/</pre>
+<h2><a name="3_Building_pipe_tool_the_linke_6982550815313905" id="3_Building_pipe_tool_the_linke_6982550815313905"></a>Building Pipe-Tool and the Emulator</h2>
+<p>The source code for the MoSync SDK also resides on Google Code and is downloaded by:</p>
+<pre class="mosync-code-cpp">git clone git://github.com/MoSync/MoSync.git mosync_trunk</pre>
+<p>MoSync uses its own build system coined 'work'. The build system consists of a set of Ruby files that compiles the MoSync SDK. In each directory that contains source files there is a file called&nbsp;<em>workfile.rb</em>, which instructs the build system how compile the source files. To build the fundamental tools of the MoSync SDK, move to the root of&nbsp;<em>mosync_trunk</em>&nbsp;and invoke:</p>
+<pre class="mosync-code-cpp">./workfile.rb CONFIG="debug"</pre>
+<p>The above command builds the tools and libraries in debug<em>&nbsp;mode</em>&nbsp;but you should also build everything in&nbsp;<em>release mode</em>:</p>
+<pre class="mosync-code-cpp">./workfile.rb CONFIG=""</pre>
+<p>You will then have to copy the font used in the emulator to the bin directory, stand in the root of&nbsp;<em>mosync_trunk</em>&nbsp;and invoke:</p>
+<pre class="mosync-code-cpp">cp tools/ReleasePackageBuild/build_package_tools/mosync_bin/unifont-5.1.20080907.ttf $MOSYNCDIR/bin/</pre>
+<p>When this script is finished make sure that&nbsp;<em>$MOSYNCDIR/bin</em>&nbsp;contains&nbsp;<strong>cc1</strong>,&nbsp;<strong>cc1plus</strong>,&nbsp;<strong>xgcc</strong>,&nbsp;<strong>pipe-tool</strong>&nbsp;and&nbsp;<strong>moemu</strong>. You may then try the&nbsp;<em>MAUIex</em>&nbsp;example by performing:</p>
+<pre class="mosync-code-cpp">cd examples/MAUI/MAUIex/
+./workfile.rb CONFIG=""
+cd build/pipe_release/
+$MOSYNCDIR/bin/moemu -program program -resource ../resources</pre>
+</body>
+</html>

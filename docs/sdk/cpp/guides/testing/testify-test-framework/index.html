@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>The Testify Test Framework</title>
+</head>
+<body>
+<h1>The Testify Test Framework</h1>
+<p>MoSync's test framework, Testify, simplifies the writing of complex test cases. You can use it to test several methods in a class, or just to write a single test for one function. There is not much more you need to do than write your tests (unfortunately it can't do that part for you) and press <strong>Run</strong>.</p>
+<p><!--break--></p>
+<p></p>
+<p><strong>Note</strong>: From release 2.4, Testify replaces our previous test framework, <strong>MATest</strong>.</p>
+<h2>Testify Concepts</h2>
+<p>Before you start using Testify, we would like to introduce you to two important concepts: <em>hooks </em>and <em>functors</em>.</p>
+<h3><a name="Hooks_7101796493699488_5487067" id="Hooks_7101796493699488_5487067"></a>Hooks</h3>
+<p>A hook is the mechanism you use to add your test or test listener to Testify at link time. It's just a class which you instantiate, preferably in the same file as your test. A typical use of a hook looks like this:</p>
+<pre class="mosync-code-cpp">static Testify::TestHook hook( new MyTestCase( ) );</pre>
+<p>where <strong>Testify::TestHook </strong>is the actual hook, and <strong>MyTestCase</strong> is a test case that you've written.</p>
+<h3><a name="Functors_16222712713195286_354" id="Functors_16222712713195286_354"></a>Functors</h3>
+<p>The workhorse of Testify are the function or method wrappers, otherwise known as "functors". If you've ever used the Boost library, you might be familiar with the concept. A functor wraps a function or a method, possibly along with its parameters, and can conveniently be called without having to care about it's details.<br><br> A typical use of a functor in Testify looks like this:</p>
+<pre class="mosync-code-cpp">Testify::bind( MyFunction ) </pre>
+<p>or like this:</p>
+<pre class="mosync-code-cpp">Testify::bind( MyFunction2, 1, 2.0f ) </pre>
+<p>where <strong>MyFunction </strong>and <strong>MyFunction2</strong> are functions in your code. The second case wraps two parameters which are to be passed to <strong>MyFunction2 </strong>while invoking it. <br><br> When it comes to methods, it's slightly different, you also have to pass the object which the method belongs to as well, from inside the class, the constructor for instance. It could look like this:</p>
+<pre class="mosync-code-cpp">Testify::bind( &amp;MyClass::myMethod, this )</pre>
+<p>and of course, in this case you can wrap parameters as well.</p>
+<p>Once you've written your tests and their hooks and you are ready to run them, you only need to link to <em><strong>testify.lib</strong> </em>and run your program as usual. Testify will take care of booting itself and running the tests, you do not need to care about the details. Any existing <strong>MAMain </strong>will be overridden (not overwritten) as long as you are linking to <strong>testify.lib</strong>.</p>
+<h3><a name="_Other_concepts_68940498182425_08960115882277664" id="_Other_concepts_68940498182425_08960115882277664"></a> Other Features</h3>
+<p><strong>Testify::TestFunction</strong> is used to run test functions. These are normally never used explicitly. <br><br><strong>Testify::TestCase</strong> is a class which is inherited when you need a bit more support, such as set up and tear down before or after each test or each case.<br><br><strong>Testify::TestListener</strong> describes an interface that can be overridden to make your own custom listeners to the events that Testify broadcasts. Events occur when a test suite starts or ends, when a test starts or ends, or when a test fails.</p>
+<p>To add your own custom test listener to Testify, you use the hook concept, but this time you use <strong>Testify::ListenerHook</strong>, i.e:</p>
+<pre class="mosync-code-cpp">static Testify::ListenerHook( new MyTestListener( ) ); </pre>
+<h2><a name="Creating_a_Test_34894458465111" id="Creating_a_Test_34894458465111"></a>Creating a Test</h2>
+<p>Now let's look at how to write a simple test case. We'll start with the testing of a simple function. The steps involved are the following:</p>
+<ul>
+<li>Create a test suite (e.g. <strong>mytest.cpp</strong>) and add your test case to it</li>
+<li>Add a hook in the test suite</li>
+<li>Link with <strong>testify.lib</strong></li>
+</ul>
+<p>Example (in your application):</p>
+<pre class="mosync-code-cpp">#include &lt;testify/testify.hpp&gt;
+
+static void SumTest ( void )
+{
+    for ( int i = -100; i &lt; 100; i++ )
+        TESTIFY_ASSERT( (i-i) == 0 ); // This tests the boolean result of the assertion, this could be replaced with TESTIFY_ASSERT_EQUAL( i-i, 0 ). If the assertion is false, the test fails.
+}
+
+static Testify::TestHook myHook( Testify::bind( SumTest ), "Summation test" ); // The Test Case is being hooked in.</pre>
+<h2><a name="IDE_Support_for_writing_tests__43353764870052747" id="IDE_Support_for_writing_tests__43353764870052747"></a>IDE Support for Writing Tests</h2>
+<p>The MoSync IDE provides full support for writing tests and executing them in the MoRE emulator.</p>
+<h3><a name="To_create_a_new_test_suite_388_0534904384476238" id="To_create_a_new_test_suite_388_0534904384476238"></a>To create a new test suite:</h3>
+<ol>
+<li>Right-click on the project you wish to add tests for.</li>
+<li>Select <strong>New </strong>&gt; <strong>Other </strong>&gt; <strong>MoSync </strong>&gt; <strong>Create MoSync Test Suite</strong>. <br> A wizard opens where you can define which directory to designate as your test directory and the C++ file to generate as a starting point for writing test cases. (The wizard will specify a default test directory for you.)</li>
+<li>Click <strong>Finish</strong>.</li>
+</ol>
+<p>The wizard will add two new build configurations to your project, one called <strong>Test</strong> and one called <strong>Test_Debug</strong>. These new build configurations are equivalent to the normal <strong>Release </strong>and <strong> Debug </strong>build configurations but include the designated test directories.</p>
+<p>Both of the new test build configurations also include the Testify library (<strong>testify.lib</strong>). You can view the included libraries in your project's build setting (<strong style="color: #000000;">Project </strong>&gt; <strong style="color: #000000;">Properties </strong>&gt; <strong style="color: #000000;">MoSync Project</strong> &gt; <strong style="color: #000000;">Build Settings</strong> &gt; <strong style="color: #000000;">Paths and Files</strong> &gt; <strong style="color: #000000;">Additional Libraries</strong>).</p>
+<p>Once a test suite has been created and tests have been added as described in <a href="#Creating_a_Test_34894458465111">Creating a Test</a> above, it's time to run them.</p>
+<h3><a name="To_run_a_test_suite_3053916318_11516755191373318" id="To_run_a_test_suite_3053916318_11516755191373318"></a>To run a test suite:</h3>
+<ul>
+<li>Right-click the project, select <strong>Run As</strong> &gt; <strong>Run Tests on MoSync Emulator</strong>. <br> The IDE will launch the emulator, run the tests and show the test results in the <strong>Unit Test</strong> view. <br> (Usually this view will be activated automatically and placed in a tab to the right of the <strong>Project Explorer</strong>.)</li>
+</ul>
+</body>
+</html>

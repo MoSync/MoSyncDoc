@@ -1,0 +1,25 @@
+<html>
+<head>
+<title>BluetoothClient</title>
+</head>
+<body>
+<h1>BluetoothClient</h1>
+<p>This example application acts as a Bluetooth client. It is designed to work with our <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/bluetoothserver/index.html">BluetoothServer</a> example application.<!--break--></p>
+<table class="doclayout"><tbody><tr><td><img src="images/BluetoothClient.png" align="none" width="240" height="320"></td><td><img src="images/BluetoothClient-keys-sent.png" align="none" width="240" height="320"></td></tr>
+<tr><td><em>Start up/connection<br></em></td><td><em>Sending data<br></em></td></tr>
+</tbody></table>
+<p>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<h3>Using this Example</h3>
+<p>To use this example application with our <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/bluetoothserver/index.html">BluetoothServer</a> application, you will need two Bluetooth capable devices. Make sure that Bluetooth is turned on on both devices and that the devices are paired before running the server and the client applications.</p>
+<p>The file <strong>Common.h</strong> from the BluetoothServer project is included in the client. It is assumed that both project folders BluetoothClient and BluetoothServer are located in the same directory. <strong>Common.h </strong>contains variables and functions shared between the BluetoothServer and BluetoothClient projects (including the service UUID), and contains a full description of how to use the projects together.</p>
+<p><em><strong>Note: </strong></em>Before you build and run this application, you need to enter the address of the BluetoothServer device in <strong>sServerAddress </strong>in <strong>Client.cpp</strong>. When you start up our BluetoothServer application on a device it will show you this address.<br><br>Note that when making your own projects that use Bluetooth, you need to enable Bluetooth for your project under <strong>Properties </strong>&gt; <strong>MoSync Project</strong> &gt; <strong>Application Permissions</strong>.</p>
+<h3><em>Behaviour</em></h3>
+<p>When this application starts up on a device or in the MoRE emulator it will attempt to connect to the server identified by <strong>sServerAddress</strong>. If the connection is sucessfully established you will see the message "Connected to server". (If you are having trouble getting Bluetooth clients to connect to Bluetooth servers, you are not alone! Check out our dedicated forum topic <strong>Bluetooth Ache</strong> for some helpful advice.)<br><br>The zero or back key exits the application, but pressing other keys on the keypad or touching the screen will send the data to the Bluetooth server application: the keycode and the data sent are echoed on the client's screen.</p>
+<h3><em>Key Presses</em></h3>
+<ul>
+<li>0 or back key — closes the application.</li>
+<li>All other keypad keys — sent as data to the server. (Non-printable characters are ignored.)</li>
+<li>Screen touches — sent as data to the server as the string: "Touch event: &lt;x,y&gt;", where &lt;x,y&gt; is the touch coordinate, for example: "Touch event: 234,318".</li>
+</ul>
+</body>
+</html>

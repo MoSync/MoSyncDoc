@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>Finalizing and Packaging Applications</title>
+</head>
+<body>
+<h1>Finalizing and Packaging Applications</h1>
+<p>One of the MoSync SDK's great strengths is that you can use it to build your one application into the different packages you need for hundreds of mobile devices. The MoSync SDK builds the executable packages, ready to be transferred to the devices (or ready for finishing in Visual Studio and Xcode), based on the target platform/device profiles you have selected.<img src="images/spacer.gif" alt="<--break->" title="<--break-->"><!--break--></p>
+<p></p>
+<h2>Finalizing Modes</h2>
+<p>There are two ways in which the MoSync Finalizer can work:</p>
+<ul>
+<li><span>For new projects and platforms (MoSync 3.0+), you can build&nbsp;</span><strong>per platform</strong><span>. You only need to build for Android 2.2 once, not once for every device which runs Android.</span></li>
+<li>For legacy projects (i.e., those before MoSync 3.0), and for legacy devices like J2ME phones, you can finalize the project <strong>per device</strong>. &nbsp;This means that the MoSync IDE will build and package your code for each device you want to support. You will find instructions for doing this towards the end of the document.</li>
+</ul>
+<h2>Switching Modes</h2>
+<p>If you have a project which is currently configured per device, and you wish to move to a per platform configuration, click the <strong>Profile Selection </strong>icon on the toolbar:</p>
+<p><img src="images/2012-03-06_1252.png" align="none" width="203" height="44"></p>
+<p>In the dialog that opens, click the <strong>Make Platform Based</strong> button.</p>
+<h2>Finalizing with Platform Profiles</h2>
+<p>When you are ready to finalize, click the <strong>Profile Selection</strong>&nbsp;icon in the toolbar. In the dialog that opens, click the <strong>Select Capabilities</strong> button:</p>
+<p><img src="images/2012-02-27_0813.png" align="none" width="422" height="480"></p>
+<p>Another dialog will show where you can choose which platforms you want to build for. You can do this quickly and easily by selecting which capabilities your target platforms have:</p>
+<p><img src="images/2012-02-27_0815.png" align="none" width="650" height="372"></p>
+<p>You can filter the list by selecting supported functions. Those platforms which don’t support that feature will be crossed out. You may also check/uncheck individual platforms.</p>
+<p>To finalize, click the <strong>Build All</strong> toolbar icon (the rightmost icon below). The currently selected build configuration will be used during building.</p>
+<p><img src="images/2012-02-27_1034.png" align="none" width="97" height="42"></p>
+<p>The Finaliser invokes the <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/architecture/toolchain/index.html">MoSync Packager</a> as many times as required. Once complete, you will find that your project now has a new folder called <em>/Release Packages</em>. This folder contains all the outputs from each platform. (iOS and Windows Phone 7 sometimes produces XCode and Visual Studio project, see the sections below for more options.)</p>
+<p><img src="images/finalizer6.png" align="none" width="349" height="533"></p>
+<h2>Build Options for iOS</h2>
+<p>If you build on a Mac with XCode installed, MoSync will try to build a deployable iOS application. However, in some cases an XCode project will be generated instead. This XCode project can be imported into XCode and the final app built from there.</p>
+<p>If one of these conditions holds, then an XCode project will be built:</p>
+<ul>
+<li><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: small;">The build does not takes place on an OS X machine</span></li>
+<li><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: small;">XCode is not installed</span></li>
+<li><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: small;">The <strong>Only generate XCode project for iOS devices</strong>&nbsp;preference is set. (It can be found in <strong>Preferences</strong> &gt; <strong>MoSync</strong> <strong>Tool</strong> &gt; <strong>XCode</strong>)</span></li>
+</ul>
+<div>
+<span style="font-family: 'Helvetica Neue', Helvetica, sans-serif;"><span style="font-family: 'Helvetica Neue', Helvetica, sans-serif;"><span style="font-size: 12px;"></span></span></span><h2>Build Options for Windows Phone 7</h2>
+<span style="font-family: 'Helvetica Neue', Helvetica, sans-serif;"><span style="font-family: 'Helvetica Neue', Helvetica, sans-serif;"><span style="font-size: 12px;"></span></span></span><p>If you build on a Windows machine with Visual Studio installed, MoSync will try to build a deployable Windows Phone 7 application. However, in some cases a Visual Studio project will be generated instead. The generated project can be imported into Visual Studio and the final app built from there.</p>
+<span style="font-family: 'Helvetica Neue', Helvetica, sans-serif;"><span style="font-family: 'Helvetica Neue', Helvetica, sans-serif;"><span style="font-size: 12px;"></span></span></span><p>If one of these conditions holds, then a Visual Studio project will be built:</p>
+<span style="font-family: 'Helvetica Neue', Helvetica, sans-serif;"><span style="font-family: 'Helvetica Neue', Helvetica, sans-serif;"><span style="font-size: 12px;"></span></span></span><ul>
+<li><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: small;">The build does not takes place on a Windows machine</span></li>
+<li><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: small;">Visual Studio is not installed or it's installation location is not properly configured in <strong>Preferences &gt; MoSync Tool &gt; Visual Studio (WP7)</strong></span></li>
+<li><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: small;">The&nbsp;<strong>Only generate Visual Studio project for Windows Phone devices</strong>&nbsp;preference is set (in the same preference page as above)</span></li>
+</ul>
+<span style="font-family: 'Helvetica Neue', Helvetica, sans-serif;"><span style="font-size: 12px;"><br></span></span></div>
+<h2>Finalizing with Device Profiles</h2>
+<p>Finalizing projects with Device Profiles works slightly differently.</p>
+<p>When you work with a project with device profiles, the <strong>Device Profiles</strong> and <strong>Finalizer</strong> tabs should open automatically. To open these tabs manually, select <strong>Window</strong> &gt; <strong>Show</strong> <strong>View</strong> &gt; <strong>Other</strong>... and select those views in the dialog that shows.</p>
+<p>Before you finalize your application, it is worthwhile checking that the set of devices listed on the <strong>Device Profiles</strong> tab includes all the devices you want to build the final packages for. If it doesn't, adjust the device profile filters until it does. You can <strong>Add</strong>, <strong>Remove</strong> and <strong>Edit</strong> filters by pressing the corresponding buttons in the Device Profiles tab. (But don't worry if you can't get exactly the subset you want, you can adjust things later.)</p>
+<p><img src="images/2012-03-06_1308.png" align="none" width="350" height="464"></p>
+<p>When you are ready to finalize your application, click the <strong>Finalizer</strong> tab next to the <strong>Device Profiles</strong> tab.</p>
+<p>Click the <strong>Propagate</strong> button. The MoSync IDE will generate a build script based on the devices listed in the <strong>Device Profiles</strong> tab. The script is editable so you can make changes such as adding device to it or removing devices from it.<span>&nbsp;Click the&nbsp;</span><strong>Finalize</strong><span>&nbsp;button to start the build process.&nbsp;<span>If you have selected many devices and you have a large project, this operation can of course take quite some time.</span></span></p>
+<p><img src="images/2012-03-06_1314.png" align="none" width="349" height="466"></p>
+</body>
+</html>

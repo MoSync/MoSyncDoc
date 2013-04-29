@@ -1,0 +1,20 @@
+<html>
+<head>
+<title>The MoSync Emulator and MoRE</title>
+</head>
+<body>
+<h1>The MoSync Emulator and MoRE</h1>
+<p>The MoSync Emulator is the most visible part of the MoSync Runtime Environment (MoRE). MoRE is the reference implementation of MoSync. It’s an application that executes MoSync bytecode and looks and behaves like a phone. But it is not an emulator of any particular phone - it’s the phones that emulate MoRE, not the other way around!</p>
+<p><!--break--></p>
+<p>Using For full instructions on using the MoSync Emulator, and for installing and using native emulators on iOS and Android, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/emulators/emulating-device/index.html">Emulating a Device</a>.</p>
+<h2>A New Angle</h2>
+<p>In traditional mobile development, being able to access an emulator that faithfully mimics&nbsp; the behavior of an actual devices is crucial: being able to catch bugs early before moving to testing on real physical devices significantly reduces the amount time spent porting to each device, and speeds up application development.</p>
+<p>But at MoSync AB we don't think that's good enough. Development time shouldn't be proportional to the number of devices targeted at all. Instead, it should be related to the number of <em>differences </em>between the devices that really matter for your application - things like screen size, memory capacity, input methods, or API availability. You should be able to adapt your project to these variations independently, not based on arbitrary combinations of properties exhibited by actual devices.</p>
+<p>MoRE is designed to meet these requirements. It can be configured with any combination of properties independently. Set it to any screen size you desire. Let it have Bluetooth support and 16 Mb of memory. Toggle stylus support. If you like, tell it to have the same&nbsp; properties as a Nokia N95 or Sony Ericsson k700i. Whatever properties you set, the MoSync SDK makes sure that the behavior you observe in MoRE regarding those properties is consistent with that of any device that exhibits them.</p>
+<h2>A Reference for Devices</h2>
+<p>We're approaching the problem from the opposite direction; instead of making an emulator that faithfully reproduces the behaviour of every single device, we make sure that each MoSync implementation reproduces the behaviour of MoRE. We've developed advanced testing mechanisms that let us verify, to a very high degree, that two MoSync implementations behave the same. At any stage of an application's execution, we can accurately compare the abstract MoSync machine state between them.</p>
+<p>Each time we develop a new MoSync runtime or update an existing one, we run comparative tests between that runtime and MoRE. We do it on the actual phones so that you do not have to. When we're done, we have a runtime that for all intents and purposes behaves just like MoRE and executes MoSync applications flawlessly. So if it runs in MoRE it will run on the device.</p>
+<p>For more about using the MoSync Emulator, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/emulators/emulating-device/index.html">Emulating a Device</a>.</p>
+<p>&nbsp;</p>
+</body>
+</html>

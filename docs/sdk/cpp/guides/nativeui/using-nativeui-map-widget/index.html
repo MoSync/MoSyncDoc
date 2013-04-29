@@ -1,0 +1,296 @@
+<html>
+<head>
+<title>Using the NativeUI Map Widget</title>
+</head>
+<body>
+<h1>Using the NativeUI Map Widget</h1>
+<p>The MoSync Widget C API's Map widget makes it possible for you to add a map to your application and perform different operations on it. This widget is only available for Windows Phone 7 and iOS.<br>This tutorial presents all the functionality of the <strong>map</strong> widget and provides a full application example.<!--break--></p>
+<p></p>
+<h2>Map properties</h2>
+<h3>Api key google</h3>
+<p>The Api key used to access the full features of the google map. Currently not used (the map is not available on Android). This property can be set by using the default widget <strong>setProperty</strong> method or by providing the key to the map constructor. The following examples will show both methods. The following examples will show both methods. For further details on how to obtain this key go to "https://developers.google.com/maps/documentation/android/mapkey".<br><br>Example:</p>
+<ul>
+<li>using the method:</li>
+</ul>
+<pre class="mosync-code-cpp">map&gt;setProperty(MAW_MAP_API_KEY_GOOGLE, “google api key”);</pre>
+<ul>
+<li>&nbsp;using the map constructor:</li>
+</ul>
+<pre class="mosync-code-cpp">Map* map = new Map("google credentials", "bing credentials");</pre>
+<h3>API key bing</h3>
+<p>The api key used to access the full features of the bing map (on windows phone platform). This property can be set by using the default widget ‘setProperty’ method or by providing the key to the map constructor. The following examples will show both methods. For further details on how to obtain this key go to "http://msdn.microsoft.com/en-us/library/ff428642.aspx".</p>
+<p>Example:</p>
+<ul>
+<li>using the method:</li>
+</ul>
+<pre class="mosync-code-cpp">map&gt;setProperty(MAW_MAP_API_KEY_BING, “google api key”);</pre>
+<ul>
+<li>&nbsp;using the map constructor:</li>
+</ul>
+<pre class="mosync-code-cpp">Map* map = new Map("google credentials", "bing credentials");</pre>
+<h3>Map type</h3>
+<p>The map type changes the way the widget looks and we’re providing two different map types:</p>
+<ul>
+<li>Road - only the roads and borders are visible (no terrain details).</li>
+</ul>
+<p>Example:</p>
+<pre class="mosync-code-cpp">Map* map = new Map("mock credentials", "mock credentials");
+map &gt;setMapType(MAP_TYPE_ROAD);
+</pre>
+<p>Screenshots:</p>
+<table class="doclayout" border="0"><tbody><tr><td>&nbsp;<img src="images/Map-API-Road-Map-wp7.png" align="none" width="220" height="366"></td><td>&nbsp;<img src="images/Map-API-Road-Map-ios.png" align="none" width="245" height="365"></td></tr>
+<tr><td><em>Roads map on Windows Phone 7</em></td><td><em>Roads map on iOS</em></td></tr>
+</tbody></table>
+<ul>
+<li>Satellite - together with the roads, all the terrain details are visible.</li>
+</ul>
+<p>Example:</p>
+<pre class="mosync-code-cpp">Map* map = new Map("google credentials", "bing credentials");
+map &gt;setMapType(MAP_TYPE_SATELLITE);</pre>
+<p>Screenshots:</p>
+<table border="0"><tbody><tr><td><img src="images/Map-API-Satellite-Map-wp7.png" align="none" width="220" height="364"></td><td><img src="images/Map-API-Satellite-Map-ios.png" align="none" width="244" height="364"></td></tr>
+<tr><td><em>Satellite map on Windows Phone 7</em></td><td><em>Satellite map on iOS</em></td></tr>
+</tbody></table>
+<h3>Zoom level</h3>
+<p>A number indicating how far/close the map currently is and its value can be between 0 and 21.<br><br>Example:</p>
+<pre class="mosync-code-cpp">map&gt;setZoomLevel(0);
+</pre>
+<p>or</p>
+<pre class="mosync-code-cpp">this-&gt;setPropertyInt(MAW_MAP_ZOOM_LEVEL, 2);
+</pre>
+<h3>Interaction enabled</h3>
+<p>Disables/enables the interaction between the user and the map.<br><br>Example:</p>
+<pre class="mosync-code-cpp">map-&gt;setInteractionEnabled(true)
+</pre>
+<p>or</p>
+<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_INTERRACTION_ENABLED, "true");</pre>
+<h3>Center</h3>
+<p>The map center is a unique map point that has, besides the latitude and longitude coordinates, a zoom level. The center can be set and then the map can be centered.<br><br>Example:</p>
+<pre class="mosync-code-cpp">map&gt;centerMap();</pre>
+<p>or</p>
+<pre class="mosync-code-cpp">map&gt;setProperty(MAW_MAP_CENTERED, "true");
+</pre>
+<p>The center properties:</p>
+<ul>
+<li>Center latitude - represents the map center latitude coordinate.</li>
+</ul>
+<p>Example:</p>
+<pre class="mosync-code-cpp">// sets the center of the map (both latitude, longitude and zoom // level)
+map-&gt;setCenter(MapLocation(32.43, 43.34, 11));</pre>
+<p>or</p>
+<pre class="mosync-code-cpp">map&gt;setProperty(MAW_MAP_CENTER_LATITUDE, “32.43”);
+</pre>
+<ul>
+<li>Center longitude - represents the map center longitude coordinate.</li>
+</ul>
+<p>Example:</p>
+<pre class="mosync-code-cpp">// sets the center of the map (both latitude, longitude and zoom // level)
+map-&gt;setCenter(MapLocation(32.43, 43.34, 11));
+</pre>
+<p>or</p>
+<pre class="mosync-code-cpp">map&gt;setProperty(MAW_MAP_CENTER_LONGITUDE, “43.34”);</pre>
+<ul>
+<li>Center zoom level - represents the map center zoom level.</li>
+</ul>
+<p>Example:</p>
+<pre class="mosync-code-cpp">// sets the center of the map (both latitude, longitude and zoom // level)
+map-&gt;setCenter(MapLocation(32.43, 43.34, 11));</pre>
+<p>or</p>
+<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_CENTER_ZOOM_LEVEL, “3”);</pre>
+<h3>Visible area</h3>
+<p>The map visible area contains details about the current area displayed on the map. It is described by its upper left corner and lower right corner. The map can be programmatically moved to a new visible area.<br><br>Example:</p>
+<pre class="mosync-code-cpp">map-&gt;setVisibleArea(32.1234, 22.123124, 11.231123, 12.32344);</pre>
+<p>or</p>
+<pre class="mosync-code-cpp">Location upperLeftCorner(32.1234, 22.123124);
+Location lowerRightCorner(11.231123, 12.32344);
+MapRegion region(upperLeftCorner, lowerRightCorner);
+map-&gt;setVisibleArea(region);</pre>
+<p>The visible area properties:</p>
+<ul>
+<li>Visible area upper left corner latitude - The latitude coordinate of the upper left corner.</li>
+</ul>
+<p>Example:</p>
+<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_VISIBLE_AREA_UPPER_LEFT_CORNER_LATITUDE,”32.32423”);</pre>
+<ul>
+<li>Visible area upper left corner longitude</li>
+</ul>
+<p>The longitude coordinate of the upper left corner.<br><br>Example:</p>
+<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_VISIBLE_AREA_UPPER_LEFT_CORNER_LONGITUDE,”44.3242”);</pre>
+<ul>
+<li>Visible area lower right corner latitude</li>
+</ul>
+<p>The latitude coordinate of the lower right corner.<br><br>Example:</p>
+<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_VISIBLE_AREA_LOWER_RIGHT_CORNER_LATITUDE,”12.3214”);</pre>
+<ul>
+<li>Visible area lower right corner longitude</li>
+</ul>
+<p><br>The longitude coordinate of the lower right corner.<br><br>Example:</p>
+<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_VISIBLE_AREA_LOWER_RIGHT_CORNER_LONGITUDE,”29.32345”);</pre>
+<ul>
+<li>Centered on visible area</li>
+</ul>
+<p>When set to true, the map gets centered on a previously set visible area.<br><br>Example:</p>
+<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_CENTERED_ON_VISIBLE_AREA,”true”);
+</pre>
+<h2>Map pin properties</h2>
+<p>The map accepts the adding of map pins (or annotations, on iOS). A pin is described by its coordinates (latitude and longitude) and a text.</p>
+<h3>Map pin latitude</h3>
+<p>The latitude of the map pin.</p>
+<h3>Map pin longitude</h3>
+<p>The longitude of the map pin</p>
+<h3>Map pin text</h3>
+<p>A text that will appear when the user clicks on a map pin.<br><br>Example:</p>
+<pre class="mosync-code-cpp">MapPin *mapPin = new MapPin(Location(32.2312, -11.2321));
+mapPin-&gt;setText("test title");
+map-&gt;addMapPin(mapPin);
+</pre>
+<p>Screenshots:</p>
+<table class="doclayout" border="0"><tbody><tr><td><img src="images/Map-API-Example-wp7.png" align="none" width="220" height="366"></td><td><img src="images/Map-API-Map-pin-ios.png" align="none" width="244" height="366"></td></tr>
+<tr><td><em>Map pin on Windows Phone 7</em></td><td><em>Map pin on iOS</em></td></tr>
+</tbody></table>
+<h2>Map events</h2>
+<h3>Zoom level changed</h3>
+<p>Sent when the zoom level of a map widget has changed (if the user zoomed in or out).</p>
+<h3>Region changed</h3>
+<p>Sent when the visible region on the map has changed (if the user scrolled/draged the map).</p>
+<h3>Map pin clicked</h3>
+<p>Sent when a map pin is clicked by the user.</p>
+<h3>Example: Map tutorial</h3>
+<pre class="mosync-code-cpp">#include &lt;ma.h&gt;
+#include &lt;mavsprintf.h&gt;
+#include &lt;MAUtil/Moblet.h&gt;
+
+// Include all the wrappers.
+#include &lt;NativeUI/Widgets.h&gt;
+
+using namespace MAUtil;
+using namespace NativeUI;
+
+/**
+* Moblet to be used as a template for a Native UI application.
+*/
+class NativeUIMoblet : public Moblet, MapListener
+{
+public:
+    /**
+     * The constructor creates the user interface.
+     */
+    NativeUIMoblet()
+    {
+        createUI();
+    }
+
+    /**
+     * Destructor.
+     */
+    virtual ~NativeUIMoblet()
+    {
+        // All the children will be deleted.
+        delete mScreen;
+    }
+
+    /**
+     * Create the user interface.
+     */
+    void createUI()
+    {
+        // Create a NativeUI screen that will hold layout and widgets.
+        mScreen = new Screen();
+
+        //Create a Vertical Layout that will hold widgets
+        mLayout = new VerticalLayout();
+
+        //Let the layout fill the entire screen
+        mLayout-&gt;fillSpaceHorizontally();
+        mLayout-&gt;fillSpaceVertically();
+
+        mScreen-&gt;setMainWidget(mLayout);
+
+        createMapUI();
+
+        mScreen-&gt;show();
+
+        addMapPin();
+    }
+
+private:
+
+    /**
+     * Creates the map UI.
+     */
+    void createMapUI()
+    {
+        // create the main map and add it to the main layout
+        mMap = new NativeUI::Map("google mock credentials", "bing mock credentials");
+        mMap-&gt;fillSpaceHorizontally();
+        mMap-&gt;fillSpaceVertically();
+
+        // set the map type to satellite (by default it's set to MAP_TYPE_ROAD)
+        mMap-&gt;setMapType(MAP_TYPE_ROAD);
+
+        // set the map initial zoom level
+        mMap-&gt;setZoomLevel(3);
+
+        mLayout-&gt;addChild(mMap);
+    }
+
+    /**
+     * Adds a map pin on the map.
+     */
+    void addMapPin()
+    {
+        MapPin *mapPin = new MapPin(Location(42.2312, -11.2321));
+        mapPin-&gt;setText("test title");
+        mMap-&gt;addMapPin(mapPin);
+    }
+
+    /**
+     * This method is called when the zoom level of the map changes (at a double tap
+     * on the google maps for example).
+     * @param map The map object that generated the event.
+     */
+    void mapZoomLevelChanged(Map* map)
+    {
+
+    }
+
+    /**
+     * This method is called when the visible region on the map is changed (on a drag/scroll
+     * for example).
+     * @param map The map object that generated the event.
+     */
+    void mapRegionChanged(Map* map)
+    {
+
+    }
+
+    /**
+     * This method is called when the user clicks on a map pin.
+     * @param mapPin The map pin object that generated the event.
+     */
+    void mapPinClicked(MapPin* mapPin)
+    {
+
+    }
+
+private:
+   Screen* mScreen;            //A Native UI screen
+   VerticalLayout* mLayout;    //A Native UI layout
+   NativeUI::Map* mMap;        //The native UI map
+};
+
+/**
+* Main function that is called when the program starts.
+*/
+extern "C" int MAMain()
+{
+    Moblet::run(new NativeUIMoblet());
+    return 0;
+}
+</pre>
+<p>Screenshots from example app:</p>
+<table class="doclayout" border="0"><tbody><tr><td><img src="images/Map-API-Example-wp7_0.png" align="none" width="220" height="367"></td><td><img src="images/Map-API-Example-ios.png" align="none" width="245" height="367"></td></tr>
+<tr><td><em>Example app on WIndows Phone 7</em></td><td><em>Example app on iOS</em></td></tr>
+</tbody></table>
+</body>
+</html>

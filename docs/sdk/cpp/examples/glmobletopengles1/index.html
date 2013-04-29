@@ -1,0 +1,18 @@
+<html>
+<head>
+<title>GLMobletOpenGLES1</title>
+</head>
+<body>
+<h1>GLMobletOpenGLES1</h1>
+<p>This example application demonstrates how to use OpenGL ES 1.1 to control a device's graphics hardware.<!--break--></p>
+<p><img src="images/GLMoblet_OpenGLES1.png" align="none" width="210" height="316"><br>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see<a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html"> Importing the Examples</a>.</p>
+<h2>Behaviour</h2>
+<p>When this application is started you will see a red rotating square.</p>
+<h2>In the Code</h2>
+<p>The code of the project is collected in one single file. It shows how to use the <strong>GLMoblet </strong>in order to create an OpenGL ES 1.1 based application. It has a set of helper functions for setting up the initial state: <strong>gluPerspective</strong>, <strong>initGL</strong>, and <strong>setViewport</strong>.</p>
+<p>The <strong>init </strong>function first calls <strong>setViewport </strong>to setup the projection matrix. Next it calls <strong>initGL </strong>to setup the OpenGL context state.</p>
+<p>The <strong>draw </strong>function first clear the screen to a dark red color and continues by setting up the modelview matrix, by calling the OpenGL functions for manipulating the matrix. Next it sets the color for the square and send the pointer to the structure describing the vertices of the square. Next it fills the structure with the vertex coordinates and draws the primitive as a triangle strip.</p>
+<h2>Touch Responses</h2>
+<p>The only button that the program responds to is the back key. If it is pressed the application exits.</p>
+</body>
+</html>

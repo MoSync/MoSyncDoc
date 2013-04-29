@@ -1,0 +1,150 @@
+<html>
+<head>
+<title>C++ Standard Template Library (STL)</title>
+</head>
+<body>
+<h1>C++ Standard Template Library (STL)</h1>
+<p>The C++ Standard Template Library provides a set of common classes and interfaces that greatly extend the core C++ language. It provides a set of classes such as containers, associative arrays, iterators, functions objects, and strings. It also provides algorithms for counting, sorting, &nbsp;finding, coping, and replacing elements in a container.<!--break--></p>
+<p>STL is almost entirely written in the form of C++ template classes that provide common programming data structures and functions. These template classes are all members of the std namespace.</p>
+<p>&nbsp;</p>
+<h2>STL code examples</h2>
+<p>We provide detailed code examples in the use of STL with MoSync, <a href="https://github.com/MoSync/MoSync/tree/master/examples/HelloSTL">HelloSTL</a> , that you can download from our <a href="https://github.com/MoSync/MoSync/tree/master/examples/HelloSTL">GitHub repository</a>. It provides many examples of how to use the containers, algorithms, strings, functors, auto_ptr and other components of STL.&nbsp;</p>
+<h2>Iterators</h2>
+<p>An iterator is an object that can iterate through a range, pointing to the elements in the range. All iterators in STL provide at least the operator++, to iterate forward in the range, and the derreference operator(*), which provides the way to access the object to which the iterator points.<br><br>All containers define their own iterators, which have different abilities. There are five types of iterator in STL:</p>
+<h3>Input iterators</h3>
+<ul>
+<li>Allow only reading elements from a sequence and moving forward, one step, using operator++. The elements are read with operator*. Input iterators also provide operator== and operator!=.</li>
+</ul>
+<h3>Output iterators</h3>
+<ul>
+<li>Allow only writing elements from a sequence and only moving forward, one step, using operator++.</li>
+<li>The elements are written with operator*.</li>
+<li>These iterators also provide operator== and operator!=.</li>
+</ul>
+<h3>Forward iterators</h3>
+<ul>
+<li>Allow reading and writing elements from a sequence.</li>
+<li>Only moving forward, one step, using the operator++ is possible.</li>
+<li>The elements are read and written with operator*.</li>
+<li>These iterators also provide operator== and operator!=.</li>
+</ul>
+<h3>Bidirectional iterators</h3>
+<ul>
+<li>Allow reading and writing elements from a sequence.</li>
+<li>Allow moving forward and backward, one step, using operator++ and operator--.</li>
+<li>Elements are read and written with operator*.</li>
+<li>Bidirectional iterators also provide operator== and operator!=.</li>
+<li>Examples of bidirectional iterator implemented in STL are the ones provided by the containers list, multiset, map, and multimap.</li>
+</ul>
+<h3>Random access iterators</h3>
+<ul>
+<li>Allow all operations a normal pointer does: add and subtract integral values, move forward and backward, one or more steps, use the operator[ ], subtraction of one iterator from another, and so on.</li>
+<li>Such iterators overload operator&lt;, operator&gt;, operator==, operator!=.</li>
+<li>Examples of random access iterators implemented in STL are the ones provided by the containers vector, deque, and for string.</li>
+</ul>
+<h2>Containers</h2>
+<p>STL provides sequence and associative containers. For an associative container, the index does not have to be an integer; it can be any type.</p>
+<h3>bitset</h3>
+<p>A special container class that is designed to store bits. It is optimized for space allocation: each element occupies only one bit. <br><br>Bitset is defined in the &lt;bitset&gt; header.</p>
+<h3>deque</h3>
+<p>A container that holds it's elements in multiple blocks of memory and keeps track of them, making it fast on insertions at the end and also at the beginning. It doesn't need to copy and destroy objects when it needs to allocate more memory. Deques invalidate iterators, pointers, and references when the size is changed.<br class="kix-line-break"><br class="kix-line-break">Deques are the right choice:</p>
+<ul>
+<li>for random access to elements</li>
+<li>for iterating through it (from beginning to end or backwards)</li>
+<li>for add or remove an element from the beginning and end</li>
+<li>if it is important that the amount of memory used decreases as elements are removed from the deque.</li>
+</ul>
+<p>Deque is defined in the &lt;deque&gt; header.</p>
+<h3>list</h3>
+<p>List is implemented as a doubly linked list of elements. std::list doesn't have random access, it provides only bidirectional iterators. For accessing an element you have to iterate through list, until you reach the element. Compared with vector or deque, list is not efficient for &nbsp;random access.<br class="kix-line-break"><br class="kix-line-break">List is the right choice for:</p>
+<ul>
+<li>inserting and removing of elements anywhere in the container</li>
+<li>moving elements (or block of elements) within the container (or between different containers)</li>
+<li>iterating through it (backwards or forward).</li>
+</ul>
+<p>List doesn’t invalidate an iterator that refers to an element as long as the element is not erased from the container.</p>
+<h3>map</h3>
+<p>The map container is an associative container. An entry in the map is a combination of key - value (std::pair). The key is used to identify an element in the map (the index).</p>
+<ul>
+<li>the key/value pair must be assignable and copyable (the operator= and == must be defined for std::pair&lt;key, value&gt;).</li>
+<li>the key must be comparable with the sorting criterion (the operator== must be defined for the pair&lt;key, value&gt;).</li>
+</ul>
+<p>Map sorts its elements automatically by key ( from lower to higher ). The default comparison criterion is std::less, and it's provided as a default template parameter. Another ordering criterion, can be provided as the third template parameter. It has &nbsp;to be a class that defines an operator() taking two arguments of the key type and returns a bool. It can be also just a function (with the same prototype as operator()).<br><br>std::map allows only unique entries. That means that you can't have in a map two entries with the same key. If you try to insert in map a entry with a certain key, and inside the map exits already an element with that key, the element will be overridden.<br><br>Map is the right choice:</p>
+<ul>
+<li>if we need unique key values</li>
+<li>element are pairs of key-value.</li>
+<li>elements are sorted at all times.</li>
+</ul>
+<p>Map provides bidirectional iterators.<br><br>Map is defined in the &lt;map&gt; header.</p>
+<h3>multiset</h3>
+<p>std::multiset sorts automatically it's elements from lower to higher and accepts multiple copies of an object.<br><br>Multiset sorts automatically it's elements from lower to higher and it is implemented usually as a binary search tree. The ordering criterion is, by default, std:less. Another one can supplied as the second template parameter. It can be a function, taking two arguments, of the key type and returning a bool or a class defining operator() &nbsp;with the same prototype. <br><br>Multiset is the right choice:</p>
+<ul>
+<li>if we need multiple elements with equal key.</li>
+<li>if we need the elements are sorted at all times.</li>
+<li>if we need to search for elements according to a certain criterion.&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;</li>
+</ul>
+<p>Multiset is defined in the &lt;set&gt; header.</p>
+<h3>priority_queue</h3>
+<p>Priority_queue is implemented as a container adaptor. Containers adapters are classes that use an encapsulated container and provide a restricted interface to that container. The underlying container can be a STL container or some other &nbsp;container type and it has to provide the &nbsp;following public member functions: back(), push_back(), pop_back().<br><br>Priority_queue &nbsp;is defined so that the first element is always the one with the highest value.<br><br>The default comparison criterion used is std::less. We can provide another comparison class, a functor, with it's operator() taking two &nbsp;arguments, of the same type as the container elements, and returning a bool.<br><br>priority_queue is defined in the &lt;queue&gt; header.</p>
+<h3>queue</h3>
+<p>queue is implemented as a container adaptor. Containers adapters are classes that use an encapsulated container and provide a restricted interface to that container. The underlying container can be a STL container or some other &nbsp;container type and it has to provide the &nbsp;following public member functions: &nbsp;front(), back(), push_back(), pop_front().<br><br>Queue is designed to operate in a FIFO mode (first-in first-out).<br><br>Queue is defined in the &lt;queue&gt; header.</p>
+<h3>set</h3>
+<p>std::set is an associative container, that stores unique elements. If you try to insert an object that is equivalent to one that is already in the set, the set won't make the insertion.<br>&nbsp;<br>Set sorts automatically it's elements from lower to higher and it is implemented usually as a binary search tree. The ordering criterion can be supplied as the second template parameter and &nbsp;is by default std::less.<br>&nbsp;<br>The ordering criterion can be a function taking two arguments of the key type and returning a bool. A class defining operator() with the same parameters and returning value as the function can be also used as an ordering criterion.<br>&nbsp;<br>Set is the right choice:</p>
+<ul>
+<li>if we need unique elements</li>
+<li>if we need the elements are sorted at all times.</li>
+<li>if we need to search for elements according to a certain criterion.&nbsp;</li>
+</ul>
+<p>Set is defined in the &lt;set&gt; header.</p>
+<h3>stack</h3>
+<p>std::stack is implemented as a container adaptor. Containers adapters are classes that use an encapsulated container and provide a restricted interface to that container.<br>&nbsp;<br>The underlying container can be a STL container or some other &nbsp;container type and it has to provide the &nbsp;following public member functions: back(), push_back(), pop_back().<br>&nbsp;<br>Stack is a container that operates as in a LIFO (last in first out) mode.<br>&nbsp;<br>The elements are inserted and extracted only from the end of the container.<br>&nbsp;<br>std::stack is defined in the &lt;stack&gt; header.</p>
+<h3>vector</h3>
+<p>Vector keeps its elements in a dynamic array and maintains its storage as a single contiguous array of objects (in order to have efficient indexing and iteration). &nbsp;That means that we can have random access to its elements, not only though iterators but also with pointers to elements, just like with regular arrays.<br>&nbsp;<br>Accessing the elements of a vector provides almost the same performance as the regular arrays do. Compared with the other STL containers, vector has the fastest random access to its elements.<br>&nbsp;<br>A dynamic array is allocated first time the vector is constructed. When vector needs a bigger array, to hold its elements, it will allocate a new, bigger, chunk of memory and will copy all the elements to this new chunk, deleting the old chunk and destroying the objects contained in it.<br>&nbsp;<br>Vectors invalidate their iterators on insertions and deletions. Also when the capacity is exceeded, and new memory has to be allocated.<br>&nbsp;<br>Vectors are the right choice for:</p>
+<ul>
+<li>random access to its elements</li>
+<li>iterating through it (from beginning to end or backwards)</li>
+<li>add or remove an element from the end&nbsp;</li>
+</ul>
+<p>Vector is defined in the &lt;vector&gt; header.</p>
+<h2>Strings</h2>
+<p>String is a template class designed to manipulate sequences of characters. It is a special type of container holding characters. The string class is defined in the &lt;string&gt; header.</p>
+<h2>Functors&nbsp;</h2>
+<p>A functor is a class that can act like a function. It has the advantage that, unlike functions, it can store data.<br>&nbsp;<br>A functor is a class/struct that overloads the function call operator so that an instance of that class acts just like a function ( and can be supplied were a function is expected ).<br>&nbsp;<br>For example:</p>
+<pre class="mosync-code-cpp">class MyFunctor
+{
+         public:
+         int operator()()
+         {
+               //some implementation
+               //returns an integer value
+         }
+         private:
+              //some data
+ };
+
+MyFunctor getNumber;
+int someNumber = getNumber();        // MyFunctor::operator()() is called</pre>
+<p>The function call operator can be defined to take any number of parameters, or no parameters at all.</p>
+<h2>Algorithms</h2>
+<p>STL algorithms are function templates,implementing algorithms for sorting, filling, searching containers,comparing ranges, copying ranges, etc.<br><br>They can be used with any type of container (STL container or not) that provides the proper iterator and holds elements of types that overload the operators required by the algorithm.<br>For example the std::count algorithm, compares every element in a container with a value we provide. For comparison it uses operator==, so we have to have inside the container a type that has an operator== defined.<br><br>STL algorithms are defined in the &lt;algorithm&gt; header.</p>
+<h2>Utilities</h2>
+<h3>auto_ptr</h3>
+<p>A smart pointer that takes ownership of the pointer it stores. When the auto_ptr object is destroyed, the pointer will be deleted. <br><br>auto_ptr is defined in the &lt;memory&gt; header.</p>
+<h3>pair</h3>
+<p>The pair structure is provided to treat two values as a single unit. It is defined in &lt;utility&gt; header.</p>
+<h3>min, max template functions</h3>
+<p>If both values are equal, usually the first element is returned. Both functions are provided with an additional argument, that is the comparison criterion.<br><br>The default comparison criterion is operator&lt;.<br><br>These functions are defined in the &lt;algorithm&gt; header.</p>
+<h3>swap</h3>
+<p>This function is provided to swap the values of two objects. The swap is possible only if the copy constructor and the assignment operators are defined.<br><br>The function is defined in the &lt;algorithm&gt; header.</p>
+<h2>Missing STL headers</h2>
+<p>Due to platform limitiations some of the STL headers is not included in this package. They will be added later.</p>
+<ul>
+<li><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: x-small;">fstream</span></li>
+<li><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: x-small;">iomanip</span></li>
+<li><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: x-small;">ios</span></li>
+<li><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: x-small;">iostream</span></li>
+<li><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: x-small;">sstream</span></li>
+<li><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: x-small;">queue</span></li>
+</ul>
+</body>
+</html>

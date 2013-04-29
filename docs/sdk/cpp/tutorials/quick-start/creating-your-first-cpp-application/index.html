@@ -1,0 +1,74 @@
+<html>
+<head>
+<title>Creating Your First C/C++ Application</title>
+</head>
+<body>
+<h1>Creating Your First C/C++ Application</h1>
+<p>This tutorial walks you through the creation of a simple "Hello World" application in C/C++ using the MoSync IDE and introduces you to some of the basic terminology we use throughout our guides, tutorials, and examples.<!--break--></p>
+<h2>Download and install MoSync SDK</h2>
+<p>If you have not installed the MoSync SDK, checkout the guides for <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/installing-mosync/index.html">Installing on Windows</a> and <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/installing-mosync-os-x/index.html">Installing on OS X</a>, depending on what operating system you use. There is also a guide to get you started <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/launching-mosync/index.html">Running the IDE</a>.</p>
+<h2>Creating a New Project</h2>
+<p>Start by <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/launching-mosync/index.html">Launching MoSync</a>. MoSync prompts you to select a workspace:</p>
+<p><img src="images/workspace_prompt.png" align="none" width="640" height="279"></p>
+<p>Click <strong>OK</strong> to accept the default path. The MoSync Eclipse-based IDE will open.</p>
+<p><a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/launching-mosync/index.html">Register your copy</a> of the MoSync SDK if you have not already done so. After registration, close the <strong>Welcome </strong>page if it is showing.</p>
+<p>Right-click in the <strong>Project Explorer</strong> view:</p>
+<p><img src="images/Creating-New-Project.png" align="none" width="426" height="377"></p>
+<p>(<strong></strong>If you have hidden the <strong>Project Explorer </strong>view, you can show it again by selecting <strong>Window</strong> &gt; <strong>Show View</strong> &gt; <strong>Other </strong>&gt; <strong>General </strong>&gt; <strong>Project Explorer</strong> and then clicking <strong>OK</strong>.)</p>
+<p><a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/projects-and-templates/index.html">Create a new project</a> using our C/C++ project template called<strong> C/C++ Moblet Project</strong>.</p>
+<p>Call the project "HelloWorld". (To ensure compatibility with all platforms and devices, avoid using spaces in project names. It is always safe to use the underscore character.)</p>
+<p>Your new project will now be created from the template and loaded in the MoSync IDE:<br> <br> <img src="images/Creating-IDE-with-template-loaded.png" align="none" width="650" height="385"></p>
+<h2>Creating HelloWorld</h2>
+<p>Edit the code in the <strong>main.cpp</strong> file shown in the main window so that it looks like this:</p>
+<div>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+
+using namespace MAUtil;
+
+class MyMoblet : public Moblet
+{
+public:
+
+    MyMoblet()
+    {
+        maSetColor(0xFFFFFF),
+        maDrawText(0, 32, "Hello World!");
+        maUpdateScreen();
+    }
+
+    void keyPressEvent(int keyCode, int nativeCode)
+    {
+    if(keyCode == MAK_0 || keyCode == MAK_BACK || keyCode == MAK_SOFTRIGHT)
+        {
+            close();
+        }
+    }
+    void keyReleaseEvent(int keyCode, int nativeCode)
+    {
+    }
+};
+
+extern "C" int MAMain()
+{
+    MyMoblet myMoblet;
+    Moblet::run( &amp;myMoblet );
+    return 0;
+};</pre>
+</div>
+<p>Save your <strong>main.cpp</strong> file.</p>
+<p>(If you would like to understand more about the code we just asked you to paste in, read our beginner's tutorial called <a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/hello-world-deconstructed/index.html">Hello World, Deconstructed</a>.)</p>
+<h2>Running Your Application</h2>
+<p>Your application is now ready to be built and run.</p>
+<p>Click on your project's name in <strong>Project Explorer</strong> view so that it is highlighted.</p>
+<p>Now click the <strong>Run </strong>button <img src="images/mosync-run-button.png"> on the IDE's toolbar (or press <strong>Ctrl+F11</strong>). Your project will be built. Choose to run your application in MoRE, the MoSync SDK's default emulator:<br> <br> <img src="images/Creating-Project-Run.png" align="none" width="650" height="401"><br> <br> Congratulations, you have now compiled and executed your first MoSync program!</p>
+<p>It's a very simple C/C++ program that introduces you to some of the fundamentals of the MoSync API and event handling.</p>
+<p>Experiment with building the same project for a native emulator or simulator (see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/emulators/emulating-device/index.html#Installing_and_Working_with_Native_Emulators">Installing and Working with Native Emulators</a>).</p>
+<h2>What Next?</h2>
+<p>A good starting point if you are new to the MoSync SDK is the <a href="TEMPLATE_DOC_PATH/HOME_PATH/index.html">Beginner's Guides</a>. Here you will find short example programs and explanations of programming concepts used in a MoSync C++ app. If you are interested in the MoSync SDK's HTML5 capabilities, see <a href="TEMPLATE_DOC_PATH/sdk/js/tutorials/quick-start/getting-started-html5-and-javascript/index.html">Getting Started with HTML5 and JavaScript</a>.</p>
+<p>In our <a href="TEMPLATE_DOC_PATH/HOME_PATH/index.html">IDE User Guides</a> you will find extensive information about the MoSync IDE, including how to create projects from templates, how to use device profiles, doing bluetooth discovery and transfer, and how to use the MoRE emulator, the Debugger, the Finalizer, and MoSync's tools.</p>
+<p>In our <a href="TEMPLATE_DOC_PATH/HOME_PATH/index.html-0">C/C++ Programmer Guides</a> we teach how to use MoSync's classes, functions, and syscalls in your applications, and we also provide tips for creating applications that work across multiple platforms like iPhone, Android, and Windows Mobile.</p>
+<p>We provide many <a href="TEMPLATE_DOC_PATH/HOME_PATH/index.html">Example Applications</a> in the SDK itself, so you can see how we do it ourselves. If you are new to C/C++, we strongly recommend that you spend some time examining the code of our "Hello" series of applications: they are extremely well-commented so that you can understand exactly what is happening in every line of code.</p>
+<p>At our <a href="http://www.mosync.com">website</a> you can find many resources for developers, including our <a href="http://www.mosync.com/forum">developer forum</a>, and links to our code repositories and issue tracking systems.</p>
+<p>Have fun, and good luck!</p>
+</body>
+</html>

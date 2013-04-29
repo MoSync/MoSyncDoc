@@ -1,0 +1,36 @@
+<html>
+<head>
+<title>WormholeDemo</title>
+</head>
+<body>
+<h1>WormholeDemo</h1>
+<p>This example application demonstrates the MoSync Wormhole JavaScript Library, in particular its support for native UI, sensors, capture, and file storage.<!--break--></p>
+<table class="doclayout" border="0"><tbody><tr><td>&nbsp;<img src="images/WormholeDemo1.png" align="none" width="210" height="315"></td><td>&nbsp;<img src="images/WormholeDemo2.png" align="none" width="210" height="315"></td></tr>
+<tr><td><em>Main screen on iOS</em></td><td><em>File storage screen on iOS</em></td></tr>
+</tbody></table>
+<p>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<p>This application should run on all platforms supported by the MoSync Wormhole JavaScript Library, although some features may not be supported on all platforms (see <a href="http://www.mosync.com/documentation/manualpages/featureplatform-matrix">Feature/Platform Support</a>). Interface for functionality not supported by a device will still be present, but not functioning. On Android, screen animations have been disabled to avoid potential JQTouch bugs.</p>
+<h2>Behaviour</h2>
+<p>When started the main screen of the application provides access to the following screens:</p>
+<ul>
+<li><strong>View Device Information</strong>: Displays information about the device (platform, version and device name)</li>
+<li><strong>PhoneGap Sensors</strong>: Allows you to use the device’s sensors exposed through the PhoneGap-compliant Wormhole API functions (Accelerometer,GeoLocation, Compass). Some devices might not support all sensors.</li>
+<li><strong>W3C Sensors</strong>: Allows you to use the device’s sensors exposed through the Wormhole Sensor API (Accelerometer, Magnetic Field, Orientation, Proximity, Gyroscope). Some devices might not support all sensors.</li>
+<li><strong>Capture</strong>: Lets you capture and display videos and pictures using PhoneGap-compliant Capture API. For video playback, the HTML5 &lt;Video&gt; tag is used, which might not be supported in all devices.</li>
+<li><strong>File storage</strong>: This panel presents you with a list of files in a local folder. You can add more files to this folder by tapping the “+” button on the top right. &nbsp;Tapping a file will open a new panel which allows you to rename, edit it’s contents, or delete it.&nbsp;<span>After changing the contents of an edit box in the file editing panel, you must explicitly tell the application to update the file by tapping the “Rename” or “Save” buttons</span></li>
+<li><strong>Phonegap Compatible Notifications</strong>: Presents two ways to provide feedback to the user: a short beep, or a vibration.</li>
+</ul>
+<h2>In the code</h2>
+<p>The program is split into the following files:</p>
+<ul>
+<li><strong>main.cpp</strong>: The only file which contains C++ code. It initializes and passes messages to the Wormhole libraries (Phonegap etc).</li>
+<li><strong>LocalFiles/index.html</strong>: The interface specification file used by the application. Contains information about the layout of all panels, as well as some initialization code.</li>
+<li><strong>LocalFiles/main.js</strong>: Contains most of the implementation of the application’s functions.</li>
+<li><strong>LocalFiles/phonegapSensors.h</strong>: Contains the function implementations of the PhoneGap Sensors panel.</li>
+<li><strong>LocalFiles/w3csensors.js</strong>: Contains the function implementations of the W3C Sensor panel.</li>
+<li><strong>LocalFiles/filemanager.js</strong>: Contains the function implementations of the File Storage panel.</li>
+</ul>
+<p>In addition, the application links to the Wormhole C++ libraries, and for creating the interface it uses the jQTouch Javascript library.</p>
+<p>&nbsp;</p>
+</body>
+</html>

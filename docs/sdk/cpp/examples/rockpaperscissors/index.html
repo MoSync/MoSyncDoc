@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>RockPaperScissors</title>
+</head>
+<body>
+<h1>RockPaperScissors</h1>
+<p>This application demonstrates the use of NativeUI screens and widgets to play the traditional game Rock-Paper-Scissors<span class="inline inline-left"></span>.<!--break--></p>
+<p>&nbsp;<span class="inline inline-left"><img src="images/LossState.png" alt="" title="" class="image image-_original " height="395" width="238"></span><img src="images/WinState_0_0.png" align="left" width="239" height="394"></p>
+<table class="doclayout"><tbody><tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+</tbody></table>
+<p><em><strong>Note:</strong></em> These screens show the look of the application on <strong>Android</strong>. The application's appearance will of course be different on other platforms because it uses each platform's native GUI controls and settings. Note also that this example will not yet work on the MoSync emulator (MoRE) because it has no Native UI support. The platforms that support NativeUI are: Android, iOS and WP7.</p>
+<p>This example is included in the MoSync SDK's <em>/examples </em>folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.<em><br></em></p>
+<h3>Behaviour</h3>
+<p>When the application starts the user sees the main application screen with the message "Press PLAY to start game". On tapping "Play" the user is instructed to choose a weapon: rock, paper, or scissors. (The displayed weapons images can be found in the project's <em>/Resources/Images</em> folder.) Tapping a weapon plays the game against the computer opponent. The winner is computed by Game.cpp, and the result of the contest is shown to the user. The application keeps track of wins, ties, and losses, displaying these totals after each round.</p>
+<h3>Code</h3>
+<p>The application's project is split into several code files, linked together through header files. In <strong>Moblet.cpp</strong> we manage the application. In <strong>PlayScreen.cpp</strong> we define the UI elements. And in <strong>Game.cpp</strong> we handle the game logic (scoring, etc.). The entry point for the entire application is in <strong>main.cpp</strong>.</p>
+<p>There is one main application screen, <strong>Playscreen</strong>. All other displays are created from it (for example, by switching backgrounds and showing different sub-sets of widgets) according to the stage of the game that has been reached. <strong>PlayScreen.cpp </strong>handles the display of the screen, including its layout and the behaviour and positioning of the individual widgets:</p>
+<p><img src="images/layoutsRPS.png" align="left" width="650" height="429"></p>
+<p>To minimize the use of string conversions (using <strong>itoa </strong>functions) and code duplication, the method <strong>setWidgetProperty </strong>is used to set the value of an integer property for widgets (properties like MAW_WIDGET_BACKGROUND_COLOR).</p>
+<p>A timer is used to switch the label for "Choose you weapon!" (<strong>mFlickrLabel</strong>) from visible to invisible and back to notify the user that input is required.</p>
+<h3>Key Presses and Screen Taps</h3>
+<ul>
+<li>Play — starts a game.</li>
+<li>Weapon icons — selects a weapon and challenges the opponent.</li>
+<li>Back key — closes the application.</li>
+</ul>
+<p>&nbsp;</p>
+</body>
+</html>

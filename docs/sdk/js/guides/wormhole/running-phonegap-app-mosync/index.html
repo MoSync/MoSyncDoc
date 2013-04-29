@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>Running PhoneGap Mobile Apps in MoSync</title>
+</head>
+<body>
+<h1>Running PhoneGap Mobile Apps in MoSync</h1>
+<p>PhoneGap-compatible functions in our <a href="TEMPLATE_DOC_PATH/sdk/js/guides/wormhole/html5-javascript-wormhole/index.html">Wormhole JavaScript Library</a> make it possible to run most existing PhoneGap apps in the MoSync SDK with little or no need for change. And it's easy to add functionality to your app (like Native UI) not available out-of-the-box with PhoneGap.<!--break--></p>
+<h2>Supported functions</h2>
+<p>Most of the commonly-used PhoneGap functions (especially W3C compliant modules) are implemented&nbsp;<a href="TEMPLATE_DOC_PATH/sdk/js/guides/wormhole/html5-javascript-wormhole/index.html">Wormhole JavaScript Library</a>. Wormhole is compatible with selected functionality from the PhoneGap API version 1.2.0.</p>
+<p>For list of the currently supported functions, see our <a href="http://www.mosync.com/documentation/manualpages/featureplatform-matrix">Feature/Platform Support</a> page.</p>
+<h2>Importing a PhoneGap app</h2>
+<p>We will use one of the examples from <a href="http://phonegap.com/" target="_blank">PhoneGap website</a> for this exercise. If you want to try MoSync with your own application, simply follow the same steps.</p>
+<p>(<em><strong>Note:</strong></em>&nbsp; We assume that you have a basic understanding of how to use the MoSync SDK to create HTML5 and JavaScript projects. If not, check out our guides <a href="TEMPLATE_DOC_PATH/sdk/js/tutorials/quick-start/getting-started-html5-and-javascript/index.html">Getting Started with HTML5 and JavaScript</a> and <a href="TEMPLATE_DOC_PATH/sdk/js/tutorials/quick-start/how-create-html5-project-mosync/index.html">Developing Apps in HTML5/JavaScript</a>). <br><br><strong>1.</strong> Start by creating a new&nbsp;<a href="TEMPLATE_DOC_PATH/sdk/js/tutorials/quick-start/getting-started-html5-and-javascript/index.html">HTML5/JS Web UI</a> project in MoSync.<br><br><strong>2.</strong> Next, replace the default <strong>index.html</strong> file with your PhonGap application’s <strong>index.html</strong> file. If you do not have a PhoneGap application handy, you can copy one from their website, for example the full example for&nbsp; <a href="http://docs.phonegap.com/en/1.2.0/phonegap_accelerometer_accelerometer.md.html#accelerometer.watchAcceleration"><strong>accelerometer.watchAcceleration</strong></a> at their website.</p>
+<p><strong>3.</strong> Find the line containing the “phonegap.js” reference and replace it with the reference with “js/wormhole.js”. Your library import line should change from:</p>
+<pre class="mosync-code-cpp">&lt;script type="text/javascript" charset="utf-8" src="phonegap.js"&gt;&lt;/script&gt;</pre>
+<p>to:</p>
+<pre class="mosync-code-cpp">&lt;script type="text/javascript" charset="utf-8" src="js/wormhole.js"&gt;&lt;/script&gt;</pre>
+<p><strong></strong>You are now ready to run you app!</p>
+<h2>Running your app</h2>
+<p>If you have installed the Windows Phone SDK, you can run the application in Windows Phone emulator which has support for accelerometer testing. Alternatively you can <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/finalizing-applications/index.html">build an application package</a> and <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/scanning-for-device/index.html">send it to a device</a> that has an accelerometer.</p>
+<p>Here you can see the screens that are displayed when the PhoneGap <strong>accelerometer.watchAcceleration</strong> app runs on Android and iOS/iPhone:</p>
+<table class="doclayout" border="0"><tbody><tr><td><img src="images/PhoneGap01.png" align="none" width="210" height="348"><br id="internal-source-marker_0.8271320751238943"><span style="font-size: 15px; font-family: Arial; color: #efefef; background-color: transparent; font-weight: normal; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline;"></span></td><td>&nbsp;<img src="images/PhoneGap02.png" align="none" width="220" height="330"></td></tr>
+<tr><td><em>PhoneGap accelerometer app on Android</em></td><td><em>PhoneGap accelerometer app on iOS</em></td></tr>
+</tbody></table>
+<h2>Improving your app</h2>
+<p>Moving your PhoneGap application to the MoSync SDK has several benefits:</p>
+<ul>
+<li>The <a href="TEMPLATE_DOC_PATH/sdk/js/guides/wormhole/html5-javascript-wormhole/index.html">Wormhole JavaScript Library</a> provides additional JavaScript functions for working with native user-interface widgets, like layouts, buttons, list boxes, and toolbars. So you can easily create real native user interface components through the same source code. See our comprehensive <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/index.html">JavaScript API Reference</a>.</li>
+<li>With MoSync, you can create flexible <a href="TEMPLATE_DOC_PATH/sdk/js/guides/wormhole/extending-javascript-with-cpp/index.html">hybrid applications</a> that combine HTML5 and JavaScript with C/C++. That means you can create great-looking application interfaces and intuitive controls at the HTML5 level <em>and</em> make use of MoSync's extensive C++ class libraries (for example the Facebook Library and the Slippy Map Library).</li>
+</ul>
+<h2>Troubleshooting</h2>
+<p>Tell us about your experiences with porting PhoneGap apps in the <a href="http://www.mosync.com/forum/592">HTML5, JavaScript, Wormhole</a> forum.</p>
+<p>Report bug and issues, or request features in the <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/issue-tracker/index.html">Issue Tracker</a>.</p>
+<p>&nbsp;</p>
+<p><span style="color: #ff0000;"><br></span></p>
+</body>
+</html>

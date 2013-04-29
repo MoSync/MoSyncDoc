@@ -1,0 +1,51 @@
+<html>
+<head>
+<title>Installing the MoSync SDK for OS X</title>
+</head>
+<body>
+<h1>Installing the MoSync SDK for OS X</h1>
+<p>In this guide we describe the system requirements of the MoSync<sup>®</sup> SDK for OS X, and how to download and install it. We also describe how to upgrade from a previous release of the MoSync SDK for OS X.<!--break--></p>
+<p></p>
+<h2><a name="Downloading_MoSync_35142884392_5216774906904966" id="Downloading_MoSync_35142884392_5216774906904966"></a>Downloading</h2>
+<p>You can download the last recommended release of the MoSync SDK for OS X&nbsp;(and also source tarballs, latest nightly builds, and other MoSync products) from the <strong>Download</strong> page: <a href="http://www.mosync.com/download">http://www.mosync.com/download</a>.</p>
+<h2>Capabiliities</h2>
+<p><strong><em></em></strong>The MoSync SDK for OS X lets you to directly build <strong>device-ready application packages</strong> for Android,&nbsp;Java ME, Symbian,&nbsp;Windows Mobile, Smartphone, Pocket PC, and Moblin/Meego devices.</p>
+<p>If you install <a href="https://developer.apple.com/xcode/">Xcode</a>, the MoSync SDK for OSX lets you build device-ready application packages for iOS (i.e., for iPhone, iPad, and iPod Touch).</p>
+<p>If you do not install Xcode, the MoSync SDK will just create an <strong>Xcode project</strong>&nbsp;and you will need to use Xcode for the final packaging.</p>
+<p>The MoSync SDK for OS X also lets you build a Visual Studio <strong>Windows Phone 2010 project</strong>. You will need to use Visual Studio (on a Windows machine) for the final packaging. (If you already have a Windows machine available, we recommend that you download and install our Windows development environment, the <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/installing-mosync/index.html">MoSync SDK for Windows</a>, which is also available from our <a href="http://www.mosync.com/download">Download </a>page.)</p>
+<p>For an overview of the features supported on each device platform, see <a href="TEMPLATE_DOC_PATH/sdk/tools/references/feature-platform-support/index.html">Feature/Platform Support</a>.</p>
+<h2><a name="System_Requirements_8074370029_7697271612550889" id="System_Requirements_8074370029_7697271612550889"></a>System requirements</h2>
+<p>MoSync SDK for OS X has the following system requirements:</p>
+<ul>
+<li>Mac OS X Snow Leopard (10.6.6 or higher), 64-bit</li>
+<li>Java SE Runtime Environment 6 or later, 64-bit (usually pre-installed on the Mac)</li>
+<li>250 MB free hard disk space</li>
+</ul>
+<p style="margin-left: 0px; margin-right: 0px;">Apple imposes strict rules and guidelines on how applications for its App Store are to be built. To build an iOS application with the MoSync SDK, you will need to install <strong>Xcode 4.2+</strong> with the <strong>iOS SDK</strong>. You will also need to join <a href="http://developer.apple.com/programs/ios/">Apple's Developer Program</a>&nbsp;to publish your apps to App Store.</p>
+<p style="margin-left: 0px; margin-right: 0px;">To use MoSync's device discovery and transfer features, you will also need a Bluetooth-enabled Mac, a mobile device and one of the following software stacks:</p>
+<ul>
+<li>Microsoft (included in Windows XP Service Pack 2)</li>
+<li>WIDCOMM (aka Broadcom)</li>
+<li>BlueSoleil</li>
+</ul>
+<p style="margin-left: 0px; margin-right: 0px;">To use the emulator's Bluetooth support when testing programs, you will need the Microsoft stack.</p>
+<h2><a name="Installing_the_MoSync_SDK_3151_9043934618151035" id="Installing_the_MoSync_SDK_3151_9043934618151035"></a>Installing the MoSync SDK</h2>
+<ol>
+<li>Launch the MoSync for OS X Installer.<br><br> <img src="images/install-osx-1.png" align="none" width="620" height="440"><br><br></li>
+<li>Click <strong>Continue</strong>.</li>
+<li>Accept the license agreement.</li>
+<li>The <strong>Installation Type</strong> window will show you the standard install details:<br><br> <img src="images/install-osx-2.png" align="none" width="620" height="440"><br><br></li>
+<li>To install on your local hard drive, click <strong>Install</strong>. <br>Alternatively, if you want to install MoSync on another drive, click <strong>Change Install Location</strong>, select the appropriate drive, make sure there is enough free space, click <strong>Continue</strong>, then <strong>Install</strong>.<br><br> <em><strong>Note</strong></em>: you cannot select <em>where </em>on the hard disk to install the MoSync SDK, it will always be installed in <em>/Applications/MoSync/</em>.</li>
+<li>The final installation prompt appears:<br><br> <img src="images/install-osx-3.png" align="none" width="420" height="174"><br><br></li>
+<li>Click <strong>Continue Installation</strong> to install the MoSync SDK.<br><br> <img src="images/install-osx-4.png" align="none" width="620" height="440"><br><br></li>
+<li>To update several important environment variables used by the MoSync SDK, you must log out when the installation completes. Click <strong>Log Out</strong> to log out and update the environment variables.</li>
+</ol>
+<h2>Xcode and the iPhone OS SDK</h2>
+<p>Xcode can be downloaded from the Apple <a href="http://developer.apple.com/technologies/xcode.html">iOS Dev Center.</a>&nbsp; Make sure that the version you download includes the iPhone OS SDK.</p>
+<p>Advice on building iPhone applications can be found in our programmer's guide <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/developing-iphone-applications/index.html">Developing iPhone Applications</a>.</p>
+<p class="welcome">The <a href="http://developer.apple.com/ios/manage/overview/index.action">iOS Provisioning Portal </a>is designed to take you through the necessary steps to test your applications on iOS devices and prepare them for distribution.</p>
+<h2 class="welcome">Installing Native Emulators</h2>
+<p class="welcome">MoSync includes its own powerful, cross-platform emulator, MoRE. You can also install native emulators -- particularly useful for testing native user interfaces like our Widget API and NativeUI Library, and for testing APIs and libraries that are only currently supported on a limited number of platforms. Instructions for installing native emulators can be found in our user guide <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/emulators/emulating-device/index.html#Installing_and_Working_with_Native_Emulators">Emulating a Device</a>.</p>
+<p>&nbsp;</p>
+</body>
+</html>

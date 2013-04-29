@@ -1,0 +1,101 @@
+<html>
+<head>
+<title>Build Configurations and Settings</title>
+</head>
+<body>
+<h1>Build Configurations and Settings</h1>
+<p>Through MoSync Eclipse IDE, builds can be set to start automatically or started manually. The project's build configuration (Release, Debug mode, etc.) specifies the compiler, packager, and linker build settings, and memory allocations. Here we describe the options available to you, and the effect of various build settings on the output packages.</p>
+<p><!--break--></p>
+<p></p>
+<h2>Automatic Builds</h2>
+<p>When the automatic build feature is on, your application will be built whenever any file in the project is saved. By default, the automatic build feature is turned off. You can enable it by selecting <strong>Build Automatically</strong> from the <strong>Project </strong>menu.</p>
+<h2>Manual Builds</h2>
+<p>When the automatic building feature is turned off, there are several ways to build your application manually:</p>
+<ul>
+<li>Select <strong>Build Project</strong> from the <strong>Project </strong>menu, or</li>
+<li>Right-click on a project in the Project Explorer view, then select <strong>Build Project</strong> from the pop-up menu, or</li>
+<li>Click the <strong>Run </strong>button <img src="images/mosync-run-button.png"> to run the application in the emulator, or</li>
+<li>Click one of the <strong>Build</strong> toolbar items (the left one builds for the currently selected profile, the right one builds for all profiles in the project:<br><img src="images/2012-02-27_1034.png" align="none" width="97" height="42"></li>
+</ul>
+<p>In the case of both automatic and final builds done this way, the package is only built for the currently selected device profile. For more information about how to to build the application for several devices and platforms, see&nbsp;<a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/finalizing-applications/index.html">Finalize Your Application</a>.</p>
+<h2>Command Line Builds</h2>
+<p>Use the following syntax to build MoSync projects from the command line:</p>
+<div>
+<pre class="mosync-code-cpp">mosyncc.exe -application com.mobilesorcery.sdk.builder.headless  -data workspacelocation -project
+  &nbsp;[-f finalizerscript] projectname</pre>
+</div>
+<p>Replace <em>workspacelocation</em> with the location of your workspace, and <em>projectname</em> with the name of the project to build. This will actually launch a <strong>Finalizer </strong>build with the currently set device filters.<br><br> If you wish to produce binaries for a different set of devices you will need to create a Finalizer script and use the <em>-f</em> switch. A finalizer script is just a text file containing lines like the ones produced when you click the <strong>Propagate </strong>button in the <strong>Finalize </strong>view in the IDE.</p>
+<h2>Output Location</h2>
+<p>The location where the newly built package is stored can be seen in the IDE's <strong>Console </strong>view.</p>
+<h2>Cleaning a Project</h2>
+<p>If something goes wrong during the build process (or you find inconsistencies in your application when it runs), you should clean up your project files. Cleaning removes the intermediate files created during the build process.</p>
+<p>To clean up your project files, do one of the following:</p>
+<ul>
+<li>Select <strong>Clean Project</strong> from the <strong>Project </strong>menu, or</li>
+<li>Right-click on a project in the <strong>Project Explorer</strong> view, then select <strong>Clean Project</strong> from the pop-up menu.</li>
+</ul>
+<h2>Release and Debug Configurations</h2>
+<p>All new MoSync projects have two build configurations available by default: <strong>Release </strong>and <strong>Debug</strong>. These are the build configurations for creating standard release packages and for building a debug version of the application.<br><br> You can create more build configurations if you need them. For example, if your target platforms have different screen sizes and want to use different image files, you can create new build configurations to make sure the right images are included in each package. (Excluding files is done on a per-configuration basis, so in the above case it would be easy to have one resource list file for, say, 320x240 screens, and one for 220x176 screens, and just exclude/include the desired files.)</p>
+<h2>Selecting a Build Configuration</h2>
+<p>The currently active build configuration is shown in a drop down list in the toolbar. To set another build configuration, just select it in the drop down list.</p>
+<p><img src="images/2012-03-06_1132.png" align="none" width="219" height="57"></p>
+<h2><span style="color: #ff0000; font-size: xx-small;"></span>Adding a New Build Configuration</h2>
+<p>To add a new build configuration to a project:</p>
+<ol>
+<li>Highlight your project in <strong>Project Explorer</strong>.</li>
+<li>Select <strong>Project </strong>&gt; <strong>Properties </strong>&gt; <strong>MoSync Project</strong> &gt; <strong>Build Configurations</strong>.<span style="color: #ff0000; font-size: xx-small;"> </span></li>
+<li>Make sure that the <strong>Activate Configurations</strong> box is ticked. You will now see the existing build configurations for the project. The currently active build configuration is marked with the label <strong>[Active]</strong>.</li>
+<li>Click <strong>Add</strong> to add a new build configuration (or highlight an existing one and click <strong>Duplicate</strong>). A new build configuration will appear in the list.</li>
+<li>If you want to rename the new build configuration, highlight it and click <strong>Edit</strong>.</li>
+<li>Select the <strong>Build Settings</strong> element from the properties tree.</li>
+<li>Adjust the build settings as required (see table below).</li>
+</ol>
+<h2>Build Settings</h2>
+<p><strong><img src="images/Build-Settings.png" align="none" width="650" height="496"></strong></p>
+<table border="1"><tbody><tr><td style="width: 25%;" colspan="2"><strong>Project type</strong></td><td>A project can be a stand-alone application or a library. <em>Note</em>: when building a library, make sure to check the <strong>Ignore default</strong> checkbox to the right of the <strong>Additional Libraries</strong> text box, otherwise the default set of libraries will be included during the build and you will get errors.</td></tr>
+<tr><td colspan="2"><strong>Incremental Build Strategy</strong></td><td>The default incremental build strategy is to compile all C files with the GCC -MF switch which generates dependency files consumed by the IDE and used for determining which files to rebuild. The other strategy is to always perform a full build.</td></tr>
+<tr><td colspan="2"><strong>Configuration</strong></td><td>The configuration selected in this box is the one being edited.</td></tr>
+<tr><td style="width: 20%;" rowspan="4"><strong>Paths and Files</strong><strong> </strong><strong><br></strong><strong> </strong></td><td style="width: 20%;"><strong>Additional Include Paths</strong> / <strong>Library Paths</strong> / <strong>Libraries</strong></td><td>These three options allows the user to set additional C/C++ include paths, library paths and libraries to be used during compilation and linking. The <strong>Ignore Default</strong> checkboxes is an advanced option to exclude the MoSync system libraries from the build. Note that, from MoSync 2.5 onward, there are several <a href="#path_vars">Path Variables</a> you can use in paths.</td></tr>
+<tr><td><strong>Exclude file pattern</strong></td><td>A space-separated list of files to not include in the build. An example could be <span style="font-family: courier new;">test*.c</span> which will exclude all C files that start with test. There is an option to explicitly include files as well, which can be useful for example if all except one file in a directory should be included. To include a file, prefix the file with a + character. So the line <span style="font-family: courier new;">/images +player1.png</span> will exclude all files in the images directory except the <em>player1.png</em> file. Files can also be excluded/included from a build by right clicking a file in the project explorer and selecting the <strong>Exclude From Build</strong> and <strong>Do Not Exclude From Build</strong> menu items respectively.</td></tr>
+<tr><td><strong>Output File (libraries only)</strong></td><td>The output file of the built library, relative to the project's <span style="font-family: courier new;">Output</span> directory.</td></tr>
+<tr><td><strong>Output Directory (applications only)</strong></td><td>The output directory of the built application, relative to the project's <span style="font-family: courier new;">Output</span> directory.</td></tr>
+<tr><td rowspan="6"><strong>Compiler Flags</strong></td><td><strong>Activate Dead Code Elimination</strong></td><td>This option instructs the linker to remove all redundant code from the resulting binary. (Only applicable for applications; we cannot tell which parts of a library is dead code before it has been incorporated in an application)</td></tr>
+<tr><td><strong>Additional GCC Switches</strong></td><td>Allows the user to set additional GCC switches. By default an optimization level switch is set for each configuration; <strong>-O0</strong> for the debug configuration and <strong>-O2</strong> for other configurations. <strong>Note</strong>: that no other optimization level than <strong>-O0</strong> should be set for debug configurations as this will confuse the debugger and trigger errors during debugging.</td></tr>
+<tr><td><strong>Additional Resource Compiler Switches</strong> / <strong>Additional Linker Switches</strong></td><td>Allows the user to set additional compiler and linker switches. To get an overview of the available options, run Pipe-Tool from the Windows command line with the -h switch&nbsp; (<strong>pipe-tool -h</strong>).</td></tr>
+<tr><td><strong>GCC Warnings</strong></td><td>Compiler warning levels, corresponding to the GCC <strong>-Wall</strong>, <strong>-Wextra</strong> and <strong>-Werror</strong> switches.</td></tr>
+<tr><td><strong>Memory Settings</strong> &gt; <strong>Heap size</strong> / <strong>Stack size</strong></td><td>Sets the amount of memory (in kilobytes) to allocate to the heap and the stack respectively. If your application runs our of memory (e.g. you get a "malloc failed" error) you can increase the amount of memory allocated for the heap. But see <strong>Memory Settings</strong> &gt; <strong>Data size</strong> below for some limitations.<strong><br></strong></td></tr>
+<tr><td><strong>Memory Settings</strong> &gt; <strong>Data size</strong></td><td>Sets the total amount of memory (in kilobytes) to allocate, including the heap and stack. The size will be rounded up to the nearest power of two. Memory settings must be chosen so they conform to the following rule: <br><br>Data Size &gt; Heap Size + Stack Size + Application's static data section<br><br>Since there's no easy way of knowing the exact size of the statically allocated memory, a good rule of thumb is to use the following relationship: <br>Data Size = n<br>Heap Size = n/2<br><br>Different devices have different amounts of memory available. If you specify a Data Size greater than the amount of available memory on the device, your program will fail to execute.</td></tr>
+<tr><td><strong>Packaging</strong><br><strong>&nbsp;</strong></td><td><strong>Use Debug Runtimes</strong></td><td>This option instructs the packager to create packages with debug runtimes. Debug runtimes carry more information to aid the developer during application development. In particular more descriptive error messages will be shown if the debug runtimes are included. [And in the future, this is where on-device debugging support will be put.]</td></tr>
+<tr><td>&nbsp;</td><td><strong>Use static recompilation</strong></td><td>Some platforms (for example, iOS, Windows Phone 7) support static recompilation. If you set this flag your program will be pre-compiled by the native compilers on those platforms to the platform's native language (C++ on iOS, C# on WP7). This will slow down the compilation somewhat but will make for a faster app.</td></tr>
+<tr><td>&nbsp;</td><td><strong>Version</strong></td><td>Your application's version number (major.minor), used as a label in the application packages. For example "2.4". Note that the minor version number may not be supported on all platforms. Default: "1.0".</td></tr>
+<tr><td>&nbsp;</td><td><strong>Publisher</strong></td><td>Your publisher or vendor name, used as a label in the application packages. For example: "Joe Smith Software". Default: "Built with MoSync SDK". Note that some platforms (for example Android) have no publisher identification within the package. For Windows Mobile, this value will be used for both the "provider" and "manufacturer" label within the package.</td></tr>
+<tr><td>&nbsp;</td><td><strong>Application Name</strong></td><td>The name to be used for the application's installation package. For example, if <strong>Application Name</strong> is to "MyCoolApp_setup", the installation package created for Android devices will be <strong><em>MyCoolApp_setup.apk</em></strong>. If not set, the project's name will be used instead. Note: the name of the installed application will always be the project name, which can be changed by right-clicking on the project in Project Explorer and selecting <strong>Rename</strong>.</td></tr>
+</tbody></table>
+<h2>Path Variables</h2>
+<p>In <strong>Build Settings</strong> you can use the following variables in paths:</p>
+<table border="0"><tbody><tr><td>%app-name%</td><td>Name of the application defined in "Build Settings" -&gt; Packaging.</td></tr>
+<tr><td>%app-vendor%</td><td>Application vendor defined in "Build Settings" -&gt; Packaging.</td></tr>
+<tr><td>%app-version%</td><td>Version of the application, as defined in "Build Settings" -&gt; Packaging. The required format is <em>major[.minor][.micro][.qualifier]</em>. Example: 3.0.1.20120306T090112</td></tr>
+<tr><td>%compile-output-dir%</td><td>Path to the directory where the compiled source files will be stored.</td></tr>
+<tr><td>%mosync-bin%</td><td>Path to the MoSync bin directory.</td></tr>
+<tr><td>%mosync-home%</td><td>Path to the MoSync home defined by environment variable MOSYNCDIR.</td></tr>
+<tr><td>%package-output-dir%</td><td>Path to the directory where the resulting package will be stored.</td></tr>
+<tr><td>%platform%</td><td>The name of the platform in the profile being built for, e.g. android_7, wm6 etc.</td></tr>
+<tr><td>%platform-family%</td><td>The (uppercased) name of the platform family (eg ANDROID, IOS). Any character that can not be part of a C identifier will be replaced by an underscore.</td></tr>
+<tr><td>%platform-variant%</td><td>The (uppercased) name of the platform variant (eg IPAD).<br>Any character that can not be part of a C identifier will be replaced by an underscore.</td></tr>
+<tr><td>%profile%</td><td>The device name in the profile being built for, e.g. Desire.</td></tr>
+<tr><td>%programcomb-output%</td><td>Output directory of program.comb (combined program and resource files).</td></tr>
+<tr><td>%program-output%</td><td>Path to the directory where the program file will be stored.</td></tr>
+<tr><td>%project:<em>&lt;project&gt;</em>%</td><td>Path to the root of another project in the workspace, e.g. %project:3dlines%.</td></tr>
+<tr><td>%project-name%</td><td>Name of the project.</td></tr>
+<tr><td>%runtime-dir%</td><td>Path to the runtime directory.</td></tr>
+<tr><td>%vendor%</td><td>The name of the vendor in the profile being built for, e.g. HTC. (For projects that use the default platform based profile database, this will be the platform name.)</td></tr>
+<tr><td>%version-major%</td><td>Major part of the version number (see %app-version% above).</td></tr>
+<tr><td>%version-minor%</td><td>Minor part of the version number (see %app-version% above).</td></tr>
+<tr><td>%version-micro%</td><td>Micro part of the version number (see %app-version% above).</td></tr>
+</tbody></table>
+<p><strong><em><br></em></strong></p>
+<p><strong><em><br></em></strong></p>
+<p><strong><em><br></em></strong></p>
+</body>
+</html>

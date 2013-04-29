@@ -1,0 +1,165 @@
+<html>
+<head>
+<title>Determining Location</title>
+</head>
+<body>
+<h1>Determining Location</h1>
+<p>In this tutorial we take a look at how to detect a device's current geographical location and how to use location data in your application. We also describe some basic strategies for updating location data on a regular basis.</p>
+<p><!--break--></p>
+<h2>Ways of Determining Location</h2>
+<p>There are two common ways of determining the current location of the user's device:</p>
+<ul>
+<li><strong>GPS</strong>: If the device is equipped with a GPS module that communicates with a satellite network, you can query the GPS module from your MoSync application.&nbsp;</li>
+<li><strong>Cell ID</strong>: You can also use the mobile phone network to get a good approximation of position by finding out the nearest network cell, and looking up its position in a database.</li>
+</ul>
+<p>Most modern smartphones have GPS built in, and many older ones can receive GPS data from a Bluetooth-enabled GPS unit.&nbsp; GPS will give you a more precise position, but it can be slow and unreliable in built-up areas.&nbsp; Cell ID works faster, but requires access to a suitable database.<br><br>There are also hybrid solutions which work with combinations of network triangulation, cell IDs and GPS, which fall under the collective name of&nbsp;<strong>Assisted GPS</strong>&nbsp;(A-GPS).</p>
+<p>Some platforms are capable of determining location through other means. &nbsp;In some countries, Android based phones can determine their location by identifying near-by wireless networks.</p>
+<h2>Accessing GPS Data</h2>
+<p>The MoSync SDK provides an API for interfacing with GPS modules. &nbsp;You don't need to do anything special,&nbsp;<span style="color: #000000;">just start requesting</span>&nbsp;GPS data for your application. &nbsp;</p>
+<div>
+<pre class="mosync-code-cpp">int res = maLocationStart();      
+maLocationStop();</pre>
+</div>
+<p>These start and stop methods tell the GPS module to start collecting location data, and deliver it to your application.&nbsp;</p>
+<p>The function&nbsp;<strong>maLocationStart()</strong>&nbsp;returns an&nbsp;<strong>int</strong>. &nbsp;If it returns 1 (<strong>MA_LPS_AVAILABLE</strong>), then everything is OK. &nbsp;If it returns a value higher than 1, then it can't start because of network conditions, and you should try later. &nbsp;If it returns -1, then location data is not available (probably because the handset doesn't have a GPS unit.)</p>
+<blockquote><p><em><strong>Note</strong>:&nbsp;The MoSync IDE's MoRE emulator does not provide GPS data. It will always return -1.&nbsp;</em></p>
+</blockquote><p>To receive data, your Moblet needs to respond to system events. You can do this by putting the following code in your&nbsp;<strong>Moblet&nbsp;</strong>class. This code listens to all events and responds to those that are location messages.</p>
+<div>
+<pre class="mosync-code-cpp">void customEvent(const MAEvent&amp; event)
+{
+  //Check to see if this is a location event
+  if(event.type == EVENT_TYPE_LOCATION)
+  {
+    MALocation&amp; loc = *(MALocation*)event.data;
+    informListeners(loc);
+  }
+}</pre>
+</div>
+<p>In this example, we have a private method for passing the location onto the parts of our application that need it.</p>
+<p>The location event returns an&nbsp;<strong>MALocation</strong>&nbsp;object. This object contains the device's latitude and longitude, as well as data about the accuracy of the reading. GPS locations are not definite. They come with a margin of error You'll have to create a strategy for handling the data depending how confident you are with it. &nbsp;More on this later.</p>
+<p>You can simply display the latitude and longitude data directly on the screen. Or you can pass it to a map with the current location centered on the screen.</p>
+<h2>Example Application Using GPS</h2>
+<p>In the following example of a location-handling application, we have a small framework. We have created interfaces for location providers (implemented by&nbsp;<strong>Moblet</strong>) and for location listeners (our screens which need location data).</p>
+<p><strong>Location.h</strong></p>
+<div>
+<pre class="mosync-code-cpp">#ifndef LOCATION_H_
+#define LOCATION_H_
+ 
+#include &lt;maapi.h&gt;
+#include &lt;MAUtil/Vector.h&gt;
+ 
+using namespace MAUtil;
+ 
+//Provides an interface between Moblet and screens which need location data
+ 
+class ILocationListener
+{
+  public:
+    virtual void locationReceived(MALocation&amp; location);
+};
+ 
+class ILocation
+{
+  public:
+    virtual void addLocationListener(ILocationListener* l);
+    virtual void removeLocationListener(ILocationListener* l);
+ 
+    virtual void informListeners(MALocation&amp; location);
+ 
+};
+ 
+#endif /* LOCATION_H_ */</pre>
+</div>
+<p>Screens can then subscribe to the&nbsp;<strong>Moblet&nbsp;</strong>class to register for location data. When a location update comes in, the screen is informed.</p>
+<p><strong>MapScreen.h</strong></p>
+<p>We can use the ILocationListener interface with a map screen to automatically update the map with the user's location.</p>
+<div>
+<pre class="mosync-code-cpp">#ifndef _MAPSCREEN_H_
+#define _MAPSCREEN_H_
+
+#include &lt;MAUI/Screen.h&gt;
+#include &lt;MAUI/Layout.h&gt;
+#include &lt;MAUI/ListBox.h&gt;
+#include &lt;MAP/MapWidget.h&gt;
+#include &lt;MAP/LonLat.h&gt;
+#include &lt;MAP/MapSourceMgr.h&gt;
+#include "Location.h"
+
+using namespace MAUI;
+using namespace MAP;
+
+class MapScreen : public Screen, public ILocationListener
+{
+    public:
+        MapScreen();
+        ~MapScreen();
+
+        void show();
+        void locationReceived(MALocation&amp; location);
+
+    private:
+        MapWidget* map;
+        bool locRec;
+};
+
+#endif    //_MAPSCREEN_H_</pre>
+</div>
+<p><strong>MapScreen.cpp</strong></p>
+<div>
+<pre class="mosync-code-cpp">#include "MapScreen.h"
+
+MapScreen::MapScreen()
+{
+  map = NULL;
+}
+
+MapScreen::~MapScreen()
+{
+
+}
+
+void MapScreen::show()
+{
+  if(map == NULL)
+  {
+    MAExtent screenSize = maGetScrSize();
+    int scrWidth = EXTENT_X(screenSize);
+    int scrHeight = EXTENT_Y(screenSize);
+
+    map = new MapWidget(0, 0, scrWidth, scrHeight, NULL);
+    map-&gt;setMapSourceKind(MapSourceKind_OpenStreetMap);
+    LonLat home;
+    home.lat = 51.49663;
+    home.lon = 0.00;
+    map-&gt;setCenterPosition(home);
+    map-&gt;setMagnification(14);
+
+    this-&gt;setMain(map);
+
+  }
+
+  Screen::show();
+}
+
+void MapScreen::locationReceived(MALocation&amp; location)
+{
+  if(map != NULL)
+  {
+    LonLat myLoc;
+    myLoc.lat = location.lat;
+    myLoc.lon = location.lon;
+    map-&gt;setCenterPosition(myLoc);
+  }
+}</pre>
+</div>
+<h2>Location Update Strategies</h2>
+<p>Once you've started to get location data, particularly with GPS, you face a new problem. The GPS system reports to your application everytime it gets a fix - approximately once every second. Each reading is slightly different. If you are trying to plot your position on the map, and you automatically pass the raw location data to the map, the pointer or map center will constantly move around, even if the device is still.</p>
+<p>To overcome this, you need an update strategy that works something like this:</p>
+<ul>
+<li>If the new reading is more accurate (i.e. the accuracy value is lower than the current best reading) use it.</li>
+<li>If the new reading is outside of a circle created using the reading as the centre point and the accuracy as the radius, assume that the device has moved, and use the new reading.</li>
+<li>If the new reading is inside the circle of error, and the reading is less accurate, ignore the data and wait for another fix from the satellites.</li>
+</ul>
+<p>This keeps the user informed about where they are, without putting a lot of doubt into their minds when it keeps shifting very slightly.</p>
+</body>
+</html>

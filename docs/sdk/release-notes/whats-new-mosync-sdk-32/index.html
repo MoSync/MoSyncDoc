@@ -1,0 +1,113 @@
+<html>
+<head>
+<title>What's New in MoSync SDK 3.2</title>
+</head>
+<body>
+<h1>What's New in MoSync SDK 3.2</h1>
+<p>&nbsp;Our 3.2 release is packed with tools for the serious mobile app developer. We've extended our libraries and APIs so they now support the <strong>Android 4.x</strong> platform. We've added <strong>JavaScript debugging</strong> capabilities on devices and simulators. We've a implemented a new <strong>File Upload API</strong> in JavaScript, added a new NativeUI <strong>Map widget</strong>, and extended the <strong>ListView widget</strong>. And there are many <strong>new tutorials</strong> to help you get the most out of the MoSync SDK. Let's take a look.</p>
+<p><span></span><!--break--></p>
+<p></p>
+<h2><a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/debugging-javascript-device/index.html">New JavaScript Debugging Tools</a></h2>
+<p><span style="color: #ff0000;"><em><span style="color: #000000;">Android and iOS</span></em></span></p>
+<p>The MoSync IDE now features a fully-featured debugger for JavaScript code. You can set breakpoints in your code, install and run your application package on a device or simulator, and then see the code as it executes in the MoSync IDE. The new debugger will help you cut HTML5/JavaScript development time, ensure the robustness of your code, and get your app to market faster. <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/debugging-javascript-device/index.html">User's guide</a><span style="color: #ff0000;"><span style="color: #000000;">.<strong><span style="color: #ff0000;"><a href="http://jira.mosync.com/browse/MOSYNC-2492" class="link-title"><span style="color: #ff0000;"></span></a><a href="http://jira.mosync.com/browse/MOSYNC-2493" rel="15669"><span style="color: #ff0000;"></span></a><a href="http://jira.mosync.com/browse/MOSYNC-2494" id="key-val" rel="15670"><span style="color: #ff0000;"></span></a></span></strong></span></span></p>
+<h2>Support for Android 4.x</h2>
+<p>We have fully update our Android runtimes so that we now offer support for Android 4.x (Ice Cream Sandwich and Jellybean) devices. That means your existing code should now run without problem on these platforms and&nbsp; that you can make your app available to even more users. Android versions 1.5, 1.6 and 2.1 are no longer actively supported. A full list of all MoSync SDK supported API functions can be found on our <a href="TEMPLATE_DOC_PATH/sdk/tools/references/feature-platform-support/index.html">Feature/Platform Support</a> page<strong>.</strong><span style="color: #ff0000;"><strong> <a href="http://jira.mosync.com/browse/MOSYNC-2596" id="key-val" rel="15915"><span></span></a></strong></span></p>
+<h2><a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-nativeui-map-widget/index.html">New NativeUI Map Widget</a></h2>
+<p><em>iOS and Windows Phone 7</em></p>
+<p>We have implemented a new Map widget in our NativeUI C++ Library. The widget is currently implemented&nbsp; on Windows Phone 7 and iOS devices, but we are hoping to add more platforms soon. Using the Map widget, you can display maps from the platform's native map service and manage pins on the maps. <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-nativeui-map-widget/index.html">Tutorial</a><span style="color: #ff0000;"><span style="color: #000000;"> |</span> </span><a href="http://www.mosync.com/files/imports/doxygen/latest/html/class_native_u_i_1_1_map.html">API reference</a><span style="color: #ff0000;"><span style="color: #000000;"> | </span></span><a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/nativeuimap/index.html">Example app</a>.<span style="color: #ff0000;"><strong><a href="http://jira.mosync.com/browse/MOSYNC-2606" id="key-val" rel="15925"><span></span></a></strong></span></p>
+<h2><a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-listview-widget/index.html">Improved NativeUI ListView Widget</a></h2>
+<p><em>Android, iOS, Windows Phone 7</em></p>
+<p>Our <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-listview-widget/index.html">ListView widget</a> now supports alphabetical and segmented lists, sections, and new properties. We've created a great little example app to show it in action. <a href="http://www.mosync.com/files/imports/doxygen/latest/html/class_native_u_i_1_1_list_view.html">API reference</a> | <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-listview-widget/index.html">Tutorial</a> | <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/europeancountries/index.html">Example app</a></p>
+<p>We've made many other improvements to our native interface widgets, including fixing nested layouts on IOS and improving screen sliding. We've also made many performance tweeks under the hood so that MoSync's NativeUI functionality is faster than ever. See: <a href="http://jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&amp;requestId=10920">NativeUI fixes for 3.2</a><span style="color: #ff0000;"><strong><a href="http://jira.mosync.com/browse/MOSYNC-2599" id="key-val" rel="15918"><span></span></a></strong></span></p>
+<h2><a href="TEMPLATE_DOC_PATH/sdk/js/examples/photogallery-explained/index.html">File Uploads from JavaScript</a></h2>
+<p><em>Android, iOS, and Windows Phone 7</em></p>
+<p>We've extended our <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/index.html">Wormhole JavaScript Library</a> with support for file uploads. The new <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/filetransfer.md.html#FileTransfer">FileTransfer function</a> in the Wormhole File API lets you send files (binaries, images, audio files, etc.) to a server using an HTTP multi-part POST request. You can pass the file name, mime type, and additional key/value pairs when passing the file. <a href="TEMPLATE_DOC_PATH/sdk/js/examples/photogallery-explained/index.html">Photo Gallery Tutorial</a> | <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/filetransfer.md.html#FileTransfer">API reference</a> | <a href="TEMPLATE_DOC_PATH/sdk/js/examples/photogallery/index.html">Example application</a><span style="color: #ff0000;"><strong><a href="http://jira.mosync.com/browse/MOSYNC-2489" id="key-val" rel="15665"><span style="color: #ff0000;"></span></a></strong></span></p>
+<h2>Updates to the Wormhole C++ Library</h2>
+<p>The C++ classes in the Wormhole Library have been updated. The changes are summarized below:</p>
+<ul>
+<li>Enhanced support for invoking custom C++ code from JavaScript.</li>
+<li>New classes have been added to the library.</li>
+<li>Some classes have been deprecated.</li>
+</ul>
+<h3>Enhanced support for invoking custom C++ code from JavaScript</h3>
+<ul>
+<li>New class <strong>Wormhole::HybridMoblet</strong> has support for declarative specification of custom methods to be invoked on messages sent from JavaScript. See the programming guide&nbsp;<a href="TEMPLATE_DOC_PATH/sdk/js/guides/wormhole/extending-javascript-with-cpp/index.html">Extending HTML5 Apps with C++</a> for more information.</li>
+<li>There are also undocumented ways to customise the behaviour of the Wormhole JavaScript API in C++. Internal classes in the Wormhole library have virtual methods and protected member variables to support sub-classing. There are also several ways to work with pluggable objects to avoid extensive sub-classing. How to do this is currently not documented, explore the source code of Wormhole for further details. Modify the internals of Wormhole with care, keep in mind that the internal design of Wormhole will likely change over time.</li>
+</ul>
+<h3>New classes</h3>
+<ul>
+<li><strong>Wormhole::CustomMoblet </strong>- Flexible Moblet base class that can replace class <strong>MAUtil::Moblet</strong></li>
+<li><strong>Wormhole::HybridMoblet</strong> - Flexible Moblet for HTML/JS/C++ apps. Replaces class <strong>Wormhole:WebAppMoblet</strong></li>
+<li><strong>Wormhole::MessageHandler</strong> - Class used internally in the Wormhole library for message handling. There are several ways of customizing this class if needed, both by pluggable classes and by sub-classing.</li>
+</ul>
+<h3>Deprecated C++ classes</h3>
+<ul>
+<li><strong>Wormhole::WebAppMoblet </strong>- Use class <strong>Wormhole::HybridMoblet</strong> instead.</li>
+<li><strong>Wormhole::WebViewMessage</strong> - Use class <strong>Wormhole::MessageStream</strong> instead.</li>
+</ul>
+<h3>Deprecated JavaScript Message</h3>
+<ul>
+<li><strong>mosync.bridge.send(["close"])</strong> - Use the new <strong>mosync.app.exit()</strong> function instead.</li>
+</ul>
+<h2>Updated Application Templates<span></span></h2>
+<ul>
+<li><span style="color: #ff0000;">&nbsp;</span>The MoSync SDK's HTML5 Templates have been updated to use the new Wormhole Library. These templates are available when creating new projects in the MoSync IDE.</li>
+</ul>
+<p>For an overview of all the available templates, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/projects-and-templates/index.html">Creating Projects from Templates</a>.</p>
+<h2>New Example Applications</h2>
+<ul>
+<li><a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/nativeuimap/index.html">NativeUIMap</a> — this new example application demonstrates the use of the Map Widget in the NativeUI C++ Library.</li>
+<li><a href="TEMPLATE_DOC_PATH/sdk/js/examples/photogallery/index.html">PhotoGallery</a> — a new example application that shows how to use the new File Upload JavaScript API together with the <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/capture.md.html#Capture">Capture JavaScript API</a> to send image files to a server. It includes a server-side PHP script.</li>
+<li><a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/europeancountries/index.html">EuropeanCountries</a> — a new app that shows how the revamped ListView widget supports alphabetical and segmented lists, sections, and properties.</li>
+</ul>
+<p>As well as the example apps above, all of our existing HTML5 example apps have been updated to use the new Wormhole C++ Library. Documentation for all example apps is available at&nbsp;<a href="http://www.mosync.com/content/example-applications">http://www.mosync.com/content/example-applications</a>.</p>
+<h2>New User Guides and Tutorials</h2>
+<ul>
+<li><p><a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/ui/javascript-html5-cross-platform-user-interfaces/index.html">JavaScript/HTML5 Cross-Platform User Interfaces</a>&nbsp;— developer guidelines providing a brief overview of what should be considered when creating HTML5 (or hybrid HTML5/C++) MoSync apps that should be used on devices with varying screen sizes.</p>
+</li>
+<li><p><a href="TEMPLATE_DOC_PATH/sdk/js/examples/photogallery-explained/index.html">PhotoGallery Explained</a> — a comprehensive tutorial which shows you how to use our Capture JavaScript API and File Upload C API to create a simple online photo gallery. This in-depth tutorial discusses the programming techniques used in the new PhotoGallery example application, including server programming, user interface programming in JavaScript, and how to extend HTML5/JS applications with custom C++ code.</p>
+</li>
+<li><a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-nativeui-map-widget/index.html">Using the NativeUI Map Widget</a> — this new tutorial shows you how to use the NativeUI C++ Library's Map Widget to display maps from the platform's native map service, and how to manage map pins.</li>
+</ul>
+<ul>
+<li><a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-listview-widget/index.html">Using the ListView Widget</a> -- a introduction to the new capabilties of the ListView widget, including how to create segmented and alphabetical lists, add sections, and how to set the widget's new control properties.</li>
+</ul>
+<ul>
+<li><p><a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/debugging-javascript-device/index.html">Debugging JavaScript on a Device</a> — advice, hints, and tips for debugging your JavaScript code on a device from within the MoSync Eclipse-based IDE.</p>
+</li>
+</ul>
+<ul>
+<li><a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/storage/file-storage-syscall-functions/index.html">File Storage Syscall Functions</a> — a new tutorial which describes the low-level syscall functions that we use to create, read, write, and manage file systems on devices. The tutorial includes full code examples for directory listing and file reading</li>
+</ul>
+<ul>
+<li><a href="TEMPLATE_DOC_PATH/sdk/js/guides/basic/working-with-javascript-prototypes/index.html">Working with JavaScript Prototypes</a> — a new beginner's tutorial showing how prototypes can be used to teach JavaScript new tricks and make it behave like other languages.</li>
+</ul>
+<ul>
+<li><a href="TEMPLATE_DOC_PATH/sdk/js/guides/storage/using-sql-hybrid-apps/index.html">Using SQL in Hybrid Apps</a> — This tutorial demonstrates how to use the Database C API in a hybrid HTML/JavaScript and C++ application.Here we use C++ to implement the database functionality by invoking C++ code from JavaScript.</li>
+</ul>
+<ul>
+<li><p id="internal-source-marker_0.3496356212675943" dir="ltr"><a href="TEMPLATE_DOC_PATH/sdk/js/guides/basic/using-javascript-callbacks/index.html">Using JavaScript Callbacks</a> — Callback functions are very common in JavaScript and working effectively with them is an important part of your skillset as an app developer. This beginner's tutorial introduces and their use in the MoSync Application Framework.</p>
+</li>
+<li><p id="internal-source-marker_0.3496356212675943" dir="ltr"><a href="TEMPLATE_DOC_PATH/sdk/js/guides/basic/event-handling-mosync-hybrid-app/index.html">Event Handling in a MoSync Hybrid App</a> — A unique features of the MoSync SDK is its ability to handle hybrid apps: applications that mix HTML5, JavaScript and C/C++ code. In this overview of event handling we look at the Wormhole Library's handling of events and messages.</p>
+</li>
+<li><a href="TEMPLATE_DOC_PATH/sdk/js/guides/ui/interacting-with-users-using-javascript/index.html">Interacting With Users Through JavaScript</a> — a beginner's tutorial looking at how to handle alerts, modal message boxes,&nbsp; loading bars, and other dialog elements in raw JavaScript, third-party libraries, and MoSync NativeUI.</li>
+</ul>
+<p>All documentation is available online at&nbsp;<a href="http://www.mosync.com/documentation">http://www.mosync.com/documentation</a>.</p>
+<h2>Known Issues and Limitations for MoSync SDK 3.2</h2>
+<ul>
+<li><a href="http://jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&amp;requestId=10121">Android</a></li>
+<li><a href="http://jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&amp;requestId=10123">iOS/iPhone</a></li>
+<li><a href="http://jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&amp;requestId=10125">J2ME</a></li>
+<li><a href="http://jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&amp;requestId=10124">Symbian</a></li>
+<li><a href="http://jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&amp;requestId=10126">Windows Mobile</a></li>
+<li><a href="http://jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&amp;requestId=10122">Windows Phone</a></li>
+<li><a href="http://jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&amp;requestId=10127">Wormhole JavaScript Library</a></li>
+</ul>
+<h2>Bugs Fixed in MoSync SDK 3.2</h2>
+<ul>
+<li><a href="http://jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&amp;requestId=10715">All MoSync SDK issues fixed in release 3.2</a></li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

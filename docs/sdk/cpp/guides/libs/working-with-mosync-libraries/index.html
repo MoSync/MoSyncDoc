@@ -1,0 +1,54 @@
+<html>
+<head>
+<title>Working with MoSync Libraries and APIs</title>
+</head>
+<body>
+<h1>Working with MoSync Libraries and APIs</h1>
+<p>The MoSync code libraries and APIs provide you with thousands of pre-written functions that you can call from within your application. We have both JavaScript and C/C++ libraries and APIs. Here we show how to connect to them from your applications, and provide a brief overview of each.</p>
+<p><!--break--></p>
+<p></p>
+<blockquote>Useful quick links:<ul>
+<li><a href="TEMPLATE_DOC_PATH/HOME_PATH/index.html">All Coding Guides and Tutorials</a></li>
+<li><a href="TEMPLATE_DOC_PATH/HOME_PATH/index.html">All API Reference Manuals</a></li>
+<li><a href="http://www.mosync.com/documentation">Main Document Index</a></li>
+</ul>
+</blockquote><h2>Using the MoSync JavaScript Library</h2>
+<p>Our library on the HTML5 side is called the MoSync Wormhole JavaScript Library (<a href="TEMPLATE_DOC_PATH/sdk/js/guides/wormhole/html5-javascript-wormhole/index.html">Library Overview</a> | <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/index.html">API Reference</a>). It is a normal JavaScript library with the filename <strong>wormhole.js</strong>, and if you create a project (in either the MoSync IDE or in MoSync Reload) from one of our HTML5 templates you will see it in the <em>/LocalFiles/js</em> folder in your project:</p>
+<p><img src="images/wormhole-library-in-ide.png" align="none" width="650" height="322"></p>
+<p>The <strong>wormhole.js</strong> file actually concatenates several related JavaScript files into one library. Those files contain sets of related APIs for Native UI widget handling, push notification and sensor management, and a large set of PhoneGap-compatible functions.</p>
+<p>To include the library, you just include it in your HTML page as you would any other JavaScript library:</p>
+<p><img src="images/wormhole-library-inclusion.png" align="none" width="650" height="437"></p>
+<p>You will then be able to call any Wormhole function in your JavaScript code.</p>
+<h2>Using the MoSync C++ Libraries</h2>
+<p>The MoSync C++ libraries contain high-level classes and functions that you can call from your C/C++ code. To be able to use these libraries you need to reference the appropriate header files in your application using <strong>#include</strong> statements:</p>
+<p><img src="images/libraries1.png" align="none" width="604" height="271"></p>
+<p>Here we are including the header file for <strong>Moblet </strong>(<a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/maui/starting-new-moblet-project/index.html">MoSync's event handling framework</a>) and some header files for MAUI. That will enable us to access to the Moblet code and the MAUI screens and widgets later in our application.</p>
+<p>You can get a list of all the header files that you can include in your application by browsing the <strong>Includes </strong>folder in your project in the MoSync SDK:</p>
+<p><img src="images/libraries3.png" align="none" width="607" height="431"></p>
+<p>As well as referencing the header files in your application code, you also need to specify the actual libraries that you want to use in the project's <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/build-configurations/index.html#Build_Settings">Build Settings</a> (<strong>Project </strong>&gt; <strong>Properties </strong>&gt; <strong>MoSync Project</strong> &gt; <strong>Build Settings</strong>):</p>
+<p><img src="images/libraries2_0.png" align="none" width="607" height="719"></p>
+<p>Here we are including the <strong>mautil.lib </strong>library that contains the moblet code and the <strong>maui.lib </strong>library that contains the screen and widget code.</p>
+<p><em>Note that the </em><strong>mastd.lib</strong><em> library is always included in the build — you don't need to specify it in your list of additional libraries.</em></p>
+<p>When you build your application, MoSync's <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/architecture/toolchain/index.html">toolchain </a>links the libraries that are listed in the <strong>Additional Libraries</strong> field and <strong>mastd.lib</strong> with your code:</p>
+<p><img src="images/libraries4.png" align="none" width="641" height="468"></p>
+<h2>The Main C++ Libraries</h2>
+<p>The MoSync libraries are stored in the <em>/lib</em> directory in your MoSync installation. A complete description of the libraries and their contents can be found in the MoSync IDE's help system (<strong>Help </strong>&gt; <strong>MoSync API Reference</strong>) and also in our online <a href="http://www.mosync.com/files/imports/doxygen/latest/html/index.html">API Reference Guide</a>.</p>
+<table border="1"><tbody><tr><td><strong>Library</strong></td><td><strong>Content</strong></td></tr>
+<tr><td>mastd.lib</td><td>The main library of MoSync system calls (syscalls). The syscalls give you access to many basic platform features, including permanent storage, graphics, sound, communications, camera, and so on.</td></tr>
+<tr><td>mafs.lib</td><td>&nbsp;Virtual file system classes and functions</td></tr>
+<tr><td>map.lib</td><td>&nbsp;Slippy map classes and functions</td></tr>
+<tr><td>matest.lib</td><td>&nbsp;MATest test framework</td></tr>
+<tr><td>maui.lib</td><td>&nbsp;MAUI graphical user interface classes and functions</td></tr>
+<tr><td>mautil.lib</td><td>&nbsp;General utilities, including Moblets, event handling, framebuffer, Bluetooth discovery and connections, containers, and geometric helper structures.</td></tr>
+<tr><td>mtxml.lib</td><td>&nbsp;XML SAX parser classes and functions</td></tr>
+<tr><td>nativeui.lib</td><td>Native user inteface classes and functions</td></tr>
+<tr><td>notification.lib</td><td>Notifications classes and functions</td></tr>
+<tr><td>testify.lib</td><td>&nbsp;Testify test framework</td></tr>
+<tr><td>wormhole.lib</td><td>The MoSync Wormhole library with classes and functions for interacting with JavaScript in the HTML5 layer.</td></tr>
+<tr><td>yajl.lib</td><td>JSON parser classes and functions</td></tr>
+</tbody></table>
+<h2>The MoSync C Syscalls</h2>
+<p>The class libraries in the MoSync C++ layer are built upon a set of low-level functions called <strong>syscalls</strong>. The syscalls are actually in the MoSync runtimes, but there is a <a href="http://www.mosync.com/files/imports/doxygen/latest/html/maapi_8h.html">header file</a> for them called <strong>maapi.h</strong>.</p>
+<p>You can make use of the syscalls directly in your code, you do not need to include the header file, it is automatically linked with your code at build time.</p>
+</body>
+</html>

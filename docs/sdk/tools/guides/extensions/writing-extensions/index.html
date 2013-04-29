@@ -1,0 +1,351 @@
+<html>
+<head>
+<title>Writing Extensions for MoSync</title>
+</head>
+<body>
+<h1>Writing Extensions for MoSync</h1>
+<p>We encourage everyone to help us develop MoSync, and writing new extensions for MoSync is probably the most common thing you will want to do. In this topic we introduce you to some important core concepts that you need to understand and lead you step-by-step through creating an API extension.</p>
+<p><!--break--></p>
+<p>This topic assumes that you have a good understanding of how to use MoSync, that you understand the build process, and that you can build the MoRE runtime in Visual Studio. It also assumes that you have some basic familiarity with the MoSync code.</p>
+<h2>Core Concepts</h2>
+<p>In this section we introduce some core concepts that you will need to understand when you write extensions.</p>
+<h3>Runtimes and user code</h3>
+<p style="text-align: center;"><img src="images/runtime-code.png" alt="Interaction of user code and runtime through syscalls" height="110" width="311"></p>
+<p><strong>User code</strong> includes all the code that you write when you create an application with MoSync along with some of the MoSync libraries, such as the MAUI library.</p>
+<p>A <strong>runtime </strong>is the thing that executes the user code on the device. For each platform that MoSync supports, there is a different runtime. Some runtimes are written in C++, others like the J2ME and Android runtimes are written in Java. <span style="color: #ff0000;"><span style="color: #000000;">Each runtime has two parts: </span><span style="color: #000000;">one that executes the user code and one that interfaces to it to provide low-level services.</span></span></p>
+<h3>Syscalls and events</h3>
+<p>Communication between the user code and a runtime is through syscalls and events. Syscalls are like the traditional calls a user application makes to an OS kernel. Whenever the user code needs to do something it cannot do on its own, such as creating a socket connection, it performs a syscall to the runtime. To create a socket connection, for example, the syscall is <strong>maConnect</strong>.</p>
+<p>A syscall is an actual instruction which the runtime traps during code execution. The instruction only has one argument, and that is the syscall number. A syscall, like any ordinary function call, can return a value. A syscall can do pretty much any thing you'd like it to do, but what it can never do is to block. If the syscall cannot finish immediately, such as when waiting for socket data, it needs to return and have the blocking call run in a thread in the background. Once it has finished, it will return the result through events which the user fetches through yet another syscall called&nbsp;<strong>maGetEvent</strong>.</p>
+<h3>The maIOCtl syscall</h3>
+<p>The <strong>maIOCtl </strong>syscall is a special syscall which is meant for extensions which aren't supported or fully supported on all the MoSync runtimes. What this means in practice is that anything that isn't part of the standard API, that is anything that isn't the least common denominator on all platforms, &nbsp;will be implemented through an <strong>maIOCtl</strong>. Implementing an <strong>MaIOCtl </strong>is simpler than implementing an entirely new syscall, and is what you will be using to implement your extensions. The only limitation that the <strong>maIOCtl </strong>syscall has is that it only takes three parameters. But on the bright side, any or all the three can be user defined structures, which means that you can always pass all the parameters you like in a structure.</p>
+<h3>maapi.idl and Pipe-Tool</h3>
+<p>Any syscall starts its life in a file called <strong>maapi.idl</strong><span style="line-height: 21px; font-size: 14px;"><span style="line-height: 18px; font-size: 12px;">. Here all syscalls, events, and event types (among other things) are defined. To minimize the amount of code redundancy, we have created a tool called <strong>idl2</strong> which takes the <em>maapi.idl </em>file and generates several important files:</span></span></p>
+<ul>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>$MOSYNCDIR/bin/asm_config.lst</em> — the file used by Pipe-Tool to recognise syscalls</span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>runtimes/java/shared/invoke_syscall_java.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">— </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">the inner part of switch case which handles different syscalls for the java runtimes</span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>runtimes/cpp/core/invoke_syscall_cpp.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">— </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">the inner part of switch case which handles different syscalls for the c++ runtimes</span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>runtimes/java/shared/generated/core_consts.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">— </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">opcodes and such for java runtimes</span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>runtimes/java/shared/generated/maapi_consts.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">— </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">constants in the <em>maapi.idl</em> file</span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>intlibs/helpers/cpp_defs.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">— </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">constants and structs in the <em>maapi.idl</em> file, for the C++ runtimes</span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>intlibs/helpers/cpp_maapi.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">— </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">all the syscall declarations for the C++ runtimes</span></span></li>
+</ul>
+<div>
+<span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">The <strong>idl2 </strong>tool also generates a set of files with the string "<em>_IX_</em>" in their filename. These are extensions that have been implemented through the <strong>maIOCtl </strong>syscall. To the MoSync GCC, a syscall is the same as just a normal function call. It is completely unaware of the concept syscall. Recognising syscalls and patching the binary code with the syscall opcode is the job of pipetool. The way it recognises the syscalls is quite simple, it looks at the generated asm_config file to see if a function call is actually a syscall or not. If it is, then its call opcode is replaced with a syscall opcode.</span></span></div>
+<div>
+<span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><br></span></span></div>
+<div>
+<span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">The <em>maapi.idl</em> format is quite simple. It contains declarations for syscalls in a C-like syntax:</span></span></div>
+<div style="padding-left: 30px;"><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>RETURN_TYPE IDENTIFIER</em> ( (<strong>in</strong>|<strong>out</strong>) <em>TYPE IDENTIFIER</em>, ...);</span></span><span style="line-height: 18px; font-size: 12px;"> </span></div>
+<div>
+<span style="line-height: 18px; font-size: 12px;">where: </span></div>
+<ul>
+<li><em>RETURN_TYPE</em>is&nbsp;<ul>
+<li>void [*]</li>
+<li>[unsigned] char&nbsp;[*]</li>
+<li>[unsigned] short&nbsp;[*]</li>
+<li>[unsigned] int [*]</li>
+<li>[unsigned] long [*]</li>
+<li>[unsigned] float [*]</li>
+<li>[unsigned] double [*]</li>
+</ul>
+</li>
+<li><em>IDENTIFIER </em>is a normal C identifier (for example, <strong>maConnect </strong>)</li>
+<li><strong>in</strong>|<strong>out</strong> - Tells the <strong>idl2 </strong>tool whether the parameter goes in or out.</li>
+<li><em>TYPE </em>is any primitive or user defined type</li>
+</ul>
+<div>
+<span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">A syscall declaration looks like this:</span></span></div>
+<pre style="padding-left: 30px;"><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><span style="font-family: monospace; line-height: normal; border-collapse: collapse; white-space: pre;"><span class="kwd" style="color: #000088;">int</span><span class="pln" style="color: #000000;"> maFrameBufferGetInfo </span><span class="pun" style="color: #666600;">( </span><span class="kwd" style="color: #000088;">out</span><span class="pln" style="color: #000000;"> </span><span class="typ" style="color: #660066;">MAFrameBufferInfo</span><span class="pln" style="color: #000000;"> info </span><span class="pun" style="color: #666600;">);</span></span></span></span></pre>
+<div>
+<span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">Note that the declarations are written in between:</span></span></div>
+<pre><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">#if IX_SOMETHING . . . #end </span></span></pre>
+<p>For <strong>maIOCtl </strong>declarations the block ends up in a separate file with a similar name<span style="font-family: monospace; color: #880000; font-size: small;"><span style="border-collapse: collapse; font-size: 12px; line-height: normal; white-space: pre;"><span style="border-collapse: separate; color: #000000; font-family: Verdana,Arial,Helvetica,sans-serif; white-space: normal; line-height: 18px;">.</span></span></span> It is in this block that you will be writing API extensions<span style="font-family: monospace; color: #880000; font-size: small;"><span style="border-collapse: collapse; font-size: 12px; line-height: normal; white-space: pre;"><span style="border-collapse: separate; color: #000000; font-family: Verdana,Arial,Helvetica,sans-serif; white-space: normal; line-height: 18px;">. </span></span></span>The <strong>idl2 </strong>tool also produces wrapper code for any extensions that have been written through <strong>maIOCtl</strong><span style="font-family: monospace; color: #880000; font-size: small;"><span style="border-collapse: collapse; font-size: 12px; line-height: normal; white-space: pre;"><span style="border-collapse: separate; color: #000000; font-family: Verdana,Arial,Helvetica,sans-serif; white-space: normal; line-height: 18px;">. This is another one of the advantages of the <strong>idl2 </strong>tool. It takes care of all the little details and updates every where that needs to be updated. The wrapper code might look something like this (from <em>libs/MAStd/IX_CELLID.h</em>):</span></span></span></p>
+<pre><span style="font-family: monospace; color: #880000; font-size: small;"><span style="border-collapse: collapse; font-size: 12px; line-height: normal; white-space: pre;"><span style="border-collapse: separate; color: #000000; font-family: Verdana,Arial,Helvetica,sans-serif; white-space: normal; line-height: 18px;">static inline int maGetCellInfo ( MACellInfo* pInfo ) { &nbsp;&nbsp;&nbsp; return maIOCtl( 56, (int)pInfo, 0, 0 ); } </span></span></span></pre>
+<h2>Creating an Extension Step-by-Step</h2>
+<div>
+<span style="font-size: large;"><span style="font-size: 18px;"><strong><span style="font-weight: normal; line-height: 18px; font-size: 12px;">Now that the concepts are in place, it's time to get our hands dirty. There are five steps to writing an API extension:</span></strong></span></span></div>
+<div>
+<ol>
+<li>Edit <em>tools/idl2/maapi.idl</em></li>
+<li>Run the <strong>idl2 </strong>tool</li>
+<li>Add your implementation to the runtimes you need</li>
+<li>Rebuild all the user libraries</li>
+<li>Try it out</li>
+</ol>
+</div>
+<div>
+<p>In this example we will write a simple extension as an <strong>maIOCtl</strong>, we will pass a structure with 16 chars in it, and will return the same chars through an event.</p>
+<h3>Step 1 — Editing tools/idl2/maapi.idl</h3>
+</div>
+<p>We need to make four changes in this file:</p>
+<ul>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">Add an extension define</span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">Add a new event type</span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">Add a new inner structure to the event structure</span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">Add a new maIOCtl </span></span></li>
+</ul>
+<h4 style="font-size: 0.9em;">Adding the extension define</h4>
+<p>Edit <em>tools/idl2/extensions.h</em> file and add to it "#define IX_TUTORIAL". This is needed to process anything that is declared between '#if ...' and '#endif' in the <em>maapi.idl</em> file. Here is the start of our example:</p>
+<pre>#define IX_RESOURCE_TYPES
+#define IX_GUIDO
+#define IX_WLAN
+#define IX_FILE
+#define IX_RECORD
+#define IX_CELLID
+#define IX_CALL
+#define IX_STREAMING
+#define IX_CONNSERVER
+#define IX_OPENGL_ES
+#define IX_AUDIOBUFFER
+#define IX_SEGMENTED_DATA
+#define IX_PIM
+#define IX_TUTORIAL
+</pre>
+<h4>Adding the new event type</h4>
+<p>The <strong>MAEvent </strong>structure contains a field called "type", this field is an integer which identifies the event type. So next we need to add a constant which identifies our custom event. At the end of the block called "constset int EVENT_TYPE_" we add our custom event type:</p>
+<pre>#if IX_TUTORIAL
+        TUTORIAL = 10001;
+#endif</pre>
+<p><strong>Note:</strong> To avoid collisions with future extensions from the MoSync team, we suggest that you always choose a large value for the event constant.</p>
+<p>In the version of <em>maapi.idl</em> that we are working with, the entire block looks like this:</p>
+<pre>constset int EVENT_TYPE_ {
+        /**
+        * This event is posted when the operating system sends MoSync a command 
+       <span style="white-space: pre;"> </span> <span style="white-space: pre;"> </span>* to exit. Causes include the OS shutting down and OS-controlled user 
+        <span style="white-space: pre;"> </span>* commands. 
+        <span style="white-space: pre;"> </span>* \see maGetEvent()
+        */
+        CLOSE = 1;
+
+        KEY_PRESSED = 2;
+        KEY_RELEASED = 3;
+        /// Connection
+        CONN = 4;
+        /// Bluetooth discovery
+        BT = 5;
+#if IX_GUIDO
+        /// Has MAEvent::key be the identifier for the TTS session, as returned 
+        /// by maStartSpeaking().
+        TTS = 6;
+#endif    //IX_GUIDO
+#if IX_WLAN
+        /// Uses MAEvent::state.
+        WLAN = 7;
+#endif    //IX_WLAN
+
+        POINTER_PRESSED = 8;
+        POINTER_RELEASED = 9;
+        POINTER_DRAGGED = 10;
+
+#if IX_CALL
+        /// Has MAEvent::state be one of the \link CALLSTATE \endlink constants.
+        CALL = 11;
+#endif    //IX_CALL
+
+        /**
+         * While MoSync doesn't have focus, no key events will arrive and the 
+         <span style="white-space: pre;"> </span>* screen will not be updated. If the keypad is locked, no application 
+         <span style="white-space: pre;"> </span>* will have focus.
+         * \see maLockKeypad
+         */
+        FOCUS_LOST = 13;
+        FOCUS_GAINED = 14;
+
+#if IX_STREAMING
+        /**
+        * Has MAEvent::data point to a MAStreamEventData.
+        */
+        STREAM = 15;
+#endif    //IX_STREAMING
+//#if IX_LOCATION
+        /// Has MAEvent::data point to an MALocation.
+        LOCATION = 16;
+
+        /// MAEvent::state is one of the \link #MA_LPS_AVAILABLE MA_LPS 
+       <span style="white-space: pre;"> </span> <span style="white-space: pre;"> </span>/// \endlink constants.
+        LOCATION_PROVIDER = 17;
+//#endif    //IX_LOCATION
+#if IX_AUDIOBUFFER
+        /// MAEvent::state is \&gt; 0 when the audio stream is waiting for more data,
+        /// or \&lt; 0 on error.
+        AUDIOBUFFER_FILL = 18;
+#endif
+        SCREEN_CHANGED = 21;
+
+#if IX_TUTORIAL
+<span style="white-space: pre;"> </span>        /// Just a simple event type added for the tutorial
+        <span style="white-space: pre;"> </span>TUTORIAL = 10001;
+#endif
+    }</pre>
+<h4>Adding the new inner structure to the event structure</h4>
+<p><span style="line-height: 18px; font-size: 12px;">Now that we have a new event type, it is time to create a way through which we can return data to the user from an event. </span>This can be accomplished in two ways, one is to allocate dynamic memory in the runtime and let the runtime copy that memory to user memory. The runtime will also update the data pointer in the MAEvent struct<span style="line-height: 18px; font-size: 12px;">. To do this, you have to write a few macros in the right places. The second method is to create a new struct with the data that you need to return to the user </span>and embed this in the MAEvent struct<span style="line-height: 18px; font-size: 12px;">. </span>The second method has the advantage of being a bit simpler<span style="line-height: 18px; font-size: 12px;">, but at the cost of bloating the MAEvent struct. For the sake of simplicity, we will only go through the later method in this document. So let's get started.</span></p>
+<p><span style="line-height: 18px; font-size: 12px;">First, we define our struct. We can call it&nbsp;MATutorialEvenData, it needs to contain 16 chars. </span>The next step is to embed it in the MAEvent struct<span style="line-height: 18px; font-size: 12px;">, in the revision of the code base that the author is working with, the entire code will look like this.</span></p>
+<pre>struct MATutorialEventData {
+    char m_data[16];
+}
+
+struct MAEvent {
+    /**
+    * One of the \link #EVENT_TYPE_CLOSE EVENT_TYPE 
+    * \endlink constants.
+    */
+    int type;
+    union {
+        struct {
+            /**
+            * In KEY events, this will be one of the 
+            * \link #MAK_UNKNOWN MAK \endlink constants.
+            */
+            int key;
+            /**
+            * In KEY events, this will be the native keycode.
+            */
+            int nativeKey;
+        } ked;
+
+        /**
+         * Tutorial structure
+         */
+        MATutorialEvenData tutorial;
+
+        /**
+         * In POINTER events, this will be the location of the pointer.
+         */
+        MAPoint2d point;
+
+        /**
+        * In \link #EVENT_TYPE_BT BT \endlink events, this will be a value \&gt;= 0 or
+        * one of the \link #CONNERR_GENERIC CONNERR \endlink constants.
+        */
+        int state;
+
+        /**
+        * Valid only in CONN events.
+        */
+        MAConnEventData conn;
+
+        /**
+        * Used by custom events. See invididual event descriptions.
+        */
+        void* data;
+    }
+}</pre>
+<h4>Adding the new maIOCtl</h4>
+<p>&nbsp;</p>
+<p>At this point we have all the parts in place to return data through events, now we just need a way of making a call to the runtime. This is where syscalls and <strong>maIOCtl </strong>comes in. We will define a new <strong>IOCtl </strong>in the <strong>maIOCtl</strong> block (after the opening bracket and before the closing bracket). The <strong>maIOCtl </strong>will look like this:</p>
+<pre>#if IX_TUTORIAL
+ <span style="white-space: pre;"> </span>int maSyscallTutorial(in MAString data);
+#endif //IX_TUTORIAL</pre>
+<p>where <strong>MAString </strong>is a defined as '<span style="font-family: 'courier new',courier;">typedef char* MAString'</span> at the top of the <em>maapi.idl</em> file.</p>
+<h3>Step 2 — Running the idl2 tool</h3>
+<p>Now that we've made actual changes to the syscall interface, we need to regenerate all the auto generated files that have to do with syscalls. In Visual Studio, build <em>tools/idl2</em> and run it. Your output should look like <a href="/system/files/idl2_output.txt"><strong>this</strong></a>,</p>
+<p>If you instead get this:</p>
+<pre>D:\workspace\repo-new\MoSync2.3\tools\idl2&gt;Debug\idl2.exe
+Error opening file "opengl_generated.idl" in
+maapi.idl on line 2383
+Exception: Unknown exception</pre>
+<p>Then you need to build the <em>opengl_generated.idl</em>, run <em>tools\GLWrapperGenerator\build.bat</em> and run the <strong>idl2 </strong>tool again.</p>
+<p>You probably noticed that for most files it generates three different versions of it. For instance, the IX_TUTORIAL extension goes in:</p>
+<ul>
+<li><em><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">intlibs\CPP_IX_TUTORIAL.h</span></span></em></li>
+<li><em><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">libs\MAStd\IX_TUTORIAL.h</span></span></em></li>
+<li><em><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">runtimes\java\shared\generated\IX_TUTORIAL_consts.h</span></span></em></li>
+</ul>
+<div>
+<span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">The first one is to be used from the C++ runtimes (MoRE, Symbian, Windows mobile, Linux). The second file is to be used on the user side. The last file is to be used from the Java runtimes (such as J2ME and Android). </span></span></div>
+<div>
+<span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">So let's look inside the first two files ( since we're only doing the changes for a C++ runtime in this example). In the first file we have:</span></span></div>
+<pre><span style="line-height: 18px;">#ifndef IX_TUTORIAL_DEFS_H #define IX_TUTORIAL_DEFS_H /** \brief A hash of the abstract representation of the API described in this file. * Identifiers, declarations and definitions are included in the calculation of the hash, * but documentation is not. */ #define MAIDL_HASH ((int)0xc2fcb710) /// Just a simple event type added for the tutorial #define EVENT_TYPE_TUTORIAL 10001 #define maIOCtl_maSyscallTutorial 247 #endif //IX_TUTORIAL_DEFS_H</span></pre>
+<p>In here we have hash (which is discussed in section 4), the event ID, and syscall ID. We will need these to write the code which handles the <strong>maIOCtl </strong>call in the runtime. The java version contains similar things.</p>
+<p>In the next file we have:</p>
+<pre>#ifndef IX_TUTORIAL_H
+#define IX_TUTORIAL_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/// Just a simple event type added for the tutorial
+#define EVENT_TYPE_TUTORIAL 10001
+
+static inline int maSyscallTutorial(const char* data) {
+    return maIOCtl(247, (int)data, 0, 0);
+}
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif    //IX_TUTORIAL_H
+</pre>
+<p>As you see, this file is a bit different, there is an actual C function in there, this is because we wrote our new syscall/extension in the <strong>maIOCtl </strong>block. The <strong>idl2 </strong>tool knows that anything inside that block is not an actual syscall, but goes through the <strong>maIOCtl </strong>syscall. The first parameter is the <strong>maIOCtl ID</strong>, and in the previous file you can see that the preproccesor define "maIOCtl_maSyscallTutorial" is set to 247, which is quite practical and the reason that the previously discussed hash is needed to make sure that both the user libraries and the runtime agree on the same syscall interface.</p>
+<h3>Step 3 — Add your implementation in the runtimes you need</h3>
+<p>&nbsp;</p>
+<p>By this point, we have all the parts in place to do the <strong>maIOCtl </strong>on the user side. &nbsp;Now you need to write the code on the runtime side which actually handles the <strong>IOCtl</strong>. In this document, the only runtime we will modify is MoRE, but modifying the other runtimes is similar.</p>
+<p>In the source directory, there exists a file <em>runtime/cpp/platforms/sdl/SyscallImpl.cpp</em>, this file handles all the syscalls in the SDL runtime (MoRE). In the Visual Studio project you can find it under <em>Platforms/cpp/sdl/SyscallImpl.cpp</em>. Open it, and add the include "#include &lt;helpers/CPP_IX_TUTORIAL.h&gt;", this will include the definitions that have to do with our example.</p>
+<p>Next we need to add the actual code for handling the <strong>IOCtl</strong>. So, scroll down to the part that says:</p>
+<pre>SYSCALL(int, maIOCtl(int function, int a, int b, int c)) {</pre>
+<p>This is the actual <strong>maIOCtl </strong>syscall. In it you will find a big switch statement. We need to add our own handler to this switch case. So just before the default case, we add this piece of code:</p>
+<pre>        case maIOCtl_maSyscallTutorial:
+        {
+            char *  data;
+            MAEvent myevent;
+            
+            // Get pointer to memory
+            data = (char*)SYSCALL_THIS-&gt;GetValidatedMemRange( a, 16 );
+
+            // Copy to event
+            myevent.type = EVENT_TYPE_TUTORIAL;
+            memcpy( myevent.tutorial.m_data, data, 16 );
+
+            // Put in event queue
+            gEventFifo.put( myevent );
+
+            // Return success code
+            return 1;   
+        }            </pre>
+<p>Let's go through the parts of this code. Firstly, a pointer to the argument that was passed to the <strong>maIOCtl </strong>from the user side, is fetched. The method <strong>GetValidatedMemRange </strong>takes a pointer to the user side memory and the number of bytes that the pointer points to. If the memory is valid, a pointer will be returned. Otherwise a panic will occur. &nbsp;Secondly, the event type is set and the ASCIIZ string passed by the user is copied to the event structure. Thirdly, the event is put in the event queue, from where it can be fetched by the user through the <strong>maGetEvent </strong>syscall. And lastly, we return from the <strong>maIOCtl </strong>syscall.</p>
+<p>Assuming that you have Visual Studio correctly set up and you can build MoRE, rebuild MoRE. The executable will be copied to your MoSync installation path (<em>MOSYNCDIR/bin</em>).</p>
+<h3>Step 4 — Rebuilding all the user libraries</h3>
+<p>This step is very important. Any change you make to the IDL file might change the binary interface of syscalls (specfically syscall IDs).&nbsp;Because&nbsp;of this there is a hash in the generated <em>maapi.h</em> file that is verified against the runtime to make sure the user code and the runtime have been built with the same interface. So we need to remove all the old files and rebuild the libs:</p>
+<ol>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">In your MoSync installation dir (let's call it <em>MOSYNCDIR</em>), delete <em>include/*</em></span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">delete <em>MOSYNCDIR/lib/pipe/*</em></span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">In the source directory (let's call it <em>MOSYNCSRC</em>), do <strong>cd libs</strong></span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">ruby workfile.rb</span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">ruby workfile.rb CONFIG=""</span></span></li>
+</ol>
+<h3>Step 5 — Trying it out</h3>
+<p>If you have gotten everything to work this far, there should be only one last step remaining, and that is to actually test that it works as expected. In the MoSync IDE, create a project and create in it a file called <em>main.c</em> containing the following code:</p>
+<pre>#include &lt;ma.h&gt;
+#include &lt;IX_TUTORIAL.h&gt;
+
+int MAMain ( )
+{
+    while ( 1 )
+    {
+        MAEvent e;
+        while ( maGetEvent( &amp;e ) != 0 )
+        {
+            switch ( e.type )
+            {
+                case EVENT_TYPE_CLOSE:
+                    return 0;
+
+                case EVENT_TYPE_KEY_PRESSED:
+                case EVENT_TYPE_POINTER_PRESSED:
+                    maSyscallTutorial( "world!" );
+                    break;
+
+                case EVENT_TYPE_TUTORIAL:
+                    printf( "Hello %s\n", e.tutorial.m_data );
+                    break;
+            }
+        }
+    }
+
+    return 0;
+}</pre>
+<p>If you've done everything correctly, this code will compile and run just fine. And in that case, congratulations, you've just written your first MoSync extension!</p>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<html>
+<head>
+<title>Graphun</title>
+</head>
+<body>
+<h1>Graphun</h1>
+<p>Graphun is a 3d graph visualizer built with MoSync. It evaluates a custom expression for every point on a grid and displays the result. This advanced application makes extensive use of NativeUI, and it uses an OpenGL view to display the graphs.<!--break--></p>
+<table class="doclayout" border="0"><tbody><tr><td><img src="images/graphun_large.png" align="none" width="231" height="340"></td><td><img src="images/graphun_settings.png" align="none" width="228" height="340"></td><td><img src="images/graphun_wierd.png" align="none" width="229" height="340"></td></tr>
+</tbody></table>
+<p>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>. The <a href="https://github.com/MoSync/MoSync/tree/master/examples/Graphun">source code</a> is browsable on our Github repository.<br><br>This example is also available on various app stores and online marketplaces.</p>
+<h3>Behaviour</h3>
+<p>This application is intended for touchscreen devices. It uses NativeUI and OpenGL so it will work only on iOS (iPhone, etc.) and Android devices at this time.<br><br>When the application starts up for the first time it displays the graph for the expression <strong>sin(x*10.0*y+time)*0.5</strong>. As this expression includes time as a variable, the graphical display will continuously change as time changes. The user can change the expression by touching in the expression field and entering a new expression.</p>
+<p>The Help page in the application provides some example expressions that the user can select for demonstration purposes. The Help page also includes advice on using the application, information about predefined constants, and so on.<br><br>The grid can be rotated to inspect the result from different angles by swiping the screen. Settings are available through the spanner icon in the lower left corner of the screen. The shading of the grid can be turned on and off, and three resolutions can be selected.</p>
+<h3>Touch responses</h3>
+<ul>
+<li>Touch edit box - opens the on-screen keyboard through which the user can enter expressions. (Return closes the keyboard.)</li>
+<li>Spanner icon - opens the settings menu.</li>
+<li>Swipe on the graph screen - rotates the graph.</li>
+<li>Back/close button - closes the application.</li>
+</ul>
+</body>
+</html>

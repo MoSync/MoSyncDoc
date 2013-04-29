@@ -1,0 +1,41 @@
+<html>
+<head>
+<title>WebViewLoveSMS</title>
+</head>
+<body>
+<h1>WebViewLoveSMS</h1>
+<p>It is fun to send text messages with smileys to friends and loved ones. But it is time consuming to type in lots smileys on a phone. WebViewLoveSMS is an app you can use to easily send messages with lots of heart or kiss smileys to your loved one.<!--break--></p>
+<p><img src="images/LoveSMS.png" align="none" width="227" height="376"></p>
+<p>This example runs on all platforms supported by the MoSync Wormhole JavaScript Library (see <a href="http://www.mosync.com/documentation/manualpages/featureplatform-matrix">Feature/Platform Support</a>).</p>
+<p>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<h2>Behaviour</h2>
+<p>When this application starts up, the user is shown the main screen where the telephone number of the loved one can be entered.</p>
+<p>There are just two buttons. Tapping either button send a 140-character SMS to the loved one. The <strong>Send Eternal Love</strong> button sends a repeated string of "&lt;3" characters. The <strong>Send Warm Kisses</strong> button sends a string of ":-*" characters.</p>
+<p>The phone number is stored on the device and will be displayed next time the application is started. (Just one phone number saved&nbsp;— because, after all, this is an application to be used with your loved one...)</p>
+<h2>In the Code</h2>
+<p>This example application is implemented in HTML and JavaScript, and uses the MoSync Wormhole Library to access device services from JavaScript via C++. The Wormhole Library is used for sending text messages and storing data on the device, services that you normally cannot access from JavaScript. You can find the <a href="https://github.com/MoSync/MoSync/tree/ThreeTwo/examples/html5/WebViewLoveSMS">full source code</a> of the application on GitHub.</p>
+<p>Here is the JavaScript code used in the app for sending a text message:</p>
+<pre class="mosync-code-js">mosync.bridge.send(['Custom', 'SendSMS', GetPhoneNo(), textMessage]);</pre>
+<p><strong>mosync.bridge.send </strong>is a JavaScript function that enables sending messages to C++. In the above example, the message consist of an with the message parameters<strong></strong>. When the first element is 'Custom', the message gets routed though a lookup table of custom methods on the C++ side.</p>
+<p>The C++ code of the app is in file <em>LoveSMS.cpp</em>, where you find the class <strong>LoveSMSMoblet</strong>, which inherits <strong>HybridMoblet</strong>, a central class in the Wormhole Library. The <strong>HybridMoblet </strong>class automatically creates and configures a <strong>WebView</strong> widget (a widget in the MoSync Widget API) for the application. It listens for events from the web view and calls custom methods registered in the lookup table.</p>
+<p>Here is hos custom methods are registred in the constructor of LoveSMSMoblet:</p>
+<pre class="mosync-code-cpp">addMessageFun(
+    "SendSMS",
+    (FunTable::MessageHandlerFun)&amp;LoveSMSMoblet::handleSendSMS);
+addMessageFun(
+    "PageLoaded",
+    (FunTable::MessageHandlerFun)&amp;LoveSMSMoblet::handlePageLoaded);</pre>
+<p>And here is the implementation of the method that handles the "SendSMS" message:</p>
+<pre class="mosync-code-cpp">void handleSendSMS(MessageStream&amp; message)
+{
+    // Save phone no and send SMS.
+    savePhoneNoAndSendSMS(
+        message.getNext(),&nbsp; // phoneNo
+        message.getNext()); // message
+}
+</pre>
+<p>The call<em> message.getNext()</em> returns the pointer to the next string in the message array<em>.</em> <strong>MessageStream </strong>is a class in the Wormhole library that helps with parsing the data recieved from the web view.</p>
+<h2>Fun things to do</h2>
+<p>A great way to learn how to author HTML5 applications in MoSync is to modify the LoveSMS app in various ways. You can easily change the background image and the color of user interface elements, to create your own personal unique look for the app. Check out this <strong><a href="TEMPLATE_DOC_PATH/sdk/js/tutorials/ui/fun-things-do-lovesms-example-application/index.html">blog post</a></strong> for further details.&nbsp;</p>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<html>
+<head>
+<title>Importing Projects and Files</title>
+</head>
+<body>
+<h1>Importing Projects and Files</h1>
+<p>Here we show you how to import projects and files into MoSync. We give detailed instructions on how to import existing MoSync projects, and some information about importing other resources like archives, files systems, preference settings, breakpoints, launch configurations, and team project sets.</p>
+<p><!--break--></p>
+<h2><a name="import-mosync-project"></a>Importing Existing MoSync Projects</h2>
+<p>To see an existing MoSync project in your current workspace, you need to import it.</p>
+<p>The <strong>Import </strong>wizard guides you through all the necesary steps of the import process and allows you to set various options.</p>
+<p><strong><em>Note</em></strong>: You <em>can </em>follow these steps to import our example applications (which of course are just another type of project). However, there is a much quicker way of importing them, which we describe in <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<p>Open the <strong>Import</strong> wizard in one of the following ways:</p>
+<ul>
+<li>Right-click inside the <strong>Project Explorer</strong> view and choose <strong>Import </strong>from the pop-up menu, or</li>
+<li>Select <strong>Import </strong>from the <strong>File </strong>menu.</li>
+</ul>
+<p><img src="images/file-import-mosync.png"></p>
+<p>Choose the import source by opening the <strong>MoSync </strong>group, selecting <strong>Existing MoSync project into workspace</strong>, and clicking <strong>Next</strong>. The <strong>Import Projects</strong> dialog will open.</p>
+<p>Select the <strong>Select root directory</strong> option and click its <strong>Browse </strong>button.</p>
+<p>Browse for the folder where your projects are stored, highlight it, and click <strong>OK</strong>.</p>
+<p>A list of the projects available for import will be displayed (in this case it is example application projects in our <em>\examples</em> folder):</p>
+<p><img src="images/file-import-mosync-projects.png"></p>
+<p>You have the choice of copying the projects into the workspace or leaving them in their current location.</p>
+<ul>
+<li>If you copy the projects (by ticking the <strong>Copy projects into workspace</strong> option), MoSync will put its builds in the new project folders that it has copied into the workspace.</li>
+<li>If you do not copy the projects, MoSync will put its builds in to the original project folders.</li>
+</ul>
+<p>Make sure that the checkboxes of the projects you want to import are ticked, then click <strong>Finish </strong>to import the projects into your workspace.</p>
+<h2>Importing Other Projects and Files</h2>
+<p>The <strong>Import </strong>wizard can also be used to import other types of projects and files. Many of these import options will be familiar to Eclipse users. A brief overview of the available options is given in the table below.</p>
+<table border="1"><tbody><tr><td style="width: 50%;"><strong>General </strong>&gt; <strong>Archive File</strong></td><td>Standard Eclipse import of a previously exported archive file</td></tr>
+<tr><td><strong>General</strong> &gt; <strong>Existing MoSync project into workspace</strong></td><td>see <a href="#import-mosync-project"><strong>Importing Existing MoSync Projects</strong></a> above</td></tr>
+<tr><td><strong>General</strong> &gt; <strong>Existing Project into Workspace</strong></td><td>Standard Eclipse project import</td></tr>
+<tr><td><strong>General </strong>&gt; <strong>File System</strong></td><td>Standard Eclipse file/folder import. This option is useful for bringing legacy C/C++ files into the workspace. Create a project first, then import your files/folders into it</td></tr>
+<tr><td><strong>General </strong>&gt; <strong>Preferences</strong></td><td>Standard Eclipse import of previous exported preferences (i.e. as set in <strong>Windows </strong>&gt; <strong>Preferences</strong>). Useful for transferring preference between Eclipse instances</td></tr>
+<tr><td><strong>MoSync </strong>&gt; <strong>Existing MoSync project into workspace</strong></td><td>see <a href="#import-mosync-project"><strong>Importing Existing MoSync Projects</strong></a> above</td></tr>
+<tr><td><strong>Run/Debug</strong> &gt; <strong>Breakpoints</strong></td><td>Standard Eclipse import of a previously exported breakpoints file</td></tr>
+<tr><td><strong>Run/Debug</strong> &gt; <strong>Launch configurations<br></strong></td><td>Standard Eclipse import of a previously exported launch configurations file. This can be very useful. When you select <strong>Run As...</strong> in MoSync, a launch configuration is created. This launch configuration contains settings like screen size, which project to run, which build configuration to use, and so on.</td></tr>
+<tr><td><strong>Team </strong>&gt; <strong>Team Project Set</strong></td><td>Standard Eclipse import of a previously exported Team Project Set.</td></tr>
+</tbody></table>
+</body>
+</html>

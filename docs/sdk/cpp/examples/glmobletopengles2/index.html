@@ -1,0 +1,21 @@
+<html>
+<head>
+<title>GLMobletOpenGLES2</title>
+</head>
+<body>
+<h1>GLMobletOpenGLES2</h1>
+<p>This example application demonstrates how to use OpenGL ES 2.0 to control a device's graphics hardware.<!--break--></p>
+<p><img src="images/GLMoblet_OpenGLES2.png" align="none" width="210" height="316"><br><br>This example is included in the MoSync SDK installation in the <em>/OpenGLES/examples</em> folder. For information on importing the examples into your workspace, see<a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html"> Importing the Examples</a>.</p>
+<h2>Behaviour</h2>
+<p>When this application is started you will see a trippy pattern moving on the screen.</p>
+<h2>In the Code</h2>
+<p>The code of the project is collected in one single file. It shows how to use the GLMoblet in order to create an OpenGL ES 2.0 based application. It has a set of helper functions for loading shaders (‘loadShader’) and checking for errors (‘checkGLError’).</p>
+<p>The ‘init’ function first calls initGL which loads the vertex and fragment shader, sets up the default state and maps variables to the uniforms of the shader. In the ‘draw’ function, the uniforms that contain the current time in seconds and the multiplicative inverse for the screen resolution, are updated and a triangle fan that covers the entire screen are drawn.</p>
+<p>The shader is set to be used so the shader program will run for each pixel on the screen. The shader generates a pattern by calculating colors as a function of time, x and y coordinates.</p>
+<h2>Touch Responses</h2>
+<ul>
+<li>Tap buttons to capture image, switch screens, zoom in/out.</li>
+</ul>
+<p>&nbsp;</p>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<html>
+<head>
+<title>Building the MoSync SDK for Windows</title>
+</head>
+<body>
+<h1>Building the MoSync SDK for Windows</h1>
+<p>These instructions describe how to build a Windows installation package for the MoSync SDK. The completed installation package is an <strong>.exe</strong> file, just like our <a href="http://www.mosync.com/download">featured releases</a> and our <a href="http://www.mosync.com/nightly-builds">nightly builds</a>.</p>
+<p>To build the <em>full </em>installation package, you will need a Windows machine, a Mac OS X machine, and a Linux machine. If you omit the iPhone and Moblin runtimes, you can build a partial package on just the Windows machine. <!--break--></p>
+<p>(Instructions for <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-mosync-sdk-source-os-x/index.html">building the MoSync SDK from source on OS X</a> are also available.)</p>
+<p></p>
+<h2>Hardware and OS Requirements</h2>
+<p>To build the MoSync Eclipse IDE, the MoSync libraries, and the MoSync tools, you will need a computer running Windows (Windows XP, Windows Vista, or Windows 7) and capable of running Visual Studio C++ 2005.<br class="kix-line-break"><br>To build the MoSync <em>runtimes </em>you will need:</p>
+<ul>
+<li>For the Java ME, Android, Symbian, and Windows Mobile runtimes, your Windows computer.</li>
+<li>For the iPhone runtime, a Mac running Snow Leopard (OS X v. 10.6).</li>
+<li>For the Moblin runtime, a Linux computer running the i386 version of Ubuntu.</li>
+</ul>
+<p>If you don’t need the iPhone and Moblin runtimes, everything can be built on the Windows machine.</p>
+<h2>Getting the MoSync Source Code</h2>
+<p><strong>1.</strong> Download the source tarball (<strong>.tar.bz2</strong>) of our current <strong>feature release</strong> from our website or from our open-source project repository:</p>
+<ul>
+<li>MoSync website: <a href="http://www.mosync.com/download">http://www.mosync.com/download</a></li>
+<li>Git Project Repository: <a href="https://github.com/MoSync/MoSync/downloads">https://github.com/MoSync/MoSync/downloads</a></li>
+</ul>
+<p>Alternatively, get the source tarball for our latest <strong>nightly build</strong> from our website:</p>
+<ul>
+<li>MoSync website: <a href="http://www.mosync.com/nightly-builds">http://www.mosync.com/nightly-builds</a></li>
+</ul>
+<p>or through Git:</p>
+<pre class="mosync-code-cpp">git clone https://github.com/MoSync/MoSync.git c:\mb\MoSync-trunk
+git clone https://github.com/MoSync/Eclipse.git c:\mb\Eclipse</pre>
+<p><strong>2. </strong>Unpack the source tarball into (or, if you have installed TortoiseGit, check it out to):</p>
+<pre class="mosync-code-cpp">C:\mb</pre>
+<h2>Getting Eclipse</h2>
+<p><strong>3.</strong> Download <a href="http://www.mosync.com/down/target-platform.zip">target-platform.zip</a> which contains everything needed to build the Eclipse-based IDE. Put the zip-file in:</p>
+<pre class="mosync-code-cpp">C:\mb\eclipse\com.mobilesorcery.sdk.product\build</pre>
+<h2>Installing the Dependencies</h2>
+<p><strong><em>Important!</em> </strong>Make sure you install and configure the dependencies in the order listed below. If you do not, terrible things may happen!</p>
+<h3>Visual Studio C++ 2005</h3>
+<p><strong>4.</strong> Download and install Microsoft® Visual Studio® 2005 and apply Service Pack 1. Make sure that you install the runtime MT (Multi Threaded) DLL.<br><br><strong>5.</strong> Add the following paths to Visual Studio:</p>
+<ul>
+<li>To the end of the list at <strong>Tools </strong>&gt; <strong> Options </strong>&gt; <strong>Projects and Solutions</strong> &gt; <strong>VC ++ Directories</strong> &gt; <strong>Include Files</strong> add:</li>
+</ul>
+<pre class="mosync-code-cpp">\mb\mosync-trunk\tools\ReleasePackageBuild\build_package_tools\include
+\mb\mosync-trunk\libs
+\mb\mosync-trunk\libs\MAStd</pre>
+<ul>
+<li>To <strong>Tools </strong>&gt; <strong>Options </strong>&gt; <strong>Projects and Solutions</strong> &gt; <strong>VC ++ Directories</strong> &gt; <strong>Library Files</strong> add:</li>
+</ul>
+<pre class="mosync-code-cpp">\mb\mosync-trunk\tools\ReleasePackageBuild\build_package_tools\lib</pre>
+<p><strong>6.</strong> Find the file:</p>
+<pre class="mosync-code-cpp">C:\mb\mosync-trunk\tools\ReleasePackageBuild\build_package_tools\include\msvc\stdint.h</pre>
+<p>Copy it to the directory:</p>
+<pre class="mosync-code-cpp">C:\Program Files\Microsoft Visual Studio 8\VC\include\</pre>
+<h3>Visual Studio SDKs</h3>
+<p><strong>7.</strong> Download and install the following Visual Studio SDKs:</p>
+<ul>
+<li><a href="http://www.microsoft.com/downloads/details.aspx?familyid=a6c4f799-ec5c-427c-807c-4c0f96765a81&amp;displaylang=en">SDK for Windows Mobile 2003-based Smartphones</a></li>
+<li><a href="http://www.microsoft.com/downloads/en/details.aspx?familyid=DC6C00CB-738A-4B97-8910-5CD29AB5F8D9&amp;displaylang=en">Windows Mobile 5.0 SDK for Smartphone</a></li>
+<li><a href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=06111A3A-A651-4745-88EF-3D48091A390B&amp;displaylang=en">Windows Mobile 6 Professional and Standard Software Development Kits Refresh</a></li>
+<li><a href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=20686a1d-97a8-4f80-bc6a-ae010e085a6e&amp;displaylang=en">Windows Mobile 6.5 Developer Tool Kit</a></li>
+</ul>
+<p><strong>8. </strong>Find the files:</p>
+<pre class="mosync-code-cpp">C:\Program Files\Windows CE Tools\wce500\Windows Mobile 5.0 Smartphone SDK\Include\Armv4i\gdiplus*.h </pre>
+<p>Copy them to:</p>
+<p><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 16px; white-space: normal;">&nbsp;</span></p>
+<div>
+<pre class="mosync-code-cpp">C:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\Smartphone2003\Include\</pre>
+</div>
+<p>&nbsp;</p>
+<p><strong>9.</strong> Download and install the <a href="http://www.ruby-lang.org/en/downloads/">Ruby 1.8</a> (or later).<br><br><strong>10.</strong> Download <a href="http://www.sqlite.org/sqlitedll-3_6_18.zip">Sqlite 3 for Ruby 1.8</a> and put it in your ruby\bin directory. (If you have installed a later version of Ruby you'll have to find another version of the Sqlite 3 dll.)<br><br><strong>11.</strong> Install Sqlite 3 Ruby Gem by opening a command (cmd) window and entering:</p>
+<pre class="mosync-code-cpp">gem install sqlite3-ruby</pre>
+<p><strong>12.</strong> Accept the installation of dependencies. These are the ones you need:</p>
+<ul>
+<li>hoe</li>
+<li>rake-compiler</li>
+<li>mocha</li>
+<li>rake</li>
+<li>rubyforge</li>
+</ul>
+<h3>Java SE Development Kit (JDK) 1.6</h3>
+<p><strong>13.</strong> Download and install <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java SE Development Kit (JDK) 1.6</a>. <br><br><strong>14.</strong> Make sure the JDK’s \bin directory has been added to Window’s list of path environment variables, otherwise add it.</p>
+<h3>SonyEricsson J2ME SDK</h3>
+<p><strong>15.</strong> Download and install the latest version of the <a href="http://developer.sonyericsson.com/wportal/devworld/search-downloads/docstools/sdk?cc=gb&amp;lc=en">SonyEricsson SDK for the Java ME Platform</a>.<br><br> <strong>16.</strong> Download and install the <a href="http://proguard.sourceforge.net/">ProGuard 3.7 Java obfuscator</a>.<br><br><strong>17.</strong> Put &nbsp;the file <strong>proguard.jar</strong> in the <em>\OnDeviceDebug\bin</em> directory of the J2ME SDK.</p>
+<h3>Symbian Series 60 SDK</h3>
+<p><strong>18.</strong> &nbsp;Download and install <a href="http://www.activestate.com/activeperl/downloads">ActiverPerl 5.8 Community Edition</a> .</p>
+<p><strong>19.</strong> Download and install <a href="http://www.forum.nokia.com/info/sw.nokia.com/id/ec866fab-4b76-49f6-b5a5-af0631419e9c/S60_All_in_One_SDKs.html">S60 3rd Edition SDK for Symbian OS FP1</a>.<br><br> <strong>20.</strong> Download and install the <a href="http://www.forum.nokia.com/info/sw.nokia.com/id/48a93bd5-028a-4b3e-a0b1-148ff203b2b3/Extensions_plugin_S60_3rd_ed.exe.html">Extensions plug-in for S60 3rd Edition SDK for Symbian OS, for C++, MR</a>.<br>&nbsp;<br><strong>21.</strong> Download and install <a href="http://www.forum.nokia.com/info/sw.nokia.com/id/4a7149a5-95a5-4726-913a-3c6f21eb65a5/S60-SDK-0616-3.0-mr.html">S60 2nd Edition SDK for Symbian OS FP3</a>. If the installer asks you which network adapter to use, pick any.<br>&nbsp;<br><strong>22.</strong> Download and install <a href="http://www.forum.nokia.com/info/sw.nokia.com/id/ec866fab-4b76-49f6-b5a5-af0631419e9c/S60_All_in_One_SDKs.html">S60 5th Edition SDK for Symbian OS</a>. Make sure you install it in the folder <em>\Symbian\s60v5\,</em> as that is the location that is assumed by our build scripts.<br>&nbsp;<br><strong>23.</strong> Download the <a href="http://www.forum.nokia.com/info/sw.nokia.com/id/4ff42a22-7099-4cc9-91bf-5e66166bd28d/S60_3rd_SDK_FP1_API_Plug-In_Pack.html">Extensions Plug-in for S60 3rd Edition SDK for Symbian OS, for C++, supporting Feature Pack 1, v2.5</a>. Install it in <em>both </em>3rd and 5th edition SDKs.<br>&nbsp;<br><strong>24.</strong> Download and unzip<a href="http://www.mosync.com/down/symbian-94-fixes.zip"> symbian-94-fixes.zip</a>. Install it over the s60v5 SDK.<br> &nbsp;<br><strong>25.</strong> Download and unzip<a href="http://www.mosync.com/down/symbian-81-extras.zip"> symbian-81-extras.zip</a>. Install it over the s60v2 SDK, located in the folder:</p>
+<pre class="mosync-code-cpp">\Symbian\8.1a\S60_2nd_FP3\</pre>
+<p><strong>26. </strong>For both 3rd and 5th edition SDKs, run <strong>CSL Toolchain (GCCE) Install</strong>, found on the Start menu, under:</p>
+<pre class="mosync-code-cpp">\S60 Developer Tools\* Edition SDK\v1.0\Tools</pre>
+<p><strong>27.</strong> For each Symbian SDK, make sure that the following folder exists:</p>
+<pre class="mosync-code-cpp">\Epoc32\Data\z\resource\apps\</pre>
+<p>Sometimes, this folder is a file, or does not exist at all, and in both cases this would cause the build to fail.</p>
+<p>&nbsp;<strong>28. </strong>For both 3rd and 5th edition SDKs, find line 31 in the file <em>\epoc32\tools\e32env.pm</em>:</p>
+<pre class="mosync-code-cpp">die "EPOCROOT environment variable must be capitalised\n" if (!$found);</pre>
+<p><strong>29.</strong> Disable this line by adding a hash sign (#) in front of it.</p>
+<h3>GNU binutils</h3>
+<p><strong>30.</strong> Download and install <a href="http://gnuwin32.sourceforge.net/packages/coreutils.htm">CoreUtils for Windows</a>.<br><br><strong>31.</strong> Download and install <a href="http://gnuwin32.sourceforge.net/packages/grep.htm">Grep for Windows</a>.<br><br><strong>32.</strong> Download and install <a href="http://gnuwin32.sourceforge.net/packages/sed.htm">Sed for Windows</a>.<br><br><strong>33.</strong> Make sure the \bin directory of GNU binutils has been added to Window’s list of path environment variables, otherwise add it.</p>
+<h2>Building the SDK</h2>
+<p><strong>34.</strong> If required, <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-moblin-runtimes-linux/index.html">build the Moblin runtimes on Linux</a>.<br><br><strong>35.</strong> If required, <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-mosync-sdk-source-os-x/index.html">build the iPhone runtime on Mac OS X</a>.<br><br> (You do not need to build the Windows Mobile, &nbsp;Java ME, Android, and Symbian runtimes, they are automatically built by the build script).<br><br><strong>36.</strong> Locate the file run.bat.example in <em>\mb\mosync-trunk\trunk\tools\ReleasePackageBuild</em>, copy it, and name the copy <strong>run.bat</strong>.<br><br><strong>37.</strong> Replace the SDK path in <strong>run.bat</strong> with one appropriate for your system:</p>
+<pre class="mosync-code-cpp">start /B /BELOWNORMAL build_package.bat c:\SonyEricsson\JavaME_SDK_CLDC\OnDeviceDebug\ 2&gt;&amp;1 | tee log.txt</pre>
+<p><strong>38.</strong> Start run_commercial_recompiler.bat. It will set up an environment, then call your run.bat (found in the <em>\mb\mosync-trunk\tools\ReleasePackageBuild</em> folder). You can use one of the other <strong>run_*.bat</strong> files to build the package in different ways.<br><br>If all goes well, an installer package should appear in <em>\mb\MoSyncReleasePackage\</em>. <br> It will be called something like <strong>MoSyncSetup_XXX.exe</strong>.<br><br><strong>39.</strong> Done.</p>
+<p>&nbsp;</p>
+<h2>Building Runtimes for the MoSync SDK on OS X</h2>
+<p>If you want to create the Windows Mobile, &nbsp;Java ME, Android, and Symbian runtimes <em>to use with the OS X version of the MoSync SDK</em> (see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-mosync-sdk-source-os-x/index.html">building the MoSync SDK from source on OS X</a>), here’s how:<br><br><strong>1.</strong> Follow the instructions above for <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-mosync-source-windows/index.html#Getting_the_MoSync_Source_Code">Getting the MoSync Source Code</a> and <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-mosync-source-windows/index.html#Installing_the_Dependencies">Installing the Dependencies</a>. &nbsp;(You do not need to get Eclipse or build the SDK.)<br><br><strong>2.</strong> Run the following command from the command line to set the target MoSync Directory:</p>
+<pre class="mosync-code-cpp">set MOSYNCDIR=\mb\MoSyncReleasePackage</pre>
+<p><strong>3.</strong> Go to &nbsp;the folder</p>
+<pre class="mosync-code-cpp">\mb\mosync-trunk</pre>
+<p>and run the following command:</p>
+<pre class="mosync-code-cpp">ruby workfile.rb base</pre>
+<p><strong>4.</strong> Go to</p>
+<pre class="mosync-code-cpp">\mb\mosync-trunk\tools\ConcurrentBuild</pre>
+<p>and run the following command:</p>
+<pre class="mosync-code-cpp">ruby ConcurrentBuild.rb \mb\MoSyncReleasePackage \mb\MoSync-trunk android javame wm s60</pre>
+<p>The script will build your runtimes and put them in the \profiles folder under \mb\MoSyncReleasePackage .<br><br><strong>5.</strong> Copy the runtimes to your mac installation folder and you can start using them on your Mac OS X version.<br><br><strong>6.</strong> Done.</p>
+</body>
+</html>
