@@ -3,7 +3,7 @@
 ## Introduction
 This document explains how to use the documentation system.
 
-It should be noted that the documenation in this repository is NOT in the final format displayed on the web site. A build script is used to process the pages in this reposiotory, to produce HTML pages for the web site.
+It should be noted that the documenation in this repository is NOT in the final format displayed on the web site. A build script is used to process the pages in this repository, to produce HTML pages for the web site.
 
 The purpose with this repository is to have the documentation under version control.
 
