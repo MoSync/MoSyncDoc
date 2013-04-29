@@ -32,7 +32,7 @@ use your own photographs as background image to personalize the app.</p>
 <p><pre class="mosync-code-cpp">  background-image: -webkit-gradient(linear, left top, left bottom, from(#99CF00), to(#6DB700));</pre>
 </p>
 <p>Thus, use property "background-image" rather than "background-color" to make gradients work in the WebKit browsers used in the WebView widgets on iOS and Android.<br><br>It could also be worth to include gradient definitions for Mozilla if you wish to test your app in Firefox on a laptop or desktop machine during development. However, you are better off using Chrome or Safari for testing, which are based on WebKit. More on that below.<br><br>The leftmost screenshot shows the original look of the app. The following is the updated CSS for the ".button" class used for that version:</p>
-<p><pre class="mosync-code-cpp">.button
+<p><pre class="mosync-code-js">.button
 {
   /* Width of buttons. */
   width: 11em;
@@ -65,7 +65,7 @@ use your own photographs as background image to personalize the app.</p>
 }</pre>
 </p>
 <p>This is the gradient used for the example in the middle screenshot:</p>
-<p><pre class="mosync-code-cpp">  background-image: -webkit-gradient(linear, left top, left bottom, from(#777777), to(#000000));
+<p><pre class="mosync-code-js">  background-image: -webkit-gradient(linear, left top, left bottom, from(#777777), to(#000000));
   background-image: -moz-linear-gradient(#777777, #000000);</pre>
 </p>
 <p>And this is the gradient used for the example in the rightmost screenshot:</p>

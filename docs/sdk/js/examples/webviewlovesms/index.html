@@ -15,7 +15,7 @@
 <h2>In the Code</h2>
 <p>This example application is implemented in HTML and JavaScript, and uses the MoSync Wormhole Library to access device services from JavaScript via C++. The Wormhole Library is used for sending text messages and storing data on the device, services that you normally cannot access from JavaScript. You can find the <a href="https://github.com/MoSync/MoSync/tree/ThreeTwo/examples/html5/WebViewLoveSMS">full source code</a> of the application on GitHub.</p>
 <p>Here is the JavaScript code used in the app for sending a text message:</p>
-<pre class="mosync-code-cpp">mosync.bridge.send(['Custom', 'SendSMS', GetPhoneNo(), textMessage]);</pre>
+<pre class="mosync-code-js">mosync.bridge.send(['Custom', 'SendSMS', GetPhoneNo(), textMessage]);</pre>
 <p><strong>mosync.bridge.send </strong>is a JavaScript function that enables sending messages to C++. In the above example, the message consist of an with the message parameters<strong></strong>. When the first element is 'Custom', the message gets routed though a lookup table of custom methods on the C++ side.</p>
 <p>The C++ code of the app is in file <em>LoveSMS.cpp</em>, where you find the class <strong>LoveSMSMoblet</strong>, which inherits <strong>HybridMoblet</strong>, a central class in the Wormhole Library. The <strong>HybridMoblet </strong>class automatically creates and configures a <strong>WebView</strong> widget (a widget in the MoSync Widget API) for the application. It listens for events from the web view and calls custom methods registered in the lookup table.</p>
 <p>Here is hos custom methods are registred in the constructor of LoveSMSMoblet:</p>

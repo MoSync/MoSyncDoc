@@ -15,18 +15,18 @@
 <p><iframe src="http://www.youtube.com/embed/S87XDyZmC3g" frameborder="0" height="315" width="560"></iframe></p>
 <p>(<a href="http://www.youtube.com/watch?v=S87XDyZmC3g">Click here</a> if you cannot see the embedded video.)</p>
 <p>On the current platforms where MoSync supports the WebView widget (Android, iOS, Windows Phone), we can send a message from JavaScript to C (and thus also to Lua) by using the mosynd.bridge.sendRaw JavaScript function.<br><br>This opens up for the possibility to evaluate Lua code from JavaScript. In this example the Lua function "OnTouch()" is called from JavaScript:</p>
-<pre class="mosync-code-cpp">mosync.bridge.sendRaw("OnTouch()")</pre>
+<pre class="mosync-code-js">mosync.bridge.sendRaw("OnTouch()")</pre>
 <p>If we, for example, want the device to vibrate, we can call the maVibrate syscall directly from JavaScript:</p>
-<pre class="mosync-code-cpp">mosync.bridge.sendRaw("maVibrate(500)")</pre>
+<pre class="mosync-code-js">mosync.bridge.sendRaw("maVibrate(500)")</pre>
 <p>Unlike the C++ communication bridge, we don't have to parse and handle each message explicitly. We can just call any Lua script. The entire Lua language and all the MoSync syscalls are suddenly available to mobile developers using JavaScript (thanks to the wizard hat!).<br><br>Next we will examine a very simple program implemented in Lua and JavaScript. Here is a screenshot of the app:<br><br><img src="images/LuaWebView.png" align="none" width="250" height="417"><br><br>When the "Touch Me!" button is touched, the device vibrates.<br><br>Here is an HTML code snippet that makes the device vibrate on a touch start event:</p>
-<pre class="mosync-code-cpp">&lt;div id="TouchArea" ontouchstart="EvalLua('maVibrate(500)')"&gt;Touch Me!&lt;/div&gt;</pre>
+<pre class="mosync-code-js">&lt;div id="TouchArea" ontouchstart="EvalLua('maVibrate(500)')"&gt;Touch Me!&lt;/div&gt;</pre>
 <p>The function EvalLua looks like this (escape is there in case you should use non-ascii characters):</p>
-<pre class="mosync-code-cpp">function EvalLua(script)
+<pre class="mosync-code-js">function EvalLua(script)
 {
   mosync.bridge.sendRaw(escape(script))
 }</pre>
 <p>And here is the code that creates a Screen with a WebView widget set up for communication between JavaScript and Lua:</p>
-<pre class="mosync-code-cpp">function CreateUI()
+<pre class="mosync-code-js">function CreateUI()
   Screen = NativeUI:CreateWidget
   {
     type = "Screen"

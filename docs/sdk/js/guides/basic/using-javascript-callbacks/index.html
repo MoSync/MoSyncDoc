@@ -35,7 +35,7 @@ myButton2.addEventListener("Clicked", buttonCallback);</pre>
 <h2>A Typical Wormhole Callback Function</h2>
 <p>In the code above we didn’t do anything useful with the notification coming from the event listener, we just popped-up an alert when the notification arrived. Let’s look at a callback function that actually does something useful with the data in the notification object.</p>
 <p>In the following example, the callback function (<strong>updateAccelerometer</strong>) handles data coming from the accelerometer sensor:</p>
-<pre class="mosync-code-cpp">// Initialization of the Accelerometer sensor.
+<pre class="mosync-code-js">// Initialization of the Accelerometer sensor.
 var accelerometer = new SensorConnection("Accelerometer");
 
 // Add an event listener to the sensor and identify a callback function.
@@ -62,7 +62,7 @@ function updateAccelerometer(sensorData)
    setTimeout(function() { callback(myNumber); }, 500);
 }</pre>
 <p>This maths function accepts three arguments, the third of which is the callback function to which the results should be sent. The function first does the required calculation (using the values of the first two arguments), then we make it wait 500 milliseconds (using <strong>setTimeout</strong>) before invoking the callback function passing the result. <br><br>(We are using <strong>setTimeout</strong> here merely to simulate what might happen with a complex asynchronous computation of a random number -- imagine how slow your app could become if this function is called multiple times and you had to wait each time for the result via a standard return from the called function.) <br> <br>On the client side, we can now make use of our random number generation function like this:</p>
-<pre class="mosync-code-cpp">randomGenerator (5, 15, function(num)
+<pre class="mosync-code-js">randomGenerator (5, 15, function(num)
 {
    console.log("Your number is " + num);
 });</pre>
@@ -70,7 +70,7 @@ function updateAccelerometer(sensorData)
 <p>&nbsp;</p>
 <h2>Parallel Operations via Callbacks</h2>
 <p>Common JavaScript frameworks like <a href="http://jquery.com/">jQuery</a> make extensive use of callbacks. Here is an example of a call to the jQuery <strong>fadeIn()</strong> method. This method, which is used to fade in graphical interface elements until they become opaque, accepts two arguments: the duration of the animation and an optional callback function. We could use it on an element, for example, like this:</p>
-<pre class="mosync-code-cpp">$("#element").fadeIn(2000, function()
+<pre class="mosync-code-js">$("#element").fadeIn(2000, function()
 {
    alert("Fade in complete");
 });</pre>
@@ -78,7 +78,7 @@ function updateAccelerometer(sensorData)
 <p>&nbsp;</p>
 <h2>Closures</h2>
 <p>A callback function can be used as a <em>closure</em>. A closure is a function that remembers references to variables outside of it's local scope. By this we mean variables that are neither parameters of the function, nor local variables defined inside the function with <strong>var</strong> keyword, but variables defined outside of the function, for example global variables or local variables defined in the containing function. Here is an example:</p>
-<pre class="mosync-code-cpp">// Global variable.
+<pre class="mosync-code-js">// Global variable.
 var name = "Chris";
 
 function lottery()

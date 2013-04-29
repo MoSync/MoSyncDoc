@@ -10,7 +10,7 @@
 <p>The initial implementation was done in pure JavaScript. There are three parts to the system: A particle generator that creates a particle with a random velocity vector (that is facing the screen) several times per second, an algorithm that calculates the particle positions for each frame using good-old Newtonian physics and taking into account accelerometer info about gravity, and the renderer, which simply draws a pre-generated particle image at a given point on the screen, with a variable size to simulate the 3D space. At this stage, Wormhole is only used to pass button presses that control the flow of particles to the JavaScript code, and of course send the accelerometer data to the physics engine (you could still call it a "physics engine" in principle at least).
 </p>
 <p>This is the code that initializes a particle:</p>
-<p><pre class="mosync-code-cpp">var phi = 2 * Math.PI * Math.random(); //Randomly choose a direction
+<p><pre class="mosync-code-js">var phi = 2 * Math.PI * Math.random(); //Randomly choose a direction
 var theta = MAX_ANGLE_DEVIATION
  * Math.random(); //Diverge a little from the main axis
 
@@ -48,7 +48,7 @@ Next, I implemented the same algorithm purely in C++ using OpenGL. Which I guess
 For the general solution, I decided to establish some signaling between C++ and JavaScript. JavaScript would still calculate the particle positions at the full rate (100 times per second), but would only send a new state when C++ told it that it had rendered the last frame.</p>
 <p> 
 Here is the Javascript code that handles the signaling and creates the message of the particle positions:</p>
-<p><pre class="mosync-code-cpp">boolean oglIsReady = true;
+<p><pre class="mosync-code-js">boolean oglIsReady = true;
 
 function oglReady() {
     oglIsReady = true;

@@ -14,7 +14,7 @@
 <tr><td><em>Default list on iOS</em></td><td><em>Default list on Windows Phone 7</em></td><td><em>Default list on Android</em></td></tr>
 </tbody></table>
 <p><em>Example</em></p>
-<pre class="mosync-code-cpp">ListView* listView = new ListView();
+<pre class="mosync-code-js">ListView* listView = new ListView();
 layout-&gt;addChild(listView);</pre>
 <h3>Alphabetical</h3>
 <p>This <strong>ListView</strong> widget type allows information to be displayed in alphabetical order.<br><br>On iOS, an index bar appears on the right side of the list, showing labels such as ‘a’ through ‘z’. <br><br>On Windows Phone 7, the alphabetical list is similar to the segmented one: the right-side index bar is missing and the letter jump is made by clicking on the section header. A new screen is presented (see screenshot for WP7, below), containing all the available sections from which the user can chose.<br><br>On Android, the alphabetical list enables the fast ‘scroll thumb’ that can be dragged to quickly scroll through the list. There is a native constraint: there need to be at least 35 items in the list for the fast ‘scroll thumb’ to be shown. The best example of this implementation is the standard 'Contacts' application.</p>
@@ -27,7 +27,7 @@ layout-&gt;addChild(listView);</pre>
 <tr><td><em>Alphabetical list on iOS</em></td><td><em>Alphabetical list on <br>Windows Phone 7</em></td><td><em>List jump screen on <br>Windows Phone 7</em></td></tr>
 </tbody></table>
 <p><em>Example</em></p>
-<pre class="mosync-code-cpp">ListView* listView = new ListView(LIST_VIEW_TYPE_ALPHABETICAL);
+<pre class="mosync-code-js">ListView* listView = new ListView(LIST_VIEW_TYPE_ALPHABETICAL);
 layout-&gt;addChild(listView);</pre>
 <h3>Segmented</h3>
 <p>This <strong>ListView</strong> type shows information items in groups. <br><br>On iOS, the widget has a default background color and default background for list items. Data can be grouped into sections. For example, one group can display phone numbers and another email addresses. <br><br>On Windows Phone 7, the default background color of the header/footer/jump list screen is the same as the current phone accent brush.<br><br>On Android the segmented list is not a native control, but in fact a custom list view with default items for header and footer. The default background color of the header/footer items is gray, but that can be customizable. The header and footer text color and size can also be customizable. <br><br>Below we show how the segmented list view looks like on Android, iOS and Windows Phone 7:</p>

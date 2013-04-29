@@ -15,7 +15,7 @@
 <p><em>It is good to know that two message formats are supported by Wormhole:</em> JSON messages and String stream messages. The example we discuss here uses String streams.</p>
 <p>String streams are a performant way of sending messages from JavaScript to C++. This method is generally faster than JSON messages (on some platforms 20x faster). Parsing on the C++ side is very efficient, and streams of string messages are concatenated before passed to C++. This makes sending a large number of small messages efficient.</p>
 <p>The JavaScript function <strong>mosync.bridge.send()</strong> is used to send string messages to C++:</p>
-<pre class="mosync-code-cpp">mosync.bridge.send(messageArray, callbackFunction)
+<pre class="mosync-code-js">mosync.bridge.send(messageArray, callbackFunction)
 </pre>
 <p>This function takes two parameters. The first parameter "messageArray" is an array of strings.These values will be sent to C++. By convention, the protocol for sending custom messages is based on the first element in the array being the string<strong> "Custom"</strong>, and the second element being the name ("action") of the message, like "Beep". Then follows any parameters. (See example below.)</p>
 <p>The second parameter "callbackFunction" is an optional function that you can use to send back a result value from C++ to JavaScript. The communication mechanism is asynchronous, which is why a callback function is used to pass the result back from C++ to JavaScript.</p>
@@ -55,7 +55,7 @@
 </pre>
 <p>The following snippets illustrate how to invoke C++ from JavaScript and call a JavaScript callback function.</p>
 <p>Here is the JavaScript part:</p>
-<pre class="mosync-code-cpp">mosync.bridge.send(
+<pre class="mosync-code-js">mosync.bridge.send(
     ["Custom", "GetScreenSize"], 
     function(width, height) {
         alert("Screen size: " + width + ", " + height);

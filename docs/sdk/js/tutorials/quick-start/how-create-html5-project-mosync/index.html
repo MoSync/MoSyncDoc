@@ -44,7 +44,7 @@ document.addEventListener("deviceready", displayDeviceInfo, true);</pre>
 <p>Making cross-platform web-based user interfaces has always ben considered a challenge, first on desktop browsers, and now on mobile devices. The web is full with advice on how to develop mobile web apps, here we highlight some useful advice.</p>
 <h3>Setting the viewport width</h3>
 <p>A useful trick for controlling the initial zoom level is to set the width of the browser viewport the head section of the HTML-page, using the viewport meta tag. The following sets the width to 320 pixels and also prevents the page from being zoomed:</p>
-<pre class="mosync-code-cpp">&lt;meta name="viewport" content="width=320, user-scalable=no"&gt;
+<pre class="mosync-code-xml">&lt;meta name="viewport" content="width=320, user-scalable=no"&gt;
 </pre>
 <p>Further reading:</p>
 <ul>
@@ -57,7 +57,7 @@ document.addEventListener("deviceready", displayDeviceInfo, true);</pre>
 </ul>
 <h3>Using em's as measurement unit</h3>
 <p>Another trick is to use em's as the unit for page elements and font sizes. One em is equal to the size of the current font size, and thus scale between different screen sizes. For example, in your style sheet, you can use:</p>
-<pre class="mosync-code-cpp">font-size: 1.4em;</pre>
+<pre class="mosync-code-css">font-size: 1.4em;</pre>
 <p>Search the web for mobile application development with HTML and CSS and you will find a vast source of information. Keep in mind, however, as HTML5/CSS evolve and new platforms enter the market, best practices for user interfade design and layout may be revised.</p>
 <h2>Building and deploying your application</h2>
 <p>The guide<a href="TEMPLATE_DOC_PATH/sdk/js/tutorials/quick-start/getting-started-html5-and-javascript/index.html"> Getting Started with HTML5 and JavaScript</a> shows you how to build and run HTML5 applications on various platforms, using the MoSync Eclipse IDE.</p>
@@ -68,12 +68,12 @@ document.addEventListener("deviceready", displayDeviceInfo, true);</pre>
 <li><a href="TEMPLATE_DOC_PATH/sdk/js/examples/wormholenativeui/index.html"><strong>WormholeNativeUI</strong></a> shows you how to build an app that has a Native UI, using a JavaScript. The app uses the Wormhole C++ library and wormhole.js.</li>
 <li><a href="TEMPLATE_DOC_PATH/sdk/js/examples/webviewlovesms/index.html"><strong>WebViewLoveSMS</strong></a> and <a href="TEMPLATE_DOC_PATH/sdk/js/examples/webviewtwitter/index.html"><strong>WebViewTwitter</strong></a> have HTML/CSS user interfaces, and show how to use the Wormhole C++ library to handle calls from JavaScript to C/C++. When you want to implement as much as possible of your app in HTML5/JavaScript, the WormholeDemo app is a better starting point than these apps. But if you wish to implement some of the application's functionality in C/C++, these apps are a good reference.</li>
 <li><strong></strong><a href="TEMPLATE_DOC_PATH/sdk/js/examples/photogallery/index.html"><strong>PhotoGallery</strong></a> is a more advanced example app that uses a mixed UI composed of Native Tab screens and multiple WebViews. The code shows how to send messages between WebViews, and how to invoke custom code in C++.</li>
-<li><a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/nfcexample/index.html"><strong>NFCExample</strong></a> is an example that has the purpose of demonstrating NFC (Near Field Communication). It is a C++ app that has an HTML/CSS user interface. (NFC is currently available only on Android.)</li>
+<li><a href="TEMPLATE_DOC_PATH/sdk/js/examples/nfcexample/index.html"><strong>NFCExample</strong></a> is an example that has the purpose of demonstrating NFC (Near Field Communication). It is a C++ app that has an HTML/CSS user interface. (NFC is currently available only on Android.)</li>
 <li><a href="TEMPLATE_DOC_PATH/sdk/js/examples/webviewgeolocation/index.html"><strong>WebViewGeoLocation</strong></a> shows how to use a WebView at the most basic level. This example does not use any high-level libraries, and is provided as a reference for how low-level JavaScript to C/C++ communication mechanisms work.</li>
 </ul>
 <h2><a name="adding-an-application-icon"></a>Adding an application icon</h2>
 <p>To make your app have an nice icon, you need to have two files in your project. One XML-file with a .icon extension, for example <strong>App.icon</strong>, and one SVG file with the actual icon image. If your SVG file is named <strong>Icon.svg</strong>, this is the content of App.icon:</p>
-<pre class="mosync-code-cpp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<pre class="mosync-code-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;icon&gt;
     &lt;instance size="default" src="Icon.svg" /&gt;
 &lt;/icon&gt;

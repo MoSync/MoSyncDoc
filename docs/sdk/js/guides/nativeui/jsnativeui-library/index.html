@@ -21,7 +21,7 @@
 <p>First let’s have a quick look at the example application's index file. All of the Native widgets are &lt;div&gt; tags wrapped inside a main &lt;div&gt; tag with ID “NativeUI”. Then there is a <strong>TabScreen</strong> screen widget which wraps everything else. When initiated the system loads the tag “mainScreen” to the actual screen of the phone.</p>
 <p>There are several widget placed inside this main screen in a specific layout (to figure out what each of them does, refer to the <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/widgetTypes.md.html#Widget%20Types">NativeUI Widget Types</a> documentation). <strong></strong></p>
 <p>&nbsp;</p>
-<pre class="mosync-code-cpp">&lt;body&nbsp; onload="NativeUI.initUI()"&gt;
+<pre class="mosync-code-js">&lt;body&nbsp; onload="NativeUI.initUI()"&gt;
 
 &nbsp;&nbsp; &nbsp;&lt;div id="NativeUI"&gt;
 &nbsp;&nbsp; &nbsp;
@@ -74,7 +74,7 @@
 &lt;/body&gt;
 </pre>
 <p>Now let’s add another Tab to our application. Insert the following code just before the closing &lt;/div&gt; tag of the <strong>TabScreen</strong>:</p>
-<pre class="mosync-code-cpp">&lt;div data-widgetType="Screen" 
+<pre class="mosync-code-js">&lt;div data-widgetType="Screen" 
 &nbsp;&nbsp; &nbsp;id="ThirdScreen" 
 &nbsp;&nbsp; &nbsp;data-title="New Screen" 
 &nbsp;&nbsp; &nbsp;data-icon="img/TabIconWebView.png"&gt;

@@ -18,7 +18,7 @@
 <p>When the program starts, a single <strong>WebView </strong>widget is created. The HTML and JavaScript code is stored in a text file and packaged with the application as a binary resource. That resource is extracted when the program starts, and the web view is set to display that data. This is done in C++ code, in file <em>GeoLocation.cpp</em>.</p>
 <p>The communication mechanism for invoking C++ code from JavaScript is based on the MAW_EVENT_WEB_VIEW_HOOK_INVOKED event (note that in MoSync 2.7, the URL hook mechanism was used, this method is still available, but is not supported to the full extent on Windows Phone 7).</p>
 <p>In file <em>Resources/index.html</em>, the following JavaScript code is evaluated when clicking the <strong>Start</strong> button:</p>
-<pre class="mosync-code-cpp">mosync.bridge.sendRaw("StartTrackingGeoLocation");</pre>
+<pre class="mosync-code-js">mosync.bridge.sendRaw("StartTrackingGeoLocation");</pre>
 <p>The result will be that a MAW_EVENT_WEB_VIEW_HOOK_INVOKED is posted to the MoSync event queue, and the following C++ code in WebViewGeoLocation.cpp is called:</p>
 <pre class="mosync-code-cpp">case EVENT_TYPE_WIDGET:
     handleWidgetEvent((MAWidgetEventData*) event.data);
