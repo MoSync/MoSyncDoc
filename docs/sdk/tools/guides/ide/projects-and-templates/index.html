@@ -1,0 +1,70 @@
+<html>
+<head>
+<title>Creating Projects from Templates</title>
+</head>
+<body>
+<h1>Creating Projects from Templates</h1>
+<p>This guide shows you how to create a new application project in the MoSync IDE and describes the project templates that are available to you. It also introduces the concepts of projects and workspaces. We have templates for various types of C/C++ projects, and templates for hybrid HTML/Javascript/C/C++ projects.<!--break--></p>
+<p></p>
+<h2>Projects and Workspaces</h2>
+<p>The MoSync IDE is based on Eclipse. Eclipse organizes your source code using projects and workspaces. A <em>workspace</em> is a collection of projects. A <em>project</em> is a collection of a set of source files. Projects can be individual applications or modules, depending on how you choose to organize your workspaces. Each project maps to a corresponding directory in the file system.</p>
+<p>The different projects in a workspace may map to different file system directories or drives, although, by default, all projects map to subdirectories of a single workspace directory. All files in the workspace are directly accessible to the standard programs and tools of the underlying operating system.</p>
+<p>The <strong>Project Explorer</strong> view in the IDE shows you all the projects in the current workspace and their source files.</p>
+<h2>Creating a New Project</h2>
+<p>In the MoSync IDE, you create a new project by doing one of the following:</p>
+<ul>
+<li>From the <strong>File </strong>menu, choose <strong>New </strong>&gt; <strong>Project</strong>, or<strong><br></strong></li>
+<li>Right-click in the <strong>Project Explorer</strong>, then choose <strong>New </strong>&gt; <strong>Project<br><br></strong>(If you have hidden the Project Explorer view, you can show it again by selecting <strong>Window</strong> &gt; <strong>Show View</strong> &gt; <strong>Other </strong>&gt; <strong>General </strong>&gt; <strong>Project Explorer</strong> and then clicking <strong>OK</strong>.)</li>
+</ul>
+<p><img src="images/ide-new-project.png" align="none" width="410" height="364"></p>
+<p>When the <strong>New Project</strong> window opens, expand the MoSync folder:<br> <br> <img src="images/new-project-window.png" align="none" width="500" height="500"><br> <br> In the folder <strong>MoSync </strong>you will find wizards for creating MoSync projects.</p>
+<p>Select the one called <strong>MoSync Project</strong>.</p>
+<p>Click <strong>Next</strong>. A new window will open showing you the templates that are available for you new project:</p>
+<p><img src="https://lh4.googleusercontent.com/XyA5vnj4YLIVlZslWnH8VSUQjNauADNhgFqko6dxNoxzjdZ4Sq5vuDEbee6wAERyfVPgGmJPVh9fkX_Mxyx3oQ2w6W2LMLkIfumEt6GO5R49PnKAPsw" id="internal-source-marker_0.16723757584989185" height="500px;" width="500px;"></p>
+<p>Select a template type (C/C++ or HTML5), then select one of the available templates.</p>
+<p>Click <strong>Next</strong>. The project name and location screen appears:<br> <br> <img src="images/create-new-project-window.png" align="none" width="500" height="500"><br> <br> Enter the <strong>Project name</strong> "HelloWorld". (<em>Note</em>: to ensure compatibility with all platforms and devices, avoid using spaces in project names; it is always safe to use the underscore character.)</p>
+<p>Tick the <strong>Use default location</strong> box.</p>
+<p>Click <strong>Finish</strong>.</p>
+<p>Your new project will now be created from the template and loaded in the MoSync IDE.</p>
+<h2>MoSync Project Templates</h2>
+<p>We provide you with many different project templates, adapted to meet the needs of various different application types.</p>
+<p>All templates have:</p>
+<ul>
+<li>Default compiler flags for <strong>Release </strong>configuration: -O2</li>
+<li>Default compiler flags for <strong>Debug </strong>configuration: O0</li>
+<li>Dead code elimination: Off</li>
+<li>Default library: <strong>mastd.lib</strong>, if enabled.</li>
+</ul>
+<table>
+<colgroup></colgroup><tbody><tr style="background-color: #f4a460;"><td><strong>Template</strong></td><td><strong>Languages</strong></td><td><strong>Description</strong></td><td><strong>Libraries</strong></td><td><strong>Heap size</strong></td><td><strong>Stack size</strong></td><td><strong>Data size</strong></td></tr>
+<tr style="background-color: #e6e6fa;"><td><h3>HTML5/JS WebUI Project</h3>
+</td><td>HTML5, JavaScript</td><td>Template for HTML5/JS projects that use HTML/CSS for the UI. Access device functionality from JavaScript.</td><td>mastd.lib, MAUtil.lib, NativeUI.lib, MAFS.lib, Wormhole.lib<br>yajl.lib<br>Notification.lib</td><td>3072</td><td>512</td><td>4096</td></tr>
+<tr style="background-color: #e6e6fa;"><td><h3>HTML5/JS NativeUI Project</h3>
+</td><td><p>HTML5, JavaScript</p>
+</td><td><p>Template for HTML5/JS projects that use Native UI. Create the UI in HTML/JavaScript and access device functionality from JavaScript.</p>
+</td><td><p>mastd.lib, MAUtil.lib, NativeUI.lib, MAFS.lib, Wormhole.lib, yajl.lib, Notification.lib</p>
+</td><td><p>3072</p>
+</td><td><p>512</p>
+</td><td><p>4096</p>
+</td></tr>
+<tr style="background-color: #ffefd5;"><td><h3>HTML5/JS/C++ Hybrid Project</h3>
+</td><td>HTML5, JavaScript, C/C++</td><td>Template for hybrid HTML5/JS/C++ projects. Extend the application with C/C++ code. Build the UI in HTML/CSS or use NativeUI.</td><td>mastd.lib, MAUtil.lib, NativeUI.lib, MAFS.lib, Wormhole.lib<br>yajl.lib<br>Notification.lib</td><td>3072</td><td>512</td><td>4096</td></tr>
+<tr style="background-color: #98fb98;"><td><h3>C++ STL Project</h3>
+</td><td>C/C++</td><td>A standard ANSI C++ application template consisting of a main file with a small code example and &nbsp;includes the C++ Standard Template Library.</td><td>newlib.lib, stlport.lib</td><td>1536</td><td>256</td><td>2048</td></tr>
+<tr style="background-color: #98fb98;"><td><h3>C++ Moblet Project</h3>
+</td><td>C/C++</td><td>A standard ANSI C++ application template that uses the Moblet event-handling framework.</td><td>mastd.lib, MAUtil.lib</td><td>512</td><td>128</td><td>1024</td></tr>
+<tr style="background-color: #98fb98;"><td><h3>C++ NativeUI Project</h3>
+</td><td>C/C++</td><td>A standard ANSI C++ application template that uses the Moblet framework and the NativeUI Library.</td><td>mastd.lib, MAUtil.lib, NativeUI.lib</td><td>3072</td><td>512</td><td>4096</td></tr>
+<tr style="background-color: #98fb98;"><td><h3>C++ OpenGL Project</h3>
+</td><td>C/C++</td><td>A standard ANSI C++ application template that includes the Moblet framework and basic OpenGL code.</td><td>mastd.lib, MAUtil.lib</td><td>3072</td><td>512</td><td>4096</td></tr>
+<tr style="background-color: #ffffcc;"><td><h3>C Basic Project</h3>
+</td><td>C</td><td>A standard ANSI C project template consisting of a main file with a small code example.</td><td>mastd.lib</td><td>512</td><td>128</td><td>1024</td></tr>
+<tr style="background-color: #ffffcc;"><td><h3>C NativeUI Project</h3>
+</td><td>C</td><td>A standard ANSI C application template that has its own event loop and uses the Widget API.</td><td>mastd.lib, MAUtil.lib</td><td>3072</td><td>512</td><td>4096</td></tr>
+<tr style="background-color: #ffffcc;"><td><h3>C Newlib Project</h3>
+</td><td>C</td><td>A standard ANSI C application template using the Newlib C library.</td><td>newlib.lib</td><td>1536</td><td>256</td><td>2048</td></tr>
+<tr><td><h3>Empty Project</h3>
+</td><td>No languages</td><td>A project template with standard settings but no files, roll your own.</td><td>mastd.lib</td><td>512</td><td>128</td><td>1024</td></tr>
+</tbody></table>
+</body>
+</html>

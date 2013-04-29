@@ -1,0 +1,87 @@
+<html>
+<head>
+<title>MTXml Parser</title>
+</head>
+<body>
+<h1>MTXml Parser</h1>
+<p>MoSync's Tiny XML parser, MTXml, provides an efficient, callback-based way of parsing XML files. MTXml has a SAX-like interface, and is re-entrant: it can start with just the beginning of an XML document and request additional data when needed.</p>
+<p><!--break--></p>
+<p>MTXml can handle most XML 1.0 and 1.1 documents. However, in the interests of performance, MTXml is not a conforming XML processor, as defined by the W3C Recommendation. It does not validate documents, and it only checks a few of the well-formed-ness criteria. It even ignores some "fatal errors". Still, it should properly parse a well-formed document.<br><br>There are two modes of parsing. One, <strong>mtxFeedProcess()</strong>, is slower, and converts standard entities and UTF-8 characters to Latin-1 before passing them to the application. The other, <strong>mtxFeed()</strong>, is faster, and passes such characters without conversion. If you know which parts of your document need conversion and which ones don't, you can do the conversion manually, using <strong>mtxProcess()</strong>.</p>
+<h2>Example</h2>
+<p>Here's a minimal C program that uses MTXml.</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">#include &lt;MTXml/MTXml.h&gt;
+#include &lt;conprint.h&gt;
+#include &lt;maassert.h&gt;
+
+// For each callback, print its type and parameters.
+
+static void tagStart(MTXContext* context, const void* name, int len)
+{
+    printf("s %i: \"%s\"\n", len, (char*)name);
+}
+
+static void tagAttr(MTXContext* context, const void* attrName, const void* attrValue)
+{
+    printf("a \"%s\": \"%s\"\n", (char*)attrName, (char*)attrValue);
+}
+
+static void tagData(MTXContext* context, const void* data, int len)
+{
+    printf("d %i: \"%s\"\n", len, (char*)data);
+}
+
+static void tagEnd(MTXContext* context, const void* name, int len)
+{
+    printf("e %i: \"%s\"\n", len, (char*)name);
+}
+
+static void dataRemains(MTXContext* context, const char* data, int len)
+{
+    printf("r %i: \"%s\"\n", len, data);
+}
+
+static void parseError(MTXContext* context, int offset)
+{
+    printf("parseError %i\n", offset);
+}
+
+static void emptyTagEnd(MTXContext* context)
+{
+    printf("emptyTagEnd\n");
+}
+
+// The XML document is declared here, but not defined.
+// Fetching the document is beyond the scope of this example.
+extern char gDocument[];
+
+int MAMain(void) GCCATTRIB(noreturn);
+int MAMain(void)
+{
+    MTXContext c;
+    printf("Hello World!\n");
+
+    // Set up the context.
+    c.tagStart = tagStart;
+    c.tagAttr = tagAttr;
+    c.tagData = tagData;
+    c.tagEnd = tagEnd;
+    c.dataRemains = dataRemains;
+    c.parseError = parseError;
+    c.emptyTagEnd = emptyTagEnd;
+    c.unicodeCharacter = mtxBasicUnicodeConvert;
+    mtxStart(&amp;c);
+
+    // Perform the parsing.
+    mtxFeed(&amp;c, gDocument);
+
+    // Wait for the user to exit.
+    FREEZE;
+}
+</pre>
+<p><br><strong>tagStart()</strong> is called when an XML tag starts. <strong>tagAttr()</strong> is called for each attribute of a tag. <strong>tagData()</strong> may be called multiple times, to handle pieces of character data inside a tag. <strong>tagEnd()</strong> is called at the end of each tag. However, if the tag is empty (looks like this: <tt>&lt;someTag/&gt;</tt>), <strong>emptyTagEnd()</strong> is called instead of <strong>tagEnd()</strong>.<br><br><strong>parseError()</strong> is called if the parser encounters something it cannot parse. When that happens, parsing stops. It should not be restarted without resetting the context with <strong>mtxStart()</strong>.<br><br><strong>dataRemains()</strong> is called if the parser encounters a partial object at the end of the buffer supplied to it. The application should copy that part to the beginning of the buffer and fill the buffer with more data, so that the object may be fully parsed later. In this example, we have a complete XML document available (the external variable <strong>gDocument</strong>), so <strong>dataRemains()</strong> is not called.</p>
+<p>Please note that this program, as written, will not build, because <strong>gDocument </strong>is not defined. If you want to compile it, you'll have to supply an XML document to parse.</p>
+<div id="_mcePaste" class="mcePaste" style="overflow: hidden; position: absolute; left: -10000px; top: 354px; width: 1px; height: 1px;"><pre class="code">void</pre>
+</div>
+</body>
+</html>

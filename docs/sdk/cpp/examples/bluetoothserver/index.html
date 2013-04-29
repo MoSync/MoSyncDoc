@@ -1,0 +1,25 @@
+<html>
+<head>
+<title>BluetoothServer</title>
+</head>
+<body>
+<h1>BluetoothServer</h1>
+<p>This application acts as a Bluetooth server. It is designed to work with our <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/bluetoothclient/index.html">BluetoothClient</a> example application.<!--break--></p>
+<table class="doclayout" border="0"><tbody><tr><td><img src="images/BluetoothServer.png" align="none" width="240" height="320"></td><td><img src="images/BluetoothServer-connection.png" align="none" width="240" height="320"></td><td><img src="images/BluetoothServer-keys-received.png" align="none" width="240" height="320"></td></tr>
+<tr><td><em>On start up </em></td><td><em>Connection established </em></td><td><em>Receiving data</em></td></tr>
+</tbody></table>
+<p>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<h2>Using this Example</h2>
+<p>To use this example application with our <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/bluetoothclient/index.html">BluetoothClient</a> application, you will need two Bluetooth capable devices. Make sure that Bluetooth is turned on on both devices and that the devices are paired before running the server and the client applications.</p>
+<p>The file <strong>Common.h</strong> contains contains a full description of how to use the projects together, along with the variables and functions shared between the BluetoothServer and BluetoothClient projects (including the service UUID).</p>
+<p><strong><em>Note</em></strong>: when making your own projects that use Bluetooth, you need to enable Bluetooth for your project under <strong>Properties </strong>&gt; <strong>MoSync Project</strong> &gt; <strong>Application Permissions</strong>.</p>
+<h2>Behaviour</h2>
+<p>This application sets up an RFCOMM service with a particular UUID and listens for connections. When this application starts up successfully on a device (or in the MoRE emulator on a computer) with activated Bluetooth capabilities you will see the message "Server started successfully" followed by the server device's Bluetooth address in hexadecimal. You need to supply this address in the BluetoothClient application as the value of <strong>sServerAddress</strong>.</p>
+<p>When a connection is accepted from the BluetoothClient application, the connection ID is shown along with the client device's Bluetooth address.</p>
+<p>As data is received from a client (in BluetoothClient when a key is pressed or the screen is touched), the connection ID and the data are printed to the screen. The data is usually sent one character at a time, but may be buffered if the connection is slow.</p>
+<h2>Key Presses</h2>
+<ul>
+<li>0 or back key — closes the application.</li>
+</ul>
+</body>
+</html>

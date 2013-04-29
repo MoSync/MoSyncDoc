@@ -1,0 +1,34 @@
+<html>
+<head>
+<title>PIMExample</title>
+</head>
+<body>
+<h1>PIMExample</h1>
+<p>This example application demonstrates how to add, modify and remove a new contact from an address book and how to read contacts from address book.<!--break--></p>
+<p><img src="images/PIMDemo1.png" align="none" width="210" height="313"><br><br>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<h2>Behaviour</h2>
+<p>When this application is started a new contact will be added to a contacts list. All available contact fields will be filled with values.</p>
+<p>At the next step the first address value from the new created contact will be modified. After that the new contact will be removed from the list. At this point user has two options:</p>
+<ol>
+<li>Print the next contact from the list.</li>
+<li>Close the contact list and start again the whole process(add a new contact, modify address field etc).</li>
+</ol>
+<h2>In the Code</h2>
+<p>The project is divided into several files. A brief description of the each file's content is as follows:</p>
+<ol>
+<li><strong>Main.cpp</strong>: Application's main entry point.</li>
+<li><strong>AppMoblet.h </strong>and <strong>AppMoblet.cpp</strong>: These files contain code for adding, modifying and removing a contact from a contact list.</li>
+<li><strong>PIMContact.h </strong> and <strong>PIMContact.cpp</strong>: These files contain code for adding and removing values from a contact, printing a contact on the screen and modifying address field.</li>
+<li><strong>Util.h </strong>and <strong>Util.cpp</strong>: These files contain field values for the new contact and methods for handling and printing error codes.</li>
+</ol>
+<h2>Touch responses</h2>
+<ul>
+<li>The application is exited by pressing the <strong>Back </strong>button.</li>
+<li>When printing or adding values to a contact user can tap on the screen to go at the next field.</li>
+<li>Drag on the screen from left to right to print the next contact.</li>
+<li>Drag on the screen from right to left to close the contacts list.</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

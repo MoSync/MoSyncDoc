@@ -1,0 +1,34 @@
+<html>
+<head>
+<title>Developing Android Applications</title>
+</head>
+<body>
+<h1>Developing Android Applications</h1>
+<p>Android developers will find much to like in the MoSync SDK. Like the native Android SDK, the MoSync SDK utilizes Eclipse as its development environment. Here we provide some advice on building Android application using the MoSync SDK.<!--break--></p>
+<p></p>
+<h2>Android Package Settings</h2>
+<p>Package settings for Android applications can be found under <strong>Properties </strong>&gt; <strong>MoSync Project</strong> &gt; <strong>Android </strong>for your project. Here you can set the application's package name and version code and sign the package with your credentials.</p>
+<p>The application package name is used by the Android OS to identify your application. The default package name is <strong>com.mosync.app_</strong>&lt;Project Name&gt;.</p>
+<p>The application version code is used by the <a href="https://market.android.com/" title="Android Market" id="e.3f">Android Market</a> to check for application updates.</p>
+<h2>Application Signing</h2>
+<p>You need to sign your Android application before it can be installed on an Android device. You can create your own self-signed certificate (see&nbsp;<a href="http://developer.android.com/guide/publishing/app-signing.html" title="http://developer.android.com/guide/publishing/app-signing.html" id="ybpx">http://developer.android.com/guide/publishing/app-signing.html</a>). Just add the information about your certificate in MoSync and your application will be signed when you build it.<em>&nbsp;</em></p>
+<h2>Sending Applications to Devices via USB</h2>
+<p>From within the MoSync IDE you can search for connected Android devices. Click the small down-arrow next to the icon of a mobile phone and magnifying glass on the top bar of the IDE then select <strong>Scan for Android USB device</strong>. (If your device is not found make sure you have installed the connection software which came with the device.)</p>
+<h2>Sending Applications to Devices via Bluetooth</h2>
+<p>Newer Android devices (2.1 onwards) can also send applications via Bluetooth. This is enabled on your phone. To search for Bluetooth devices, choose <strong>Scan for Bluetooth device</strong> instead. When you have selected your device and choosen a default device profile for it, you can send the application to the device.</p>
+<p>Bluetooth is not supported by Android 1.5 and 1.6.</p>
+<h2>Background Processing</h2>
+<p>One of the more powerful features of the Android platform is its ability to let applications run in the background. However, many devices on other platforms (particularly Java ME) do not allow you to do this, they just stop working if you switch to another application. Therefore, be careful if you are creating Android applications that rely on being able to run in the background and you intend to port them to other platforms.</p>
+<h2><strong>&nbsp;</strong>Screen Resolution Support</h2>
+<p>MoSync applications built for Android 1.6 and later uses the Android manifest settings to handle all types of screen resolutions. At this time all resolutions are allowed.<em>&nbsp;</em></p>
+<h2><em>&nbsp;</em>Touch Input and Sound<em>&nbsp;</em></h2>
+<p>Applications based on MoSync are able to access touch and key input, and can access all the image and sound formats supported by the Android OS. <em></em></p>
+<h2>Known Issues and Limitations</h2>
+<p>For known issues and limitations with our Android implementation, see our <a href="http://jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&amp;requestId=10121">Issue Tracker</a>.</p>
+<p><em><br></em></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

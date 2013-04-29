@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>CameraDemo</title>
+</head>
+<body>
+<h1>CameraDemo</h1>
+<p>CameraDemo is a simple C++ application built with the MoSync SDK that demonstrates how to control a device's camera. It makes use of the MoSync Widget C API.<!--break--></p>
+<p><!--break--></p>
+<table class="doclayout" border="0"><tbody><tr><td><img src="images/CameraDemo1.png" align="none" width="200" height="333"></td><td><img src="images/CameraDemo2_0.png" align="none" width="200" height="333"></td><td><img src="images/CameraDemo3.png" align="none" width="200" height="333"></td></tr>
+<tr><td><span style="font-size: 10pt; font-family: Verdana; color: #000000; background-color: #ffffff; font-weight: normal; font-style: italic; font-variant: normal; text-decoration: none; vertical-align: baseline;">Main screen, Android</span></td><td><span style="font-size: 10pt; font-family: Verdana; color: #000000; background-color: #ffffff; font-weight: normal; font-style: italic; font-variant: normal; text-decoration: none; vertical-align: baseline;">Main screen, iOS/iPhone</span></td><td><span style="font-size: 10pt; font-family: Verdana; color: #000000; background-color: #ffffff; font-weight: normal; font-style: italic; font-variant: normal; text-decoration: none; vertical-align: baseline;">Settings screen, Android</span></td></tr>
+</tbody></table>
+<p>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<h3>Behaviour</h3>
+<p>The application makes extensive use of the MoSync <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___widget_a_p_i.html">Widget API</a>. It has three different screens:</p>
+<ul>
+<li><strong>MainScreen </strong>is the default screen in the application form which the user can take snapshots, zoom in or out (if supported by the device), reach the other screens.</li>
+</ul>
+<ul>
+<li><strong>SettingsScreen </strong>contains controls for configuring the camera and setting its properties. It also provides the ability to switch between cameras, where that is supported. This screen may differ from one device to another based on the available functionality on the device.&nbsp;</li>
+</ul>
+<ul>
+<li><strong>ImageScreen </strong>contains the latest captured image.</li>
+</ul>
+<h3>In the Code</h3>
+<p>The project is divided into several files. Each screen is implemented in a separate set of header and cpp files.<br><br><img src="images/CameraDemo4.png" align="none" width="246" height="182"></p>
+<p>The <strong>main.cpp</strong> file is the main file of the project. It includes the code for creating <strong>MainScreen</strong>.<br><br><strong>ImageScreen.cpp</strong> contains the code for creating and handling the <strong>ImageScreen</strong>, while&nbsp; <strong>SettingScreen.cpp</strong> implements a class that creates and handles the <strong>SettingsScreen</strong>.<br><br><strong>WidgetUtil.cpp</strong> contains simple wrappers for setting and getting properties of the widgets (similar to the files seen in our example application <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/hellonativeui/index.html">HelloNativeUI</a>).</p>
+<p>The <strong>.h</strong> header files contain the forward declarations for the code in the <strong>.cpp</strong> files.</p>
+<h3>Touch responses</h3>
+<ul>
+<li>Tap buttons to capture image, switch screens, zoom in/out.</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

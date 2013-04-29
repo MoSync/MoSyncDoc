@@ -1,0 +1,96 @@
+<html>
+<head>
+<title>The JavaScript NativeUI API</title>
+</head>
+<body>
+<h1>The JavaScript NativeUI API</h1>
+<p><span style="color: #ff0000;"><span style="color: #ff0000;"><span style="color: #000000;">Our </span></span></span><a href="http://www.mosync.com/files/imports/doxygen/latest/html5/nativeui.md.html#Native%20UI">JavaScript NativeUI API</a>&nbsp;g<span style="color: #ff0000;"><span style="color: #ff0000;"><span style="color: #000000;">ives you&nbsp;direct access to native user interface widgets, like&nbsp;nav bars, buttons, tab screens, and list boxes, directly from HTML or JavaScript. Use it standalone, or side-by-side with the other APIs in <span style="color: #000000;">Wormhole</span><span style="color: #ff0000;"></span> to extend the capabilities of your apps.<!--break--></span> </span></span></p>
+<h2>Getting started</h2>
+<p>The <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/nativeui.md.html#Native%20UI">JavaScript NativeUI Library</a><span style="color: #ff0000;"><span style="color: #ff0000;"><span style="color: #000000;"> </span></span></span>is included in the MoSync package. Choose one of our HTML5 templates when you create your project, then simply call the library in your JavaScript to use it:</p>
+<pre class="mosync-code-cpp">&lt;script src="wormhole.js"&gt;</pre>
+<h2>Example application</h2>
+<p>We include an example application project for iOS and Android, <a href="TEMPLATE_DOC_PATH/sdk/js/examples/wormholenativeui/index.html">WormholeNativeUI</a>, which is a complete simple application that uses the library.</p>
+<p>Notice that the example application has a sub-folder named <em>/LocalFiles</em> which will include all of your HTML, JavaScript and CSS files and also the resource file that you will use from JavaScript/HTML. There are also some C++ files in the project folder that in most cases you do not need to touch, unless you want to extend the system or override the low-level functionality.</p>
+<h2>Running the example application</h2>
+<p>To build and run the example application from the MoSync IDE you need to have access to either Android emulator or iPhone Simulator. The IDE has built-in support for running your application in either of those tools (for Android, see <a href="http://www.mosync.com/content/running-android-emulator-directly-mosync-ide">Running the Android Emulator Directly from the MoSync IDE</a>). You can also, of course, run your project on a device if you have access to one.</p>
+<p><strong>Note:&nbsp;</strong>You can also use <a href="http://www.mosync.com/reload" target="_blank">MoSync Reload</a> for rapid development of you HTML/JavaScript basednative UI applications.&nbsp;</p>
+<p>We are going to use the Android emulator for next steps of this guide but running the app on other platforms is very similar. Select the Android 2.x profile from the profile database in your MoSync IDE, and then press run and select Android Emulator as the target. Here is what you should see on your screen:</p>
+<p><img src="images/JSNativeUIFirstTab.png" align="none" width="400" height="369"></p>
+<p><img src="images/JSNativeUISecondTab.png" align="none" width="400" height="368"></p>
+<h2>Adding widgets to your application</h2>
+<p>First let’s have a quick look at the example application's index file. All of the Native widgets are &lt;div&gt; tags wrapped inside a main &lt;div&gt; tag with ID “NativeUI”. Then there is a <strong>TabScreen</strong> screen widget which wraps everything else. When initiated the system loads the tag “mainScreen” to the actual screen of the phone.</p>
+<p>There are several widget placed inside this main screen in a specific layout (to figure out what each of them does, refer to the <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/widgetTypes.md.html#Widget%20Types">NativeUI Widget Types</a> documentation). <strong></strong></p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">&lt;body&nbsp; onload="NativeUI.initUI()"&gt;
+
+&nbsp;&nbsp; &nbsp;&lt;div id="NativeUI"&gt;
+&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;div data-widgetType="TabScreen" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;id="mainScreen"&gt;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;div data-widgetType="Screen" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;id="firstScreen" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-title="Web Screen" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-icon="img/TabIconWebView.png"&gt;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;div data-widgetType="WebView" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;id="WebBrowser" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-width="-1" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-height="-1" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-url="http://www.google.com"&gt;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;/div&gt;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;/div&gt;
+&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;div data-widgetType="Screen" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;id="SecondScreen" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-title="Widget Screen" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-icon="img/TabIconImageSwiper.png"&gt;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;div data-widgetType="VerticalLayout" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;id="mainLayout" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-width="-1" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-height="-1"&gt;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;div data-widgetType="Label" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;id="myLabel" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-width="-1" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-text="Here is a Label" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-fontSize="14" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-fontColor="0xEE3B3B"&gt;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;/div&gt;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;div data-widgetType="Button" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;id="myButton" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-width="-1" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-text="Click !" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-onevent="handleButtonEvent()"&gt;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;/div&gt;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;/div&gt;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;/div&gt;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;/div&gt;
+&nbsp;&nbsp; &nbsp;&lt;/div&gt;
+&lt;/body&gt;
+</pre>
+<p>Now let’s add another Tab to our application. Insert the following code just before the closing &lt;/div&gt; tag of the <strong>TabScreen</strong>:</p>
+<pre class="mosync-code-cpp">&lt;div data-widgetType="Screen" 
+&nbsp;&nbsp; &nbsp;id="ThirdScreen" 
+&nbsp;&nbsp; &nbsp;data-title="New Screen" 
+&nbsp;&nbsp; &nbsp;data-icon="img/TabIconWebView.png"&gt;
+&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&lt;div data-widgetType="EditBox" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;id="myEditBox" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-width="-1" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-height="-2" 
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;data-text="This an example of EditBox"&gt;
+&nbsp;&nbsp; &nbsp;&lt;/div&gt;
+&nbsp;&nbsp; &nbsp;
+&lt;/div&gt;
+</pre>
+<p>Now try running your app again and you can see the following screen:</p>
+<p><img src="images/JSNativeUIImproved.png" align="none" width="400" height="368"></p>
+<h2>Architecture of JavaScript NativeUI and related libraries</h2>
+<p><img src="images/MoSyncUI%20Layers.png" align="none" width="515" height="260"></p>
+</body>
+</html>

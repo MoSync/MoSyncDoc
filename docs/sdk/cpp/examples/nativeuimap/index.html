@@ -1,0 +1,140 @@
+<html>
+<head>
+<title>NativeUIMap</title>
+</head>
+<body>
+<h1>NativeUIMap</h1>
+<p>The NativeUIMap example app is a C/C++ application that demonstrates the basic functionality of the MoSync NativeUI's <strong>map</strong> widget. <!--break--></p>
+<table class="doclayout" border="0"><tbody><tr><td><img src="images/NativeUIMap-example-app-wp7.png" align="none" width="220" height="364"></td><td><img src="images/NativeUIMap-example-app-ios.png" align="none" width="242" height="364"></td></tr>
+<tr><td><em>NativeUIMap on Windows Phone 7</em></td><td><em>NativeUIMap on iOS</em></td></tr>
+</tbody></table>
+<p>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<p>This application should run on all platforms supported by the MoSync NativeUI C++ Library, although some features may not be supported on all platforms (see <a href="http://www.mosync.com/documentation/manualpages/featureplatform-matrix">Feature/Platform Support</a>).</p>
+<p>Follow <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-nativeui-map-widget/index.html">this</a> tutorial to learn more about the NativeUI map widget.&nbsp;</p>
+<h2>About this app</h2>
+<p>The example app highlights the following capabiliites of the widget:</p>
+<ul>
+<li>creating the map,</li>
+<li>setting the map type,</li>
+<li>setting/getting the zoom level,</li>
+<li>setting/getting the visible area,</li>
+<li>adding/removing map pins,</li>
+<li>handling map events.</li>
+</ul>
+<p>The app contains only one screen:</p>
+<ul>
+<li><strong>Main Screen</strong>: shows all the map available functionality</li>
+</ul>
+<h2>In the code</h2>
+<p>The application is split between the following files:</p>
+<ul>
+<li><strong>main.cpp</strong>: the main entry point of the application (creates and shows the main screen)</li>
+<li><strong>MainScreen</strong>.h: contains the main screen class and its members (the map is one of them)</li>
+<li><strong>MainScreen</strong>.cpp: provides the method implementations of the MainScreen class</li>
+</ul>
+<p>The NativeUIMap demonstrates the following functionality:</p>
+<ul>
+<li>Creating the map and adding it to the main layout</li>
+</ul>
+<pre class="mosync-code-cpp">    // create the main map and add it to the main layout
+    mMap = new Map("google mock credentials", "bing mock credentials");
+    mMap-&gt;fillSpaceHorizontally();
+    mMap-&gt;fillSpaceVertically();
+
+    mMainLayout-&gt;addChild(mMap);</pre>
+<ul>
+<li>Setting the map type</li>
+</ul>
+<pre class="mosync-code-cpp">// set the map type to satellite (by default it's set to MAP_TYPE_ROAD)
+mMap-&gt;setMapType(MAP_TYPE_ROAD);
+</pre>
+<ul>
+<li>Changing the zoom level</li>
+</ul>
+<pre class="mosync-code-cpp">    // set the map initial zoom level
+    mMap-&gt;setZoomLevel(3);</pre>
+<ul>
+<li>Getting the visible area</li>
+</ul>
+<pre class="mosync-code-cpp">    MapRegion region;
+    mMap-&gt;getVisibleArea(region);
+
+    // the label containing information about the visible area
+    mVisibleAreaCoordinatesLabel-&gt;setText("UL la: " + 
+    MAUtil::doubleToString(region.getUpperLeftCorner().getLatitude()) + 
+    " UL lo: " +
+    MAUtil::doubleToString(region.getUpperLeftCorner().getLongitude()) + 
+    " LR la: " +
+    MAUtil::doubleToString(region.getLowerRightCorner().getLatitude()) +
+    " LR lo: " +
+    MAUtil::doubleToString(region.getLowerRightCorner().getLongitude()));</pre>
+<ul>
+<li>Setting the visible area</li>
+</ul>
+<pre class="mosync-code-cpp">mMap-&gt;setVisibleArea(32.1234, 22.123124, 11.231123, 12.32344);</pre>
+<ul>
+<li>Adding map pins</li>
+</ul>
+<pre class="mosync-code-cpp">    // we add twenty pins with random coordinates
+    for (int i = 0; i &lt; 20; i++)
+    {
+        // generate random values for the coordinates
+        // get a random latitude and longitude
+        double latitude = (double)(rand() % 80);
+        double longitude = (double)(rand() &amp; 170);            
+        int longSign = rand()%2;
+        if (longSign == 0)
+            longitude *= (-1);
+       
+
+    int latSign = rand()%2;
+
+        if (latSign == 0)
+            latitude *= (-1);
+
+        MapPin *newPin = new MapPin(Location(latitude, longitude));
+        newPin-&gt;setText("test title");
+        mMapPins.add(newPin);
+        mMap-&gt;addMapPin(newPin);
+    }</pre>
+<ul>
+<li>Removing map pins</li>
+</ul>
+<pre class="mosync-code-cpp">    // mMapPins is a list containing all the map pins added to the map
+    for (int i = 0; i &lt; mMapPins.size(); i++)
+    {
+        mMap-&gt;removeMapPin(mMapPins[i]);
+    }</pre>
+<ul>
+<li>Handling map events</li>
+</ul>
+<pre class="mosync-code-cpp">/**
+* This method is called when the zoom level of the map changes (at a double tap
+* on the google maps for example).
+* @param map The map object that generated the event.
+*/
+void MainScreen::mapZoomLevelChanged(Map* map)
+{
+
+}
+
+/**
+* This method is called when the visible region on the map is changed (on a drag/scroll
+* for example).
+* @param map The map object that generated the event.
+*/
+void MainScreen::mapRegionChanged(Map* map)
+{
+
+}
+
+/**
+* This method is called when the user clicks on a map pin.
+* @param mapPin The map pin object that generated the event.
+*/
+void MainScreen::mapPinClicked(MapPin* mapPin)
+{
+
+}</pre>
+</body>
+</html>

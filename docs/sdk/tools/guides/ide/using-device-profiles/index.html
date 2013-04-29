@@ -1,0 +1,81 @@
+<html>
+<head>
+<title>Platform and Device Profiles</title>
+</head>
+<body>
+<h1>Platform and Device Profiles</h1>
+<p>MoSync comes with a comprehensive set of device profiles to help you deploy your applications to the widest possible range of mobile devices. Each device profile defines the characteristics and capabilities of a single mobile device. Device profiles are used by MoSync's MoRE emulator and during the build process to dynamically tailor the application to a particular device.</p>
+<p><!--break--></p>
+<p></p>
+<h2>Platform and Device Profiles in MoSync 3.0+</h2>
+<p>From MoSync 3.0 we have introduced a powerful new paradigm for creating cross-platform packages. Now you build your projects for target platforms (like Android, iOS, and Windows Phone 7), rather than for specific devices.</p>
+<p>This makes it much simpler to create your final packages and dramatically reduces the number of packages you need to distribute. Furthermore, you can upgrade your old projects to the way of specifying platforms with two simple button clicks!<br><br>If you don't wish to upgrade your projects to 3.0, the older method of building packages for specific devices is still supported for pre-3.0 projects; see further below.</p>
+<p>MoSync comes with a comprehensive set of device profiles to help you deploy your applications to the widest possible range of mobile devices.<br><br>A device profile is categorized by its platform, for example “Android” or “BlackBerry”, and it’s variant, for example “iPad” or “iPhone” for iOS devices, or “Donut (1.6)” or “Eclair (2.3)” for Android devices. A profile is uniquely identified by its family and variant name.<br><br>MoSync tries to minimize the number of packages to build. If it cannot build for a certain device profile, or if there already is a package built for a certain platform profile, then that profile is filtered out and no specific package will be built. For example, JavaME does not support HTML5, so projects that require HTML5 capabilities will not be able to produce a package for JavaME. If a package can be used for several platform variants, only one package will be built (for example, many packages built for Android 1.x will work for Android 2.x, so there is no need to build a separate package for Android 2.x).<br><br>In the UI, only a minimal set of device profiles representing all device profiles are shown.</p>
+<h2 dir="ltr">Changing the Current Platform Profile</h2>
+<p>In the toolbar, click the profile selection button and select the current profile in the profile selection dialog that pops up.</p>
+<p><img src="images/2012-02-27_0817.png" align="middle" width="257" height="47"></p>
+<p><span class="inline inline-left">Clicking the above button will produce this dialog:</span></p>
+<p><img src="images/2012-02-27_0813.png" align="middle" width="422" height="480"></p>
+<h2 dir="ltr">Filtering Device Profiles</h2>
+<p>In the profile selection dialog, click <strong>Select Capabilities</strong> and select the platforms and capabilities to build for. The “Must have” checkbox below each capability determines whether to build at all for platforms that do not have a certain capability.</p>
+<p>An app that must have, say, NFC capabilities for the app to function properly, the “Must have” checkbox needs to be checked. On the other hand, if the NFC capabilities is just an optional or additional functionality in the app that is not necessary for its function, then the “Must have” checkbox can be unchecked. Then the developer of the app needs to make sure to check for availability of NFC functionality and properly handle the case when not available.</p>
+<p><img src="images/2012-02-27_0815.png" align="middle" width="650" height="372"></p>
+<h2 dir="ltr">Migrating from a device-based to a platform-based project</h2>
+<p>In the MoSync SDK 3.0, new projects are always platform based. To convert projects produced with MoSync versions prior to 3.0 or if a project uses device based profiles, either open profile selection dialog and click the <strong>Make Platform Based</strong> button, or right-click the project and select <strong>Properties</strong> &gt; <strong>MoSync Project</strong> &gt; <strong>Profile Database</strong> and enable platform based profiles.</p>
+<p>If you do have a project which is currently configured per device, and you wish to move to a per platform configuration, then you can press the&nbsp;<strong>Filter Profiles for this project</strong> icon. An option will appear to convert your project and allow you to use platform finalization.</p>
+<p>Some projects may need to be changed in order for them to build properly. In particular, any project that includes and uses symbols defined in the device-specific <strong>maprofile.h</strong> files need to be revised, since those files are not used by platform based projects. Instead, the “Additional GCC switches” found in the project’s build settings, will by default contain these symbols:</p>
+<p><strong>-DPLATFORM_%platform-family% -DVARIANT_%platform-variant%</strong></p>
+<p>where <strong>%platform-family%</strong> and <strong>%platform-variant%</strong> are the uppercased platform name and variant, respectively. <br><br>The available <strong>%platform-family%</strong> values are as of version 3.0:</p>
+<ul>
+<li>ANDROID</li>
+<li>IOS</li>
+<li>BLACKBERRY</li>
+<li>JAVAME</li>
+<li>WINDOWS_PHONE</li>
+<li>WINDOWS_MOBILE</li>
+<li>MOBLIN</li>
+<li><p>SYMBIAN</p>
+</li>
+</ul>
+<p>These symbols may not be automatically added/removed when converting from/to device based projects.</p>
+<h2>Device Profiles</h2>
+<p>MoSync projects created prior to 3.0 uses <strong>device based profiles</strong>&nbsp;instead of platform based profiles. (To convert a project to use device based profiles, <span>right-click the project and select&nbsp;</span><strong>Properties</strong><span>&nbsp;&gt;&nbsp;</span><strong>MoSync Project</strong><span>&nbsp;&gt;&nbsp;</span><strong>Profile Database</strong><span>&nbsp;and enable device based profiles.)</span></p>
+<p>MoSync comes with hundreds of device profiles, categorized by vendor.&nbsp; Each device profile holds important information about the characteristics of target mobile device, including information such as:</p>
+<ul>
+<li>Screen dimensions</li>
+<li>Memory capacity</li>
+<li>Supported features (for example, Bluetooth)</li>
+</ul>
+<p>The available device profiles are shown on the <strong>Device Profiles</strong> tab in the IDE:<br><br><img src="images/devices.jpg" align="none" width="330" height="679"></p>
+<p>When you start a new project, the active device profile is always the profile for the MoSync emulator.&nbsp; (You can find this profile in the <strong>Device Profile</strong> view under <strong>Mobile Sorcery</strong> &gt; <strong>Emulator</strong>.)</p>
+<h2>Changing the Current Device Profile</h2>
+<p>The current device profile is highlighted with an orange background to its icon.</p>
+<p>To change the current device profile, right-click on the name of a device in the <strong>Device Profile</strong> view and select <strong>Set Target Phone</strong>.</p>
+<p><img src="images/userguide_profiles_8.png"></p>
+<h2>Viewing Device Profile Information</h2>
+<p>If you want to see more information about a particular device, select <strong>Show Profile Info</strong> from the right-click menu. You will then see the header file that MoSync will use when it builds the application for the emulator:</p>
+<p><img src="images/device-profile-properties.png" align="none" width="319" height="374"></p>
+<h2>Filtering Device Profiles</h2>
+<p>You can filter the list of device profiles so that only a subset of the full device profile list is shown in the <strong>Device Profiles</strong> view so that, when you build your application, packages will only be built for the devices listed.</p>
+<p>You can set more than one filter: setting the right combination of filters enables you to build only for the devices that meet the exact requirements of your application.</p>
+<p>To set a filter, click the <strong>Add </strong>button beneath the <strong>Device Profiles</strong> view. The <strong>Select Filter Type</strong> window will open:</p>
+<p><img src="images/userguide_profiles_2.png"></p>
+<p>The first option is <strong>Vendor/Device</strong>. Here it's possible to choose which vendors and devices you want to include or exclude from your profiles. Use the checkboxes to select the combination of vendors and devices you require.</p>
+<p><img src="images/userguide_profiles_3.png"><br> <br>The second option is <strong>Feature/Bug</strong>. Here it's possible to include and exclude devices according to the features and bugs that we know exist on the various devices. It's also possible to select device operating systems through this option:</p>
+<p><img src="images/userguide_profiles_4.png"><br> <br>The third option is <strong>Device Constant Condition</strong>. These are constant values set in all devices. They include the screen sizes and the available heap sizes of the various devices:</p>
+<p><img src="images/userguide_profiles_5.png"><br><br>By using multiple filters you can select the devices that satisfy the requirements for your application. Mutliple filters are combined using the AND operator: a device is listed only if it satisfies the conditions of all filters.</p>
+<h2>Editing and Removing Filters</h2>
+<p>To remove or edit a currently applied filter, highlight the filter beneath the <strong>Device Profiles</strong> view, then click <strong>Remove </strong>or <strong>Edit</strong>.</p>
+<p><img src="images/userguide_profiles_6.png"></p>
+<h2>Accessing Device Profiles in your Code</h2>
+<p>To access device profile definitions in your C/C++ code, include the maprofile header file:</p>
+<pre class="code"><!-- temp.cpp : generated by JHighlight v(unknown version) (http://jhighlight.dev.java.net) --> #include &amp;lt;maprofile.h&amp;gt; </pre>
+<p>Useful profile definitions include <em>MA_PROF_STRING_VENDOR</em> and <em>MA_PROF_STRING_DEVICE</em>, which are the names of the device and its vendor.</p>
+<p>For writing vendor-specific or device-specific code, <em>MA_PROF_VENDOR_*</em> and <em>MA_PROF_DEVICE_*</em> definitions are also available. For example <em>MA_PROF_VENDOR_NOKIA</em> and <em>MA_PROF_DEVICE_6630</em>.</p>
+<p><em>MA_PROF_SUPPORT_JAVAPACKAGE_BLUETOOTH</em> is defined if and only if the device supports Bluetooth.<em> </em></p>
+<p><em>MA_PROF_CONST_SCREENSIZE_X</em>, <em>MA_PROF_CONST_SCREENSIZE_Y</em> are defined as integers that describe the screen size in pixels. <em>MA_PROF_CONST_BITSPERPIXEL</em> describes the color depth.</p>
+<h2>Showing the Device Profiles View</h2>
+<p>If you close the <strong>Device Profiles</strong> view you can reopen it again by selecting <strong>Window </strong>&gt; <strong>Show View</strong> &gt; <strong>Other</strong> &gt; <strong>MoSync </strong>&gt; <strong>Device Profiles</strong>.</p>
+<p>&nbsp;</p>
+</body>
+</html>

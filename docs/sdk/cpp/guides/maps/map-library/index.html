@@ -1,0 +1,269 @@
+<html>
+<head>
+<title>Using the MAP Library</title>
+</head>
+<body>
+<h1>Using the MAP Library</h1>
+<p>The Mosync MAP library is a standard library that provides a MapWidget for displaying geographical maps, sometimes called slippy or panning maps, consisting of tiles provided by a map source. This guide introduces the basics of the MAP library and shows you how to create map applications from scratch.<!--break--></p>
+<p></p>
+<p><em><strong>Important</strong>: MoSync 2.5 includes an improved MAP Library. If you want to compile in MoSync 2.5 an existing application that uses the 2.4 MAP Library you will need to update that application. See <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/maps/map-library/index.html#Migrating_to_the_2.5_MAP_Library">Migrating to the 2.5 MAP Library</a>.&nbsp;</em></p>
+<h2>Introduction</h2>
+<p>At the heart of the MAP Library is <strong>MapWidget</strong>. You can use it as is, or extend it to overlay information on top of the map. The library contains map classes for using one or more tile-based map servers such as OpenStreetMap, CloudMade, and Google Maps. <br><br>Latitude and longitude co-ordinates can be converted to meters and pixels (both global and device). Connection to a location-aware sensor is performed by the client, and is outside of the scope of the library itself.<br><br>The primary public map source is OpenStreetMap (<a href="http://www.openstreetmap.org/">openstreetmap.org</a>). There is a working hook into Google Static Maps; however use of Google Static Maps requires a license agreement with Google, so this is more of a code sample.</p>
+<h2>Example Programs</h2>
+<p>There are two examples programs you can use to study the use of the MAP Library:&nbsp;<strong>&nbsp;</strong></p>
+<ul>
+<li><a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/hellomap/index.html">HelloMap</a> is a simple Moblet that displays an OpenStreetMap across the entire device screen. The user can use the phone keys to pan the map and to zoom in and out. The core of the HelloMap sample application is in <em>HelloMapScreen.cpp</em>.</li>
+</ul>
+<ul>
+<li><a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/mapdemo/index.html">MapDemo</a> is a more full-blown example that illustrates the use of the map library in an application.</li>
+</ul>
+<p><strong>&nbsp;</strong>These examples are written using a memory tracker to allocate and deallocate memory. This makes the code a little more complex than is strictly necessary, but will prove useful if you want to use a memory tracker in your application.</p>
+<h2>The MAP Library</h2>
+<p>The Map Library provides classes for downloading, managing and displaying map tiles. The library includes:</p>
+<ul>
+<li><strong>MapSource </strong>is a base class with implementations for OpenStreetMap, Google Static Maps, CloudMade, as well as an extensible API for other map sources.</li>
+<li><strong>MapWidget </strong>is a class for displaying a slippy map in a Mosync Moblet-based application. <strong>MapWidget </strong>uses class <strong>MapViewport </strong>to handle panning and zooming of the map.</li>
+<li>Tile management and caching classes, notably the <strong>MapCache </strong>class which is a singleton that provides map tiles.</li>
+<li>Utility and support classes.</li>
+</ul>
+<h2>Important MAP classes</h2>
+<table border="0"><colgroup></colgroup><tbody><tr><td><strong>MapSource</strong></td><td>Abstract base class for provider of map tiles</td></tr>
+<tr><td><strong>CloudMadeMapSource</strong></td><td>MapSource using CloudMade public map tile server</td></tr>
+<tr><td><strong>GoogleMapSource</strong></td><td>MapSource using Google Static Maps as map tile server</td></tr>
+<tr><td><strong>OpenStreetMapSource</strong></td><td>MapSource using OpenStreetMap tile server</td></tr>
+<tr><td><strong>MapCache</strong></td><td>Caches tiles provided by MapSource</td></tr>
+<tr><td><strong>MapTile</strong></td><td>Single tile from MapSource</td></tr>
+<tr><td><strong>LonLat</strong></td><td>Coordinate class</td></tr>
+<tr><td><strong>PixelCoordinate</strong></td><td>Global map pixel coordinate at a specified magnification</td></tr>
+<tr><td><strong>MapTileCoordinate</strong></td><td>Describes a tile’s position in global grid of tiles at a certain magnification</td></tr>
+<tr><td><strong>MapWidget</strong></td><td>Widget displaying slippy map</td></tr>
+<tr><td><strong>MapViewport</strong></td><td>Handles panning and zooming of the map</td></tr>
+<tr><td><strong>DateTime</strong></td><td>Utility class for date</td></tr>
+<tr><td><strong>Timespan</strong></td><td>Utility class for time span</td></tr>
+<tr><td><strong>MemoryMgr</strong></td><td>Utility class for heap resource tracking for debugging</td></tr>
+<tr><td><strong>Broadcaster</strong></td><td>Utility template class for broadcasting to multiple listeners</td></tr>
+<tr><td><strong>Queue</strong></td><td>Utility template class for a simple object queue</td></tr>
+<tr><td><strong>DebugPrintf</strong></td><td>Utility functions for debug output under MSVC compiler</td></tr>
+</tbody></table>
+<h2>How to use map sources</h2>
+<p>Include the header files for the map sources you wish to use, for example:</p>
+<pre class="mosync-code-cpp">#include &lt;MAP/OpenStreetMapSource.h&gt;
+#include &lt;MAP/GoogleMapSource.h&gt;</pre>
+<p>Generally, it is a good idea to use instance variables in your class to refer to the map sources, for example:</p>
+<pre class="mosync-code-cpp">MapSource* mOpenStreetMapSource;
+MapSource* mGoogleStreetMapSource;
+MapSource* mGoogleAerialMapSource;
+MapSource* mGoogleHybridMapSource;</pre>
+<p>The map library comes with two map sources that have been set up for you, OpenStreetMap and GoogleMaps. Here is how to create and set up map sources:</p>
+<pre class="mosync-code-cpp">mOpenStreetMapSource = new OpenStreetMapSource();
+mGoogleStreetMapSource = new GoogleMapSource(GoogleMapKind_StreetMap);
+mGoogleAerialMapSource = new GoogleMapSource(GoogleMapKind_Aerial);
+mGoogleHybridMapSource = new GoogleMapSource(GoogleMapKind_Hybrid);</pre>
+<p>Set the current map source like this:</p>
+<pre class="mosync-code-cpp">mMapWidget-&gt;setMapSource(mGoogleAerialMapSource);</pre>
+<h2>Basic example</h2>
+<p>This is a bare-bones application with touch interaction -- single touch and drag pans the map; a second touch zooms in a fixed step while pressed, and zooms out when released.</p>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;MAUI/Screen.h&gt;
+#include &lt;MAP/MapWidget.h&gt;
+#include &lt;MAP/OpenStreetMapSource.h&gt;
+
+using namespace MAUtil;
+using namespace MAUI;
+using namespace MAP;
+
+class MapMoblet : public Moblet
+{
+public:
+    MapMoblet()
+    {
+         mMapWidget = new MapWidget(
+            0,
+            0,
+            EXTENT_X(maGetScrSize()),
+            EXTENT_Y(maGetScrSize()),
+            NULL);
+
+        // Create a MapViewport for the MapWidget.
+        // The MapWidget will deallocate the viewport upon destruction.
+        mMapWidget-&gt;setViewport(new MapViewport());
+
+        mOpenStreetMapSource = new OpenStreetMapSource();
+        mMapWidget-&gt;setMapSource(mOpenStreetMapSource);
+
+        mMapWidget-&gt;getViewport()-&gt;setCenterPosition(
+            LonLat(18.07, 59.33), // Position for Stockholm.
+            true, // Redraw now.
+            false // Not called from pointer event.
+            );
+
+        // Magnification level (logarithmic scale).
+        mMagnification = 11.0;
+        setMagnification(mMagnification);
+
+        mScreen = new Screen();
+        mScreen-&gt;setMain(mMapWidget);
+        mScreen-&gt;show();
+    }
+
+    virtual ~MapMoblet()
+    {
+        delete mScreen;
+        delete mMapWidget;
+        delete mOpenStreetMapSource;
+    }
+
+    void keyPressEvent(int keyCode, int nativeCode)
+    {
+        if (MAK_BACK == keyCode || MAK_0 == keyCode)
+        {
+            close();
+        }
+    }
+
+    void multitouchPressEvent(MAPoint2d point, int touchId)
+    {
+        if (0 == touchId)
+        {
+            beginPanning(point);
+        }
+        else if (1 == touchId)
+        {
+            zoomIn();
+        }
+    }
+
+    void multitouchMoveEvent(MAPoint2d point, int touchId)
+    {
+        if (0 == touchId)
+        {
+            updatePanning(point);
+        }
+    }
+
+    void multitouchReleaseEvent(MAPoint2d point, int touchId)
+    {
+        if (0 == touchId)
+        {
+            endPanning();
+        }
+        else if (1 == touchId)
+        {
+            zoomOut();
+        }
+    }
+
+    void beginPanning(MAPoint2d point)
+    {
+        mMapWidget-&gt;getViewport()-&gt;beginPanning(point);
+    }
+
+    void updatePanning(MAPoint2d point)
+    {
+        mMapWidget-&gt;getViewport()-&gt;updatePanning(point);
+    }
+
+    void endPanning()
+    {
+        mMapWidget-&gt;getViewport()-&gt;endPanning();
+    }
+
+    void zoomIn()
+    {
+        mMagnification += 3.0;
+        setMagnification(mMagnification);
+    }
+
+    void zoomOut()
+    {
+        mMagnification -= 3.0;
+        setMagnification(mMagnification);
+    }
+
+    void setMagnification(double magnification)
+    {
+        mMapWidget-&gt;getViewport()-&gt;setMagnification(
+            MagnificationType(magnification));
+    }
+
+private:
+    Screen* mScreen;
+    MapWidget* mMapWidget;
+    MapSource* mOpenStreetMapSource;
+    double mMagnification;
+};
+
+extern "C" int MAMain()
+{
+    // Optionally, for example if you encounter memory problems, you can
+    // experiment with the size of the tile cache. Set the cache size like this:
+    //MapCache::get()-&gt;setCapacity(30);
+ 
+    Moblet* moblet = new MapMoblet();
+    Moblet::run(moblet);
+    delete moblet;
+    MapCache::shutdown();
+    return 0;
+}</pre>
+<h2>Migrating to the 2.5 MAP Library</h2>
+<p>To be able to compile them with MoSync SDK 2.5, existing applications that use an older versions of the MAP Library need to be updated, since the new API is not backwards compatible. Here we explain how to update your existing code. <br>&nbsp;<br>The major change in the API is how map sources are represented. A map source is a map provider, like OpenStreetMap or GoogleMaps. The old API used a predefined enumeration of map providers. The new API, by contrast, uses a more flexible model where the application can define map source providers.</p>
+<h3>Initialize/shutdown</h3>
+<p><br><em>MoSync 2.4 and earlier:</em></p>
+<pre class="mosync-code-cpp">MapMoblet* moblet = new MapMoblet();
+Moblet::run(moblet);
+delete moblet;</pre>
+<p><em>MoSync 2.5:</em></p>
+<pre class="mosync-code-cpp">// Create and run the moblet in the same way as before.
+MapMoblet* moblet = new MapMoblet();
+Moblet::run(moblet);
+delete moblet;
+
+// Free resources allocated by the Map cache.
+MapCache::shutdown();</pre>
+<h3>Header files</h3>
+<p>The header files for the map source has been changed.<br><br><em>MoSync 2.4 and earlier:</em></p>
+<pre class="mosync-code-cpp">// This header file has been removed from the new map library.
+#include &lt;MAP/MapSourceMgr.h&gt;</pre>
+<p><em>MoSync 2.5: </em></p>
+<pre class="mosync-code-cpp">#include &lt;MAP/MapSource.h&gt;
+
+// Typically you include only the header files for the map sources you
+// wish to use, for example:
+#include &lt;MAP/OpenStreetMapSource.h&gt;
+#include &lt;MAP/GoogleMapSource.h&gt;</pre>
+<h3>Using map sources</h3>
+<p>The <strong>MapSourceKind </strong>enumeration is replaced by map source classes.<br><br><em>MoSync 2.4 and earlier:</em></p>
+<pre class="mosync-code-cpp">MapSourceKind mMapSourceKind;</pre>
+<p><em>MoSync 2.5:</em></p>
+<pre class="mosync-code-cpp">MapSource* mOpenStreetMapSource;
+MapSource* mGoogleStreetMapSource;
+MapSource* mGoogleAerialMapSource;
+MapSource* mGoogleHybridMapSource;</pre>
+<h3>Create the MapWidget</h3>
+<p><em>MoSync 2.4 and earlier:</em></p>
+<pre class="mosync-code-cpp">mMapWidget = new MapWidget(0, 0, width, height, NULL);</pre>
+<p><em>MoSync 2.5:</em></p>
+<pre class="mosync-code-cpp">// You need to create a MapViewport for the MapWidget.
+// The MapWidget will deallocate the viewport upon destruction.
+mMapWidget = new MapWidget(0, 0, width, height, NULL);
+mMapWidget-&gt;setViewport(new MapViewport());</pre>
+<h3>How to create/set the map source</h3>
+<p><em>MoSync 2.4 and earlier:</em></p>
+<pre class="mosync-code-cpp">// In the old API an enumeration constant was used to
+// specify the map source (this was inflexible).
+mMapWidget-&gt;setMapSourceKind(MapSourceKind_OpenStreetMap);</pre>
+<p><em>MoSync 2.5:</em></p>
+<pre class="mosync-code-cpp">// In the new API, the application can create the map source,
+// which is a more flexible approach. The map library comes
+// with two map sources that have been set up for you,
+// OpenStreetMap and GoogleMaps. This is how to create and
+// set these map sources:
+mOpenStreetMapSource = new OpenStreetMapSource();
+mGoogleStreetMapSource = new GoogleMapSource(GoogleMapKind_StreetMap);
+mGoogleAerialMapSource = new GoogleMapSource(GoogleMapKind_Aerial);
+mGoogleHybridMapSource = new GoogleMapSource(GoogleMapKind_Hybrid);
+
+// Set the map source like this:
+mMapWidget-&gt;setMapSource(mGoogleAerialMapSource);</pre>
+</body>
+</html>

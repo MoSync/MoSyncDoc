@@ -1,0 +1,110 @@
+<html>
+<head>
+<title>Rendering particles by mixing JavaScript/HTML5 and Native UI/OpenGL</title>
+</head>
+<body>
+<h1>Rendering particles by mixing JavaScript/HTML5 and Native UI/OpenGL</h1>
+<p>One of the most important features of the latest MoSync release is definitely the C++/JavaScript Wormhole, and we have already put it to test for various applications. But there is one aspect that needed to be explored yet: graphics rendering and animation. Mobile gaming is no longer just on the rise; it has become a sizable industry already, and it seems to me that it will soon drive forward the development of new hardware, just like how desktop gaming has done for the PC the last two decades. MoSync has had a pretty classic approach to gaming development up to now: A C++ coding environment, powered by OpenGL ES. But how will Wormhole figure into all this?</p>
+<p>Of course, it's a very wide area, so we had to start with something simple, that could also allow to test the performance of the system to a good extent. And for good measure, how about also utilizing that fancy accelerometer? The concept it simple: A 3D environment where "particles" (luminous spheres) can exist and be affected by gravity (REAL gravity), and a point at the center that spews forth those particles towards the screen like a fountain. The user should be able to control the flow of particles using buttons, and affect the gravity by turning the device around in real space.
+</p>
+<p>The initial implementation was done in pure JavaScript. There are three parts to the system: A particle generator that creates a particle with a random velocity vector (that is facing the screen) several times per second, an algorithm that calculates the particle positions for each frame using good-old Newtonian physics and taking into account accelerometer info about gravity, and the renderer, which simply draws a pre-generated particle image at a given point on the screen, with a variable size to simulate the 3D space. At this stage, Wormhole is only used to pass button presses that control the flow of particles to the JavaScript code, and of course send the accelerometer data to the physics engine (you could still call it a "physics engine" in principle at least).
+</p>
+<p>This is the code that initializes a particle:</p>
+<p><pre class="mosync-code-cpp">var phi = 2 * Math.PI * Math.random(); //Randomly choose a direction
+var theta = MAX_ANGLE_DEVIATION
+ * Math.random(); //Diverge a little from the main axis
+
+//Polar to Cartesian conversion
+p.xv = INIT_VELOCITY * Math.sin(theta) * Math.cos(phi);
+p.yv = INIT_VELOCITY * Math.sin(theta) * Math.sin(phi);
+p.zv = INIT_VELOCITY * Math.cos(theta);
+
+//Initial position at the center
+p.x = 0;
+p.y = 0;
+p.z = 0;</pre>
+</p>
+<p>&nbsp;And here is the code that calculates a particle's position at each frame:</p>
+<p><pre class="mosync-code-cpp">//Calculate the new velocity vector for the particle
+p.zv += gravityZ * timeSinceLastFrame;
+p.xv += gravityX * timeSinceLastFrame;
+p.yv += gravityY * timeSinceLastFrame;
+
+//Calculate the new position of the particle
+p.z += p.zv * timeSinceLastFrame;
+p.x += p.xv * timeSinceLastFrame;
+p.y += p.yv * timeSinceLastFrame;</pre>
+</p>
+<p>(A note about the calculations: Given an initial position and velocity, you can calculate an object's future position in space at any given time. The reason we recalculate and store the velocity at each frame, is because due to the nature of the example, gravity can change direction at any time, which makes it impossible to simply say z = v*t - g*t*t.)</p>
+<p>
+The results were not that satisfying. While the frame rate was somewhat bearable on an iPhone 4 with three particles generated per second, any more would cause a severe drop in performance. However, the accelerometer worked like a charm and produced a nice effect.</p>
+<p>
+Next, I implemented the same algorithm purely in C++ using OpenGL. Which I guess should have done first since this would have been the "control group" had this been a real experiment. The results, of course, were unsurprising. Even with ten particles per second, OpenGL didn't break a sweat, and trying to bring the API to it's knees was not the point of the exercise anyway. What I needed to find was the sweet spot where C++ and Javascript could work together with good performance.
+</p>
+<p>For the following test, I would calculate the positions of each particle for each frame in JavaScript, and then pass the list of the positions to C++ for rendering. The algorithm would attempt to render 100 frames per second. In a normal implementation (either full JS or full C++), the execution would halt until the previous frame was rendered, but in this case the JavaScript algorithm knew nothing about the rendering side of things, and as such it would generate the full amount of messages to C++ regardless of what the state of the rendering was. And while I was not worried about OpenGL failing to meet the supply of frames, I knew that the browser-to-C++ communication mechanisms could not handle that much traffic.
+</p>
+<p>And as I was suspecting, the results were not good. The message queue would grow fast, and after a while it became nearly unresponsive to movements of the device in space. Tinkering with the frame rate, I managed to reach a reasonable performance at around 15 FPS, but I knew that this value was specific to this example and was not a general solution.</p>
+<p>
+For the general solution, I decided to establish some signaling between C++ and JavaScript. JavaScript would still calculate the particle positions at the full rate (100 times per second), but would only send a new state when C++ told it that it had rendered the last frame.</p>
+<p> 
+Here is the Javascript code that handles the signaling and creates the message of the particle positions:</p>
+<p><pre class="mosync-code-cpp">boolean oglIsReady = true;
+
+function oglReady() {
+    oglIsReady = true;
+}
+/**
+ * Sends the particle positions to native OpenGL as a list
+ **/
+function renderParticleObjectOGL(particles) {
+    if(!oglIsReady){
+        return;
+    }
+    oglIsReady = false;
+    
+    particlePositionsMessage["messageName"] = "particlePositions";
+
+    for(var i = 0; i &lt; particles.length; i++) {
+        particlePositionsMessage["x"+p] = particles[i].x;
+        particlePositionsMessage["y"+p] = particles[i].y;
+        particlePositionsMessage["z"+p] = particles[i].z;
+    }
+particlePositionsMessage["num"] = particles.length;
+                    bridge.messagehandler.send(particlePositionsMessage);
+}</pre>
+</p>
+<p>And here is how we signal back to Javascript that OpenGL is ready to render the next list of particles:</p>
+<p><pre class="mosync-code-cpp">renderParticleObject(particles, numParticles);
+mRenderWebView-&gt;callJS("oglReady()");
+// Wait (blocks) until all GL drawing commands to finish.
+glFinish();
+mGLView-&gt;redraw();</pre>
+</p>
+<p>The result was satisfactory, as the performance was similar to the pure C++ implementation. But like I said, this example was not representative of a real game, so I had to try one last thing before I could call it a day.</p>
+<p>
+The final approach would be to split the algorithm that controlled the particles in two. As I said near the beginning, one part was the physics engine. Apart of the actual rendering operations, this is the main bottleneck of our algorithm. It's also the most general. It does not care whether it has to render a fountain of particles or a rain or an explosion.It only needs to know the initial position and velocity of the particles, and it will take care of the rest. For these reasons, it makes sense to implement this part in C++. The other part, the logic that generates the fountain, as it is a more high-level concept it's appropriate to be managed by a higher-level language, so it stayed in JavaScript. So now the only messages sent from JavaScript to C++ were the information for newly generated particles. The performance was, of course, outstanding and it was in all regards the same as the pure C++ implementation.
+</p>
+<p>This is the message that Javascript constructs each time it generates a particle:
+</p>
+<p><pre class="mosync-code-cpp">newParticleMessage["messageName"] = "newParticle";
+newParticleMessage["xv"] = Math.floor(p.xv * 1000);
+newParticleMessage["yv"] = Math.floor(p.yv * 1000);
+newParticleMessage["zv"] = Math.floor(p.zv * 1000);
+newParticleMessage["x"] = Math.floor(p.x);
+newParticleMessage["y"] = Math.floor(p.y);
+newParticleMessage["z"] = Math.floor(p.z);
+
+bridge.messagehandler.send(newParticleMessage);</pre>
+</p>
+<p>We are rounding down everything not only because we want to use the getParamInt method of the message object, but also because the velocity calculations will produce a number with many digits past the decimal point, and we don't need that level of precision. Not to mention that such long strings of digits would weight down our message. We trim them down to just three decimal digits, and then divide them again in the C++ code to get the original (though less precise) number. The position vector does not need any trimming since it represents screen pixels, but we still use floor to make sure that we get an integer.</p>
+<p>So, what is the final verdict? Having a very thin layer of C++ that handles only the final rendering of each frame is a good solution for projects that are not too resource-intensive. A simple game that incorporates several moving objects at the same time can be implemented mostly in JavaScript, with only a small and very general-purpose module written in C++ that will handle the rendering. However, when performance under stressful (to the hardware) conditions is a must, you can still fall back to the power of C++, while still maintaining the high-level features of JavaScript for the logic of the game.
+</p>
+<p>It's literally the best of both worlds.
+</p>
+<p>You can find the source code in this GitHub repository:&nbsp;<a href="https://github.com/MoSyncLabs/WebFountain" title="GitHub repository">https://github.com/MoSyncLabs/WebFountain</a></p>
+<p>Here is a video where you can see the animation in action:
+</p>
+<p><object width="560" height="315" data="http://www.youtube.com/v/fQ-Wnwz2Nvg?version=3&amp;hl=en_US" type="application/x-shockwave-flash"><param name="data" value="http://www.youtube.com/v/fQ-Wnwz2Nvg?version=3&amp;hl=en_US"><param name="allowFullScreen" value="true"><param name="allowscriptaccess" value="always"><param name="src" value="http://www.youtube.com/v/fQ-Wnwz2Nvg?version=3&amp;hl=en_US"><param name="allowfullscreen" value="true"></object></p>
+<p>Postscript Note: As I mentioned in the beginning, these tests were done on an iPhone 4. Pure JavaScript performance on Android devices was actually on par with the C++ implementation, but I don't think that it can keep up for ever increasing levels of complexity or features. Not to mention that the cross-platform minded developer should always take the worst-case scenario into account.</p>
+</body>
+</html>

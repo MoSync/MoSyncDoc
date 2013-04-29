@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>Sending to a Device</title>
+</head>
+<body>
+<h1>Sending to a Device</h1>
+<p>Once you have scanned for a device and selected it (see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/scanning-for-device/index.html">Scanning for a Device</a>) you can send your application package to it via Bluetooth. Alternatively, if your target device is not Bluetooth-enabled or cannot be detected, you can transfer your package to it via a cable or via a web server. For iOS devices there is support for sending it directly to the device. Here we describe all these methods.</p>
+<p><!--break--></p>
+<p></p>
+<h2>Checking the Target Device/Profile Association</h2>
+<p>Before you send your application to a device, it is always a good idea to check what target device is currently selected and which device profile is associated with it. That's because MoSync will send the package for the device profile associated with the target device.</p>
+<p>The association is set up when you first scan for and select a target device. You&nbsp;chose the device profile that should be associated with the target device.&nbsp;To see the current associations and how to change them if necessary.</p>
+<p>Click the small down arrow next to the <strong>Select Target Device</strong> icon. A drop-down menu will appear:</p>
+<p><img src="images/Sending01.png" align="none" width="275" height="182"></p>
+<p>At the top of the menu you will see the names of the devices followed [in brackets] by the profiles currently associated with them. (Usually the profile name is self explanatory. In the case of JavaME platforms, however, you usually just see our (<em>mea culpa</em>) internal version number.)</p>
+<p>The current target device has a tick against it.</p>
+<p><em>Note:</em> The device name is read from a setting in the mobile device. This name is usually set by the manufacturer, but it is often configurable, which can be helpful if you are testing your application on two otherwise identical devices.</p>
+<h2>Changing a Device's Associated Profile</h2>
+<p>You can change the profile associated with a device by selecting <strong>Edit Device List</strong> from the <strong>Select Target Device</strong> icon's drop-down menu. The <strong>Select Preferred Profile</strong> window will appear:</p>
+<p><strong><img src="images/Sending02.png" align="none" width="249" height="510"></strong></p>
+<p>Select the target device you want to edit from the list box. Double-click on a device profile in the bottom list, then click <strong>OK</strong>. The new device profile will be associated with the chosen target device.</p>
+<p><strong><em>Note</em></strong>: The IDE may ask you to select a device twice; once for platform based projects (all new projects since MoSync version 3.0) and once for device based projects (all projects created prior to MoSync version 3.0).</p>
+<h2>Sending Your Application to the Target Device</h2>
+<p>Click the <strong>Send to Target Device</strong> icon to send the package that matches the device profile to the currently selected device:<br> <br> <img src="images/userguide_send_3.png"><br> <br> How the actual installation on the device works is platform- and device-specific. If you are not sure how this is done or where your application is located after installation, consult the user manual for your device.</p>
+<h2 style="color: #000000;">Sending Your Application to an iOS Device</h2>
+<p>Since MoSync 3.2, we support sending apps directly to an iOS device from your Mac. Here are the steps to setup your project:</p>
+<ol>
+<li>Make sure you have an ad-hoc provisiong profile that includes your device and your app id, and export the provisioning profile as a file (that usually ends with the .mobileprovision extension). To learn how to create this provisioning profile, see <a href="http://developer.apple.com/library/ios/#documentation/ToolsLanguages/Conceptual/DevPortalGuide/CreatingandDownloadingaDistributionProvisioningProfile/CreatingandDownloadingaDistributionProvisioningProfile.html">Apple's documentation regarding this</a></li>
+<li>In the project to send to the device, open the project properties dialog (select the project, right-click, select <strong>Properties</strong>) and select <strong>MoSync Tool</strong> &gt; <strong>IPhone OS</strong> &gt; <strong>IPhone Signing</strong></li>
+<li>In the dialog, check the Enable Project Specific Settings and select "iPhone Distribution" in the <strong>Certificate Name</strong> dropdown box</li>
+<li>In the project properties dialog, select&nbsp;<strong>MoSync Tool</strong>&nbsp;&gt;&nbsp;<strong>IPhone OS</strong>&nbsp;&gt; <strong>Provisioning</strong></li>
+<li>Browse to the file created in step 1</li>
+<li>(This step needs only be done once.) Select the <strong>Project</strong> &gt; <strong>Scan for Target Device</strong> menu item and select <strong>IPhone OTA</strong> in the dialog that pops up. Press the <strong>Ok</strong> button.</li>
+</ol>
+<p>After having setup the project as described above, here are the steps to actually run the app on the device:</p>
+<ol>
+<li>Make sure that your device and computer are connected to the same network so that the device can connect to the computer. Usually selecting the same WiFi will be enough</li>
+<li>Select the project to send to the device and click the <strong>Send to Target Device</strong> toolbar item. (You may need to press the small arrow next to the Select Target <strong>Device toolbar</strong> item and select&nbsp;<strong>IPhone OTA</strong>)</li>
+<li>A dialog shows up with instructions to go to a certain web address on your device. On the device, open the Safari web browser&nbsp;and enter the web address</li>
+<li>In the browser a list of available projects shows up. Select the current project</li>
+<li>A dialog pops up asking you to accept to download the app. Accept the download</li>
+<li>The browser is sent to the background, revealing the home screen and the app being downloaded</li>
+<li>Once downloaded, run the app</li>
+</ol>
+<h2 style="color: #000000;">File transfer over Bluetooth (OBEX) doesn't work?</h2>
+<p><span style="color: #000000;"> If your target device does not have Bluetooth file transfer (OBEX), </span><span style="color: #000000;">you will need to transfer your package using one of the following methods:</span></p>
+<ul style="color: #000000;"><li><em>USB connection/Android device</em>: <br>Install the device vendor's drivers on your machine. Connect your device using the vendor's USB cable, then select <strong>Scan for Android USB Device</strong> from the <strong>Select Target Device</strong> drop-down menu.</li>
+<li><em>USB connection or other cable/any device</em>: <br>Connect the device to your PC using the cable provided by the device vendor and use the vendor's own file transfer solution.</li>
+<li><em>No cable connection</em>: <br>Upload the package to a web server, then download it to the device using the device's web browser; or copy the application to a memory card and transfer that to the device.</li>
+</ul>
+<h3 style="color: #000000;">Finding the Package to Transfer</h3>
+<p style="color: #000000;">Open MoSync, select your device profile, and build your project. You will find the executable package that MoSync has built for your application iby expanding the <strong>Release Packages</strong> node in the <strong>Project Explorer</strong>:</p>
+<p style="color: #000000;"><strong><img src="images/Sending04.png" align="none" width="253" height="177"></strong></p>
+<p>To install your application, copy the executable package to your device using the vendor's own file transfer solution and run it.</p>
+</body>
+</html>

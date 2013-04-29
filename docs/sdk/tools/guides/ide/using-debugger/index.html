@@ -1,0 +1,81 @@
+<html>
+<head>
+<title>Using the C/C++ Debugger</title>
+</head>
+<body>
+<h1>Using the C/C++ Debugger</h1>
+<p>The MoSync SDK includes a powerful&nbsp; debugger that makes it easy to step through C/C++ code running on the MoRE Emulator and get an overview of the state of your program as each statement executes.</p>
+<!--break--><h2>About the Debugger</h2>
+<p>Our C/C++ debugger is a reimplementation of the GNU debugger. (For more information see: <a href="http://www.gnu.org/software/gdb/" title="http://www.gnu.org/software/gdb/" id="sj34" style="background-color: #ffffff;">http://www.gnu.org/software/gdb/</a><span style="background-color: #ffffff;">.) The debugger has been customized for the <a href="http://www.mosync.com/sdk">MoSync SDK</a> and is fully integrated with MoSync SDK's Eclipse-based IDE. The debugger works with code executing in the <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/emulators/emulating-device/index.html">MoRE Emulator</a> and allows you to:</span></p>
+<ul style="background-color: #ffffff;"><li>Break program execution at any time</li>
+<li>Execute a single line of code</li>
+<li>Step into/out of functions</li>
+<li>Get a stack trace at every location of a program</li>
+<li>Hover over any macro/variable to see its content at time of execution</li>
+<li>Enable and disable breakpoints</li>
+<li>View variable content in tree-view</li>
+<li>Instantly see variable updates</li>
+<li>Add any C/C++ custom expression</li>
+<li>Inspect global variables by adding them as watch expressions</li>
+</ul>
+<h2 style="background-color: #ffffff;">Starting the Debugger</h2>
+<p><span style="background-color: #ffffff;"> Before you start the debugger, check that you have a </span><strong style="background-color: #ffffff;">Debug </strong><span style="background-color: #ffffff;">build configuration available, as follows:</span></p>
+<ol style="background-color: #ffffff;"><li>Select your project in the Project Explorer.</li>
+<li>Go to <strong>Project </strong>&gt; <strong>Properties </strong>&gt; <strong>MoSync Project</strong> &gt; <strong>Build Configurations</strong>.</li>
+<li>Tick the <strong>Activate Configurations</strong> box.<br> You should now see the available build configurations. The <span style="color: #000000;">build configuration called "Debug" is the build configuration that's used by default when you start the emulator in debugging mode. If you need to, you can edit this build configuration and/or create a new one: see <a href="#createdebugbuildconfiguration">Creating a Debug Build Configuration</a>.<br></span></li>
+<li>Click <strong>OK</strong> to close the <strong>Properties </strong>window.</li>
+<li>Start the debugger by clicking the <strong>Debug</strong> <img src="images/run_debugger.png"> button on the main toolbar.<br> The emulator will open and you application will execute in debug mode.</li>
+</ol>
+<h2 style="background-color: #ffffff;">Pausing Execution</h2>
+<p><span style="background-color: #ffffff;"> To break the execution of your program while it is running, click the </span><strong style="background-color: #ffffff;">Pause </strong><span style="background-color: #ffffff;">button: <img src="images/pause_button.png"></span><br style="background-color: #ffffff;"><span style="background-color: #ffffff; color: #000000;"> The application will enter a suspended state and you can inspect variables and see the stack-trace.</span><br style="background-color: #ffffff;"><span style="background-color: #ffffff; color: #000000;"> </span></p>
+<p><span style="background-color: #ffffff; color: #000000;">To stop the debugging session, click the <strong>Stop </strong>button: </span><img src="images/stop_button.png"><span style="background-color: #ffffff; color: #ff0000; font-size: xx-small;"><br></span></p>
+<p style="background-color: #ffffff;"><span style="color: #000000;"><em>Note</em>: if you happen to pause execution while inside an external library (such as the ones bundled with MoSync), you will not be able to see any source code: external libraries are not provided in the MoSync package.</span></p>
+<h2 style="background-color: #ffffff;">Setting Breakpoints</h2>
+<p><span style="background-color: #ffffff;"> To set a breakpoint, do one of the following:</span></p>
+<ul>
+<li><span style="background-color: #ffffff;">Right-click in the code view border where you want the breakpoint, then select </span><strong style="background-color: #ffffff;">Toggle Breakpoint</strong><span style="background-color: #ffffff;"> from the pop-up menu.</span></li>
+<li><span style="background-color: #ffffff;">Double-click in the code view border.<br></span></li>
+</ul>
+<p><span style="background-color: #ffffff; color: #ff0000;"><img src="images/setting_breakpoints.png"><br><span style="font-size: xx-small;"> </span></span><br style="background-color: #ffffff;"><span style="background-color: #ffffff;"> Now click the </span><img src="images/run_debugger.png"><span style="background-color: #ffffff;"> </span><strong style="background-color: #ffffff;">Debug </strong><span style="background-color: #ffffff;">button. When the program reaches the breakpoint, the program will be suspended and you will be able to </span><span style="background-color: #ffffff; color: #000000;">debug the application from there - inspecting variables, stepping line-by-line, setting new breakpoints, and so on.</span></p>
+<h2 style="background-color: #ffffff;">Stepping Through Code</h2>
+<p><span style="background-color: #ffffff;"> When execution reaches a breakpoint or you pause execution manually, you can step through the code line-by-line. This helps you see what code paths the application executes along and what values are assigned to variables after an expression has been evaluated. There are three buttons to help you step through the code:</span></p>
+<p><img src="images/step_into.png"> <strong>Step Into</strong> executes a line. If the line is a call to a function, the debugger steps into it.<span style="color: #ff0000;"><span style="font-size: xx-small;"> </span></span></p>
+<p>&nbsp;</p>
+<p><strong><img src="images/step_over.png"> Step Over</strong> executes a line. I<span style="color: #000000;">f the line is a call to a function, </span>the debugger executes the function call and breaks after it has returned<span style="color: #ff0000; font-size: xx-small;"> </span>.</p>
+<p><img src="images/step_return.png"><strong> Step Return</strong> continues the execution until the execution has returned from the current function.</p>
+<h2 style="background-color: #ffffff;">Inspecting Local Variables</h2>
+<p><span style="background-color: #ffffff;"> When execution reaches a breakpoint or you pause execution manually, you can inspect the current content of variables. All the variables in the local scope are visible, including static variables, local variables, and arguments to functions. The content of structures and arrays can be expanded by pressing the + sign next to them.</span></p>
+<p><img src="images/variable_expansion_after.png"><span style="background-color: #ffffff; color: #ff0000; font-size: xx-small;">&nbsp;</span></p>
+<h2 style="background-color: #ffffff;">Inspecting Global Variables with Watch Expressions</h2>
+<p><span style="background-color: #ffffff;"> To inspect a global variable you must add it as a watch expression. There are two ways to do this:</span></p>
+<ul>
+<li><span style="color: #000000;">R</span><span style="color: #000000;">ight-click in the <strong>Expressions</strong> tab</span><span style="color: #000000;">,</span> <span style="color: #000000;">select </span><span style="color: #000000;"><strong>Add Watch Expression</strong></span>, type the name of a global variable, and click <strong>OK:</strong></li>
+</ul>
+<p><strong><span style="font-weight: normal;"><strong><span style="font-weight: normal;"><strong><span style="font-weight: normal;"><strong><span style="font-weight: normal;"><strong><span style="font-weight: normal;"><img src="images/expressions_tab.png"></span></strong></span></strong></span></strong></span></strong></span></strong><br><strong><span style="font-weight: normal;"><strong><span style="font-weight: normal;"><strong><span style="font-weight: normal;"><strong><span style="font-weight: normal;"><strong><span style="font-weight: normal;"><img src="images/add_watch_expression_from_view.png"></span></strong></span></strong></span></strong></span></strong></span></strong><br> Right-click the name of a global variable in the editor, select <span style="color: #000000;"><strong>Add Watch Expression</strong></span><span style="color: #ff0000; font-size: xx-small;">&nbsp;</span>, and click <strong>OK</strong>.<img src="images/add_watch_expression_from_editor.png"></p>
+<h2 style="background-color: #ffffff;"><a name="createdebugbuildconfiguration"></a>Creating a Debug Build Configuration</h2>
+<p><span style="background-color: #ffffff;"> To be able to debug your program you need to have a debug build configuration with debugger-compatible build settings (for instance, all optimizations turned off).</span><br style="background-color: #ffffff;"><br style="background-color: #ffffff;"><span style="background-color: #ffffff;"> This also applies to libraries, which is why special unoptimized debugging versions of the libraries need to be linked against instead (our debugging libraries all end with a capital "D").</span><br style="background-color: #ffffff;"><br style="background-color: #ffffff;"><span style="background-color: #ffffff;"> A default debug build configuration will be created whenever you create a new project, but if you don't have one or you want to create another one, do the following:</span></p>
+<ol style="background-color: #ffffff;"><li>Goto <strong>Project</strong> &gt; <strong>Properties</strong> &gt; <strong>MoSync Project</strong> &gt; <strong>Build Configurations</strong></li>
+<li><strong>Add </strong>a new build configuration or <strong>Duplicate </strong>an existing one.</li>
+<li>Click <strong>Edit </strong>and give the new build configuration a suitable name.</li>
+<li>Go to <strong>Build Settings</strong> &gt; <strong>Build Configuration</strong> &gt; <strong>Configuration.</strong></li>
+<li>In the <strong>Configuration </strong>list box, select the build configuration you just created.<strong><br></strong></li>
+<li>Select the <strong>Paths and Files</strong> tab and set <strong>Additional Libraries</strong> to the debug ones (<strong>MAUtilD.lib</strong> for example).</li>
+<li>Select the <strong>Compiler Flags </strong>tab and turn off all optimizations by adding <strong>-O0</strong> (and make sure that no other optimizations are turned on, i.e. no other <strong>-O</strong> switches).</li>
+<li>Finish by clicking <strong>OK</strong>.</li>
+</ol>
+<p><span style="background-color: #ffffff;"> To use your new <strong>Debug </strong>build configuration:</span></p>
+<ol style="background-color: #ffffff;"><li>Press the small down-arrow to the right of the <strong>Debug </strong>button and choose <strong>Debug Configurations</strong>.</li>
+<li>Select the project you want to use the new debug build configuration with.</li>
+<li>In the <strong>Configuration </strong>group, tick the <strong>Automatically switch to this configuration before debugging</strong> box.</li>
+<li>Select your new debug build configuration from the drop-down list.<br> Now, when you click the Debug button in your project, you new build configuration will be used to build the application ready for debugging.</li>
+</ol>
+<h2 style="background-color: #ffffff;">Known Issues with the Debugger</h2>
+<ul style="background-color: #ffffff;"><li>We use the MoSync debugger, but the Eclipse help system documentation still contains information about its native debugger, even though that debugger is disabled.</li>
+<li>Templates and namespaces aren't supported by the debugger's expression evaluator yet. If you inspect a variable using explicit namespace directives or template instances the resulting behaviour may not be what you expect.</li>
+<li>The C/C++ expression parser isn't completely tested yet, but it should support the most common expressions.</li>
+<li>Note that functions cannot be called from expressions (that includes overloaded operators).</li>
+<li>Instruction stepping mode isn't fully supported.</li>
+<li>The menu options <strong>Run to line</strong>, <strong>Resume at line</strong> and <strong>Move to line</strong> are not implemented yet.</li>
+</ul>
+</body>
+</html>

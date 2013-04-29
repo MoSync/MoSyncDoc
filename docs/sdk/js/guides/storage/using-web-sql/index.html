@@ -1,0 +1,109 @@
+<html>
+<head>
+<title>Using Web SQL in MoSync Apps</title>
+</head>
+<body>
+<h1>Using Web SQL in MoSync Apps</h1>
+<!-- # Using Web SQL in MoSync Apps  --><!-- C:\md>perl Markdown.pl C:\MoSyncProjects\MoSyncApps\WebSQLDemo\Tutorial\WebSQLTutorial.md > output.txt --><!--
+<style type="text/css">
+p>img {
+  width: 550px;
+}
+</style>
+--><p>In this tutorial we will take a look at the Web SQL Database JavaScript API, a standard way of accessing SQL databases from JavaScript. We introduce the API and show how to use it in a MoSync application. In addition, we discuss alternative options for accessing databases from a JavaScript-based MoSync app.</p>
+<p>The source code for this tutorial is available on <a href="https://github.com/divineprog/MoSyncApps/tree/master/WebSQLDemo">GitHub</a>.</p>
+<h2>Background</h2>
+<p><a href="http://www.w3.org/TR/webdatabase/">Web SQL Database</a> is a database API proposed by the W3C Working Group. However, the standard is not actively maintained at present, because of lack of independent implementations (multiple implementations are required for W3C to proceed with the standards process).</p>
+<p>Currently, Web SQL is implemented in WebKit, which means that it is available on iOS and Android, and in Chrome on the desktop.</p>
+<p>There exists competing standards for data storage in browsers, as outlined in the article <a href="http://csimms.botonomy.com/2011/05/html5-storage-wars-localstorage-vs-indexeddb-vs-web-sql.html">HTML5 Storage Wars</a>. In the favour of Web SQL is that it is considered reliable and that it is based on SQLite, a proven database engine that has become popular on mobile devices.</p>
+<p>The MoSync SDK supports Web SQL within its <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/storage.md.html#Storage">Storage JavaScript API</a>, which is part of the <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/index.html">MoSync Wormhole JavaScript Library</a>.</p>
+<blockquote><p>For a list of the platforms currently supported by the Storage JavaScript API, see our <a href="TEMPLATE_DOC_PATH/sdk/tools/references/feature-platform-support/index.html">Feature/Platform Support</a> page.</p>
+</blockquote><p>Database files are stored in the application's local file directory.</p>
+<h2>A tour of the Web SQL API</h2>
+<p>Use the global function openDatabase to open a <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/database.md.html#Database">Database</a>:</p>
+<pre class="mosync-code-cpp">var db = openDatabase("MyDB", "1", "MyDB", 65536);</pre>
+<p>Parameters are:</p>
+<ul>
+<li>database name</li>
+<li>database version</li>
+<li>database display name</li>
+<li>database size</li>
+</ul>
+<p>Use the transaction() function in the database object to execute queries, and execute the actual queries using the executeSql() function in the <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/sqltransaction.md.html#SQLTransaction">SQLTransaction</a> object:</p>
+<pre class="mosync-code-cpp">db.transaction(
+    function(tx)
+    {
+        tx.executeSql(
+            "INSERT INTO pet VALUES (?, ?, ?)",
+            ["Charmy", 7, 0.6],
+            function(tx, result) {
+                console.log("Query Success"); },
+            function(tx, error) {
+                console.log("Query Error: " + error.message); }
+        );
+    },
+    function(error) {
+        // Note that this error function does not get
+        // called if the above query should fail, since
+        // we supply an error function to executeSql.
+        // If you do not supply an error function to
+        // executeSql this function will be called on error.
+        console.log("Transaction Error: " + error.message); },
+    function() {
+        console.log("Transaction Success"); }
+);
+</pre>
+<p>The executeSql() function takes up to four parameters:</p>
+<ul>
+<li>query string (mandatory)</li>
+<li>query parameter array (optional)</li>
+<li>query success function (optional)</li>
+<li>query error function (optional)</li>
+</ul>
+<p>A nice thing with the Web SQL API is that it encourages the use of query parameters. It is very easy to supply parameters in the query parameter array.</p>
+<p>The transaction() function takes up to three parameters:</p>
+<ul>
+<li>transaction function, execute queries in this function (mandatory)</li>
+<li>transaction error function (optional)</li>
+<li>transaction success function (optional)</li>
+</ul>
+<p>Note the order of the success and error functions, which is the reverse for the transaction() function, compared to the executeSql() function. Errors are reported using the <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/sqlerror.md.html#SQLError">SQLError</a> object.</p>
+<p>The transaction success and transaction error functions are useful for handling transactions.</p>
+<p>Note that the transaction error function will be called only if you do not supply a query error function to executeSql(). If you provide a query error function, that function will be called, and the transaction success function is called, rather than the transaction error function. Thus, in the above example, the transaction error function will not be called if the query fails.</p>
+<p>Also note that queries are executed asynchronously. When the transaction success function is called, you should be guaranteeded that all queries have been executed.</p>
+<p>When doing a search query, the result is obtained as a set of rows, which involves using the <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/sqlresultset.md.html#SQLResultSet">SQLResultSet</a> and the <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/sqlresultsetlist.md.html#SQLResultSetList">SQLResultSetList</a> objects:</p>
+<pre class="mosync-code-cpp">tx.executeSql("SELECT * FROM pet", [],
+&nbsp;&nbsp;&nbsp; function(tx, result)
+&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log("All rows:");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (var i = 0; i &lt; result.rows.length; ++i)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var row = result.rows.item(i);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log("&nbsp; " + row.name + " " + row.age + " " + row.curiosity);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp; });
+</pre>
+<h2>Basic examples</h2>
+<p>File <a href="https://github.com/divineprog/MoSyncApps/blob/master/WebSQLDemo/LocalFiles/example1.js">example1.js</a> provides a basic example of how to use the Web SQL API. This example illustrates the techniques shown above.</p>
+<p>File <a href="https://github.com/divineprog/MoSyncApps/blob/master/WebSQLDemo/LocalFiles/example2.js">example2.js</a> shows how to use a lightweight wrapper library, found in file <a href="https://github.com/divineprog/MoSyncApps/blob/master/WebSQLDemo/LocalFiles/database.js">database.js</a>, which simplifies the Web SQL API a bit. In this library, each query is run in its own transaction, so the handling of the transaction object is abstracted away. The drawback is that you then cannot use the transaction success function to determine when a sequence of queries are complete.</p>
+<p>Note that in example1.js, the transaction success function runs the code in example2.js. This makes the two examples run sequentially.</p>
+<p>You can run both examples, e.g. in Chrome, by opening the file <a href="https://github.com/divineprog/MoSyncApps/blob/master/WebSQLDemo/LocalFiles/example.html">example.html</a>. Inspect the console log in Chrome to see the output. (Note that WebSQL is not available in Firefox or Internet Explorer.)</p>
+<p>One thing that is of interest is how retrieving the result of SELECT COUNT(*) works in Web SQL. The result is returned as a row, and the name of the field that contains the row count is called "COUNT(*)". See the example code for how this is used.</p>
+<h2>Demo application</h2>
+<p>The app WebSQLDemo is a simple turn-based game of luck (much like playing by tossing a dice). The "dice" in the app is a "wheel" with numbers 1 tho 50. Whoever gets the highest number wins the current round, and the total score gets updated.</p>
+<p>You challenge the app and can affect the outcome by taking a low risk or a high risk. With high risk, you can double your score, but the app gets to roll the wheel twice.</p>
+<p>This is a screenshot of the app:</p>
+<p><img src="images/WebSQLDemo.png" alt="Web SQL Demo Screenshot" title=""></p>
+<p>The source code is available on GitHub. The main entry point of the program is file <a href="https://github.com/divineprog/MoSyncApps/blob/master/WebSQLDemo/LocalFiles/index.html">index.html</a>. The app uses the database.js wrapper library discussed above.</p>
+<p>The database is used to store the total score of the two players (the user and the app). This makes the score persistent. While not a big database with lots of objects, it shows how to perform basic database operations, like querying and updating rows.</p>
+<h2>Alternative database techniques</h2>
+<p>Since MoSync supports hybrid applications that calls C/C++ from JavaScript (and vice versa), you have a number of options available when it comes to database functionality.</p>
+<p>MoSync has a C/C++ Database API (based on SQLite), which you can invoke from JavaScript. To use the C/C++ API, you need to write a bridge that allows sending database requests from JavaScript to C/C++. Depending on the way you wish to organise your code, you can make the C/C++ part a general library and write the application and database logic in JavaScript. Or you can write the logic in C/C++, and make JavaScript call high-level application specific functions in C/C++ to store and access data. With this approach, you have the option of implementing the application layer in C/C++ and use JavaScript for the user interface layer.</p>
+<p>The use of C/C++ opens up for porting alternative database engines to MoSync, and making them available to JavaScript. So called "NoSQL" databases (Document Databases) have became popular alternatives to SQL databases, and there are several implementations one could chose from, like Kyoto Cabinet. We have, however, not test tested any of those on MoSync. Please let us know if you are doing work in this direction, it would be great to hear about your experiences.</p>
+<p>How to access C/C++ from JavaScript to utilize MoSync's database API is a topic we plan to return to in future tutorials. Meanwhile you can check out the existing documentation that provides information about the programming techniques required to do this:</p>
+<ul>
+<li><a href="TEMPLATE_DOC_PATH/sdk/js/guides/wormhole/extending-javascript-with-cpp/index.html">Extending HTML5 Apps with C++</a></li>
+<li><a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/storage/sql-database-api/index.html">The Database C API</a></li>
+</ul>
+</body>
+</html>

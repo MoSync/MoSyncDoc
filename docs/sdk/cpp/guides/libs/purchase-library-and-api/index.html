@@ -1,0 +1,130 @@
+<html>
+<head>
+<title>The Purchase Library and API</title>
+</head>
+<body>
+<h1>The Purchase Library and API</h1>
+<p>The <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___purchase_lib.html">MoSync Purchase C++ Library</a> provides a set of classes and methods (in the IAP namespace) for purchasing products and handling user’s transaction information from within your own application. The library is built on top of the <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___purchase_a_p_i.html">MoSync Purchase C API</a> which provides a comprehensive set of functions for managing purchases.<!--break--></p>
+<p></p>
+<h2>Tutorials and Examples</h2>
+<p>For a detailed tutorial that shows how to create a cross-platform mobile application using the Purchase C++ Library and Purchase C API, see: <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/purchases/managing-app-purchases/index.html">In-App Purchase tutorial</a>.<br> <br> The MoSync SDK includes a fully commented example application, <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/purchaseexample/index.html">InAppPurchaseExample</a>, that makes use of the the Purchase Library and API.</p>
+<h2>Platform Implementations and Variations</h2>
+<p>In-app purchase mechanisms vary from platform to platform. Their implementation is dependent not only on the device's software but also on the platform vendor's billing system.</p>
+<h3>Purchase types</h3>
+<p>The purchase type determines how the shops handle and track purchases. <br> <br> <em>Purchase types for Apple iTunes</em></p>
+<ul>
+<li>Consumable -- for products that must be purchased each time the user needs that item.</li>
+<li>Non-consumable -- for products that only need to be purchased once by the user and are available to all devices registered to a user.</li>
+<li>Subscriptions (auto-renewable, free, and non-renewing) -- for time-limited or periodically reoccurring content, for example newspaper or magazine content and club memberships.</li>
+</ul>
+<p><em>Purchase types for Google Play</em></p>
+<ul>
+<li>"Managed per user account" -- products that can be purchased only once per user account on Google Play.</li>
+<li>"Unmanaged" -- products that do not have their transaction information stored on Google Play. These products are consumed within your application and are usually purchased multiple times.</li>
+</ul>
+<h3>Google Play/Android specifics</h3>
+<ul>
+<li>To ensure the integrity of the transaction information sent to your application, Google Play uses the private key associated with your publisher account. So, to be able to perform any purchase request, <strong>PurchaseManager::setPublicKey() </strong>needs to have been previously set.</li>
+</ul>
+<ul>
+<li>On Android, <strong>refunds </strong>can only be initiated by the Google merchant that published the applications. Therefore, the user cannot request a refund, but only wait for refund events from the server in the <strong>PurchaseManagerListener::productRefunded()</strong> callback.</li>
+</ul>
+<ul>
+<li>Android does not support the purchase of a product with a <strong>quantity</strong> greater than 1. Therefore, <strong>Purchase::requestPurchase(quantity)</strong> will always have the <strong>quantity</strong>=1 on Android platform.</li>
+</ul>
+<h3>Google Play/Android limitations</h3>
+<ul>
+<li>Google in-app billing can be implemented only in applications that you publish through Google Play.</li>
+<li>You cannot use Android emulator (or MoSync's MoRE emulator) to test in-app purchases; you must install your application on a device to test it.</li>
+<li>Make sure that your application is signed with the release key (i.e. build it in the MoSync IDE in <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/build-configurations/index.html">Release mode</a>) before testing in-app purchasing.</li>
+<li>You must have a Google Checkout Merchant account to use Google Play in-app purchase.</li>
+<li>If your device is running Android 3.0, in-app purchase requires version 5.0.12 (or higher) of the MyApps application. If your device is running any other version of Android, in-app purchase requires version 2.3.4 (or higher) of the Google Play application.</li>
+<li>An application can use in-app purchase only if the device is running Android 1.6 (API level 4) or higher. So remember to call <strong>PurchaseManager::checkPurchaseSupported()</strong> at the application entry point so that you can enable/disable certain UI features related to in-app purchase.</li>
+<li>For more information about in-app purchase requirements, see<a href="http://market.android.com/support/bin/answer.py?answer=1153481"> In-App Billing Availability and Policies</a>.</li>
+</ul>
+<h3>Apple iTunes/iOS specifics</h3>
+<ul>
+<li>To verify the receipt of a purchased item on iOS, you must set &nbsp;<strong>PurchaseManager::maPurchaseSetStoreURL() </strong>previously to any purchase request.</li>
+<li>iOS supports the purchase of a product with a quantity greater than 1.</li>
+<li>For a completed purchase, there are some receipt fields that are available only on iOS, such as:</li>
+<ul>
+<li><strong>Receipt::getBID()</strong> the bundle identifier for the application.</li>
+<li><strong>Receipt::getVersionExternalID()</strong> the arbitrary number that uniquely identifies a revision of your application.</li>
+<li><strong>Receipt::getBVRS()</strong> the version number of the application.</li>
+<li><strong>Receipt::getPrice() </strong>the cost of the product in the local currency.</li>
+<li><strong>Receipt::getTile() </strong>the localized product title.</li>
+<li><strong>Receipt::getDescription() </strong>the localized product description.</li>
+</ul>
+</ul>
+<h3>Apple iTunes/iOS limitations&nbsp;&nbsp;&nbsp;</h3>
+<ul>
+<li>In app purchase does not work on the iOS simulator, so the testing must be done on the device.</li>
+<li>In app purchase requires iOS 3.0 or later.</li>
+<li>The developer must have an iTunes account in order to create products that will be later available for purchasing.</li>
+<li>The developer must sign the application with a valid iOS developer certificate that has in app purchase enabled.</li>
+</ul>
+<h2>Purchase C++ Library Classes and Methods</h2>
+<p>For a list of the platforms supported by the Purchase C++ Library, see <a href="TEMPLATE_DOC_PATH/sdk/tools/references/feature-platform-support/index.html">Feature/Platform Support</a>.</p>
+<p>Purchases are encapsulated in objects of the <strong>Purchase</strong> class. The <strong>Purchase </strong>wraps a product that can be bought along with all the details of the transaction (such as the <strong>Receipt</strong>). <br> <br> The main methods of the <strong>Purchase </strong>class include:</p>
+<ul>
+<li><strong>Purchase()</strong> — the constructor, the minimum required to create a purchase object. Requires the <strong>productId </strong>that identifies the product and a listener.</li>
+<li><strong>getProductId()</strong> — get the <strong>productId </strong>that identifies the product.</li>
+<li><strong>requestPurchase()</strong> — request the user to purchase a product. The quantity parameter is available only on iOS.</li>
+<li><strong>verifyReceipt()</strong> — verify if the receipt came from Apple App Store / Google Play.</li>
+<li><strong>addPurchaseListener()</strong> — add an event listener for this purchase. Keep in mind that when a <strong>Purchase </strong>object is created it's parent is automatically set as an event listener.</li>
+</ul>
+<p>Receipts are encapsulated in objects of the <strong>Receipt </strong>class: A <strong>Receipt </strong>wraps the details of a purchase. The main methods of this class include:</p>
+<ul>
+<li><strong>getProductID()</strong> — Get the product id of the item that was purchased.</li>
+<li><strong>getTransactionID()</strong> — Get the transaction identifier of the item that has been purchased.</li>
+<li><strong>getTransactionDate()</strong> — Get the transaction date and time of the item that has been purchased.</li>
+<li><strong>getAppID()</strong> — Get a string that the App Store/GooglePlay uses to uniquely identify the application that created the payment transaction. If your server supports multiple applications, you can use this value to differentiate between them.&nbsp;</li>
+<li><strong>getVersionExternalID</strong> — Get the arbitrary number that uniquely identifies a revision of your application.</li>
+<li><strong>getBID()</strong> — Get the bundle identifier for the application.</li>
+<li><strong>getBVRS()</strong> — Get the version number of the application.</li>
+<li><strong>getPrice()</strong> — The cost of the product in the local currency.</li>
+<li><strong>getTitle()</strong> — Get the localized product title.</li>
+<li><strong>getDescription()</strong> — Get the localized product description.</li>
+</ul>
+<p>The <strong>PurchaseManager </strong>class manages purchase-related events and dispatches them to the target products. It is a singleton class. Its main methods include:</p>
+<ul>
+<li><strong>checkPurchaseSupported()</strong> — check if in-app purchase is supported/enabled on a device. This method must be called from the start, so specific UI components related to purchase can be enabled/disabled.</li>
+<li><strong>setPublicKey() </strong>&nbsp;— set your Google Play public key to the application to verify the signature of the transaction information that is returned from Google Play.</li>
+<li><strong>setStoreURL()</strong> &nbsp;— set the store URL used for verifying the receipt on iOS platform.</li>
+<li><strong>restoreTransactions() </strong>&nbsp;— restore transactions that were previously finished so that you can process them again.</li>
+</ul>
+<p>The <strong>PurchaseListener </strong>can be used to listen for a specific purchase’s events. The <strong>PurchaseListener </strong>class contains the following virtual methods:</p>
+<ul>
+<li><strong>productValid() </strong>notifies that the product has been validated and can be purchased.</li>
+<li><strong>productInvalid()</strong> notifies that the product is not valid.</li>
+<li><strong>requestInProgress()</strong> notifies that the transaction has been received by the server.</li>
+<li><strong>requestCompleted()</strong> notifies that the transaction has been successfully processed.</li>
+<li><strong>requestFailed()</strong> notifies that the transaction has failed.</li>
+<li><strong>receiptValid() </strong>notifies that the transaction has been validated by the server.</li>
+<li><strong>receiptInvalid()</strong> notifies that the transaction is not valid on the server.</li>
+<li><strong>receiptError()</strong> notifies that an error occurred while verifying the receipt.</li>
+</ul>
+<p>The <strong>PurchaseManagerListener</strong> can be used to listen for restored or refunded products. The class contains the following virtual methods:</p>
+<ul>
+<li><strong>purchaseRestored()</strong> notifies that a purchase has been restored.</li>
+<li><strong>purchaseRestoreError()</strong> &nbsp;notifies that <strong>restoreTransactions()</strong> has failed.</li>
+<li><strong>purchaseRefunded()</strong> notifies that a purchase has been refunded.</li>
+</ul>
+<h2>Purchase C API IOCTLs</h2>
+<p>The Purchase C++ Library described above makes use of the MoSync Purchase C API which contains a number of lower-level C IOCTLs. For a list of the platforms supported by the Purchase C API, see <a href="TEMPLATE_DOC_PATH/sdk/tools/references/feature-platform-support/index.html">Feature/Platform Support</a>.</p>
+<ul>
+<li><strong>maPurchaseSupported()</strong> — check if in-app purchase is supported/enabled on a device.</li>
+<li><strong>maPurchaseCreate() </strong>— create a product object asynchronously.</li>
+<li><strong>maPurchaseSetPublicKey() </strong>— set the Google Play public key to the application, enabling the application to verify the signature of the transaction information that is returned from Google Play. Must be set in order to be able to request purchases.</li>
+<li><strong>maPurchaseRequest() </strong>— request the user to purchase a product. The system will handle the actual purchase process.</li>
+<li><strong>maPurchaseVerifyReceipt() </strong>— verify if the receipt came from Apple App Store / Google Play. Make sure that the product is purchased before calling this syscall.</li>
+<li><strong>maPurchaseGetField() </strong>— get a field value contained by the receipt. Make sure that the given product has a valid receipt. Call the <strong>maPurchaseVerifyReceipt()</strong> syscall and wait for a #MA_PURCHASE_EVENT_RECEIPT_VALID purchase event type.</li>
+<li><strong>maPurchaseSetStoreURL() </strong>— set the store url used for verifying the receipt on iOS platform.</li>
+<li><strong>maPurchaseRestoreTransactions() </strong>— restore transactions that were previously finished so that you can process them again. For example, your application would use this to allow a user to unlock previously purchased content onto a new device.</li>
+<li><strong>maPurchaseGetName() </strong>— get product id using a product handle.</li>
+<li><strong>maPurchaseDestroy() </strong>— destroy a product object.</li>
+</ul>
+<p>More information on these functions can be found in the<a href="http://www.mosync.com/files/imports/doxygen/latest/html/index.html"> MoSync C/C++ API Reference</a>.</p>
+<p>&nbsp;A complete screencast for an example application can be found <a href="http://www.youtube.com/watch?v=0pR8ioATAH4&amp;feature=plcp">here</a>, on our YouTube MoSync Dev Channel.</p>
+</body>
+</html>

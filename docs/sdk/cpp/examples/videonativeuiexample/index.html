@@ -1,0 +1,43 @@
+<html>
+<head>
+<title>VideoNativeUIExample</title>
+</head>
+<body>
+<h1>VideoNativeUIExample</h1>
+<p>This example application makes use of the MoSync NativeUI Library and demonstrates how to use the VideoView widget to embed video in your application.<!--break--></p>
+<table class="doclayout" border="0"><tbody><tr><td><img src="images/VideoNativeUIExample1.png" align="none" width="210" height="336"></td><td><img src="images/VideoNativeUIExample2.png" align="none" width="210" height="314"></td><td><img src="images/VideoNativeUIExample3_0.png" align="none" width="210" height="355"></td></tr>
+<tr><td><em>On Android, playing a .3gp video from a URL</em></td><td><em>On iOS, playing a .m3u8 video from a URL</em></td><td><em>On Android, playing a .3gp video from a local path</em></td></tr>
+</tbody></table>
+<p>&nbsp;<br>This example is included in the MoSync SDK installation in the /examples folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<h3>Behaviour</h3>
+<p><em>On iOS and Android:</em><br><br> When it starts up, this application displays a main screen with two tabs, <strong>Video </strong>and <strong>Settings</strong>. <br><br>On the default Video tab the user can enter the URL of a video file -- of any Android or iPhone/iOS supported formats<strong>&nbsp;</strong><strong></strong>. (A default URL is provided at start-up, based on the application settings.)</p>
+<p>Tapping <strong>Load url</strong> fetches the file. Tapping <strong>Play </strong>starts the video.<br><br>The settings on the <strong>Settings </strong>tab enables the user to show or hide the label that displays the video duration, and also the default URL that is loaded when the application starts-up. Pressing <strong>Reload </strong>returns to the video screen and starts loading the default video.</p>
+<p>While a video is playing the user is granted control and the <strong>Pause </strong>and <strong>Stop </strong>buttons can be used. After tapping on the video, the platform-specific media controller is displayed.</p>
+<p>When loading a new video, any playing video is stopped automatically before the new video plays.</p>
+<p><em>On Android only:</em><br>The user can play a local file by entering a local path in the edit box and clicking the Load path button.</p>
+<h3>In the Code</h3>
+<p>This example application makes use of the MoSync NativeUI Library, and through that the <strong>VideoView </strong>widget in the MoSync Widget API.<br><br>The project is divided into several files:</p>
+<ul>
+<li><strong>Main.cpp</strong> is the application's main entry point.</li>
+<li><strong>Moblet.cpp</strong> is the moblet that manages the application and handles key events.</li>
+<li><strong>Util.cpp</strong> contains utility functions and values for the application.</li>
+<li><strong>MainScreen.cpp</strong> is the <strong>TabScreen </strong>of the application. Here the application screens are created and connected to the main tab screen.</li>
+<li><strong>VideoScreen.cpp</strong> is the first screen of the application, containing widget controls for the Video: <strong>Play</strong>, <strong>Pause</strong>, and <strong>Stop</strong>, and a edit box widget for user input with the source link/path for the video.</li>
+<li><strong>SettingsScreen.cpp</strong> is the second screen of the application and it consists of a <strong>ListView </strong>with a check box for enabling/disabling the duration label of the <strong> VideoScreen</strong>, a label with the default source url loaded at application startup, and a <strong>Reload </strong>button for reloading the default source in the VideoScreen.</li>
+<li><strong>.h</strong> header files contain the forward declarations for the main<strong> .cpp </strong>code files.</li>
+</ul>
+<h3>Touch responses</h3>
+<ul>
+<li>The application is exited by pressing the back button.</li>
+<li>The current video source starts playback by pressing <strong>Play </strong>button.</li>
+<li>The current video source pauses playback by pressing <strong>Pause </strong>button.</li>
+<li>The current video source stops playback by pressing <strong>Stop </strong>button.</li>
+<li>The SettingsScreen is shown by pressing on the <strong>Settings </strong>tab.</li>
+<li>The VideoScreen is shown by pressing on the <strong>Video </strong>tab.</li>
+<li>By clicking on the edit box from <strong>VideoScreen </strong>a virtual keyboard is displayed and the user can input a video url, or a video path.</li>
+<li>By clicking <strong>LoadUrl </strong>button the video url is taken from the edit box and it starts loading.</li>
+<li>By clicking the <strong>LoadPath </strong>button the video path is taken from the edit box and it starts loading.</li>
+<li>By clicking the "Reload default source" from <strong>SettingsScreen</strong>, the default video starts loading in the <strong>VideoScreen</strong>.</li>
+</ul>
+</body>
+</html>

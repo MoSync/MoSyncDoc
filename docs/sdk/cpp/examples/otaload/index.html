@@ -1,0 +1,25 @@
+<html>
+<head>
+<title>OtaLoad</title>
+</head>
+<body>
+<h1>OtaLoad</h1>
+<p>OtaLoad demonstrates network connections, the downloading of an application "over-the-air", and the ability of one MoSync application to run another.<!--break--></p>
+<p>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<h2>Behaviour</h2>
+<p>OtaLoad is a small application that downloads another MoSync application "over the air" (using HTTP), caches it in permanent storage and executes it. If there is already a copy of the application in the cache, the user is given the option to run it immediately or ask the server for a new version.</p>
+<p><strong><em>Important! </em></strong>Before running this application on the MoSync emulator or on a target device, do the following:</p>
+<ol>
+<li>Build the target application that you intend to download using the same version of MoSync that you will use to build OtaLoad.</li>
+<li>Put the target file on a webserver.</li>
+<li>Finally, in the <strong>OtaLoad.cpp</strong> file, specify the location from which the target file will be downloaded.</li>
+</ol>
+<p>The target application must be a <strong>.comb</strong> file and must contain you compiled program and any resources (images, etc.) that it needs. The target application cannot contain any unloaded resources such as <strong>ubin </strong>or <strong>umedia</strong>. When you compile your target application, MoSync will put it in the /Output or /FinalOutput folder in your workspace. Find the <strong>.comb </strong>file and put on a webserver. If you haven't got a webserver you can use free services like <a href="http://www.dropbox.com">http://www.dropbox.com</a> to host your file.</p>
+<h2>Key Presses</h2>
+<ul>
+<li>6 or soft-left — downloads the target application/checks for updates</li>
+<li>0 or soft-right — closes the OtaLoad application</li>
+</ul>
+<p>&nbsp;</p>
+<dl></dl></body>
+</html>

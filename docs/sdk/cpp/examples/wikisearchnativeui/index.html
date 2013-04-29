@@ -1,0 +1,54 @@
+<html>
+<head>
+<title>WikiSearchNativeUI</title>
+</head>
+<body>
+<h1>WikiSearchNativeUI</h1>
+<p>This example application searches Wikipedia, based on user input and selected categories. It makes use of functions in the MoSync <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___widget_a_p_i.html">Widget API</a>.<!--break--></p>
+<table class="doclayout" border="0"><tbody><tr><td><img src="images/WikiSearchNativuUI1_0.png" align="none" width="210" height="332"></td><td><img src="images/WikiSearchNativeUI2.png" align="none" width="210" height="331"></td><td><img src="images/WikiSearchNativeUI3.png" align="none" width="210" height="332"></td></tr>
+<tr><td><em>Home screen on Android</em></td><td><em>Summary screen on Android</em></td><td><em>Web screen on Android</em></td></tr>
+</tbody></table>
+<p>This example is included in the MoSync SDK installation in the /examples folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a> .</p>
+<h3>Behaviour</h3>
+<p>When this application is started, the <strong>HomeScreen </strong>is presented. From here the user can search Wikipedia articles, filter by category, and specify the number of results to return. Tapping the <strong>Next </strong>button initiates the search.</p>
+<p>While the application engine computes the result in the background, a progress bar indicates progress. When the results are ready, they are displayed as a list of matching article titles. The user can select which Wikipedia entires to show, or select all of them.</p>
+<p>In the next screen a snippet of each of the selected articles is displayed, and tapping on a snippet opens the complete article in a <strong> WebView </strong>widget.</p>
+<h3>In the Code</h3>
+<p>The project is divided into several files:</p>
+<ul>
+<li><strong>Main.cpp</strong> is the application's main entry point.</li>
+<li><strong>WikiMoblet.cpp</strong> contains the moblet that manages the application and handles key events.</li>
+<li><strong>Util.cpp</strong> contains utility values such as user messages, methods for managing widgets and&nbsp;performing operations on strings, and methods to convert the HTML content into unicode.</li>
+<li><strong>BasicScreen.cpp</strong> contains the base screen of the application, the base screen constructors, and the creation of a main top layout that is common for some screens.</li>
+<li><strong>HomeScreen.cpp</strong> is the home screen, where user can add or remove tags, and perform a wiki search based on those tags. It contains list boxes, and vertical and horizontal layouts with widgets for user selection.</li>
+<li><strong>TitlesScreen.cpp</strong> displays the available article titles. Results are shown in a list view, and the user can pick only the desired articles. For each selected title, the corresponding article will be displayed in the next screen.</li>
+<li><strong>SummaryScreen.cpp</strong> contains the user selected article snippets. Results are displayed in a list view, and each snippet is followed by an anchor. When the anchor is clicked, the whole article becomes available in a <strong>WebView </strong>widget.</li>
+<li><strong>WebScreen.cpp</strong> contains a <strong>WebView </strong>widget with the user selected article, and buttons for <strong>Back </strong>and <strong>New Search </strong>actions.</li>
+<li><strong>WikiEngine.cpp</strong> is the application engine. This class is responsible for sending requests to Wikipedia, and handle the XML responses. It manually parses the XML data that is sent back and forth to the Wiki server. The engine communicates with the UI,and constantly sends back notifications on engine status such as chunk of data received, request finished, or error.</li>
+<li><strong>.h </strong>header files contain the forward declarations for the main <strong>.cpp</strong> code files.</li>
+</ul>
+<h3>Touch responses</h3>
+<ul>
+<li>The application is exited by pressing the back button on the home screen. Navigation within the application screens is acomplished with the back button.</li>
+</ul>
+<p><em>On the Home Screen:</em></p>
+<ul>
+<li>By checking/unchecking the categories boxes the search is filtered.</li>
+<li>By moving the slider the search will have limited number of results. The default slider value is 10.</li>
+<li>By clicking on <strong>Next </strong>button a new search is initiated for all the selected categories. When request is ready <strong>TitlesScreen </strong>is displayed. &nbsp;&nbsp;&nbsp;</li>
+</ul>
+<p><em>On the Titles Screen:</em></p>
+<ul>
+<li>The user can press <strong>Select All</strong> to select all the given results, or pick only the desired articles.</li>
+<li>By pressing <strong>Next </strong>the <strong>SummaryScreen </strong>is displayed which contains article snippets only for the selected titles.</li>
+</ul>
+<p><em>On the Summary Screen:</em></p>
+<ul>
+<li>Results are displayed in a list view, and each snippet is followed by an anchor. When the anchor is clicked, the whole article becomes available in the <strong>WebScreen</strong>.</li>
+</ul>
+<p><em>On the Web Screen:</em></p>
+<ul>
+<li>The user can navigate in the web view freely, and he can go <strong>Back </strong>to previous screen or initiate a <strong>New Search </strong>that gets him to the first screen.</li>
+</ul>
+</body>
+</html>

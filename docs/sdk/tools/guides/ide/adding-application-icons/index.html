@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>Application Icons</title>
+</head>
+<body>
+<h1>Application Icons</h1>
+<p>It's easy to add application icons to your project. All you need to do is to add a file to the project with the *.icon extension, for example <strong>App.icon</strong> (you can pick any name you like), write in a few lines of XML, and add the icon images to the project. MoSync does the rest.</p>
+<p><!--break-->Here is an example of a .icon file:</p>
+<pre class="mosync-code-cpp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;icon&gt; 
+  &lt;instance size="default" src="Icon.svg" /&gt; 
+  &lt;instance size="64x64" src="Icon.svg" /&gt; 
+  &lt;instance size="32x32" src="Icon.svg" /&gt; 
+&lt;/icon&gt;</pre>
+<p>It is generally sufficient to just specify the default <strong>instance size</strong> option, the other options are not mandatory:</p>
+<pre class="mosync-code-cpp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;icon&gt; 
+  &lt;instance size="default" src="Icon.svg" /&gt; 
+&lt;/icon&gt;</pre>
+<p><a href="http://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a> is the recommended image format and works for all platforms. An example of an open-source drawing program you can use to create SVG files is <a href="http://inkscape.org/">Inkscape</a>.</p>
+<blockquote><p><strong>Note</strong>: If you are developing your app using the MoSync SDK on Windows, you can also use the PNG image format for your icons. If you are developing your app using the MoSync SDK on OS X and you want to use the PNG format for your icons you must first install the latest version of Image Magick via MacPorts: see issue <a href="http://jira.mosync.com/browse/MOSYNC-2308">MOSYNC-2308</a>.</p>
+</blockquote><p>To know if the application icon was added correctly during the build process, you only need to look at the last few lines of the IDE console for guidance.<br><br> Some quirks that have been observed:</p>
+<ol>
+<li>When adding icons for a Java device, it is important to take a look at the device profile information in the MoSync SDK. The device profile should contain the parameters MA_PROF_CONST_ICONSIZE_X and MA_PROF_CONST_ICONSIZE_Y and the size of the image file should be consistent with the icon size listed in the profile. (Alternatively, make sure that all your target devices support icon of the size you provide.)</li>
+<li>It has also been observed that on Symbian devices the application icon may not appear if the application is reinstalled. In this case, a quick restart of the phone makes the icon visible.</li>
+</ol>
+<p>Please keep in mind that this feature of the MoSync SDK is experimental. Some platforms may show unexpected results. Let us know if you find issues.</p>
+</body>
+</html>

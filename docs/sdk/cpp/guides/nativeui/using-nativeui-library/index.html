@@ -1,0 +1,172 @@
+<html>
+<head>
+<title>The NativeUI C++ Library</title>
+</head>
+<body>
+<h1>The NativeUI C++ Library</h1>
+<p>The MoSync <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___native_u_i_lib.html">NativeUI C++ Library</a> is built on our <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___widget_a_p_i.html">Widget C API</a>. It provides classes and functions for high-level control of native user-interface elements.</p>
+<p><!--break--></p>
+<p></p>
+<h2>Platform and Emulator Support</h2>
+<p>The NativeUI C++ Library and the underlying Widget C API are designed to work with native user-interface controls. The library is designed to support platforms with native (i.e. proprietary) touch and graphical interfaces such as Android, iOS, and Windows Phone 7. Some widgets are specific to one particular platform.<br><br>You can test your NativeUI Library application directly from the MoSync IDE as long as you have installed at least one <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/emulators/emulating-device/index.html">native emulator</a>. (NativeUI applications will not, of course, work in the MoSync MoRE emulator.)</p>
+<blockquote><p>Not all of the widget types are supported on all platforms&nbsp;— they are, after all, native widgets! For a list of the platforms on which this Library is supported, see <a href="http://www.mosync.com/documentation/manualpages/featureplatform-matrix">Feature/Platform Support</a>.</p>
+</blockquote><h2>The Widget API</h2>
+<p>The NativeUI Library is built on our Widget API which provides a comprehensive range of low-level functions (syscalls), event types, and constants for creating and working with native user-interface widgets like screens, layouts, buttons, and many more.<br><br></p>
+<h2>Example Applications</h2>
+<p>We provide many <a href="TEMPLATE_DOC_PATH/index.html">example applications</a> that make use of the Widget API or the NativeUI Library (which is itself a high-level wrapper for the Widget API). The examples and the API/Library they use include:</p>
+<ul>
+<li>NativeUIDemo -- NativeUI Library</li>
+<li>VideoNativeUIExample -- NativeUI Library</li>
+<li>DeviceFontsNativeUI -- NativeUI Library</li>
+<li>CameraDemo -- NativeUI Library</li>
+<li>WikiSearchNativeUI -- Widget API</li>
+<li>HelloNativeUI -- NativeUI Library</li>
+<li>RockPaperScissors -- Widget API</li>
+</ul>
+<h2>The NativeUI Library</h2>
+<p>The library is a high-level wrapper that supports all the widgets in the Widget API. It includes:</p>
+<ul>
+<li>Support for all types of widgets, along with their specific properties and events.</li>
+<li>A base <strong> Widget </strong>class that takes care of instantiated objects and their destruction. This class also provides methods for managing widgets, like <strong> addChild</strong>, <strong>insertChild</strong>, and <strong>removeChild</strong>, and methods for manipulating widgets like <strong>setHeight</strong>, <strong>setVisible</strong>,&nbsp; <strong>fillSpaceHorizontally</strong> and <strong>fillSpaceVertically</strong>.</li>
+<li>A background widget manager that handles widget events. You do not have to use the <strong>CustomEventListener </strong>to catch widget events: you can receive only widget specific events by setting listeners to widget objects, for example: <strong>buttonObject-&gt;addButtonListener(this)</strong>.</li>
+<li>A set of base widget functions (<strong>setPropertyInt</strong>, <strong> getPropertyString</strong>) that can be called at any time instead of the specific functions.</li>
+<li>Support for adding modal dialogs via the <strong>Dialog</strong> class. A dialog object acts like a container for any kind of widgets. Remember that a Dialog modal widget cannot have parents, so adding a dialog to a layout will have no effect.</li>
+<li>Support for Fonts:<ul>
+<li>Access all fonts stored on the device.</li>
+<li>Setting the font based on font type and font style.</li>
+</ul>
+</li>
+</ul>
+<h2>Widgets Available Through NativeUI</h2>
+<ul>
+<li>Activity Indicator</li>
+<li>Button</li>
+<li>CameraPreview</li>
+<li>Check box</li>
+<li>Date Picker</li>
+<li>Edit box</li>
+<li>GL View</li>
+<li>Horizontal layout</li>
+<li>Image</li>
+<li>Image Browser</li>
+<li>Image Button</li>
+<li>Label</li>
+<li>List View</li>
+<li>List View Item</li>
+<li>Navigation Bar</li>
+<li>Number Picker</li>
+<li>Panorama View</li>
+<li>Progress Bar</li>
+<li>Relative Layout</li>
+<li>Screen &nbsp;</li>
+<li>Screen Options Menu</li>
+<li>Search Bar</li>
+<li>Slider</li>
+<li>Stack Screen</li>
+<li>Tab Screen</li>
+<li>Time Picker</li>
+<li>ToggleButton</li>
+<li>Vertical layout</li>
+<li>Video View</li>
+<li>Web View</li>
+</ul>
+<h2>Widget Creation</h2>
+<p>For each type of widget there is a corresponding class, so the routine in which a widget is instantiated is very simple:</p>
+<pre class="mosync-code-cpp">WidgetType* myNewWidget = new WidgetType().</pre>
+<p>Do not forget to include the header file for all widgets, <strong>Widgets.h</strong>, or each widget class one by one.</p>
+<h2>Widget Properties</h2>
+<p>The shared methods implemented across all widgets include:</p>
+<ul>
+<li><strong>setProperty </strong>and <strong>getProperty </strong>for true property types.</li>
+<li><strong>getWidth()</strong>, <strong>getHeight()</strong></li>
+<li><strong>setWidth(width)</strong>, <strong>setHeight(height)</strong></li>
+<li><strong>setSize(width, height)</strong></li>
+<li><strong>wrapContent </strong>and <strong>fillAvailableSpace </strong>for a certain dimension.</li>
+<li><strong>setBackgroundColor</strong></li>
+<li><strong>setVisible(visible)</strong></li>
+<li><strong>setEnabled(enabled)</strong></li>
+<li><strong>setBackgroundColor</strong>(color)</li>
+<li><strong>setBackgroundGradient</strong>(color1, color2)</li>
+<li><strong>getLastError</strong>: get details about the last error that has occurred, in a structure. Causes might be any of the following:<ul>
+<li>A widget was instantiated but it's type is not yet available on the target platform.</li>
+<li>A property was set/get on a widget that is not yet available on the target platform.</li>
+<li>A setter/getter method received an invalid property name.</li>
+<li>A syscall has failed due to invalid parameters.</li>
+<li>NOTE: In order to have this structure empty, make sure you read carefully the documentation before you use the NativeUI library.</li>
+</ul>
+</li>
+</ul>
+<p>For all properties, we have endeavoured to implement them as separate methods, rather than as <strong>setProperty</strong>/<strong>getProperty </strong>function calls.</p>
+<h2>Widget Events</h2>
+<p>The library implements separate listeners for each widget that can receive events. Take, for instance the <strong>EditBoxListener</strong>. The <strong>EditBox </strong>widget might send 4 types of events:</p>
+<ul>
+<li><strong>EDITING_DID_BEGIN</strong></li>
+<li><strong>EDITING_DID_END</strong></li>
+<li><strong>TEXT_CHANGED </strong></li>
+<li><strong>RETURN </strong></li>
+</ul>
+<p>Those events will notify the user with respectively the callbacks:</p>
+<ul>
+<li><strong>editBoxEditingDidBegin(editBox)</strong></li>
+<li><strong>editBoxEditingDidEnd(editBox)</strong></li>
+<li><strong>editBoxTextChanged(editBox,text)</strong></li>
+<li><strong>editBoxReturn(editBox)</strong></li>
+</ul>
+<p>More than just one listener can be attached to a widget. Attaching a listener to a widget can be done in this way:</p>
+<pre class="mosync-code-cpp">EditBox* myEditBox = new EditBox();
+myEditBox-&gt;addEditBoxListener(this);</pre>
+<h2>Dialogs</h2>
+<p>A Dialog is a modal view that can look different depending on the platform:</p>
+<ul>
+<li>On Android it is a modal alert dialog</li>
+<li>On iPad it is a PopoverController</li>
+<li>On the iPhone it is a modal view.</li>
+<li>On WP7 is not currently available</li>
+</ul>
+<p>When a Dialog widget is created it is empty, it has no content. Use setMainWidget(mainLayout) to set the main widget of the dialog.</p>
+<p>A Dialog gets visible only after calling show() method.</p>
+<p>Usage example:</p>
+<pre class="mosync-code-cpp">Dialog* myDialog = new Dialog();
+myDialog-&gt;setTitle("My Form");
+// Set specific iPad property for position, so that
+// the dialog arrow points up.
+myDialog-&gt;setArrowPosition(MAW_CONSTANT_ARROW_UP);
+// Set its content.
+myDialog-&gt;setMainWidget(mainLayout);
+...
+// Display the dialog at the right time.
+myDialog-&gt;show();</pre>
+<h2>Fonts Support</h2>
+<p>Access to device fonts can be acomplished via font syscalls (see <strong> maFontGetCount</strong>, <strong>maFontLoadDefault</strong>, <strong>maFontGetName</strong>, <strong>maFontLoadWithName</strong>, etc).</p>
+<p>After getting the desired font <strong>using maFontLoadDefault</strong> or <strong> maFontLoadWithName</strong>, the handle to the font can be applied via the method <strong>setFont </strong>to the widgets:</p>
+<ul>
+<li><strong>Label</strong></li>
+<li><strong>Button</strong></li>
+<li><strong>ImageButton</strong></li>
+<li><strong>ListViewItem</strong></li>
+<li><strong>Navigation bar's title</strong>.</li>
+</ul>
+<p>Example:</p>
+<pre class="mosync-code-cpp">// Get the first available font of the device.
+if ( maFontGetCount() &gt; 0 )
+{
+    char buf[256];
+    maFontGetName(0, buf, 256);
+    // Load the font with size 10 and get it's handle.
+    int fontHandle = maFontLoadWithName(buf, 10);
+        myLabel-&gt;setFont( fontHandle );
+}</pre>
+<p>At any time the font color can be set by calling the method <strong>setFontColor</strong>:</p>
+<pre class="mosync-code-cpp">enum Colors
+{
+    INTENSE_BLUE = 0x104E8B ,
+    LIGHT_BLUE = 0xB2DFEE
+};
+myLabel-&gt;setFontColor(LIGHT_BLUE);</pre>
+<p>Also, the font size can be set for the widget in use, without having to actually modify the font resource:</p>
+<pre class="mosync-code-cpp">#define FONT_SIZE_REGULAR 15.3
+
+myLabel-&gt;setFontSize(FONT_SIZE_REGULAR);</pre>
+<p>Note: When building applications that use Native UI, &nbsp;remember to select an iOS, Android or WP7 target in the right-hand device profile panel.</p>
+</body>
+</html>

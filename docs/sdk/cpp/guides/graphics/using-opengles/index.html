@@ -1,0 +1,18 @@
+<html>
+<head>
+<title>Working with OpenGL ES</title>
+</head>
+<body>
+<h1>Working with OpenGL ES</h1>
+<p>OpenGL ES 2.0 is the latest standard for accessing the graphics hardware on embedded devices (in our case Android and iOS). It is heavily based on the concept of shader programs, written using the C-like language GLSL.<!--break--></p>
+<p>At several stages in the graphics pipe-line, shader programs are executed in order to provide maximum freedom to the user. The online API documentation is a good start to understand how to use the API:</p>
+<p><a href="http://www.khronos.org/opengles/sdk/docs/man/">http://www.khronos.org/opengles/sdk/docs/man/</a></p>
+<p>OpenGL ES 2.0 is not supported by older devices, so when creating an application that utilizes OpenGL ES one should choose the api version wisely. If you want to be able to support a broad range of devices and do less work, choose OpenGL ES 1.1 or if you want to have all the bells and whistles, sacrificing device compatibility, choose OpenGL ES 2.0.</p>
+<p>It is of course possible to create an application that supports both, but as the APIs are incompatible, almost entirely different renderers have to be created.</p>
+<p><strong>GLMoblet</strong><br><br>The <strong> GLMoblet </strong>is a special version of the Moblet that sets up a fullscreen OpenGL ES view for you and handles all the events that need to be taken care of. It makes it much easier to write pure OpenGL ES applications.<br><br>To make use of it you need to inherit the class, implement a constructor, and implement two functions: <strong>init</strong> and <strong>draw</strong>.<br><br>The <strong> GLMoblet </strong>constructor takes one parameter: a mask of the GL API versions your application supports. First it will try to load the most recent version specified in the mask. If that fails it will try to load the next most recent version, etc.</p>
+<p>If no API can be loaded the program will exit with a panic message stating that OpenGL ES is not available on the platform it is running on. As OpenGL ES 1.1 and 2.0 are incompatible, a program that wants to support both versions needs different code paths for different api versions. Which version was loaded can be queried in runtime using the function <strong>getApiVersion</strong>.<br><br>The <strong>init </strong>function is invoked when GL has been initialized and the context has been bound. Here you can do any initialization for the program, like uploading textures to the graphics hardware. It is important that you don’t use any GL calls before the <strong>init </strong>function has been invoked as the GL context may not have been bound.</p>
+<p>Directly after the <strong>init </strong>function has been invoked the GLMoblet begins to call the function <strong>draw </strong>at regular intervals (the interval is specified using the function <strong>setPreferredFramesPerSecond</strong>). The <strong>GLMoblet</strong> automatically stops drawing if the focus is lost and starts drawing when the focus is gained.</p>
+<p>When optimizing an application for performance you can use the function <strong>getActualFramesPerSecond </strong>to measure the amount of frames per second which should be as close to the preferred amount of frames per second, set using <strong>setPreferredFramesPerSecond</strong>, as possible. The default preferred amount of frames per second is 50.</p>
+<p>&nbsp;</p>
+</body>
+</html>

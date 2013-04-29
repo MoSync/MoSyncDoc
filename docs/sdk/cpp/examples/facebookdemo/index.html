@@ -1,0 +1,33 @@
+<html>
+<head>
+<title>FacebookDemo</title>
+</head>
+<body>
+<h1>FacebookDemo</h1>
+<p>This example application demonstrates how to log on to Facebook from your application, how to retrieve JSON information, and how to manage posts (publish and delete posts). This application makes use of the MoSync C++ Facebook Library, C++ NativeUI Library, and C Widget API.<!--break--></p>
+<p>This application only works on Android and iOS (iPhone) devices.</p>
+<table class="doclayout" border="0"><tbody><tr><td><img src="images/FacebookDemo1.png" align="none" width="210" height="278"></td><td><img src="images/FacebookDemo2.png" align="none" width="210" height="277"></td><td><img src="images/FacebookDemo3.png" align="none" width="210" height="277"></td></tr>
+<tr><td><em>Log on screen in the WebView widget</em></td><td><em>Information menu with NativeUI controls</em></td><td><em>Retrieving a photo album<br><br></em></td></tr>
+</tbody></table>
+<p>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<h2>Behaviour</h2>
+<p>When the application starts on a device with an Internet connection, the user is shown the log on screen to Facebook displayed in a <strong> WebView </strong>widget. After the user logs on to Facebook, the main menu is displayed providing the user with a host of options for working with Facebook.<br><br>By navigating through the menus, the user can retrieve information about the Facebook objects he or she owns (albums, activities, check-ins, posts, etc.), and also information about the user’s friends. Tapping on a retrieved Facebook object opens a menu with all the connections and publishing options that the <a href="http://developers.facebook.com/docs/reference/api/">Facebook Graph API</a> provides.</p>
+<p>For example, to see all the comments related to an album, the user taps <strong>albums </strong>&gt; <strong>display album</strong> &gt; <em>album name </em>&gt; <strong>comments</strong>. Other options for albums include create album, retrieve photos, like, and unlike.</p>
+<p>The user can post a link, a video, a picture, or a status message on their own Wall or on their friend’s Wall or on an event’s Wall. The user can create albums, checkins, events, comments, notes, event responses, and friend lists, delete comments, notes, and friend lists, and like/unlike any Facebook object.</p>
+<h2>In the code</h2>
+<p>The application uses MoSync Widget API buttons and menus to collect user input. Each button represent a request to Facebook that will be handled by the Facebook Graph API.<br><br>For example, when the activities button is clicked, an "activities" connection request for the current user is sent to the Graph API. The JSON data received from server is parsed and converted into a list of objects containing the name, id, category and date created fields.<br><br>When the user clicks a "create object " button, a request to create the object is sent to the Graph API. When the request has been completed, a screen with the ID of the new object is displayed. Similarly, when objects are deleted, the "Object removed" message is displayed.<br><br>All objects that a user can "like" and "unlike" according to the Graph API documentation can be liked or unliked in the FacebookDemo application.<br>The project is divided into folders:<br>&nbsp;<img src="images/FacebookDemo4.png" align="none" width="210" height="149"><br>The <strong>FacebookManager </strong>files contain the <strong>FacebookManager </strong>class. This is the class that is used for communicating with Facebook.<br><br><strong>GetPermissions.h</strong> contains a <strong>GetPermissionsFor </strong>template class. This is specialized for each Facebook object type. It is used to fill a <strong> Set </strong>object with the needed permissions for retrieving connections for a Facebook object type or to publish an object of that type.<br><br>The <em>/GraphAPI </em>folder contains the implementation of the Graph API. It is divided into three subfolders:</p>
+<ul>
+<li><em>/GetConnections </em>contains functions for requesting and retrieving connections.</li>
+</ul>
+<ul>
+<li><em>/GetFacebookObjects</em> contains functions for requesting and retrieving Facebook objects. Its subfolder FacebookObjects contains the implementation of the Facebook objects, according to the <a href="http://developers.facebook.com/docs/reference/api/">Facebook Graph API</a> documentation.</li>
+</ul>
+<ul>
+<li><em>/Publish</em> contains all the functionality for publishing to and deleting from Facebook.&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;</li>
+</ul>
+<p>The <em>/HTTP</em> folder contains all the low-level communication to the server (sending the request, retrieving the JSON data, and so on).</p>
+<p><br>The <em>/JSON_lib</em> folder contains the MoSync JSON library.</p>
+<h2>Touch responses</h2>
+<p>Pressing the BACK button closes the application.</p>
+</body>
+</html>

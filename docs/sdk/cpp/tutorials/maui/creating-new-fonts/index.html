@@ -1,0 +1,136 @@
+<html>
+<head>
+<title>Creating New Fonts in MAUI</title>
+</head>
+<body>
+<h1>Creating New Fonts in MAUI</h1>
+<p>The MAUI user interface components use bitmap fonts in its own format. These files are converted from a specific, but common, format for bitmap fonts. The MoSync download comes supplied with a freeware tool called BMFont for creating bitmap fonts from the fonts installed in Windows. MoSync developers can use BMFont to create their own fonts for use in their applications.<!--break--></p>
+<p>[toc title: Topics; maxlevel: 2]</p>
+<blockquote><p><strong>Note</strong>: An improved way of handling fonts for some platforms in MoSync was introduced in release 2.6. See our Developer Guide called <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/fonts/working-with-device-fonts-api/index.html">Working With the Device Fonts API</a>.</p>
+</blockquote><h2>Creating a New Bitmap Font with BMFont</h2>
+<p>If you look in your MoSync installation folder, normally in <em>C:\MoSync</em>, you’ll find a folder called <em>bin\BMFont</em>. In there is the BMFont application by Andreas Jönsson, a freeware application which can create bitmap fonts. Bitmap fonts differ from standard TrueType fonts normally found on Windows. TrueType fonts describe the shape of each letter as vectors, which means that they can be scaled up and down without losing detail. Bitmap fonts are of a fixed size, and scaled bitmap fonts will appear jagged.</p>
+<p>&nbsp;</p>
+<p><img src="https://docs.google.com/a/mobilesorcery.com/File?id=ddwb2zz_125mbsvtcw_b"></p>
+<p>When you’re using MAUI, it only supports bitmap fonts, so you need to make sure that the size you create is the size you want. You can put as many fonts as you wish into your application, but each widget will only support one font. You cannot change fonts in the middle of a label for instance. If you want bold or italics in your application, you need to create them as separate fonts.</p>
+<p>MAUI fonts only support the ASCII character set, so some characters and languages are not currently supported. They will be replaced in your application with spaces.</p>
+<p><img src="https://docs.google.com/a/mobilesorcery.com/File?id=ddwb2zz_13hhhqszc5_b" width="655" height="440"></p>
+<p>To create a new font, start BMFont. You can see on the left all of the available characters, and on the right, the character groups supported by this font. As MAUI fonts only support ASCII characters, then stick with the <strong>‘Basic Latin + Supplement’ </strong>option. Other characters will take up space in the font file, and won’t render.</p>
+<p>If you’re absolutely sure you won’t need some characters in your application, then leave them out. It will save space.</p>
+<p>Clicking on the square next to <strong>‘Basic Latin + Supplement’</strong> will select all the characters in the set.</p>
+<p><strong>Note</strong>: Some fonts only contain ASCII characters. If this is the case, there aren’t any options on the right. This is very important. Most people’s font problems come from not getting these settings correct.</p>
+<p>There are several formats for bitmap fonts, and the MoSync conversion tool (mof) will only convert from one of these.</p>
+<p>Configure BMFont's settings as follows:</p>
+<p><em>For BMFont v1.12 and MoSync 2.5+</em>:</p>
+<p><img src="images/bitmap-fonts-2.png" align="left" width="290" height="409">&nbsp; <img src="images/bitmap-fonts-3.png" align="none" width="288" height="567"></p>
+<p><em>For BMFont v1.9 and MoSync 2.4 and earlier</em>:</p>
+<p><img src="images/mauifont_bmfont_setup.png"></p>
+<p>1. Change the <strong>Charset</strong> option from Unicode to <strong>OEM.</strong> If necessary, change the option in the dropdown box to <strong>ANSI.</strong></p>
+<p>2. Unless space is at a real premium, then I would say that having the anti-alias font smoothing is always worth it. There are some examples later. Set it to 1 pixel. This will double the size of the final font, but the quality difference is high.</p>
+<p>3. At the bottom right of this dialog box, change the <strong>Font descriptor </strong> to <strong>Binary</strong></p>
+<p>4. Change the <strong>Textures</strong> option to <strong>PNG</strong>.</p>
+<p>When you do this, and click OK, you’ll see the changes to font and size reflected in the main window.</p>
+<h3>Hints and Tips</h3>
+<p>1. Fonts on your computer screen look bigger than they do on your phone. Compare the size of your phone’s screen to the emulator. Make fonts bigger than you think you need.</p>
+<p>2. Small fonts on the emulator will be unreadable on a real phone. Use them with great care.</p>
+<p>3. Many fonts are too narrow. They may look wonderful in Photoshop, but they don’t necessarily translate onto a mobile phone. Clear, bold fonts are best.</p>
+<p>4. You can get free fonts easily on the web. Google ‘free fonts’ for lots of sources.</p>
+<p>5. When you save the fonts, give them clear descriptions like Arial16ptBold.fnt</p>
+<p>When you’re happy with the fonts save it with these settings. This will create at least two files, one with a <strong>.fnt</strong> extension, and one with the name you’ve given to the font with <strong>_0.png</strong>. If you’ve got more than one png file, then go back to the font settings screen, and increase the size of the png. I don’t think that there is a limit on the size of this, but the font conversion tool will only work with one image.</p>
+<h2>Converting the Font on the Command Line</h2>
+<p>To be able to use the font in the MAUI application, you need to convert from the created format to the internal format used by MoSync. There is a command-line tool for that in the <strong>bin</strong> sub folder of the MoSync root, usually <em>C:\MoSync\bin</em>.</p>
+<p><img src="https://docs.google.com/a/mobilesorcery.com/File?id=ddwb2zz_15cv8m2vft_b"></p>
+<p>Open a command line. You can do this by selecting <strong>Run</strong> from the Windows menu, and entering the command <strong>cmd</strong>.</p>
+<p>The first thing you need to do is get to the correct directory. Assuming you’ve done a default installation of MoSync you need to type:</p>
+<pre>cd c:\MoSync\bin</pre>
+<p>and press <strong>Enter</strong>.</p>
+<p>The prompt should now confirm your location. If you type ‘<strong>mof</strong>’ and press enter, you get a small help screen for using the tool.</p>
+<p>The format of the commands for mof are</p>
+<table border="1"><tbody><tr><td>-fontData</td><td>The name of the font file you’ve created</td></tr>
+<tr><td>-fontImage</td><td>The name of the font image file you’ve created</td></tr>
+<tr><td>-outFile</td><td>The name you want to give it</td></tr>
+<tr><td>-fontColor</td><td>The color you want the font to be in.</td></tr>
+</tbody></table>
+<p>We’ll look at coloured fonts later in the tutorial.</p>
+<p>If you’ve entered the command correctly, you’ll get a confirmation message, and your new file will be created in the bin folder. You should copy this to the resources folder of your project.</p>
+<h2>Using Fonts with Widgets</h2>
+<p>To use the fonts you’ve created, you need to add references to them in your resources file. If you want to know more about this, then there is a separate tutorial, but here is the code I’ve used.</p>
+<pre>.res STANDARDFONT
+.bin
+.include "resources/pretty.mof"
+
+.res YAHOOFONT
+.bin
+.include "resources/Yahoo.mof"
+
+.res YAHOOSMOOTH
+.bin
+.include "resources/YahooSmooth.mof"</pre>
+<p>To use a font in your application, you need to add a reference to MAHeaders.h and MAUI/Font.h in your code, and create a new Font in code.</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">// Create the fonts
+Font* yahooFont = new Font(YAHOOFONT);</pre>
+<p>You can then reference this when creating labels.</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">// Create a screen title, using the Yahoo font
+Label* titleLabel = new Label(0, 0, 240, 32, layout,
+"MoSync!", 0x0000C0, yahooFont);</pre>
+<p>I’ve created a short example application using free fonts I’ve created in BMFont.</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">// Create the fonts
+Font* standardFont = new Font(STANDARDFONT);
+Font* yahooFont = new Font(YAHOOFONT);
+Font* yahooSmoothed = new Font(YAHOOSMOOTH);
+
+// Create a layout
+Layout* layout = new Layout(0, 0, 240, 320, NULL, 1, 4);
+//Create a screen title, using the Yahoo font
+Label* titleLabel = new Label(0, 0, 240, 32, layout,
+"MoSync!", 0x0000C0, yahooFont);
+titleLabel-&gt;setAutoSizeY(true);
+titleLabel-&gt;setHorizontalAlignment(Label::HA_CENTER);
+
+// Smoothed label
+Label* smoothLabel = new Label(0, 0, 240, 32, layout,
+"MoSync!", 0x0000C0, yahooSmoothed);
+smoothLabel-&gt;setAutoSizeY(true);
+smoothLabel-&gt;setHorizontalAlignment(Label::HA_CENTER);
+
+//Create some more text, using the standard font
+Label* newsLabel = new Label(0, 0, 240, 32, layout,
+"Here is some interesting information. In 1964, a gang of eight pigs held their farmer hostage for 14 hours. When questioned, they said 'oink'.", 0xC00000, standardFont);
+newsLabel-&gt;setAutoSizeY(true);
+newsLabel-&gt;setMultiLine(true);
+this-&gt;setMain(layout);
+</pre>
+<p>This is the application running:</p>
+<p><img src="https://docs.google.com/a/mobilesorcery.com/File?id=ddwb2zz_16c87zvthq_b"></p>
+<p>For comparison, I’ve blown-up the two title bars. One has the smaller but un-smoothed font, and the second is the larger, anti-aliased font. There is a big difference.</p>
+<p><img src="https://docs.google.com/a/mobilesorcery.com/File?id=ddwb2zz_17dxmshpg5_b" width="280" height="212"></p>
+<h2>Default Fonts</h2>
+<p>If you have one font, or at least one font you use the most in an application, then you don’t need to specify it whenever you create a label. You can use the <strong>Engine</strong> object in MAUI to specify the default font.</p>
+<pre>Engine&amp; eng = Engine::getSingleton();
+eng.setDefaultFont(standardFont);</pre>
+<p>You can then create labels without specifying a font, and it will use the one you set up here.</p>
+<p>The label constructor is different though if you don’t specify a font. You can’t pass the label text without supplying a background colour and a font, so if you want to use the default font, you need to call the <strong>setCaption(<em>text</em>)</strong> method.</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">// Create some more text, using the default font
+Label* newsLabel = new Label(0, 0, 240, 32, layout);
+newsLabel-&gt;setCaption("Here is some interesting information. 
+    In 1964, a gang of eight pigs held their farmer hostage for 
+    14 hours. When questioned, they said 'oink'.");
+newsLabel-&gt;setBackgroundColor(0xc00000);
+newsLabel-&gt;setAutoSizeY(true);
+newsLabel-&gt;setMultiLine(true);</pre>
+<p>&nbsp;</p>
+<p>This will produce exactly the same result as the previous code.</p>
+<h2>Coloured Fonts</h2>
+<p>Finally a note on coloured fonts. By default, the mof tool will produce the font in white. However you can produce fonts in whatever colour you want, but <strong><em>in only one colour at a time</em></strong><em>. </em>You can’t have fonts with coloured borders for instance. You’ll need to produce a mof file for every colour of every font you want to use.</p>
+<p>You can only use one font per label as well, so you can’t change colour in the middle of a label, or move to a bold font.</p>
+<p>To create a font in a different colour, you need to add –fontColor &lt;colour in hex&gt; at the end of the mof command. For instance:</p>
+<pre>mof –fontData YahooSmooth.fnt –fontImage YahooSmooth_00.png –outFile 
+       YahooSmoothRed.mof –fontColor 0C0000</pre>
+<p>Note: Font colours are specified like web colours, with a byte for their red, green and blue values. You don’t need to put anything to specify that this is a hex number though, so ‘0c0000’ is right but ‘0xC00000’ won’t work.</p>
+<p>Coloured fonts still anti-alias well.</p>
+<p><img src="https://docs.google.com/a/mobilesorcery.com/File?id=ddwb2zz_18gprsq8gs_b" width="281" height="152"></p>
+</body>
+</html>

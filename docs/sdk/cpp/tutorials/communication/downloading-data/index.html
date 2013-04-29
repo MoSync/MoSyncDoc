@@ -1,0 +1,314 @@
+<html>
+<head>
+<title>Downloading Data from the Internet</title>
+</head>
+<body>
+<h1>Downloading Data from the Internet</h1>
+<p>There are a thousand reasons why you might want your application to get information from the Internet. Perhaps you want to download today’s Dilbert cartoon, or get specific data for the user, or serve adverts, or&nbsp; connect to a web interface. Maybe you want to implement a new protocol, like FTP or Jabber. In this tutorial we’re going to show you how to get data over HTTP.</p>
+<p><!--break--></p>
+<p>[toc title: Topics; maxlevel: 2]</p>
+<h2>The Connection Object Model</h2>
+<p>MoSync provides a wide range of connection objects and interfaces. There are three levels of abstraction for Internet connections, and you can write code against any of them:</p>
+<ul>
+<li>Using the <strong>maConnect()</strong> API method</li>
+<li>Using the <strong>MAUtil::Connection</strong> class</li>
+<li>Using the <strong>Downloader</strong> classes</li>
+</ul>
+<h3>Using <strong>maConnect()</strong> API Method in C/C++</h3>
+<p>At the lowest level, you can use functions in the MoSync API directly. You can use the method <strong>maConnect()</strong> to open a socket to connect to any port on the Internet. You can implement protocols which aren’t supported in MoSync on a higher level (like HTTP and HTTPS) by formatting a URL like this:</p>
+<pre>socket://&lt;server name&gt;[:&lt;port&gt;]&lt;parameters&gt;</pre>
+<p>so you can create your own protocol support for IMAP and POP3 to make an email client, and the documentation come with the basics of an FTP client.</p>
+<p>You can use this method to connect to Bluetooth devices as well, with the format</p>
+<pre>btspp://&lt;address&gt;</pre>
+<p>We are going to concentrate on HTTP connections in this tutorial though, and although the API provides some HTTP specific methods, we’re going to focus on the download components in <strong>MAUtil</strong>.</p>
+<h3>Using <strong>the MAUtil::Connection</strong> Class in C++</h3>
+<p>The second level of abstraction is with <strong>MAUtil::Connection</strong> objects. These are C++ objects and are much more suitable for use in a Moblet application.</p>
+<ul>
+<li><strong>MAUtil::Connection</strong> allows you direct access to the send and receive streams.</li>
+<li><strong>MAUtil::HttpConnection</strong> builds HTTP 1.0 connections.</li>
+</ul>
+<p>With <strong>HttpConnection</strong> objects you can access the HTTP 1.0 protocol so you can set HTTP headers before you send, and create new wrapper classes for implementing specific HTTP functions. For instance, you can use&nbsp; <strong>HttpConnection</strong> to implement an online authentication system, which you can then reuse.</p>
+<p>Connections send messages to <strong>ConnectionListeners</strong>. When you are working with either a <strong>Connection </strong>or an <strong>HttpConnection</strong>, you will almost certainly need to create a class which inherits from <strong>ConnectionListener </strong>or <strong>HttpConnectionListener</strong>, and implements its methods. We find that very often this class is "my screen", which we define as:</p>
+<pre>class MyScreen : public Screen, ConnectionListener</pre>
+<p>and then implement the methods:</p>
+<pre>void connectFinished(Connection* conn, int result);
+void connRecvFinished(Connection* conn, int result);
+void connWriteFinished(Connection* conn, int result);
+void connReadFinished(Connection* conn, int result);</pre>
+<p>These methods are your opportunity to respond to data coming back, and you can do whatever you want in there.</p>
+<h3>Using the <strong>Downloader</strong> Classes in C++</h3>
+<p>At the highest level are the <strong>Downloader</strong> classes. These are very high level classes that wrap much of the mechanics of getting data over HTTP for you. These are the classes which we use most often, and if you just want to download some XML or a picture then these are the classes you should use too.</p>
+<p>The <strong>Downloader </strong>class itself wraps <strong>HttpConnectionListener</strong>, and it is very simple to use. You simply tell it the URL you want to get data from and give it an <strong>MAHandle </strong>to load the data into.</p>
+<p>If you want to know when your download has completed, you have to implement a listener too. You do this by inheriting from <strong>DownloadListener </strong>and implementing the interface. There is an example of this in the next section of the tutorial.</p>
+<p>A second downloader is the <strong>BuffDownloader</strong>. This is rather more specialised, and instead of downloading to a placeholder, it downloads to the heap.</p>
+<p>There are two downloaders at an even higher level: <strong>AudioDownloader</strong> and I<strong>mageDownloader</strong>. These are both wrappers for <strong>Downloader</strong>, but create the appropriate resources in memory for handling these items. More on these later.</p>
+<p>Finally, you can create your own custom <strong>Downloader</strong>. You can inherit from <strong>Downloader</strong>, and perform some of your own downloading tasks, just as you can implement <strong>Connection </strong>to manage your own application protocol.</p>
+<h2>Downloading Data from the Web</h2>
+<p>In all probability, what you actually want to do is download some data from the web. The easiest way to do this is to use the <strong>Downloader </strong>class and to create a <strong>DownloadListener</strong> to go with it. To do this we can make my Screen which requests the download from the <strong>DownloadListener</strong>. To do this in a reusable way, we create a <strong>DownloadScreen</strong> class.</p>
+<h3>DownloadScreen.h</h3>
+<pre>#ifndef _DOWNLOADSCREEN_H_
+#define _DOWNLOADSCREEN_H_
+#include &lt;MAUI/Screen.h&gt;
+#include &lt;MAUI/Layout.h&gt;
+#include &lt;MAUtil/Downloader.h&gt;
+#include "IScreenCoordinator.h"
+#include "..\Utilities/Util.h"
+#include "..\Utilities\IDownloadScreenListener.h"
+#include "..\Widgets\SoftKeyBar.h"
+using namespace MAUI;
+using namespace MAUtil;
+class DownloadScreen : public Screen, public DownloadListener, public ISoftKeyBarListener
+{
+public:
+&nbsp;&nbsp; &nbsp;DownloadScreen(Screen* previous, IScreenCoordinator* mainScreen);
+&nbsp;&nbsp; &nbsp;~DownloadScreen();
+&nbsp;&nbsp; &nbsp;void download(const char* url, const char* storeName);
+&nbsp;&nbsp; &nbsp;void keyPressEvent(int keyCode);
+&nbsp;&nbsp; &nbsp;void setDownloadListener(IDownloadScreenListener* dll);
+&nbsp;&nbsp; &nbsp;void notifyProgress(Downloader *dl, int downloadedBytes, int totalBytes);
+&nbsp;&nbsp; &nbsp;void finishedDownloading(Downloader *dl, MAHandle data);
+&nbsp;&nbsp; &nbsp;void error(Downloader* dl, int code);
+&nbsp;&nbsp; &nbsp;void downloadCancelled(Downloader* dl);
+&nbsp;&nbsp; &nbsp;void softKeySelected(int buttonID);
+private:
+&nbsp;&nbsp; &nbsp;Screen* previous;
+&nbsp;&nbsp; &nbsp;IScreenCoordinator* mainScreen;
+&nbsp;&nbsp; &nbsp;Layout* layout;
+&nbsp;&nbsp; &nbsp;Image* image;
+&nbsp;&nbsp; &nbsp;ListBox* listBox;
+&nbsp;&nbsp; &nbsp;Downloader* dl;
+&nbsp;&nbsp; &nbsp;IDownloadScreenListener* listener;
+&nbsp;&nbsp; &nbsp;MAHandle _store;
+};
+#endif //_DOWNLOADSCREEN_H_</pre>
+<p>This code will build my screen, manage the downloads, and inform its own type of Listener (<strong>IDownloadScreenListener</strong>) when downloads are complete. (It doesn’t inform the <strong>IDownloadScreenListener </strong>of anything other than successful completion, as the user interaction for a failed download can be handled by this screen.)</p>
+<h3>IDownloadListener.h</h3>
+<pre>#ifndef _IDOWNLOADSCREENLISTENER_H_
+#define _IDOWNLOADSCREENLISTENER_H_
+//Interface
+class IDownloadScreenListener
+{
+public:
+&nbsp;&nbsp; &nbsp;virtual void downloadComplete();
+};
+#endif //_IDOWNLOADSCREENLISTENER_H_</pre>
+<p><strong>DownloadScreen.h</strong>&nbsp;is implemented in <strong>DownloadScreen.cpp</strong>:</p>
+<pre>#include&nbsp; "DownloadScreen.h"
+//Handles a download
+const char* store;
+
+DownloadScreen::DownloadScreen(Screen* previous, IScreenCoordinator* mainScreen)
+ : previous(previous), mainScreen(mainScreen)
+{
+&nbsp;&nbsp; &nbsp;dl = new Downloader();
+&nbsp;&nbsp; &nbsp;dl-&gt;addDownloadListener(this);
+
+&nbsp;&nbsp; &nbsp;image = (Image*)createMainLayout(BLANK, BACK_BUTTON, this);
+&nbsp;&nbsp; &nbsp;layout = (Layout*) image-&gt;getChildren()[0];
+&nbsp;&nbsp; &nbsp;listBox = (ListBox*) layout-&gt;getChildren()[1];
+&nbsp;&nbsp; &nbsp;Label* l = createLabel("Starting download", 32);
+&nbsp;&nbsp; &nbsp;listBox-&gt;add(l);
+&nbsp;&nbsp; &nbsp;this-&gt;setMain(image);
+}
+
+DownloadScreen::~DownloadScreen(void)
+{
+&nbsp;&nbsp; &nbsp;if(dl-&gt;isDownloading())
+&nbsp;&nbsp; &nbsp;dl-&gt;cancelDownloading();&nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;delete dl;
+}
+
+void DownloadScreen::setDownloadListener(IDownloadScreenListener* dll)
+{
+&nbsp;&nbsp; &nbsp;listener = dll;
+}
+
+void DownloadScreen::download(const char *url, const char* storeName)
+{
+&nbsp;&nbsp; &nbsp;if(dl-&gt;isDownloading())
+&nbsp;&nbsp; &nbsp;{
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;//lprintfln("Busy.");
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;//dl-&gt;cancelDownloading();
+&nbsp;&nbsp; &nbsp;}
+&nbsp;&nbsp; &nbsp;else
+&nbsp;&nbsp; &nbsp;{
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;lprintfln("Downloading %s", url);
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;store = storeName;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;dl-&gt;beginDownloading(url);
+&nbsp;&nbsp; &nbsp;}
+}
+
+void DownloadScreen::downloadCancelled(Downloader *dl)
+{
+&nbsp;&nbsp; &nbsp;//lprintfln("Cancelled");
+&nbsp;&nbsp; &nbsp;listBox-&gt;add(createLabel("Download has been cancelled"));
+}
+
+void DownloadScreen::error(Downloader *dl, int code)
+{
+&nbsp;&nbsp; &nbsp;lprintfln("Error: %d", code);
+&nbsp;&nbsp; &nbsp;listBox-&gt;add(createLabel("Sorry, an error has occured"));
+}
+
+void DownloadScreen::finishedDownloading(Downloader *dl, MAHandle data)
+{
+&nbsp;&nbsp; &nbsp;//Save the store
+&nbsp;&nbsp; &nbsp;MAHandle h = maOpenStore(store, MAS_CREATE_IF_NECESSARY);
+&nbsp;&nbsp; &nbsp;maWriteStore(h, data);
+&nbsp;&nbsp; &nbsp;maCloseStore(h, 0);
+
+&nbsp;&nbsp; &nbsp;lprintfln("Finished download");
+&nbsp;&nbsp; &nbsp;if(listener != NULL)
+&nbsp;&nbsp; &nbsp;{
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;//lprintfln("Calling listener");
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;listener-&gt;downloadComplete();
+&nbsp;&nbsp; &nbsp;}
+
+&nbsp;&nbsp; &nbsp;//lprintfln("Showing calling screen");
+&nbsp;&nbsp; &nbsp;previous-&gt;show();
+}
+
+void DownloadScreen::notifyProgress(Downloader *dl, int downloadedBytes, int totalBytes)
+{
+&nbsp;&nbsp; &nbsp;Label* l = (Label*)listBox-&gt;getChildren()[0];
+&nbsp;&nbsp; &nbsp;char* cap = new char[255];
+&nbsp;&nbsp; &nbsp;sprintf(cap, "Downloaded %d of %d bytes", downloadedBytes, totalBytes);
+&nbsp;&nbsp; &nbsp;l-&gt;setCaption(cap);
+&nbsp;&nbsp; &nbsp;delete[] cap;
+&nbsp;&nbsp; &nbsp;//lprintfln("Downloaded %d of %d bytes", downloadedBytes, totalBytes);
+}
+
+void DownloadScreen::softKeySelected(int buttonID)
+{
+&nbsp;&nbsp; &nbsp;switch(buttonID)
+&nbsp;&nbsp; &nbsp;{
+&nbsp;&nbsp; &nbsp;case SoftKeyBar::LSK:
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;break;
+&nbsp;&nbsp; &nbsp;case SoftKeyBar::FIRE:
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;break;
+&nbsp;&nbsp; &nbsp;case SoftKeyBar::RSK:
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;previous-&gt;show();
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;break;
+&nbsp;&nbsp; &nbsp;}
+}
+
+void DownloadScreen::keyPressEvent(int keyCode)
+{
+&nbsp;&nbsp; &nbsp;switch(keyCode)
+&nbsp;&nbsp; &nbsp;{
+&nbsp;&nbsp; &nbsp;case MAK_2:
+&nbsp;&nbsp; &nbsp;case MAK_4:
+&nbsp;&nbsp; &nbsp;case MAK_UP:
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;listBox-&gt;selectPreviousItem();
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;break;
+&nbsp;&nbsp; &nbsp;case MAK_6:
+&nbsp;&nbsp; &nbsp;case MAK_8:
+&nbsp;&nbsp; &nbsp;case MAK_DOWN:
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;listBox-&gt;selectNextItem();
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;break;
+&nbsp;&nbsp; &nbsp;case MAK_0:
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;if(dl-&gt;isDownloading())
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;{
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;dl-&gt;cancelDownloading();
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}
+&nbsp;&nbsp; &nbsp;}
+}
+</pre>
+<p class="MsoNormal">This download screen can be used from many different screen.&nbsp; For instance, if you've got a screen which shows a calendar where the user can drill into different days to see what their schedule is for that day.&nbsp; This screen can download a package of data from the Internet of events created for the user.&nbsp; When you want to download an update, my <strong>EventScreen </strong>calls <strong>DownloadScreen </strong>and passes it the URL it wants to download.&nbsp; This <strong> DownloadScreen </strong>handles all of the mechanics.</p>
+<p class="MsoNormal">The <strong>DownloadScreen </strong>has inside it a <strong>Downloader </strong>object, and it implements <strong>DownloadListener</strong>.&nbsp; &nbsp;It creates a <strong>Downloader </strong>when it is constructed, and deletes it when it is destroyed.&nbsp; When the <strong> DownloadScreen</strong>’s download method is called, it passes the URL to the <strong> Downloader </strong>and starts downloading.</p>
+<p class="MsoNormal">As the <strong>Downloader </strong>raises events to the <strong>DownloadScreen </strong>through the <strong>DownloadListener </strong>interface, the screen can keep the user informed about their download.&nbsp; When it has finished, it informs the calling screen that it has completed, so that screen can carry on. &nbsp;</p>
+<p class="MsoNormal">To use it, call it from <strong>EventsScreen.cpp</strong>.&nbsp; This is a partial listing.</p>
+<pre class="MsoNormal">#include "EventsScreen.h"
+#include &lt;mastring.h&gt;
+EventsScreen::EventsScreen(Screen* previous, MainScreen* mainScreen) 
+: previous(previous), mainScreen(mainScreen)
+{
+    image =(Image*) createMainLayout(BLANK, BACK_BUTTON, this);
+    layout = (Layout*) image-&gt;getChildren()[0];
+    listBox = (ListBox*) layout-&gt;getChildren()[1];
+    this-&gt;setMain(image);
+    urlptr = NULL;
+    dlscreen = new DownloadScreen(this, mainScreen);
+    dlscreen-&gt;setDownloadListener(this);
+}
+EventsScreen::~EventsScreen()
+{
+    if(urlptr != NULL)
+    delete [] urlptr;
+    delete dlscreen;
+}
+void EventsScreen::downloadComplete()
+{
+    listBox-&gt;getChildren().clear();
+    createEventScreen();
+}
+void EventsScreen::keyPressEvent(int keyCode)
+{
+    switch(keyCode)
+    {
+    case MAK_2:
+    case MAK_4:
+    case MAK_UP:
+        listBox-&gt;selectPreviousItem();
+        break;
+    case MAK_6:
+    case MAK_8:
+    case MAK_DOWN:
+        listBox-&gt;selectNextItem();
+        break;
+    case MAK_0:
+        dlscreen-&gt;download(formatUrl(), EVENTSTORAGE);
+        dlscreen-&gt;show();
+        break;
+    }
+}
+</pre>
+<p class="MsoNormal">When the user presses 0 on their keypad, it tells the <strong> DownloadScreen </strong>the URL to download from, and the name of the store to write the data to.&nbsp; More on that later.</p>
+<p class="MsoNormal">When the data has been completely downloaded, the <strong>EventsScreen::downloadComplete() </strong>method is called, and the screen can repopulate itself from the downloaded data.</p>
+<h2 class="MsoNormal">Receiving Events</h2>
+<p class="MsoNormal">In the above example, the&nbsp;<strong>DownloadScreen </strong>class implements <strong>DownloadListener</strong>.&nbsp; In particular, it implemented these functions:</p>
+<pre class="MsoNormal">void notifyProgress(Downloader *dl, int downloadedBytes, int totalBytes);
+void finishedDownloading(Downloader *dl, MAHandle data);
+void error(Downloader* dl, int code);
+void downloadCancelled(Downloader* dl);
+</pre>
+<p class="MsoNormal">By doing this, the download screen is informed about what is happening to the downloader.&nbsp; The implementation code for these is here:</p>
+<pre class="MsoNormal">void DownloadScreen::downloadCancelled(Downloader *dl)
+{
+    //lprintfln("Cancelled");
+    listBox-&gt;add(createLabel("Download has been cancelled"));
+}
+void DownloadScreen::error(Downloader *dl, int code)
+{
+    lprintfln("Error: %d", code);
+    listBox-&gt;add(createLabel("Sorry, an error has occured"));
+}
+void DownloadScreen::finishedDownloading(Downloader *dl, MAHandle data)
+{
+    //Save the store
+    MAHandle h = maOpenStore(store, MAS_CREATE_IF_NECESSARY);
+    maWriteStore(h, data);
+    maCloseStore(h, 0);
+    lprintfln("Finished download");
+    if(listener != NULL)
+    {
+        //lprintfln("Calling listener");
+        listener-&gt;downloadComplete();
+    }
+    //lprintfln("Showing calling screen");
+    previous-&gt;show();
+}
+void DownloadScreen::notifyProgress(Downloader *dl, int downloadedBytes, int totalBytes)
+{
+    Label* l = (Label*)listBox-&gt;getChildren()[0];
+    char* cap = new char[255];
+    sprintf(cap, "Downloaded %d of %d bytes", downloadedBytes, totalBytes);
+    l-&gt;setCaption(cap);
+    delete[] cap;
+    //lprintfln("Downloaded %d of %d bytes", downloadedBytes, totalBytes);
+}
+</pre>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal">When the <strong> Downloader </strong>tells the calling screen of an error, or that the download has been cancelled, or that it has downloaded some of the data, then you can tell the user by updating the screen.&nbsp; When the download has finished, you can call the <strong>IDownloadScreenListener</strong>, and show the previous screen.</p>
+</body>
+</html>

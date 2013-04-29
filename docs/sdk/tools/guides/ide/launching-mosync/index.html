@@ -1,0 +1,69 @@
+<html>
+<head>
+<title>Launching the IDE and Registering the SDK</title>
+</head>
+<body>
+<h1>Launching the IDE and Registering the SDK</h1>
+<p>The first time you start the MoSync IDE you will be offered the chance to register the product and you will also see the Welcome screen which provides helpful links to get you started. Here we look at some of the options you have when starting MoSync.<!--break--></p>
+<p></p>
+<h2>Starting MoSync</h2>
+<h3>Starting the MoSync IDE on Windows:</h3>
+<ul>
+<li>If you created a desktop shortcut during installation you can use that to launch the MoSync IDE.</li>
+<li>Alternatively, you can use the MoSync IDE shortcut icon under Start &gt; MoSync on your Windows Desktop.</li>
+<li>If you choose to install without shortcuts, the path to MoSync is \eclipse\mosync.exe in the root of the installation (default: C:\MoSync).</li>
+</ul>
+<h3>Starting the MoSync IDE on OS X:</h3>
+<ul>
+<li>Click on the Applications folder in the Dock. Click MoSync &gt; eclipse &gt; mosync to launch the IDE.</li>
+</ul>
+<h2>The MoSync Splash Screen</h2>
+<p>When you start MoSync the first thing you will see is its splash-screen:</p>
+<p><img src="images/Launching01.png" align="none" width="600" height="383"><br><br>The splash screen shows you the target platforms that this version of MoSync can build packages for. It is worth checking this screen whenever you update MoSync because we regularly add new platforms.<br><br>The splash screen also shows the version number of the MoSync SDK in the form. Under the words ‘MoSync SDK’ are the major and minor release versions, and in the bottom right corner, the date and build number.</p>
+<h2>Selecting a Workspace</h2>
+<p>When you start the MoSync IDE will ask you which workspace you want to start working in this session:</p>
+<p><img src="images/Launching02.png" align="none" width="596" height="244"><br><br>The MoSync IDE is based on the popular development environment Eclipse, and workspaces are Eclipse's way of organizing projects. You can have several workspaces, with different projects in each. Workspaces and projects are normal folders that you can see in the file system.<br><br>If this is the first time you are launching MoSync, you can just accept the default workspace by clicking OK. The MoSync IDE will finish loading. Later you can create new workspaces and use them to organise your different projects. <br><br>Note that workspace names cannot include spaces. Only alphanumeric characters (a-z, A-Z, 0-9) and underscore (_) are allowed.</p>
+<h2>Registering MoSync</h2>
+<p>When you start the MoSync IDE, it will prompt you to register the program if you have not already done so:</p>
+<p><img src="images/Launching03.png" align="none" width="650" height="392"><br><br>MoSync registration is completely free, and it means that you can get automatic device profile updates whenever you start MoSync and full access to your<a href="http://www.mosync.com/"> website</a> including our<a href="http://www.mosync.com/forum"> Developer's Forum</a>. You also have the option of subscribing to our mailing list for news about new features.<br><br>If you have not registered with us before, simply enter your desired username and e-mail address and follow the instructions. Your e-mail address must be valid because we will send a confirmation e-mail to that address.<br><br>If you have already registered with us, follow the <strong>Already registered? Click here</strong> link and enter your username and password:</p>
+<p><img src="images/Launching04.png" align="none" width="650" height="488"></p>
+<p>When you have completed the registration process, click <strong>Continue</strong>.</p>
+<p><img src="images/Launching05.png" align="none" width="650" height="488"></p>
+<h2>Troubleshooting Registration</h2>
+<p>If you do not receive a confirmation email within a few minutes, it may be because your e-mail provider's spam filter has blocked it. Check in your spam or junk email folder to see if it has been put there.<br><br>If you are using Gmail and some similar email systems, and you have requested the MoSync IDE to resend your confirmation email, you may get an apparently empty email. Simply click on the "show quoted text" in this email to see the confirmation text.<br><br>If you have disabled the registration screen and want to display it later, you can find it under <strong>Help</strong> &gt; <strong>Register</strong> in the IDE.</p>
+<h2>The Welcome Screen</h2>
+<p>When you successfully registered the MoSync IDE will next display its <strong>Welcome</strong> screen:</p>
+<p><img src="images/Launching06.png" align="none" width="650" height="488"></p>
+<p>The Welcome screen provides you with many useful links to get you started with MoSync, including links to our guides and examples:</p>
+<ul>
+<li><a href="http://www.mosync.com/content/documentation">Online user guides</a> — all our documentation for the current featured release</li>
+<li>HTML5/JS APIs — everything you need to get started creating HTML5 apps</li>
+<li>C++ APIs — detailed API documentation for the curly braces brigade</li>
+<li><a href="http://www.mosync.com/forum/">Developer center</a> — our developer forum and latest posts</li>
+<li>HTML5/JS APIs— loads all of our HTML5/JS examples into the current workspace*</li>
+<li><a href="TEMPLATE_DOC_PATH/index.html">C++ APIs</a>— loads all our application examples into the current workspace*</li>
+<li><a href="http://www.mosync.com/screencasts">Screencasts</a> — video tutorials about the MoSync SDK and IDE</li>
+</ul>
+<p>*If the examples already exist in the current workspace they are not replaced. If you make changes to the examples, you can still import the originals at a later time (see<a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html"> Importing the Examples</a>). The examples are stored in the <em>/examples</em> folder in your MoSync installation directory.</p>
+<p>If you choose not to show the <strong>Welcome</strong> screen at start-up, you can always find it again under <strong>Help</strong> &gt; <strong>Welcome</strong> in the IDE.<br><br>When you are ready to leave this screen, click the <strong>Close the welcome screen and start using MoSync</strong> link. You will now see the normal Eclipse views in the IDE.</p>
+<h2>Views and Toolbars in the MoSync IDE</h2>
+<p>The main screen of the MoSync IDE consists of several "views" and toolbars. If you are familiar with Eclipse, many aspects of the IDE will be familiar to you, but we have added a lot of many features to support the MoSync IDE. Some of the more important features are labelled in the diagram below:</p>
+<p><br><img src="images/2012-03-06_0947.png" align="none" width="650" height="367">The main views in the MoSync IDE include:</p>
+<ul>
+<li><strong>Project Explorer</strong> View - this view shows the projects that you have created or imported into the MoSync IDE. This is your main file manager.</li>
+<li><strong>Editor</strong> View - this view is where you create and edit your application code. It features all the standard features of Eclipse, such as auto code highlighting and indenting. If you hover over an identifier of a class, method, etc. its documentation will pop-up. Type part of an identifier and press Crtl-Spacebar for auto-complete. It is worthwhile taking a little time to explore the comprehensive Eclipse workbench and C/C++ documentation on the Help menu to learn more about the editing features of the IDE.</li>
+<li><strong>Device Profiles</strong> View - this view lists the list of available devices for which you can build you current projects. You can set filters so that only devices which match certain criteria are included in the list. The current device profile that will be used if you run your application in the MoRE emulator is highlighted in the list, and also shown at the top of the view. (Note: This view will not show automatically unless you are working with projects that are created prior to MoSync 3.0.)</li>
+<li><strong>Finalizer</strong> View - this view shows the current finalizer script that will be used to finalize your application for all the devices listed in the Device Profiles view.&nbsp;<span>(Note: This view will not show automatically unless you are working with projects that are created prior to MoSync 3.0.)</span></li>
+<li><strong>Problems</strong> View - lists any problems encountered during a build.</li>
+<li><strong>Console</strong> View - this view shows the output of the execution of your application and enables you to enter input. You can customize this view using the toolbar displayed in the view header bar.</li>
+<li>The <strong>MoSync Emulator</strong> - The MoSync Runtime Environment (MoRE) starts up when you click the Run button on the main toolbar. The most visible feature of MoRE is its emulator which looks like a generic mobile device and is matched in various ways to the current target device profile.</li>
+<li>The <strong>Native Emulator</strong> - If you select a profile that has support for running a native emulator, you will be presented with an option to run that instead of the MoRE emulator. Currently MoSync has support for running native emulators for the Android, iOS (Mac only) and Windows Phone 7 (Windows only) platforms.</li>
+</ul>
+<p>If you close a MoSync-specific view (for example the <strong>Device Profiles</strong> view or the <strong>Finalizer</strong> view you can reopen it again by selecting <strong>Window</strong> &gt; <strong>Show View</strong> &gt; <strong>Other</strong> &gt; <strong>MoSync</strong>.</p>
+<h2>Keyword Help</h2>
+<p>You can jump directly to the documentation for MoSync syscalls and other keywords by highlighting the keyword in the Editor View and pressing the <strong>F1</strong> key. The Help View will open where you can find a link to the keyword's documentation:</p>
+<p><img src="images/Launching08.png" align="none" width="539" height="254"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

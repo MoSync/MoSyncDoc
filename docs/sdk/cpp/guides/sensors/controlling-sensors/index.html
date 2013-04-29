@@ -1,0 +1,294 @@
+<html>
+<head>
+<title>Sensor Control in C/C++</title>
+</head>
+<body>
+<h1>Sensor Control in C/C++</h1>
+<p>Modern smartphones have a variety of in-built sensors to detect, for example, movement, orientation, rotation, proximity, and magnetic fields. This tutorial explains how to start and stop sensors, and to receive sensor data in your application through the MoSync Sensor API.</p>
+<p><!--break--></p>
+<p>Only the MoSync runtimes for Android and iPhone have sensor support at the moment, and sensor simulation is not yet available in the MoSync Emulator.<br><br>Not all devices have hardware sensors. Before you run the application on the device, check which sensors it has using our <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/sensortest/index.html">SensorTest</a> application.</p>
+<h2>Accelerometer</h2>
+<p>An accelerometer is a sensor that measures the acceleration forces. On most modern mobile devices there is a 3-way axis device that determines the phone’s physical position. By measuring the static acceleration due to gravity you can find the angle at which device is tilted and by measuring the dynamic acceleration due to movement you can analyze the direction in which the device is moving. <br><br>This sensor is available for both the Android and iPhone runtimes.</p>
+<h3>Starting the Accelerometer</h3>
+<p>To start the accelerometer, call the MoSync Sensor API function <strong>maSensorStart(sensor, interval)</strong>. The first parameter should be &nbsp;SENSOR_TYPE_ACCELEROMETER. The second parameter should be the desired update interval in milliseconds. Note that each device has a minimum value for this interval and setting a smaller value could stop the sensor. <br><br>The <strong>maSensorStart </strong>function returns SENSOR_ERROR_NONE if the sensor is started successfully, or a SENSOR_ERROR_* in case of error.</p>
+<h3>Receiving Event Data</h3>
+<p>After the sensor starts, your application will receive EVENT_TYPE_SENSOR events. The event contains a struct with the following values:</p>
+<ul>
+<li>type - SENSOR_TYPE_ACCELEROMETER.</li>
+<li>values[0] - the acceleration value (in Gs) for the x-axis of the device.</li>
+<li>values[1] - the acceleration value (in Gs) for the y-axis of the device.</li>
+<li>values[2] - the acceleration value (in Gs) for the z-axis of the device.</li>
+</ul>
+<h3>Stopping the Accelerometer</h3>
+<p>To stop the accelerometer, &nbsp;call <strong>maSensorStop(sensor)</strong> with SENSOR_TYPE_ACCELEROMETER as the parameter. <br><br>The function returns SENSOR_ERROR_NONE, if the accelerometer stopped successfully, or SENSOR_ERROR_* in case of error.</p>
+<h3>Example</h3>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;MAUtil/util.h&gt;
+#include &lt;maapi.h&gt;
+#include &lt;conprint.h&gt;
+
+extern "C" int MAMain()
+{
+    maSetColor(0xFF0000);
+    maUpdateScreen();
+
+    // start the accelerometer
+    maSensorStart(SENSOR_TYPE_ACCELEROMETER, 400);
+
+    while(true)
+    {
+        MAEvent event;
+
+        // listen for events
+        while(maGetEvent(&amp;event))
+        {
+            // check if it’s a sensor type event
+            if(EVENT_TYPE_SENSOR == event.type)
+            {
+                // check if it’s a accelerometer sensor type event
+                if (SENSOR_TYPE_ACCELEROMETER == event.sensor.type)
+                {
+                    char buffer[50];
+                    maSetColor(0xFF0000);
+                    sprintf(buffer, "x=%f, y=%f, z=%f",
+                            event.sensor.values[0],
+                            event.sensor.values[1], 
+                            event.sensor.values[2]);
+
+                    maSetColor(0);
+                    maFillRect(0, 0, 1000, 100);
+                    maSetColor(0xFF0000);
+                    maDrawText(10, 10, buffer);
+                    maUpdateScreen();
+                }
+            }
+        }
+    }
+};</pre>
+<h2>Gyroscope</h2>
+<p>A gyroscope is a device for measuring or maintaining orientation. It can measure the rate of rotation around a particular axis. Unlike the accelerometer, the gyroscope is not affected by gravity.</p>
+<p>This sensor is available for Android and iPhone runtimes.</p>
+<h3>Starting the Gyroscope</h3>
+<p>To start the gyroscope, call <strong>maSensorStart(sensor, interval)</strong>. The first parameter should be &nbsp;SENSOR_TYPE_GYROSCOPE. The second parameter should be the desired update interval in milliseconds. Note that each device has a minimum value for this interval and setting a smaller value could stop the sensor.</p>
+<p>The <strong>maSensorStart </strong>function returns SENSOR_ERROR_NONE if the sensor has started successfully, or a SENSOR_ERROR_* in case of error.</p>
+<h3>Receiving Event Data</h3>
+<p>After the sensor starts, your application will receive EVENT_TYPE_SENSOR events. The event contains a struct with the following values:</p>
+<ul>
+<li>type - SENSOR_TYPE_GYROSCOPE.</li>
+<li>values[0] - the x-axis rotation rate in radians per second.</li>
+<li>values[1] - the y-axis rotation rate in radians per second.</li>
+<li>values[2] - the z-axis rotation rate in radians per second.</li>
+</ul>
+<h3>Stopping the Gyroscope</h3>
+<p>To stop the gyroscope, call <strong>maSensorStop(sensor)</strong> with SENSOR_TYPE_GYROSCOPE as the parameter. <br><br>The function returns SENSOR_ERROR_NONE if the sensor stopped successfully, or SENSOR_ERROR_* in case of error.</p>
+<h3>Example</h3>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;MAUtil/util.h&gt;
+#include &lt;maapi.h&gt;
+#include &lt;conprint.h&gt;
+
+extern "C" int MAMain()
+{
+    maSetColor(0xFF0000);
+    maUpdateScreen();
+
+    // start the gyroscope sensor
+    maSensorStart(SENSOR_TYPE_GYROSCOPE, 400);
+
+    while (true)
+    {
+        MAEvent event;
+        // listen for events
+        while(maGetEvent(&amp;event))
+        {
+            // check if it’s a sensor type event
+            if(EVENT_TYPE_SENSOR == event.type)
+            {
+                // check if it’s a gyroscope sensor type event
+                if (SENSOR_TYPE_GYROSCOPE == event.sensor.type)
+                {
+                    char buffer[50];
+                    maSetColor(0xFF0000);
+                    sprintf(buffer, "x=%f, y=%f, z=%f", 
+                            event.sensor.values[0],
+                            event.sensor.values[1],
+                            event.sensor.values[2]);
+
+                    maSetColor(0);
+                    maFillRect(0, 0, 1000, 100);
+                    maSetColor(0xFF0000);
+                    maDrawText(10, 10, buffer);
+                    maUpdateScreen();
+                 }
+            }
+        }
+    }
+};</pre>
+<h2>Magnetometer</h2>
+<p>A magnetometer is a instrument used to measure the strength or direction of magnetic fields.</p>
+<p>This sensor is available for Android and iPhone runtimes.</p>
+<h3>Starting the Magnetometer</h3>
+<p>To start the magnetometer, call <strong>maSensorStart(sensor, interval)</strong>. The first parameter should be SENSOR_TYPE_MAGNETIC_FIELD. As the magnetometer does not require an update interval, the second parameter can be any random number. <br><br>The function returns SENSOR_ERROR_NONE if the sensor has started successfully, or a SENSOR_ERROR_* in case of error.</p>
+<h3>Receiving Event Data</h3>
+<p>After the sensor starts, your application will receive EVENT_TYPE_SENSOR events. The event contains a struct with the following values:</p>
+<ul>
+<li>type - SENSOR_TYPE_MAGNETIC_FIELD .</li>
+<li>values[0] - the geomagnetic data for the x-axis.</li>
+<li>values[1] - the geomagnetic data for the y-axis.</li>
+<li>values[2] - the geomagnetic data for the z-axis.</li>
+</ul>
+<p>The values are in microteslas. You can calculate the magnetic north using those values.</p>
+<h3>Stopping the Magnetometer</h3>
+<p>To stop the magnetometer, call <strong>maSensorStop(sensor)</strong> with SENSOR_TYPE_MAGNETIC_FIELD as the parameter. <br><br>The function returns SENSOR_ERROR_NONE if the sensor stopped successfully, or SENSOR_ERROR_* in case of error.</p>
+<h3>Example</h3>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;MAUtil/util.h&gt;
+#include &lt;maapi.h&gt;
+#include &lt;conprint.h&gt;
+ 
+extern "C" int MAMain()
+{
+    maSetColor(0xFF0000);
+    maUpdateScreen();
+ 
+    // start the magnetometer sensor
+    maSensorStart(SENSOR_TYPE_MAGNETIC_FIELD, 1234);
+ 
+    while (true)
+    {
+        MAEvent event;
+        // listen for events
+        while(maGetEvent(&amp;event))
+        {
+            // check if it's a sensor type event
+            if(EVENT_TYPE_SENSOR == event.type)
+             {
+                // check if it's a magnetic field sensor type event
+                if (SENSOR_TYPE_MAGNETIC_FIELD == event.sensor.type)
+                {
+                    char buffer[50];
+                    maSetColor(0xFF0000);
+                    sprintf(buffer, "x = %f, y = %f, z = %f",
+                            event.sensor.values[0],
+                            event.sensor.values[1],
+                            event.sensor.values[2]);
+                    
+                    maSetColor(0);
+                    maFillRect(0, 0, 1000, 100);
+                    maSetColor(0xFF0000);
+                    maDrawText(10, 10, buffer);
+                    maUpdateScreen();
+                }
+            }
+        }
+    }
+};</pre>
+<h2>Proximity Sensor</h2>
+<p>A proximity sensor detects the presence of nearby objects.</p>
+<p>This sensor is available for Android and iPhone runtimes.</p>
+<h3>Starting the Proximity Sensor</h3>
+<p>To start the proximity sensor, call <strong>maSensorStart(sensor, interval)</strong>. The first parameter should be SENSOR_TYPE_PROXIMITY. As the proximity sensor does not require an update interval, the second parameter can be any random number. <br><br>The function returns SENSOR_ERROR_NONE if the sensor started successfully, or a SENSOR_ERROR_* in case of error.</p>
+<h3>Receiving Event Data</h3>
+<p>After the sensor starts, your application will receive EVENT_TYPE_SENSOR events. The event contains a struct with the following values:</p>
+<ul>
+<li>type - SENSOR_TYPE_PROXIMITY.</li>
+<li>values[0] - SENSOR_PROXIMITY_VALUE_NEAR or SENSOR_PROXIMITY_VALUE_FAR</li>
+</ul>
+<p><strong><em>Note</em></strong>: the device’s OS establishes the meaning of “near” and “far”.</p>
+<h3>Stopping the Proximity Sensor</h3>
+<p>To stop the proximity sensor, call <strong>maSensorStop(sensor)</strong> with SENSOR_TYPE_PROXIMITY as parameter. <br><br>The function returns SENSOR_ERROR_NONE if the sensor stopped successfully, or SENSOR_ERROR_* in case of error.</p>
+<h3>Example</h3>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;MAUtil/util.h&gt;
+#include &lt;maapi.h&gt;
+#include &lt;conprint.h&gt;
+
+extern "C" int MAMain()
+{
+    maSetColor(0xFF0000);
+    maUpdateScreen();
+
+    // start the proximity sensor
+    maSensorStart(SENSOR_TYPE_PROXIMITY, 123);
+
+    while (true)
+    {
+        MAEvent event;
+        // listen for events
+        while(maGetEvent(&amp;event))
+        {
+            // check if it's a sensor type event
+            if(EVENT_TYPE_SENSOR == event.type)
+            {
+                // check if it's a proximity sensor type event
+                if (SENSOR_TYPE_PROXIMITY == event.sensor.type)
+                {
+                    char buffer[50];
+                    maSetColor(0xFF0000);
+                    sprintf(buffer, "proximity sensor value = %f",
+                            event.sensor.values[0]);
+
+                    maSetColor(0);
+                    maFillRect(0, 0, 1000, 100);
+                    maSetColor(0xFF0000);
+                    maDrawText(10, 10, buffer);
+                    maUpdateScreen();
+                }
+            }
+        }
+    }
+};</pre>
+<h2>Orientation Sensor</h2>
+<p>The device’s operating system uses the accelerometer to determine the current orientation of the device and can therefore behave as an orientation sensor.<br><br>This sensor is available for Android and iPhone runtimes.</p>
+<h3>Starting the Orientation Sensor</h3>
+<p>To start the orientation sensor, call maSensorStart(sensor, interval). The first parameter should be &nbsp;SENSOR_TYPE_ORIENTATION. As the orientation sensor does not require an update interval, the second parameter can be any random number. <br><br>The function returns SENSOR_ERROR_NONE if the sensor started successfully, or a SENSOR_ERROR_* in case of error.</p>
+<h3>Receiving Event Data</h3>
+<p>After the sensor starts, your application will receive EVENT_TYPE_SENSOR events. The event contains a struct with the following values:</p>
+<p>type <br>- SENSOR_TYPE_ORIENTATION<br>values[0] <br>- UIDEVICE_ORIENTATION_UNKNOWN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<br>- UIDEVICE_ORIENTATION_PORTRAIT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<br>- UIDEVICE_ORIENTATION_PORTRAIT_UPSIDE_DOWN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<br>- UIDEVICE_ORIENTATION_LANDSCAPE_LEFT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<br>- UIDEVICE_ORIENTATION_LANDSCAPE_RIGHT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<br>- UIDEVICE_ORIENTATION_FACE_UP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<br>- UIDEVICE_ORIENTATION_FACE_DOWN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<h3>Stopping the Orientation Sensor</h3>
+<p>To stop the orientation sensor, call maSensorStop(sensor) with SENSOR_TYPE_ORIENTATION as the parameter. <br><br> The function returns SENSOR_ERROR_NONE if the sensor stopped successfully, or SENSOR_ERROR_* in case of error.</p>
+<h3>Example</h3>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;MAUtil/util.h&gt;
+#include &lt;maapi.h&gt;
+#include &lt;conprint.h&gt;
+
+extern "C" int MAMain()
+{
+    maSetColor(0xFF0000);
+    maUpdateScreen();
+
+    // start the orientation sensor
+    maSensorStart(SENSOR_TYPE_ORIENTATION, 123);
+
+    while (true)
+    {
+        MAEvent event;
+        // listen for events
+        while(maGetEvent(&amp;event))
+        {
+            // check if it's a sensor type event
+            if(EVENT_TYPE_SENSOR == event.type)
+            {
+                // check if it's a orientation sensor type event
+                if (SENSOR_TYPE_ORIENTATION == event.sensor.type)
+                {
+                    char buffer[50];
+                    maSetColor(0xFF0000);
+                    sprintf(buffer, "orientation sensor value = %f",
+                            event.sensor.values[0]);
+
+                    maSetColor(0);
+                    maFillRect(0, 0, 1000, 100);
+                    maSetColor(0xFF0000);
+                    maDrawText(10, 10, buffer);
+                    maUpdateScreen();
+                }
+            }
+        }
+    }
+};</pre>
+<h2>SensorTest Example Application</h2>
+<p>Our <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/sensortest/index.html">SensorTest</a> example application implements all of the sensor types supported by the MoSync Sensor API. When it is run on a device, it checks for the presence of each type of sensor and shows you the current event data being received from those that it finds.</p>
+</body>
+</html>

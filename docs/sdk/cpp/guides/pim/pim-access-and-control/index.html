@@ -1,0 +1,197 @@
+<html>
+<head>
+<title>PIM Access and Control</title>
+</head>
+<body>
+<h1>PIM Access and Control</h1>
+<p>Our PIM API module is still in the early stage of development, but we have already implemented many vital elements of PIM management, including low-level functions for accessing contact lists. Here we take a quick look at this new interface.<!--break--><br></p>
+<p>PIM (personal information management) is about accessing the information about the user. PIM data is organized into lists of items, and each item has fields. The device's address book is a typical PIM list, as well as its appointments lists, todo lists, and so on. <br> <br><em>Currently we only have functions for working with contact lists. Event lists will be added soon. </em><br><br>We also have a working example application, <span style="color: #000000;"><a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/pimdemo/index.html">PIMExample</a>, </span>that demonstrates many aspects of working with the PIM module.</p>
+<h2>Lists, items, fields, values, and attributes</h2>
+<p>Each PIM list holds multiple items; for example, the contact list holds multiple contacts. &nbsp;Each item in the list can have multiple fields of different types, and each field can have multiple values of the same type identified by an index. <br><br>Some field values have attributes attached. That makes it possible to define their purpose (home, mobile, work, husband, custom) and to set them as "primary" or "default" in case of multiple-value fields. The PIM structure currently supported by our PIM module looks like this:<br><br>Contact List</p>
+<ul>
+<li>Contact Item<ul>
+<li>Field address</li>
+<li>Field birthday</li>
+<li>Field class</li>
+<li>Field email</li>
+<li>Field formatted address</li>
+<li>Field formatted name</li>
+<li>Field name</li>
+<li>Field nickname</li>
+<li>Field note</li>
+<li>Field organization</li>
+<li>Field photo</li>
+<li>Field photo url</li>
+<li>Field public key</li>
+<li>Field public key string</li>
+<li>Field revision</li>
+<li>Field phone</li>
+<li>Field title</li>
+<li>Field UID</li>
+<li>Field URL</li>
+<li>Field IM</li>
+<li>Field relation</li>
+<li>Field organization info</li>
+</ul>
+</li>
+</ul>
+<p>It is important to note that not all fields are available on all platforms. If a field is not supported on running platform and you try to access it, you will get an error. For details of each field, its type and value, the operations it supports, the possible attributes that can be set on its values, and the platforms on which field is available, see t<span style="color: #000000;">he <a href="http://www.mosync.com/files/imports/doxygen/latest/html/index.html">MoSync API Reference</a> o</span>nline or in the IDE.</p>
+<h2>Using the MoSync PIM module</h2>
+<p>For a list of all functions (syscalls) in the PIM module, see the <span style="color: #000000;"><a href="http://www.mosync.com/files/imports/doxygen/latest/html/index.html">MoSync API Reference</a></span><span style="color: #ff0000;"></span>.</p>
+<h3>Working with lists and items</h3>
+<p>To open a PIM list, use the function <strong>maPimListOpen</strong>. If a list of the selected type is available, you will get back a handle to it that you can use in subsequent calls.</p>
+<pre class="mosync-code-cpp">MAHandle mContactsListHandle = maPimListOpen(MA_PIM_CONTACTS);</pre>
+<p>To open the items on the list, use <strong> maPimListNext</strong>. You will get back a handle to the next item on the list or 0 if there are no more items.</p>
+<pre class="mosync-code-cpp">MAHandle pimItemHandle = maPimListNext(mContactsListHandle);</pre>
+<p>You can create new item in a list using <strong>maPimItemCreate</strong>.</p>
+<pre class="mosync-code-cpp">MAHandle newContactHandle = maPimItemCreate(mContactsListHandle);</pre>
+<p>The newly created item is empty. The function <strong>maPimItemRemove </strong>removes an item from the list.</p>
+<pre class="mosync-code-cpp">int resultCode = maPimItemRemove(mContactsListHandle, newContactHandle);
+if (resultCode &lt; 0)
+{
+    printf("Remove Item Error: %d", resultCode);
+}</pre>
+<p><em><strong>Important! </strong></em>To prevent memory leaks, always call <strong>maPimItemClose </strong>to close the item as soon as you are finished with it before opening the next item. This function also commits changes made by <strong>maPimItemAddValue</strong>, <strong>maPimItemRemoveValue</strong>, and <strong>maPimItemSetValue </strong>to permanent storage. It should also be used after <strong>maPimItemCreate</strong>.</p>
+<pre class="mosync-code-cpp">int resultCode = maPimItemClose(pimItemHandle);
+if (resultCode &lt; 0)
+{
+    printf("Close Item Error: %d", resultCode);
+}</pre>
+<p>To close a list when you have finished with it, use <strong>maPimListClose</strong>. (This function does not close the list's items, but it does invalidate them, so <strong>maPimItemClose </strong>will now be the only function you can safely use on items.)</p>
+<pre class="mosync-code-cpp">int resultCode = maPimListClose(mContactsListHandle );
+if (resultCode &lt; 0)
+{
+    printf("Close List Error: %d", resultCode);
+}</pre>
+<h3>Working with fields and attributes</h3>
+<p>To count the number of fields an item has, use the function <strong> maPimItemCount</strong>.</p>
+<pre class="mosync-code-cpp">int countFields = maPimItemCount(pimItemHandle);
+if (countFields &gt;= 0)
+{
+    printf("The item has %d fields", countFields);
+}
+else
+{
+    printf("Count Item Error: %d", countFields);
+}</pre>
+<p>To count the number of values that exist for the field for the item, use <strong>maPimItemFieldCount</strong>.</p>
+<pre class="mosync-code-cpp">int countValues = maPimItemFieldCount(mItemHandle, MA_PIM_FIELD_CONTACT_ADDR);
+if (countValues &gt;= 0)
+{
+    printf("The field has %d values", countValues);
+}
+else
+{
+    printf("Count Item Field Error: %d", countValues);
+}</pre>
+<p>Each field of the item has a type. To get the field's type (Address, Birthday, Name, etc.), use <strong>maPimItemGetField </strong>passing it the the position of the field and the item handle that was returned by <strong>maPimListNext</strong>.</p>
+<pre class="mosync-code-cpp">for (int index = 0; index &lt; countFields; i++)
+{
+    int type = maPimItemGetField(pimItemHandle, index);
+    if (type &gt; 0)
+    {
+        printf("Field %d type: %d", index, type);
+    }
+    else
+    {
+        printf("Get Field %d Error: %d", index, type);
+    }
+} </pre>
+<p>You can use the <strong>maPimFieldType </strong>function to get the data type (integer, boolean, string, etc.) of the field. The value returned will be one of the MA_PIM_TYPE_* constants (date, boolean, string array, etc.).</p>
+<pre class="mosync-code-cpp">int type = maPimItemGetField(pimItemHandle, 0);
+if (type &gt;0)
+{ 
+    int dataType = maPimFieldType(mContactsListHandle, type);
+    if (dataType &gt; 0)
+    {
+        printf("Field %d data type: %d", type, dataType);
+    }
+    else
+    {
+        printf("Get Field Type %d Error: %d", type, dataType);
+    }
+} </pre>
+<p>To get the attribute for a value in a field use <strong>maPimItemGetAttributes</strong>.</p>
+<pre class="mosync-code-cpp">for (int index = 0; index &lt; countValues; i++)
+{
+    int attribute = maPimItemGetAttributes(pimItemHandle, MA_PIM_FIELD_CONTACT_ADDR, index);
+    if (attribute &gt; 0)
+    {
+        if ((attribute &amp; MA_PIM_ATTRPREFERRED) != 0)
+        {
+            printf("Primary attribute");
+        }
+        attribute &amp;= (MA_PIM_ATTRPREFERRED - 1);
+        printf("Field %d attribute: %d", index, attribute);
+    }
+    else
+    {
+        printf("Get Field Attribute %d Error: %d", index, attribute);
+    }
+}</pre>
+<p>You can retrieve the label for a value in a field, if the value has a custom label, using the <strong>maPimItemGetLabel</strong> function. To set a custom label for a value in a field use the function <strong>maPimItemSetLabel</strong>. The field must of course be writable.</p>
+<pre class="mosync-code-cpp">if (countValues &gt; 0)
+{
+    int attribute = maPimItemGetAttributes(pimItemHandle, MA_PIM_FIELD_CONTACT_ADDR, 0);
+    if (attribute &gt; 0)
+    {
+        attribute &amp;= (MA_PIM_ATTRPREFERRED - 1);
+        if (attribute == MA_PIM_ATTR_ADDR_CUSTOM)
+        {
+            MA_PIM_ARGS labelArgs;
+            labelArgs.item = pimItemHandle;
+            labelArgs.field = MA_PIM_ATTR_ADDR_CUSTOM;
+            char* buf = NULL;
+            int labelSize = 512;
+            do
+            {
+                labelArgs.bufSize = labelSize;
+                if (buf != NULL)
+                {
+                    delete[] buf;
+                }
+                buf = new char[labelArgs.bufSize];
+                labelArgs.buf = buf;
+                resultCode = maPimItemGetLabel(&amp;labelArgs, 0);
+            } while (resultCode &gt; labelArgs.bufSize);
+            if (resultCode &gt; 0)
+            {
+                printf("Label: %S", (wchar*) buf);
+            }
+            else
+            {
+                printf("Get Field Label %d Error: %d", 0, resultCode);
+            }
+        }
+    }
+    else
+    {
+        printf("Get Field Attribute %d Error: %d", 0, attribute);
+    }
+}</pre>
+<h3>Getting and setting values</h3>
+<p>To read the value of a field and copy it to the argument buffer (<strong>args.buf </strong> ), call <strong>maPimItemGetValue</strong>. You will need to specify the index of the value (<strong> 0 &lt;= index &lt; maPimItemFieldCount()</strong> ). The argument buffer should look like this:</p>
+<pre class="mosync-code-cpp">struct MA_PIM_ARGS {
+    MAHandle item; // Opened by maPimListNext().
+    int field;     // One of the MA_PIM_FIELD constants.
+    MAAddress buf; // The buffer address where a value is stored.
+    int bufSize;   // The size of the buffer, in bytes.
+}</pre>
+<p>If the buffer created is too small, the syscall will return the miminum needed size for your buffer</p>
+<pre class="mosync-code-cpp">MA_PIM_ARGS args;
+args.field = MA_PIM_FIELD_CONTACT_NAME;
+
+// Get value from name field at position 0.
+int resultCode = maPimItemGetValue(&amp;mArgs, 0);
+
+if (resultCode &lt; 0)
+{
+    printf("Get Field %d Value Error %d", 0, resultCode);
+}</pre>
+<p>To add a new value to a field, use <strong>maPimItemAddValue</strong>; to remove a value from a field, use <strong>maPimItemRemoveValue</strong>; to change a value in a field and the attributes of the value, use <strong>maPimItemSetValue </strong>passing an <strong>args.buf</strong>.</p>
+<p>For each of these functions the changes are not actually written to permanent storage until the item is closed with <strong> maPimItemClose </strong>-- if the program exits before then, the changes we be lost.</p>
+<h3>Panics on Android and iOS</h3>
+<p>Usually a MoSync panic will be thrown if the position is invalid, or a field/index combination doesn't exist, and so on. On Android and iOS (iPhone) you can disable panics using the function <strong>maSyscallPanicsDisable </strong>so that you'll get error codes instead.<br><br>Turn panics back on with <strong>maSyscallPanicsEnable</strong>.</p>
+<p>&nbsp;</p>
+</body>
+</html>

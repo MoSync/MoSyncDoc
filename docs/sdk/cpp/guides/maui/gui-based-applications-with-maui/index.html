@@ -1,0 +1,59 @@
+<html>
+<head>
+<title>GUI-Based Applications with MAUI</title>
+</head>
+<body>
+<h1>GUI-Based Applications with MAUI</h1>
+<p>Using the <strong>MAUI </strong>library helps you develop powerful graphical user interface applications. You get access to a variety of ready-made user interface widgets and you can register different types of listeners with the widgets, thus responding to higher-level events.</p>
+<p><!--break--></p>
+<p><strong>MAUI </strong>development is based on the <strong>Moblet </strong>system, so to create an application with it you first need to make a moblet as shown in the <a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/basic/event-driven-object-oriented-applications/index.html">previous example</a>.</p>
+<p>The fundamental building block of a MAUI application is called <strong>MAUI::Screen</strong>. Each screen has their own root widget. Each time <strong>show() </strong>is called on a screen, that screen is shown and all the others are hidden. When a screen is shown, it means that the root widget of that screen is made active. It can often be very useful to group your application into several screens in order to give your program a logical structure. When a screen is shown, key events are sent to that screen only. When a screen is hidden, each widget that belongs to it is disabled. This normally means that any timer events are unregistered.</p>
+<h2><strong>Example: A Simple, Well-Behaved Application</strong></h2>
+<p><em><strong>Note</strong></em>: if you build this application in the IDE, make sure that you base it on the MAUI template or make sure that the Additional Libraries listed in the build configuration (<strong>Project </strong>&gt; <strong>Properties </strong>&gt; <strong>MoSync Project</strong> &gt; <strong>Build Settings</strong> &gt; <strong>Additional Libraries</strong>) include <strong>MAUtil.lib</strong> and <strong>MAUI.lib</strong>. You will also need to create and declare your font resources: see <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/maui/font-tools/index.html">Working With Fonts</a>.</p>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;MAUI/Screen.h&gt;
+#include &lt;MAUI/Label.h&gt;
+#include &lt;MAHeaders.h&gt;
+using namespace MAUtil;
+using namespace MAUI;
+class MyScreen : public Screen {
+public:
+    MyScreen() {
+        label = new Label(
+        0, // set the top-left corner
+        0, // to be in the top-left corner of the lcd display.
+        0, // the width and height are set to the width and height of the lcd display
+        0, // automatically for the root widget in a screen.
+        NULL, // this widget has no parent widget
+        "Hello World!", // the caption of the label
+        0, // use background color 0 (black)
+        new Font(MY_FONT) // create a new instance of the font stored as the
+        // resource MY_FONT and set the font of the label to that font.
+        );
+        setMain(label); // set the root widget to be the label we just created
+    }
+    void keyPressEvent(int key) {
+        if(key == MAK_0) {
+            maExit(0); // exit the application when key 0 has been pressed
+        }
+    }
+
+private:
+    Label *label;
+};
+class MyMoblet : public Moblet {
+public:
+    MyMoblet() {
+        myScreen = new MyScreen();
+        myScreen-&gt;show();
+    }
+private:
+    MyScreen *myScreen;
+};
+// Since this is a C++ program, the main function
+// needs to be declared extern "C"
+extern "C" int MAMain() {
+    Moblet::run(new MyMoblet());
+}</pre>
+</body>
+</html>

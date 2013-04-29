@@ -1,0 +1,38 @@
+<html>
+<head>
+<title>Scanning for a Device</title>
+</head>
+<body>
+<h1>Scanning for a Device</h1>
+<p>MoSync makes it easy to scan for nearby devices and connect to them using Bluetooth. Once you have connected to your device, you will be able to <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/sending-to-device/index.html">send your application</a> to it over Bluetooth.<!--break--></p>
+<p></p>
+<h2>Requirements</h2>
+<p>To use the MoSync Send to Device service:</p>
+<ul>
+<li>Both your computer and the device must have Bluetooth installed and enabled.</li>
+<li>The device must be configured as "discoverable" so that the computer can find it.</li>
+<li>The device must support the OBEX communications protocol.</li>
+</ul>
+<h2>Scanning for a Device</h2>
+<p>Click the Select Target Device icon (or select Scan for Device from that icon's drop-down menu):<img src="images/2012-03-06_1030.png" align="none" width="106" height="62"></p>
+<p>The transport selection dialog will appear.</p>
+<p><img src="images/2012-03-06_1031.png" align="none" width="354" height="312"></p>
+<p>Select Bluetooth. If you have correctly configured your Bluetooth stack, MoSync will start a search for all discoverable Bluetooth devices in range and display the ones that it finds:</p>
+<p><img src="images/2012-03-06_1043.png" align="none" width="502" height="320"></p>
+<p>Highlight the device that you want to send your application to and click OK.</p>
+<p>The MoSync IDE will now check that the selected device has the OBEX service available for binary transfers (this service makes it possible for MoSync to send the application directly to the device).</p>
+<h2>The Device Profile-Target Device Association</h2>
+<p>When the OBEX service is detected, the Select Preferred Profile window will appear:</p>
+<p><img src="images/2012-03-06_1039.png" align="none" width="214" height="445"></p>
+<p>Select the MoSync profile you want to associate with the target device. Usually, this will be the profile for the target device, e.g., an Android profile for the HTC Wildfire S that was detected in the above screenshots. However, if there is no suitable profile for your device, you can choose another compatible profile. Click OK to associate the chosen device profile with the target device.</p>
+<p>When the OBEX service is detected, MoSync automatically completes the device selection by associating the device profile currently selected in the project with the target device. For more about this association, including how to check its current setting and how to change it, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/sending-to-device/index.html">Sending to a Device</a>.</p>
+<h2>OS X Bluetooth Issues</h2>
+<p>MoSync does not support sending via Bluetooth on Mac OS X 10.8 or higher.</p>
+<h2>Windows Mobile Bluetooth Issues</h2>
+<p>We have noted some issues with the pairing of Windows Mobile devices to Windows computers.</p>
+<p>The first issue seems to happen if the device has been previously paired with the computer outside of MoSync. If you are having problems sending application packages files from the MoSync SDK to a Windows Mobile bluetooth device, try unpairing the device in the Windows Bluetooth Device Manager or its equivalent, and then searching for it again in the MoSync SDK.</p>
+<p>The second issue relates to Windows Active Sync and/or HTC Active Sync. These applications can cause&nbsp; problems when trying to connect Windows Mobile devices to the computer via MoSync and Bluetooth. Try disabling Active Sync if you are experiencing connection or file transfer issues.</p>
+<p>&nbsp;</p>
+<div id="_mcePaste" class="mcePaste">&nbsp;</div>
+</body>
+</html>

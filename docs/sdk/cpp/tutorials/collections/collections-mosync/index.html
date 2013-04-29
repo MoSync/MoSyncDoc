@@ -1,0 +1,502 @@
+<html>
+<head>
+<title>Collections in MoSync</title>
+</head>
+<body>
+<h1>Collections in MoSync</h1>
+<p>The MoSync SDK provides several different collection objects, suitable for different occasions. &nbsp;Collections let you deal with sets of object collectively, but the way you access the collection varies.<!--break-->&nbsp;</p>
+<p></p>
+<h2>Collection Memory Usage</h2>
+<p>Typically, collections will be created on the stack rather than the heap. &nbsp;This will mean that if you have a collection of object pointers (the objects themselves will be in the heap), and the collection goes out of scope, you may loose the pointers to the objects in the heap and you won't be able to access them. &nbsp;The objects will still exist though, and you've got a memory leak. &nbsp;Keep close track of collections, and ensure that they are in a suitable scope. &nbsp;Object scope is very commonly used.</p>
+<pre class="mosync-code-cpp">class MyClass
+{
+public:
+    MyClass();
+    virtual ~MyClass();
+private:
+    Vector&lt;MyObject*&gt; myVector;
+};</pre>
+<p>In the above example, the&nbsp;<strong>Vector</strong>&nbsp;of&nbsp;<strong>MyObject</strong>&nbsp;pointers will be created when the object is created, and destroyed when the object is destroyed. &nbsp;The objects the pointer point to will not be destroyed unless you specifically destroy them. &nbsp;You can do this in the class destructor if you do not wish to refer to those objects again.</p>
+<pre class="mosync-code-cpp">MyClass::~MyClass()
+{
+    //Destroy the objects in my Vector
+    Vector_each(MyObject*, itr, myVector) {
+        delete *itr; //Delete the object
+    }
+}</pre>
+<p>Always be aware of the lifespan of objects in collections, and delete the objects as necessary.</p>
+<h2>Iteration</h2>
+<p>In most collections, there are ways to iterate through the contents. &nbsp;These are specific to the collection type, and methods for iteration are described with each collection type. &nbsp;They are not consistent, so don't assume that because you can use one method for iterating one type of collection it will be exactly the same for another.</p>
+<p>In C++ there isn't an iteration interface, nor is there a keyword for iteration. &nbsp;For example, in C# there is the IEnumerable interface and the&nbsp;<strong>foreach</strong>&nbsp;keyword which lets you iterate through any collection:</p>
+<pre class="mosync-code-cpp">foreach(String in myStringCollection)
+{
+}</pre>
+<p>This isn't supported in C++, so iteration is slightly more verbose.</p>
+<h2>Arrays</h2>
+<p>Arrays and Vectors are the simplest collections in MoSync. &nbsp;They provide easy access to stored objects and data, and can be returned by functions and methods.</p>
+<p>The simplest collection type is an array. &nbsp;This is supported in C and C++ rather than being a collection supported in MoSync specifically. &nbsp;It provides random access (that is, you can access any item in the collection), but it stores its contents sequentially in memory. &nbsp;This can cause problems if you are storing a lot of large objects, as the contiguous memory may not be available.</p>
+<p>You can create an array by using the [] operators. &nbsp;Arrays can be of any object or primitive type. &nbsp;You must specify the size of the array when you create it and arrays cannot be easily resized, nor can items be easily inserted into them. &nbsp;They are small, require no additional overhead and are fast. &nbsp;This code will create an array of twenty&nbsp;<strong>char</strong>s.</p>
+<pre class="mosync-code-cpp">char myCharArray[20];</pre>
+<p>Any item in the array can be accessed by its zero-based index number.</p>
+<pre class="mosync-code-cpp">char thirdChar = myCharArray[2]; // Zero-based</pre>
+<p>Values can be written as well</p>
+<pre class="mosync-code-cpp">myCharArray[2] = 'c';</pre>
+<p>When you have finished with an array, you will need to use the&nbsp;<strong>delete []&nbsp;</strong>instruction, and not&nbsp;<strong>delete.</strong></p>
+<pre class="mosync-code-cpp">delete [] myCharArray;</pre>
+<p>Which will then delete every item in the array.</p>
+<p>Typically in arrays (and most collections), you'll store a primitive value (char, int, byte et cetera), or an object pointer. &nbsp;You can store objects in the array directly, but enough contiguous memory must be available. &nbsp;</p>
+<p>To iterate through an array, you access the array with the&nbsp;<strong>[]&nbsp;</strong>operator sequentially. &nbsp;You do need to know the size of the array before you start, but you need to know that to create it. &nbsp;For example</p>
+<pre class="mosync-code-cpp">for(int i = 0; i &lt; 20; i++)
+{
+   printf("%c", myCharArray[i]);
+}</pre>
+<h2>Vectors</h2>
+<p>Vectors are part of the MAUtil namespace. &nbsp;To use them, you will need to include MAUtil/Vector.h.&nbsp;</p>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Vector.h&gt;
+using namespace MAUtil;</pre>
+<p>A vector is an object wrapper around an array. &nbsp;All the storage will be done in the array, but the vector will let you iterate through the collection, insert items into the collection and resize the collection.</p>
+<pre class="mosync-code-cpp">Vectors are similar to C# and Java List&lt;&gt; collections. &nbsp;MoSync List&lt;&gt; collections are not. 
+See below for details of MoSync List&lt;&gt;.</pre>
+<p>You don't need to specify a size when you create a vector.</p>
+<pre class="mosync-code-cpp">Vector&lt;MyObject*&gt; myVector;</pre>
+<p>What you do need to specify is the type of data you are going to store, by adding the type name between the angle brackets. &nbsp;Once you specify this, you can only add items of that type. &nbsp;In the above instance, these are MyObject pointers. You can only add MyObject pointers to this vector, and not MyObjects themselves or pointers of a different class.</p>
+<p>You can add items into the vector using the&nbsp;<strong>.add()</strong>&nbsp;method.</p>
+<pre class="mosync-code-cpp">myVector.add(new MyObject());</pre>
+<p>You can also insert items at a specific point.&nbsp;</p>
+<pre class="mosync-code-cpp">myVector.insert(2, new MyObject());</pre>
+<p>Existing items will be moved down the underlying array. &nbsp;This is a comparitvely expensive operation, so only do it if the order is important.</p>
+<pre class="mosync-code-cpp">Vectors maintain the order in which you add items. &nbsp;If you iterate through the vector, you
+will find objects in the same order you added or inserted them.</pre>
+<p>Individual items can be removed from vectors using the <strong>remove()&nbsp;</strong>method. There are three different ways you can remove items from a vector.</p>
+<pre class="mosync-code-cpp">myVector.remove(MyObject**); </pre>
+<p>This is a pointer to a MyObject pointer. &nbsp;We'll look at iterators shortly, but MyObject** will probably be an iterator.</p>
+<pre class="mosync-code-cpp">myVector.remove(1);</pre>
+<p>Removes the second item from the zero-based index.</p>
+<pre class="mosync-code-cpp">myVector.remove(1, 3);</pre>
+<p>To completely empty a vector, you can use the&nbsp;<strong>clear()&nbsp;</strong>method.</p>
+<p>Removes the second, third and fourth items from the vector. &nbsp;Remember, this does not delete any objects if your vector contains pointers. &nbsp;It only removes the pointers. &nbsp;If you want to delete the object you must still use&nbsp;<strong>delete</strong>.</p>
+<p>The vector starts with a small array of the type you've specified. &nbsp;By default it will create an array of the type containing four items. &nbsp;If you add a fifth, then the a new array is created, and all the items are copied across. &nbsp;The new array will be twice the size of the old array. &nbsp;If you exceed the reserved space, then the array will be recreated and the data carried across again. &nbsp;The obviously adds overhead. &nbsp;If you know that you want 20 items, then create it with space for 20 items. &nbsp;You can do this in three ways.</p>
+<p>Firstly, you can set the size in the constructor. &nbsp;As Vectors are normally created on the stack, then there is no opportunity to use the&nbsp;<strong>new&nbsp;</strong>instruction. &nbsp;Instead, in C++ you can specify it when your object is created. &nbsp;In your header file (.h) you can have something like this:</p>
+<pre class="mosync-code-cpp">class MyClass
+{
+public:
+    MyClass();
+    virtual ~MyClass();
+private:
+    Vector&lt;MyObject*&gt; myVector;
+};</pre>
+<p>And in the code file (.cpp) you can specify the size of the vector in the constructor.</p>
+<pre class="mosync-code-cpp">#include "MyClass.h"
+
+MyClass::MyClass() : myVector(20)
+{
+}</pre>
+<p>This will initialise the vector with a size of 20. &nbsp;There are also two methods for sizing the vector,&nbsp;<strong>resize()</strong>&nbsp;and&nbsp;<strong>reserve()</strong>. &nbsp;Both will set the size of the underlying array, but&nbsp;<strong>resize()</strong>&nbsp;will move the current cursor to the end of the array. &nbsp;This means that if you&nbsp;<strong>resize(20)</strong>&nbsp;and then&nbsp;<strong>.add(new MyObject())</strong>&nbsp;then the vector will have 21 items in it and have a capacity of 40. &nbsp;In general, use&nbsp;<strong>reserve()</strong>&nbsp;when you want to allocate memory. &nbsp;You cannot&nbsp;<strong>resize()</strong>&nbsp;or&nbsp;<strong>reserve()</strong>&nbsp;to a size smaller than you are currently using.</p>
+<p>You can get the current usage by using the&nbsp;<strong>size()</strong>&nbsp;and&nbsp;<strong>capacity()</strong>&nbsp;methods. &nbsp;If you want to know how many items are in a vector, use&nbsp;<strong>size()</strong>. &nbsp;To find out how many it can take, use&nbsp;<strong>capacity()</strong>. &nbsp;To easily find if the vector is empty, use the&nbsp;<strong>empty()</strong>&nbsp;method.</p>
+<pre class="mosync-code-cpp">if(myVector.empty())
+{
+    // Do something.
+}</pre>
+<p>Vectors, like arrays, are random access. &nbsp;You can access any item in the vector using&nbsp;<strong>[]</strong>.</p>
+<pre class="mosync-code-cpp">MyObject* myObject = myVector[3];</pre>
+<p>You can also get direct access to the array using the&nbsp;<strong>pointer()</strong>&nbsp;method.</p>
+<p>To iterate a vector, you use a vector&nbsp;<strong>iterator</strong>. &nbsp;These are pointers to each item in the vector, and are of the type&nbsp;<strong>Vector&lt;Type&gt;::iterator</strong>. &nbsp;For example</p>
+<pre class="mosync-code-cpp">Vector&lt;MyObject*&gt;::iterator</pre>
+<p>You can get iterators to the first object, and to the point&nbsp;beyond<strong>&nbsp;</strong>the last object using the&nbsp;<strong>begin()</strong>&nbsp;and&nbsp;<strong>end()&nbsp;</strong>methods. &nbsp;Because the underlying array is in contiguous memory, then the iterators are sequential. &nbsp;The iterator is really a pointer to the type of the object (or value) stored. &nbsp;In our example, the iterator will be of a type MyObject**. &nbsp;It is a pointer to a MyObject pointer.</p>
+<p>We can use the iterators from&nbsp;<strong>begin()</strong>&nbsp;and&nbsp;<strong>end()</strong>&nbsp;to test our iteration.</p>
+<pre class="mosync-code-cpp">for(Vector&lt;MyObject*&gt;::iterator itr = myVector.begin(); 
+itr != myVector.end(); 
+itr++)
+{
+    // Do something.
+}</pre>
+<p>This will then give us a MyObject** for each loop, called itr. &nbsp;You can use the object stored as normal if you dereference it.</p>
+<pre class="mosync-code-cpp">MyObject* currentObject;
+for(Vector&lt;MyObject*&gt;::iterator itr = myVector.begin(); 
+itr != myVector.end(); 
+itr++)
+{
+    currentObject = *itr; // Dereference it.
+    currentObject-&gt;method();
+}</pre>
+<p>There is also a macro you can use a short cut for iterating vectors. &nbsp;Vectors are now the only collection to have such a macro.</p>
+<pre class="mosync-code-cpp">Vector_each(Type, iterator variable, vector);</pre>
+<p>For instance, instead of the long&nbsp;<strong>for</strong>&nbsp;statement earlier, we can have the more readable</p>
+<pre class="mosync-code-cpp">Vector_each(MyObject*, itr, myVector)
+{
+    // Do something.
+}</pre>
+<pre class="mosync-code-cpp">If you change the vector during an iterative process, the iterator may become invalid, 
+with undefined consequences. &nbsp;Don't add or remove items from a vector whilst you are 
+iterating through it.</pre>
+<h2>Lists</h2>
+<p>Lists are part of the MAUtil namespace. &nbsp;To use them, you will need to include MAUtil/List.h.</p>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/List.h&gt;
+using namespace MAUtil;</pre>
+<p>If you come from a Java or C# background,&nbsp;<strong>List</strong>&nbsp;will not behave as you expect. &nbsp;The MoSync equivalent of a Java/C# List is&nbsp;<strong>Vector&lt;&gt;</strong>. &nbsp;In MoSync&nbsp;<strong>Lists</strong>&nbsp;are&nbsp;<strong>doubly-linked lists.</strong></p>
+<p>MoSync lists allow you to create a collection of items, where each item knows which is the item before it and after it in the list. &nbsp;This has a big impact on how you iterate through a list.</p>
+<p>As there isn't an underlying array, then you don't need to specify the size of your collection, nor is there an impact on performance for inserting an item in the list. &nbsp;Each object or value you store will be wrapped in a very light object, so there is a very small memory overhead, but its flexibility is superb.</p>
+<p>The downside of this is that there isn't any method of random access. &nbsp;You have to navigate the list serially, although you can go backwards and forwards through the list.</p>
+<p>You create the list in a similar way to the vector.</p>
+<pre class="mosync-code-cpp">List&lt;MyObject*&gt; myList;</pre>
+<p>You can then add items very easily to either the beginning or the end of the list by using&nbsp;<strong>addFirst()&nbsp;</strong>and&nbsp;<strong>addLast()</strong>&nbsp;respectively.</p>
+<p>You can only add items into the middle of the list, or remove items from the if you've got an iterator.</p>
+<p>You can get an iterator in the same way as you can with a vector, using the&nbsp;<strong>begin()</strong>&nbsp;and&nbsp;<strong>end()</strong>&nbsp;methods. &nbsp;You can then access the objects and values stored using the&nbsp;<strong>prev()</strong>&nbsp;and&nbsp;<strong>next()</strong>&nbsp;methods. &nbsp;You can test to see if you are at the start or end of a list using the&nbsp;<strong>hasPrev()&nbsp;</strong>and&nbsp;<strong>hasNext()</strong>&nbsp;methods.</p>
+<p>The iterators for lists are of the type&nbsp;<strong>List&lt;<em>type</em>&gt;::ListIterator</strong>&nbsp;and&nbsp;<strong>List&lt;<em>type</em>&gt;::ConstListIterator.&nbsp;</strong>&nbsp;Note the capitalisation of Iterator for this iterator.</p>
+<pre class="mosync-code-cpp">List&lt;MyObject*&gt;::ListIterator itr = myList.begin();
+MyObject* currentObject;
+while(itr.hasNext())
+{
+    currentObject = itr.next();
+}</pre>
+<p>Note that you don't increment the iterator like you do with vectors. &nbsp;The&nbsp;<strong>next()</strong>&nbsp;and&nbsp;<strong>prev()</strong>&nbsp;methods return the value stored and increment the iterator.</p>
+<p>You can insert items into list without much of a perform hit as there is no array to reallocate. &nbsp;You do have to do this from an iterator though.</p>
+<pre class="mosync-code-cpp">itr = myList.begin();
+while(itr.hasNext())
+{
+    if(itr.next() == 1)
+    {
+        // Add the value 2 after this item.
+        myList.insert(itr, 2);
+    }
+}</pre>
+<p>Equally, remove is done through the iterator. &nbsp;When you add an item using&nbsp;<strong>insert</strong>&nbsp;it is placed&nbsp;after<strong>&nbsp;</strong>current iterator. &nbsp;When you&nbsp;<strong>remove()&nbsp;</strong>an item, it removes the item from the current position. &nbsp;ListIterators are not corrupted if you alter the collection, unlike vectors. &nbsp;Remember, if you remove a pointer to an object, you are not destroying the object itself. &nbsp;You still need to call&nbsp;<strong>delete</strong>.</p>
+<p><em><span><span style="font-style: normal;">The code below shows creating and altering a&nbsp;</span><strong><span style="font-style: normal;">List&lt;int&gt;</span></strong><span style="font-style: normal;">.</span></span></em></p>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;conprint.h&gt;
+#include &lt;MAUtil/List.h&gt;
+
+using namespace MAUtil;
+
+class MyMoblet : public Moblet 
+{
+public:
+    List&lt;int&gt; myList;
+
+    MyMoblet() 
+    {
+        // Create a list with an item missing.
+        myList.addFirst(0);
+        myList.addLast(1);
+        myList.addLast(3);
+
+        // Show the original list
+        showList();
+
+        // Now add 2 into the list
+        List&lt;int&gt;::ListIterator itr = myList.begin();
+
+        itr = myList.begin();
+        while(itr.hasNext())
+        {
+            if(itr.next() == 1)
+            {
+                // Add the value 2 after this item
+                myList.insert(itr, 2);
+                lprintfln("Added 2");
+            }
+        }
+
+        // Now show the list again
+        showList();
+
+        // Now remove 1 from the list
+        itr = myList.begin();
+        while(itr.hasNext())
+        {
+            if(itr.next() == 1)
+            {
+                // Remove this item
+                myList.remove(itr);
+                lprintfln("Removed 1");
+            }
+        }
+
+        // Now show the list again
+        showList();
+    }
+
+    void keyPressEvent(int keyCode, int nativeCode) 
+    {
+        this-&gt;close();
+    }
+
+    void showList()
+    {
+        lprintfln("I've got %d items", myList.size());
+        List&lt;int&gt;::ListIterator itr = myList.begin();
+        while(itr.hasNext())
+        {
+            lprintfln("Next value : %d", itr.next());
+        }
+    }
+};
+
+extern "C" int MAMain()
+{
+    Moblet::run(new MyMoblet());
+    return 0;
+}</pre>
+<h2>Stack</h2>
+<p>There are two conceptually related, but utterly separate collections in MoSync - Stack and Queue. &nbsp;They both are designed for serial access to collections where the order of the collection is vital.</p>
+<p>Stacks are part of the MAUtil namespace. &nbsp;To use them, you will need to include MAUtil/Stack.h.</p>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Stack.h&gt;
+using namespace MAUtil;</pre>
+<p>The Stack collection (capitalised to show that we don't mean the stack program memory, but a Stack&lt;&gt; collection), is a vector, but where you can only access the most recently added item. &nbsp;You can put as many items as you want onto the Stack, but you can only get the latest item. &nbsp;If you imagine a stack of books, you can see that it is only the book at the top which is accessible. &nbsp;This kind of collection is also called&nbsp;<em>first-in-last-out</em>&nbsp;or very occasionally,&nbsp;<em>FILO</em>.&nbsp;</p>
+<p><em><span><span style="font-style: normal;">You create a Stack like you would a vector</span></span></em></p>
+<p><em><span><span style="font-style: normal;">Stack&lt;MyObject*&gt; myStack;</span></span></em></p>
+<p><em><span><span style="font-style: normal;">Unlike vectors though, you&nbsp;<em>cannot&nbsp;</em>specify a size in advance. &nbsp;It uses the vector's default initial size of 4, and will resize itself when it needs to.</span></span></em></p>
+<p><em><span><span style="font-style: normal;">When you want to add an item on a Stack, you are said to&nbsp;<em>push</em>&nbsp;it onto the Stack. &nbsp;The method for adding to a stack is then</span></span></em></p>
+<pre class="mosync-code-cpp">myStack.push(new MyObject());</pre>
+<p>When you want to remove an item from the stack, you are said to&nbsp;<em>pop</em>&nbsp;it off the Stack.</p>
+<pre class="mosync-code-cpp">myStack.pop();</pre>
+<p>Remember, if you have a collection of object pointers, popping an item off the stack will not destroy the object. &nbsp;You have to call&nbsp;<strong>delete</strong>&nbsp;yourself.</p>
+<p>To get access to the next item on the Stack using the method&nbsp;<strong>peek()</strong>.</p>
+<pre class="mosync-code-cpp">MyObject* nextObject = myStack.peek();</pre>
+<p>You can test the size of the Stack using&nbsp;<strong>size()</strong>&nbsp;although you cannot test its capacity. &nbsp;You can also see if it has no items in it using&nbsp;<strong>empty()</strong>. &nbsp;You can remove all the items from the stack at once using&nbsp;<strong>clear()</strong>.</p>
+<p>There are no iterators in the stack. &nbsp;If you want to find an item, you have to keep popping items off the top until you get the one you want. &nbsp;If you want to remove an item from the middle, you need to copy the data to another Stack.</p>
+<p>As you'll see from the example below, iterating Stacks is laborious. &nbsp;They are best suited to times when the order is important. &nbsp;They are frequently used to allow users to retrace their steps. &nbsp;For instance, you can keep track of the order the user navigated the screens in your application. &nbsp;When the users wants to go back one screen, then you can pop the last value off your stack.</p>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;conprint.h&gt;
+#include &lt;MAUtil/Stack.h&gt;
+
+using namespace MAUtil;
+
+class MyMoblet : public Moblet 
+{
+public:
+    Stack&lt;int&gt; myStack;
+
+    MyMoblet()
+    {
+        // Create a list with an item missing.
+        myStack.push(3);
+        myStack.push(1);
+        myStack.push(0);
+
+        // Show the original stack
+        showStack();
+
+        // Now add 2 into the stack
+        // We need another stack to copy removed items to.
+        Stack&lt;int&gt; tempStack;
+        while(myStack.peek() != 1)
+        {
+            // Copy the top of the stack to another stack.  Remember that the new stack will
+            // have everything in reverse order
+            tempStack.push(myStack.peek());
+            myStack.pop();
+        }
+        
+        // Add the value 2
+        myStack.push(2);
+
+        // Now copy everything back again
+        while(tempStack.size() &gt; 0)
+        {
+            myStack.push(tempStack.peek());
+            tempStack.pop();
+        }
+
+        // Now show the Stack again
+        showStack();
+
+        // Now remove 1 from the stack
+        while(myStack.peek() != 1)
+        {
+            // Copy the top of the stack to another stack.  Remember that the new stack will
+            // have everything in reverse order
+            tempStack.push(myStack.peek());
+            myStack.pop();
+        }
+        
+        // The item at the top is 1.  Remove it
+        myStack.pop();
+
+        // Now copy everything back again
+        while(tempStack.size() &gt; 0)
+        {
+            myStack.push(tempStack.peek());
+            tempStack.pop();
+        }
+
+        // Now show the Stack again.
+        showStack();
+    }
+
+    void keyPressEvent(int keyCode, int nativeCode) 
+    {
+        this-&gt;close();
+    }
+
+    void showStack()
+    {
+        lprintfln("I've got %d items", myStack.size());
+        // We need to copy the Stack to another stack whilst we go through it.
+        Stack&lt;int&gt; tempStack;
+        while(myStack.size() &gt; 0)
+        {
+            lprintfln("Next value : %d", myStack.peek());
+            tempStack.push(myStack.peek());
+            myStack.pop();
+        }
+
+        // OK, we've shown them all, now we need to put myStack back together.
+        while(tempStack.size() &gt; 0)
+        {
+            myStack.push(tempStack.peek());
+            tempStack.pop();
+        }
+    }
+};
+
+extern "C" int MAMain()
+{
+    Moblet::run(new MyMoblet());
+    return 0;
+}</pre>
+<h2>Queues</h2>
+<p>Queues are part of the MAP namespace. &nbsp;To use them, you will need to include MAP/Queue.h, and ensure that you've got MAP.lib included as a library in your project settings. &nbsp;Alternatively, copy the file Queue.h out of the includes directory and include it directly in your project, although if you do this, you will need to replace&nbsp;<strong>newobject()</strong>&nbsp;with new and&nbsp;<strong>deleteobject()&nbsp;</strong>with delete, or alternatively, implement the&nbsp;<strong>MemoryMgr</strong>&nbsp;class as well.</p>
+<pre class="mosync-code-cpp">#include &lt;MAP/Queue.h&gt;
+using namespace MAP;</pre>
+<p>Queues are logically very similar to Stacks, but the implementation is quite different. &nbsp;Differences in implementation will be highlighted as the collection is described. &nbsp;</p>
+<p>Logically, a queue is the same as a Stack, with the exception that the&nbsp;<em>first&nbsp;</em>item is the only one available, not the last item. &nbsp;This is sometimes called&nbsp;<em>first-in-first-out</em>&nbsp;or very occasionally&nbsp;<em>FIFO</em>.</p>
+<p>To create a queue, it is almost the same as stack</p>
+<pre class="mosync-code-cpp">Queue&lt;MyObject&gt; myQueue;</pre>
+<p>The important difference to note is the data type you provide it. &nbsp;MoSync queues only contain pointers. &nbsp;You provide it with the type of data pointer you want. &nbsp;The above code will create a Queue of MyObject pointers, and not MyObject, despite what it looks like. &nbsp;If you had the code</p>
+<pre class="mosync-code-cpp">Queue&lt;MyObject*&gt; myQueue;</pre>
+<p>You would get a queue of MyObject**. &nbsp;Equally then</p>
+<pre class="mosync-code-cpp">Queue&lt;int&gt; myQueue;</pre>
+<p>Will create a queue of int* and not int.</p>
+<p>When you add an item to a queue, this is called&nbsp;<strong>enqueueing</strong>, and the method is&nbsp;<strong>enqueue()</strong>. &nbsp;To remove a method, you&nbsp;<strong>dequeue()</strong>&nbsp;it. &nbsp;Whereas with the Stack, when you&nbsp;<strong>peek()</strong>&nbsp;at a value it leaves it on the Stack and have to&nbsp;<strong>pop()</strong>&nbsp;it off,&nbsp;<strong>dequeue()</strong>&nbsp;will remove it from the collection. &nbsp;It is the responsibility of the code calling&nbsp;<strong>dequeue()&nbsp;</strong>&nbsp;to&nbsp;<strong>delete</strong>&nbsp;the object after use if necessary to prevent memory leaks.</p>
+<pre class="mosync-code-cpp">myQueue.enqueue(new MyObject());
+MyObject* currentObject = myQueue.dequeue();</pre>
+<p>Whilst Queues were not designed for random access, there are methods in the MoSync implementation for accessing values at will. &nbsp;There aren't any iterators with queues however.</p>
+<p>You can read values using&nbsp;<strong>peekAt()</strong>&nbsp;method, providing the method with the index number of the value you want, or&nbsp;<strong>peek()</strong>&nbsp;which will return the next item, although these will leave the item in the queue.&nbsp;</p>
+<p>You can also find the location in the queue of a specific object. &nbsp;The&nbsp;<strong>find()</strong>&nbsp;method will return an items index number. &nbsp;</p>
+<p>Like vectors, you can set capacity of the queue, and it has an array internally for storage. &nbsp;Unlike a vector, you cannot resize a queue, so when it is full, then that's it. &nbsp;Your item will not be added, no return value will be given by&nbsp;<strong>enqueue()</strong>&nbsp;and no error will be raised, so it is important to check the amount of space left in the queue using&nbsp;<strong>getCapacity()&nbsp;</strong>(not&nbsp;<strong>capacity()</strong>&nbsp;like in vector) and&nbsp;<strong>getCount()&nbsp;</strong>(not&nbsp;<strong>size()</strong>).</p>
+<p>You can remove all the items in the queue (but not delete the objects) using&nbsp;<strong>clear()</strong>.</p>
+<p>Queues are useful for marshalling activities. &nbsp;For instance, if you've got a long list of items which need to be downloaded, rather than creating an instance of&nbsp;<strong>Downloader</strong>&nbsp;for each of them, you can have one&nbsp;<strong>Downloader</strong>&nbsp;and a queue. &nbsp;You can create a class which gets the next URL from the queue and downloads the data. &nbsp;Once it is complete, it can check the queue again for the next request.</p>
+<h2>Dictionary-based collections</h2>
+<p>There are some collections in MoSync which are a little more powerful, allowing you to access their contents through you own index. &nbsp;The basis for these is the&nbsp;<strong>Dictionary</strong>. &nbsp;Whilst you never create a&nbsp;<strong>Dictionary</strong>&nbsp;on its own, only classes derived from&nbsp;<strong>Dictionary</strong>&nbsp;they have a common syntax. &nbsp;</p>
+<p><strong>Dictionaries</strong>&nbsp;are collections of&nbsp;<strong>Pairs</strong>&nbsp;(you may know these also as Key/Value pairs). &nbsp;Each pair has a key with which you can reference your value. &nbsp;Often, you don't need to know about the pairs in the collection, but if you iterate through a&nbsp;<strong>Dictionary</strong>, then your iterator will be a pair.</p>
+<p>To create a&nbsp;<strong>Dictionary</strong>, you need to create one of the derived classes,&nbsp;<strong>Map, HashMap&nbsp;</strong>or&nbsp;<strong>Set</strong>. &nbsp;They all follow the same pattern</p>
+<pre class="mosync-code-cpp">Map&lt;Key Type, Value Type&gt; myMap;
+HashMap&lt;Key Type, Value Type&gt; myHashMap;
+Set&lt;Key Type, Value Type&gt; mySet;
+</pre>
+<p>For example, you can create a collection of the names of your friends and their phone numbers. &nbsp;Both their names and numbers will be stored as strings. &nbsp;The names will be the&nbsp;<strong>key</strong>&nbsp;and the phone number the&nbsp;<strong>value</strong>.</p>
+<pre class="mosync-code-cpp">Map&lt;String, String&gt; myFriends;</pre>
+<p>You can then add items to the collection.</p>
+<pre class="mosync-code-cpp">myFriends.insert("Rupert Bear", "Norwood 1212");</pre>
+<p>The&nbsp;<strong>insert()</strong>&nbsp;method actually returns another&nbsp;<strong>Pair</strong>, this time with a&nbsp;<strong>Dictionary::Iterator</strong>&nbsp;and a boolean value. &nbsp;The iterator points to the value you've just added, and the boolean contains true if the insert was successful.</p>
+<pre class="mosync-code-cpp">Note, unlike Vectors, there is no add method, because Dictionaries don't keep the same 
+concepts of ordering.</pre>
+<p><strong>Dictionary&nbsp;</strong>classes are all random-access, you can have access to any item at any time. &nbsp;We can find Rupert's phone number at any time. &nbsp;The&nbsp;<strong>find</strong>&nbsp;method returns a&nbsp;<strong>Pair&lt;String, String&gt;. &nbsp;</strong>The&nbsp;<strong>Pair</strong>&nbsp;has two properties for the key and value. &nbsp;Rather than being called&nbsp;<strong>key</strong>&nbsp;and&nbsp;<strong>value</strong>, they are called&nbsp;<strong>first</strong>&nbsp;and&nbsp;<strong>second</strong>. &nbsp;The key is in&nbsp;<strong>first</strong>, and the value is in&nbsp;<strong>second</strong>.</p>
+<pre class="mosync-code-cpp">String&amp; rupertsNumber = myFriends.find("Rupert Bear")-&gt;second;</pre>
+<p><strong>Map</strong>&nbsp;and&nbsp;<strong>HashMap</strong>&nbsp;also provide support for [] operators. &nbsp;This doesn't return the <strong>Pair</strong>&nbsp;but just the value.</p>
+<p>String&amp; rupertsNumber = myFriends["Rupert Bear"];</p>
+<div>
+<span style="font-family: Verdana; line-height: normal; font-size: 13px;">With all&nbsp;<strong>Dictionary&nbsp;</strong>classes, no two items can have the same key. &nbsp;If you were to insert another value using the same key, then the old value is overwritten.</span></div>
+<div>
+<span style="font-family: Verdana; line-height: normal; font-size: 13px;"><br></span></div>
+<div>
+<span style="font-family: Verdana; line-height: normal; font-size: 13px;">Items can be removed from a&nbsp;<strong>Dictionary</strong>&nbsp;using the&nbsp;<strong>erase()</strong>&nbsp;method. &nbsp;This takes an iterator or a key, so</span></div>
+<div>
+<pre class="mosync-code-cpp">myFriends.erase("Rupert Bear");</pre>
+</div>
+<p>is valid. &nbsp;Note that the method is&nbsp;<strong>erase()</strong>&nbsp;and not&nbsp;<strong>remove()&nbsp;</strong>&nbsp;as it is on vectors and lists.</p>
+<p>So,&nbsp;<strong>Dictionaries</strong>&nbsp;are power collections we can use very flexibly to store data. &nbsp;There are some differences between the three collections.</p>
+<h2>Map</h2>
+<p>The&nbsp;<strong>Map</strong>&nbsp;is the simplest of the&nbsp;<strong>Dictionary</strong>&nbsp;classes. &nbsp;It is a simple mapping between the key and the value. &nbsp;For a given key, it will return the location of the value. &nbsp;It achieves this by comparing the key provided with its list of keys. &nbsp;It checks each one, and when it finds a match it will return the value. &nbsp;For this reason,&nbsp;<strong>Map</strong>&nbsp;is most suitable when the collection is small. &nbsp;With a very large collection, any search operation may have to compare every key in its collection until it finds the correct value. The elements in Map are sorted from lower to higher key values.</p>
+<h2>HashMap</h2>
+<p>The&nbsp;<strong>HashMap</strong>&nbsp;converts the key you provide using a hash function. &nbsp;It then assigns the value into a location in memory depending on the value of the hash. &nbsp;This is important, as it can calculate this hash again when you want to retrieve the value. &nbsp;This means that it doesn't have to compare all of the keys looking for the value you want. &nbsp;It does mean that it does a little more work than a&nbsp;<strong>Map</strong>, but it is much more suitable for larger collections, e.g. collections which are likely to have more than five entries.&nbsp;</p>
+<h2>Set</h2>
+<p>The&nbsp;<strong>Set&nbsp;</strong>is like a map, except that values are unique as well as keys. &nbsp;As the values are unique, then the storage is in the order of the values, and not the keys. &nbsp;This means that it is unlikely that when you iterate through a collection, that the values are in the same order as they were entered in. &nbsp;<strong>Sets</strong>&nbsp;are essential when having unique keys&nbsp;<em>and</em>&nbsp;unique values is essential. &nbsp;<strong>Set</strong>&nbsp;does not support the&nbsp;<strong>[]&nbsp;</strong>operator, so you have to use the&nbsp;<strong>.find()</strong>&nbsp;method to retrieve values. &nbsp;The keys in a&nbsp;<strong>Set</strong>&nbsp;are not hashed.</p>
+<h2>Iteration</h2>
+<p><strong>Dictionary Iterators</strong>&nbsp;cannot be unassigned, which makes iterating through&nbsp;<strong>Dictionaries</strong>&nbsp;quite verbose. &nbsp;There also isn't a handy macro like there is for vector. &nbsp;You have to either already have an&nbsp;<strong>Iterator</strong>&nbsp;or create one in the&nbsp;<strong>for</strong>&nbsp;statement.</p>
+<pre class="mosync-code-cpp">for(Map&lt;String, String&gt;::Iterator itr = myFriends.begin();
+itr != myFriends.end(); 
+itr++)
+{
+       // Do something.
+}</pre>
+<p>To create an iterator, you need to type it exactly as the&nbsp;<strong>Dictionary</strong>&nbsp;is typed, so if you've got</p>
+<pre class="mosync-code-cpp">Map&lt;String, String&gt; myFriends;</pre>
+<p>Then the&nbsp;<strong>Iterator</strong>&nbsp;has a type of</p>
+<pre class="mosync-code-cpp">Map&lt;String, String&gt;::Iterator</pre>
+<p>As described above,&nbsp;<strong>Iterators</strong>&nbsp;provide access to&nbsp;<strong>Pairs</strong>. &nbsp;You need to use the&nbsp;<strong>first</strong>&nbsp;and&nbsp;<strong>second&nbsp;</strong>properties on them for the key and value respectively.</p>
+<pre class="mosync-code-cpp">for(Map&lt;String, String&gt;::Iterator itr = myFriends.begin();
+itr != myFriends.end();
+itr++)
+{
+   lprintfln("Friend: %s Number: %s", itr-&gt;first.c_str(), itr-&gt;second.c_str());
+}</pre>
+<p>Below is code to create an manipulate a<strong>&nbsp;HashMap&lt;String, String&gt;</strong>. &nbsp;You will see how the order changes.</p>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;conprint.h&gt;
+#include &lt;MAUtil/HashMap.h&gt;
+#include &lt;MAUtil/String.h&gt;
+
+using namespace MAUtil;
+
+class MyMoblet : public Moblet 
+{
+public:
+    HashMap&lt;String, String&gt; myFriends;
+
+    MyMoblet() 
+    {
+        // Add some friends
+        myFriends.insert("Rupert Bear", "Norwood 1212");
+        myFriends.insert("Noddy", "Playtown 2020");
+        myFriends.insert("Windy Miller", "Trumpton 2323");
+
+        // Show the original dictionary
+        showDictionary();
+
+        // Find a friend
+        String friendsNumber;
+        friendsNumber = myFriends.find("Rupert Bear")-&gt;second;
+        lprintfln("Rupert's number is %s", friendsNumber.c_str());
+
+        // Erase a friend
+        myFriends.erase("Noddy");
+
+        // Show the new dictionary
+        showDictionary();
+
+        // Find a friend by iterator
+        HashMap&lt;String, String&gt;::Iterator myFriend = myFriends.begin();
+        lprintfln("My first friend is %s whose number is %s", 
+        myFriend-&gt;first.c_str(), myFriend-&gt;second.c_str());
+    }
+
+    void keyPressEvent(int keyCode, int nativeCode) 
+    {
+        this-&gt;close();
+    }
+
+    void showDictionary()
+    {
+        lprintfln("I've got %d items", myFriends.size());
+        for(HashMap&lt;String, String&gt;::Iterator itr = myFriends.begin(); 
+        itr != myFriends.end();
+        itr++)
+        {
+            lprintfln("Friend: %s Number: %s", itr-&gt;first.c_str(), 
+            itr-&gt;second.c_str());
+        }
+    }
+};
+
+/*
+* Main program starts here.
+*/
+extern "C" int MAMain()
+{
+    Moblet::run(new MyMoblet());
+    return 0;
+};</pre>
+</body>
+</html>

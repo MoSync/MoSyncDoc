@@ -1,0 +1,516 @@
+<html>
+<head>
+<title>Using the ListView Widget</title>
+</head>
+<body>
+<h1>Using the ListView Widget</h1>
+<p>The MoSync C API's ListView widget provides much flexibility in displaying information lists in your app. The widget can display both alphabetical and segmented lists, and can have sections to group items. This tutorial takes a deeper look at this important widget.</p>
+<p><!--break--></p>
+<blockquote>Note: The default ListView widget type has been available since MoSync SDK 2.6; segmented and alphabetic types, and sections were introduced in the MoSync SDK 3.2.</blockquote><h2>ListView types</h2>
+<p>The type of your list view widget (default, segmented, or alphabetical) must be specified when you create the ListView object. It cannot be modified later. <br><br>Let's look at the three types:</p>
+<h3>Default</h3>
+<p>This is the basic ListView widget introduced in MoSync SDK 2.6. Below we show how the default list view looks like on Windows Phone 7, iOS and Android.</p>
+<table class="doclayout" border="0"><tbody><tr><td><img src="images/ListView-widget-default-list-on-ios.png" align="none" width="214" height="318"></td><td><img src="images/ListView-widget-default-list-on-wp7.png" align="none" width="198" height="329"></td><td><img src="images/ListView-widget-default-list-on-android.png" align="none" width="221" height="329"></td></tr>
+<tr><td><em>Default list on iOS</em></td><td><em>Default list on Windows Phone 7</em></td><td><em>Default list on Android</em></td></tr>
+</tbody></table>
+<p><em>Example</em></p>
+<pre class="mosync-code-cpp">ListView* listView = new ListView();
+layout-&gt;addChild(listView);</pre>
+<h3>Alphabetical</h3>
+<p>This <strong>ListView</strong> widget type allows information to be displayed in alphabetical order.<br><br>On iOS, an index bar appears on the right side of the list, showing labels such as ‘a’ through ‘z’. <br><br>On Windows Phone 7, the alphabetical list is similar to the segmented one: the right-side index bar is missing and the letter jump is made by clicking on the section header. A new screen is presented (see screenshot for WP7, below), containing all the available sections from which the user can chose.<br><br>On Android, the alphabetical list enables the fast ‘scroll thumb’ that can be dragged to quickly scroll through the list. There is a native constraint: there need to be at least 35 items in the list for the fast ‘scroll thumb’ to be shown. The best example of this implementation is the standard 'Contacts' application.</p>
+<table class="doclayout" border="0"><tbody><tr><td><img src="images/10534" alt="nid%3D10534%7Ctitle%3D%7Cdesc%3D%7Clink%3Dnone" title="" align="none" height="341" width="205"></td><td><p><img src="images/10535" alt="nid%3D10535%7Ctitle%3D%7Cdesc%3D%7Clink%3Dnone" title="" align="none" height="336" width="221"></p>
+</td></tr>
+<tr><td><em>Alphabetical contacts list on Android</em></td><td><em>Fast thumb scroll on Android</em></td></tr>
+</tbody></table>
+<p>Here's how the alphabetical list looks on iOS and Windows Phone 7:</p>
+<table class="doclayout" border="0"><tbody><tr><td><img src="images/ListView-widget-alphabetical-list-on-ios.png" align="none" width="206" height="311"></td><td><img src="images/ListView-widget-alphabetical-list-on-wp7.png" align="none" width="197" height="324"></td><td><img src="images/ListView-widget-WP7-list-jump-screen.png" align="none" width="195" height="324"></td></tr>
+<tr><td><em>Alphabetical list on iOS</em></td><td><em>Alphabetical list on <br>Windows Phone 7</em></td><td><em>List jump screen on <br>Windows Phone 7</em></td></tr>
+</tbody></table>
+<p><em>Example</em></p>
+<pre class="mosync-code-cpp">ListView* listView = new ListView(LIST_VIEW_TYPE_ALPHABETICAL);
+layout-&gt;addChild(listView);</pre>
+<h3>Segmented</h3>
+<p>This <strong>ListView</strong> type shows information items in groups. <br><br>On iOS, the widget has a default background color and default background for list items. Data can be grouped into sections. For example, one group can display phone numbers and another email addresses. <br><br>On Windows Phone 7, the default background color of the header/footer/jump list screen is the same as the current phone accent brush.<br><br>On Android the segmented list is not a native control, but in fact a custom list view with default items for header and footer. The default background color of the header/footer items is gray, but that can be customizable. The header and footer text color and size can also be customizable. <br><br>Below we show how the segmented list view looks like on Android, iOS and Windows Phone 7:</p>
+<table class="doclayout" border="0"><tbody><tr><td><img src="images/ListView-widget-segmented-list-on-ios.png" align="none" width="220" height="329"></td><td><img src="images/ListView-widget-segmented-list-on-wp7.png" align="none" width="199" height="327"></td><td><img src="images/ListView-widget-segmented-list-on-wp7-jump-screen.png" align="none" width="197" height="327"></td></tr>
+<tr><td><em>Segmented list on iOS</em></td><td><em>Segmented list on </em><br><em>Windows Phone 7</em></td><td><em>Jump screen on </em><br><em>Windows Phone 7 <br><br></em></td></tr>
+<tr><td colspan="2"><img src="images/ListView-widget-segmented-list-on-android.png" align="none" width="305" height="183"></td><td>&nbsp;</td></tr>
+<tr><td><em>Segmented list on Android</em></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</tbody></table>
+<p><em>Example</em></p>
+<pre class="mosync-code-cpp">ListView* listView = new ListView(LIST_VIEW_TYPE_SEGMENTED);
+layout-&gt;addChild(listView);</pre>
+<h2>Sections</h2>
+<p>For segmented and alphabetical <strong>ListView</strong> widget types, you can define sections by adding <strong>ListViewSection</strong> objects. Each section object defines a group of <strong>ListViewItem</strong> objects with common properties.</p>
+<blockquote><p><strong>Note</strong>: ListViewSection objects can be added to the list only if its type is not LIST_VIEW_TYPE_DEFAULT .The default ListView widget type accepts only ListViewItem objects as children.</p>
+</blockquote><p>Here, for example you can see an segmented section on iOS:</p>
+<p><img src="images/ListView-widget-segmented-secton-on-ios.png" align="none" width="220" height="146"><br>And here you can see an alphabetical section containing two items:<br><br><img src="images/ListView-widget-alphabetical-secton-on-ios.png" align="none" width="220" height="76"></p>
+<h3>Title</h3>
+<p>On iOS, the section title appears on the right side of the list, while on Android it appears on the fast scroll thumb. Usually this is a single <strong>char</strong> value, for example any value from ‘a’ through ‘z’. In the alphabetical list example above, you can see “A”, “B”, “C”, “D” letters on the right side of the section.<br><br>On Windows Phone 7, the section title is available only inside the jump list screen (available when the user clicks on a section header).<br><br>On Android, the section title is available on the fast ‘scroll thumb’. It is advised to use only one character, because the control that displays the alphabetic index is not resized based on its contents.</p>
+<blockquote><p>Note: The property is available only if list type is LIST_VIEW_TYPE_ALPHABETICAL.</p>
+</blockquote><h3>Header text</h3>
+<p>The header text is the text displayed on top of the section. For example, the “Header text” in the segmented example above, or the “B” letter on top of the horizontal grey area for the alphabetical one.<br><br>On iOS, the font and position of the header text are set by the system, while on Android and Windows Phone 7 they can be set through the section’s methods <strong>setHeaderFont()</strong>, <strong>setHeaderFontSize()</strong>, <strong>setHeaderFontColor()</strong>, <strong>setHeaderTextVerticalAlignment()</strong>, <strong>setHeaderTextHorizontalAlignment()</strong>.</p>
+<blockquote><p>Note: The header text property is available only if list type is LIST_VIEW_TYPE_ALPHABETICAL or LIST_VIEW_TYPE_SEGMENTED.</p>
+</blockquote><h3>Footer text</h3>
+<p>This is the text displayed on below the section. For example “Footer text” in the segmented list example above.<br><br>On iOS its font and position are set by the system, while on Android and Windows Phone 7 they can be set through section’s methods <strong>setFooterFont()</strong>, <strong>setFooterFontSize()</strong>, <strong>setFooterFontColor()</strong>, <strong>setFooterTextVerticalAlignment()</strong>, <strong>setFooterTextHorizontalAlignment()</strong>.</p>
+<blockquote><p>Note: The property is available only if list type is LIST_VIEW_TYPE_ALPHABETICAL or LIST_VIEW_TYPE_SEGMENTED.</p>
+</blockquote><h2>ListViewItem Properties</h2>
+<p><em>MoSync SDK 3.2 onwards</em></p>
+<h3>Subtitle</h3>
+<p><em>Windows Phone 7 only</em><br>The subtitle is placed below the item text:&nbsp;&nbsp;&nbsp; <br><img src="images/ListView-widget-subtitle.png" align="none" width="263" height="35"></p>
+<h3>Set selected</h3>
+<p><em>iOS only</em><br>Selects a <strong>ListViewItem</strong> object.<br><img src="images/ListView-widget-set-selected.png" align="none" width="263" height="45"></p>
+<h3>Editing style</h3>
+<p><em>iOS only</em><br>Shows an insert or delete button.<br><img src="images/ListView-widget-insert-delete.png" align="none" width="267" height="103"></p>
+<h3>Delete button name</h3>
+<p><em>iOS only</em><br>Set the text displayed on the delete button shown in edit mode.<br><img src="images/ListView-widget-delete-button-text.png" align="none" width="263" height="41"></p>
+<h3>Selection style</h3>
+<p><em>iOS only</em><br>Select how an item should look (here shown greyed out) when tapped.<br><img src="images/ListView-widget-greyed-out.png" align="none" width="265" height="43"></p>
+<h2>Example: Default ListView</h2>
+<p>This example shows a list of the top 20 common names in England.</p>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;MAUtil/String.h&gt;
+#include &lt;NativeUI/Widgets.h&gt;
+
+using namespace MAUtil;
+using namespace NativeUI;
+
+// Top 20 common surnames in England.
+const int sCountSurnames = 20;
+const char* const sSurnames[sCountSurnames] =
+                      {
+                      "Smith", "Jones", "Taylor", "Brown", "Williams",
+                      "Wilson", "Johnson", "Davies", "Robinson", "Wright",
+                      "Thompson", "Evans", "Walker", "White", "Roberts",
+                      "Green", "Hall", "Wood", "Jackson", "Clarke"
+                      };
+
+/**
+* Application moblet.
+*/
+class NativeUIMoblet : public Moblet
+{
+public:
+    /**
+     * The constructor creates the user interface.
+     */
+    NativeUIMoblet()
+    {
+        // Create a NativeUI screen that will hold the layout.
+        mScreen = new Screen();
+
+        //Create a VerticalLayout that will hold the list.
+        mLayout = new VerticalLayout();
+
+        //Add the layout to the screen
+        mScreen-&gt;setMainWidget(mLayout);
+
+        // Add list view to the layout.
+        this-&gt;createListView();
+
+        //Show the screen
+        mScreen-&gt;show();
+    }
+
+    /**
+     * Destructor.
+     */
+    virtual ~NativeUIMoblet()
+    {
+        delete mScreen;
+    }
+
+    /**
+     * Create and add the list view to the screen.
+     */
+    void createListView()
+    {
+        // Create list view.
+        ListView* listView = new ListView();
+
+        // Set its size.
+        listView-&gt;fillSpaceHorizontally();
+        listView-&gt;fillSpaceVertically();
+
+        // Add list to the screen's layout.
+        mLayout-&gt;addChild(listView);
+
+        for(int index = 0; index &lt; sCountSurnames; index++)
+        {
+            // Create list view item.
+            ListViewItem* item = new ListViewItem();
+
+            // Set its text.
+            item-&gt;setText(sSurnames[index]);
+
+            // Add item to list.
+            listView-&gt;addChild(item);
+        }
+    }
+
+    /**
+     * Called when a key is pressed.
+     */
+    void keyPressEvent(int keyCode, int nativeCode)
+    {
+        if (MAK_BACK == keyCode || MAK_0 == keyCode)
+        {
+            // Call close to exit the application.
+            close();
+        }
+    }
+
+private:
+    /**
+     * Native UI screen.
+     */
+   Screen* mScreen;
+
+   /**
+    * Native UI layout.
+    */
+   VerticalLayout* mLayout;
+};
+
+/**
+* Main function that is called when the program starts.
+*/
+extern "C" int MAMain()
+{
+    Moblet::run(new NativeUIMoblet());
+    return 0;
+}</pre>
+<h2>Example: Alphabetical ListView</h2>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;MAUtil/String.h&gt;
+#include &lt;NativeUI/Widgets.h&gt;
+
+using namespace MAUtil;
+using namespace NativeUI;
+
+// Member states of the EU
+const int sCountCountries = 27;
+const char* const sCountries[sCountCountries] =
+                {
+                   "Austria", "Belgium", "Bulgaria", "Cyprus", "Czech Republik",
+                      "Denmark", "Estonia", "Finland", "France", "Germany",
+                "Greece", "Hungary", "Ireland", "Italy", "Latvia",
+                "Lithuania", "Luxembourg", "Malta", "Netherlands",
+                   "Poland", "Portugal", "Romania", "Slovakia", "Slovenia",
+                   "Spain", "Sweden", "United Kingdom"
+                };
+
+/**
+* Application moblet.
+*/
+class NativeUIMoblet : public Moblet
+{
+public:
+    /**
+     * The constructor creates the user interface.
+     */
+    NativeUIMoblet()
+    {
+        // Create a NativeUI screen that will hold the layout.
+        mScreen = new Screen();
+
+        //Create a VerticalLayout that will hold the list.
+        mLayout = new VerticalLayout();
+
+        //Add the layout to the screen
+        mScreen-&gt;setMainWidget(mLayout);
+
+        // Add list view to the layout.
+        this-&gt;createListView();
+
+        //Show the screen
+        mScreen-&gt;show();
+    }
+
+    /**
+     * Destructor.
+     */
+    virtual ~NativeUIMoblet()
+    {
+        delete mScreen;
+    }
+
+    /**
+     * Create and add the list view to the screen.
+     */
+    void createListView()
+    {
+        // Create alphabetical list view.
+        mListView = new ListView(LIST_VIEW_TYPE_ALPHABETICAL);
+
+        // Set its size.
+        mListView-&gt;fillSpaceHorizontally();
+        mListView-&gt;fillSpaceVertically();
+
+        // Add list to the screen's layout.
+        mLayout-&gt;addChild(mListView);
+
+         // Create and add sections to the list view.
+        this-&gt;createListViewSections();
+    }
+
+    /**
+     * Create and add the sections to the list view.
+     */
+    void createListViewSections()
+    {
+        // Create alphabetical section.
+        // It will contain all countries/items that start with 'A'.
+        ListViewSection* section = new ListViewSection(LIST_VIEW_SECTION_TYPE_ALPHABETICAL);
+
+        // Set section title and header.
+        String sectionText = "A";
+        section-&gt;setTitle(sectionText);
+        section-&gt;setHeaderText(sectionText);
+
+        // Add section to the list view.
+        mListView-&gt;addChild(section);
+
+        for(int index = 0; index &lt; sCountCountries; index++)
+        {
+            // Get country name.
+            String countryName = sCountries[index];
+
+            // Check if a new section needs to be created.
+            if (countryName[0] != sectionText[0])
+            {
+                // Create a new alphabetical section.
+                section = new ListViewSection(LIST_VIEW_SECTION_TYPE_ALPHABETICAL);
+
+                // Set section title and header.
+                sectionText[0] = countryName[0];
+                section-&gt;setTitle(sectionText);
+                section-&gt;setHeaderText(sectionText);
+
+                // Add section to the list.
+                mListView-&gt;addChild(section);
+             }
+
+            // Create list view item.
+            ListViewItem* item = new ListViewItem();
+
+            // Set item text.
+            item-&gt;setText(countryName);
+
+            // Add item to list.
+            section-&gt;addItem(item);
+        }
+    }
+
+    /**
+     * Called when a key is pressed.
+     */
+    void keyPressEvent(int keyCode, int nativeCode)
+    {
+        if (MAK_BACK == keyCode || MAK_0 == keyCode)
+        {
+            // Call close to exit the application.
+            close();
+        }
+    }
+
+private:
+    /**
+     * Native UI screen.
+     */
+   Screen* mScreen;
+
+   /**
+    * Native UI layout.
+    */
+   VerticalLayout* mLayout;
+
+   /**
+    * Native UI segmented ListView.
+    */
+   ListView* mListView;
+};
+
+/**
+* Main function that is called when the program starts.
+*/
+extern "C" int MAMain()
+{
+    Moblet::run(new NativeUIMoblet());
+    return 0;
+}</pre>
+<h2>Example: Segmented ListView</h2>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;MAUtil/String.h&gt;
+#include &lt;NativeUI/Widgets.h&gt;
+
+using namespace MAUtil;
+using namespace NativeUI;
+
+// First ListViewSection data.
+const int sCountPlayerSettings = 3;
+const char* sPlayerSettings[sCountPlayerSettings] =
+                      {
+                      "Name", "Avatar", "Facebook"
+                      };
+const char* sPlayerSettingsHeader = "Player settings";
+
+// Second ListViewSection data.
+const int sCountOtherSettings = 3;
+const char* sOtherSettings[sCountOtherSettings] =
+                      {
+                      "Credits", "Help", "Send feedback"
+                      };
+const char* sOtherSettingsFooter = "Please help make this app better by sending feedback.";
+
+/**
+* Application moblet.
+*/
+class NativeUIMoblet : public Moblet
+{
+public:
+    /**
+     * The constructor creates the user interface.
+     */
+    NativeUIMoblet()
+    {
+        // Create a NativeUI screen that will hold the layout.
+        mScreen = new Screen();
+
+        //Create a VerticalLayout that will hold the list.
+        mLayout = new VerticalLayout();
+
+        //Add the layout to the screen
+        mScreen-&gt;setMainWidget(mLayout);
+
+        // Add list view to the layout.
+        this-&gt;createListView();
+
+        //Show the screen
+        mScreen-&gt;show();
+    }
+
+    /**
+     * Destructor.
+     */
+    virtual ~NativeUIMoblet()
+    {
+        delete mScreen;
+    }
+
+    /**
+     * Create and add the list view to the screen.
+     */
+    void createListView()
+    {
+        // Create segmented list view.
+        mListView = new ListView(LIST_VIEW_TYPE_SEGMENTED);
+
+        // Set its size.
+        mListView-&gt;fillSpaceHorizontally();
+        mListView-&gt;fillSpaceVertically();
+
+        // Add list to the screen's layout.
+        mLayout-&gt;addChild(mListView);
+
+        // Create and add player settings section to the list.
+         this-&gt;createPlayerSettingsSection();
+
+        // Create and add other settings section to the list.
+        this-&gt;createOtherSettingsSection();
+    }
+
+    /**
+     * Create and add the player settings section to the list view.
+     */
+    void createPlayerSettingsSection()
+    {
+        // Create player settings section.
+        ListViewSection* playerSection = new ListViewSection(LIST_VIEW_SECTION_TYPE_SEGMENTED);
+
+        // Set section header.
+        playerSection-&gt;setHeaderText(sPlayerSettingsHeader);
+
+        // Add section to the list.
+        mListView-&gt;addChild(playerSection);
+
+        for(int index = 0; index &lt; sCountPlayerSettings; index++)
+        {
+            // Create list view item.
+            ListViewItem* item = new ListViewItem();
+
+            // Set item text.
+            item-&gt;setText(sPlayerSettings[index]);
+
+            // Add item to section.
+            playerSection-&gt;addItem(item);
+        }
+    }
+
+    /**
+     * Create and add the other settings section to the list view.
+     */
+    void createOtherSettingsSection()
+    {
+        // Create other settings section.
+        ListViewSection* otherSection = new ListViewSection(LIST_VIEW_SECTION_TYPE_SEGMENTED);
+
+        // Set footer text.
+        otherSection-&gt;setFooterText(sOtherSettingsFooter);
+
+        // Add section to the list.
+        mListView-&gt;addChild(otherSection);
+
+        for(int index = 0; index &lt; sCountOtherSettings; index++)
+        {
+            // Create list view item.
+            ListViewItem* item = new ListViewItem();
+
+            // Set item text.
+            item-&gt;setText(sOtherSettings[index]);
+
+            // Add item to section.
+            otherSection-&gt;addItem(item);
+        }
+    }
+
+    /**
+     * Called when a key is pressed.
+     */
+    void keyPressEvent(int keyCode, int nativeCode)
+    {
+        if (MAK_BACK == keyCode || MAK_0 == keyCode)
+        {
+            // Call close to exit the application.
+            close();
+        }
+    }
+
+private:
+    /**
+     * Native UI screen.
+     */
+   Screen* mScreen;
+
+   /**
+    * Native UI layout.
+    */
+   VerticalLayout* mLayout;
+
+   /**
+    * Native UI segmented ListView.
+    */
+   ListView* mListView;
+};
+
+/**
+* Main function that is called when the program starts.
+*/
+extern "C" int MAMain()
+{
+    Moblet::run(new NativeUIMoblet());
+    return 0;
+}
+</pre>
+<p>&nbsp;</p>
+</body>
+</html>
