@@ -1,0 +1,65 @@
+<html>
+<head>
+<title>Using Placeholders and Handles</title>
+</head>
+<body>
+<h1>Using Placeholders and Handles</h1>
+<p>In MoSync, you can use handles to refer to data objects, such as binary data, images, audio data, text data and other resources. In this guide we take a look at <em>placeholders</em> — a type of handle that is used to refer to dynamically created resource im memory, and at the syscall functions that manage them.</p>
+<p><!--break--></p>
+<p></p>
+<h2>Introduction</h2>
+<p>There are two ways of creating data objects. The first way is to define them as resources in a <a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/adding-resources-mosync-project/index.html">MoSync resource file</a>. (This is what is typically meant when we talk about "resources" — data objects that are bundled with your application.)</p>
+<p>The second way to create a data object is to create it dynamically in run-time. Dynamically generated data objects and data objects defined in resource files can be used in much the same way by your application.&nbsp; But there are also important differences between them, perhaps the most important being that you can use the MoSync sycall function <strong>maDestroyPlaceholder</strong> to remove placeholders (and associated data) on dynamically allocated data only.</p>
+<h2>Memory organisation</h2>
+<p>A MoSync program has two spaces of memory. The first is <em>C/C++ memory</em> and is the addressable memory that contains the C/C++ heap, stack, and static data. When you use <strong>malloc</strong> or <strong>new</strong>, you allocate data in this memory space. The C/C++ memory space has a fixed size, you set it up in the Eclipse IDE <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/build-configurations/index.html">build settings</a> (or you can alternatively specify this on the command line).</p>
+<p>The second memory space lives outside of the C/C++ memory, in the native application space. This is where resources/data objects are stored, and we call this space <em>resource memory</em>. This memory space cannot be accessed with C/C++ pointers. Instead, you use handles to refer to data in this space. Furthermore, the size of the resource memory is not fixed; the amount of memory actually is available depends on the platform and the hardware of the device on which the application is running.</p>
+<h2>Handles and placeholders</h2>
+<p>Handles are just integers. They are used to refer to data objects in resource memory. (MoSync maintains a lookup table with handle to data references.)</p>
+<p>A <em>placeholder</em> is a handle that does not yet refer to any data object. In MoSync, when you wish to use dynamically allocated data objects, you first create a placeholder. That creates an entry in the handle table for you. Then you can use the placeholder in syscalls that create data objects. The placeholder then becomes an actual handle to the data.</p>
+<h2>Creating data objects</h2>
+<p>There are several ways to dynamically create data objects. You can read data from a file, or over the network, or you can create an image or a sound. Examples follow below.</p>
+<h2>Deallocating data objects</h2>
+<p>When you wish to free up a dynamically allocated data object, you can use the syscalls <strong>maDestroyObject</strong> and/or <strong>maDestroyPlaceholder</strong>.</p>
+<p>The rule of thumb is to use <strong>maDestroyPlaceholder</strong>. This is a syscall introduced in MoSync 3.0. Like <strong>maDestroyObject</strong> it deallocates the data object, but it also frees the placeholder.</p>
+<p>Calling <strong>maDestroyPlaceholder</strong> prevents the placeholder array in the MoSync runtime from growing when you have many calls to <strong>maCreatePlaceholder</strong>.</p>
+<p>(Previously there was no way to free a placeholder in the runtime, but you could have used <strong>MAUtil::PlaceholderPool</strong> to reuse placeholders. Not that, from MoSync 3.0 <strong>MAUtil::PlaceholderPool</strong> is&nbsp; deprecated.)</p>
+<p>For maximum efficiency, you should replace calls to <strong>maDestroyObject</strong> in your existing code with calls to <strong>maDestroyPlaceholder</strong>, given that the placeholder is not reused. But never use <strong>maDestroyPlaceholder</strong> if the placeholder is going to be reused!</p>
+<h2>Code examples</h2>
+<p>In the first example we read a PNG image file from a data store and display it, them we deallocate the image data:</p>
+<pre class="mosync-code-cpp">// Read and image and display it, then 
+// deallocate the image data.
+MAHandle image = maCreatePlaceholder();
+MAHandle store = maOpenStore("cat.png", 0);
+maReadStore(store, image);
+maDrawImage(image, 0, 0)
+maUpdateScreen();
+maDestroyPlaceholder(image);</pre>
+<p>This is a useful technique if you have lots of images in your application, and all of them will not fit in application memory.</p>
+<p>Next example shows how to write a block of memory allocated on the C heap to a data object, and then later read it back.</p>
+<pre class="mosync-code-cpp">// Allocate a block of data.
+void* pData = (void*) malloc(DATASIZE);
+
+// TODO: Write data into the data block.
+
+// Create a handle and write the data.
+MAHandle data = maCreatePlaceholder();
+maCreateData(data, DATASIZE);
+maWriteData(data, pData, 0, DATASIZE);
+
+// Now the data exists in "resource memory" and we 
+// can free the C data block.
+free(pData);</pre>
+<p>When you need the data, read it back again:</p>
+<pre class="mosync-code-cpp">// Allocate data block.
+pData = (void*) malloc(DATASIZE);
+
+// Read data from the handle.
+maReadData(data, pData, 0, DATASIZE);
+
+// TODO: Now the data is in C memory and you 
+// can access it using the pointer.</pre>
+<p>Finally, when you are done with everything, make sure both the data block and the data handle are deallocated:</p>
+<pre class="mosync-code-cpp">free(pData);
+maDestroyPlaceholder(data);</pre>
+</body>
+</html>

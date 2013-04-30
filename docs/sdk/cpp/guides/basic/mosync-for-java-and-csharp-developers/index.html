@@ -1,0 +1,281 @@
+<html>
+<head>
+<title>MoSync for Java and C# Developers</title>
+</head>
+<body>
+<h1>MoSync for Java and C# Developers</h1>
+<p style="text-align: left;">Mobile offers developers a new world, with cool devices and nice, easy, small projects compared to that monstrous and boring enterprise code you've been doing in Java or C#, right? Right! It is easy move your Java/C# skill to C++ in MoSync.<!--break--></p>
+<p style="text-align: left;">The reality is that both Java and C# are based on syntax from C, so you are going to be able to read C++ source code without anyone having to explain how curly braces work or reminding you to put a semi-colon at the end of the line, which is cool. Java and C# both also have a runtime environment which manages memory and performs garbage collection for you, which C++ doesn't, which isn't cool. Also, it isn't too difficult, and I'm here to guide you through the processes which will save you time and effort, and when you into trouble, the answer will probably already be here.&nbsp;</p>
+<p style="text-align: left;">As you are a Java or C# developer, then you've spent time gathering some fine object-oriented design skills, so we're not going to touch on C code here, this will be about C++ (mostly).&nbsp;</p>
+<p>This guide is in three sections, firstly a quick reminder of how C++ works, then a section of how memory management works, and finally unlearning lots of really nice design principles which are perfect for enterprise development, but will cause you grief in mobile.&nbsp;</p>
+<p>One final note: this obviously isn't an exhaustive description of how to write in C++. This is what you need to know coming from a Java or C# background to start writing C++, so don't expect this to be the definitive description. This is a quick start guide.</p>
+<h2>How C++ works.</h2>
+<p>Ok, this isn't really everything you need to know about how C++ works, this is just a reminder about how it can be different. In C#, if you want to create a new class, you right-click and give the class a name and Visual Studio creates a new templated .cs file for you. You add in a bit of functionality, and your new class is available within its namespace. The same is nearly true in C++. Normally, in C++ you will split your class into two files, a header file and a code file. The header file will normally have a .h or occasionally a .hpp extension, whilst code files will have .c (for C code) or .cpp (for C++ code). &nbsp;&nbsp;</p>
+<p>The header file contains the interface definition of your class, although it can contain implementation as well. In C# when you want to use a specific class you just need to simply include the namespace of the class with a using statement. In C++, you need to provide a definition of a class before you can use it. You do this by including the header file of the class in your code using #include "classname.h". The header is literally included in source code passed to the compiler. This leads to an issue which you don't get in managed environments. If you have two classes, Alpha and Beta, you can include them in your new class Gamma like this:</p>
+<div>
+<pre class="mosync-code-cpp">#include "Alpha.h" 
+#include "Beta.h"</pre>
+</div>
+<p>However, if Beta.h itself includes Alpha.h, you will get a compilation error when you build Gamma. This will be because the compiler inserts the code from Alpha.h, then inserts the code from Beta.h, which in turn inserts the code from Alpha.h. The compiler will complain that methods of Alpha have already been defined. To prevent this, at the top of your header file, you need to add an <em>include guard</em>. This is a short compiler directive telling the compiler not to include the header if it has already been included. In Alpha.h you will write something like this</p>
+<div>
+<pre class="mosync-code-cpp">#ifndef __ALPHA_H 
+#define __ALPHA_H</pre>
+</div>
+<p>When you create a new class in MoSync, the template should do this for you. You can read this as "if there isn't a token called __ALPHA_H then create a token called __ALPHA_H." At the bottom of the code there will be an #endif to round this off. You can change the naming convention if you wish, but if you write a header file from scratch, then don't forget the include guard.&nbsp;</p>
+<p>So, in your class you may want to use some classes without specifying their namespace everytime. This is a very familiar command&nbsp;</p>
+<div>
+<pre class="mosync-code-cpp">using namespace &lt;namespace&gt;;</pre>
+</div>
+<p>Note the semi-colon at the end; this is a C++ command and not a compiler directive.&nbsp;</p>
+<p>You can create your classes in a namespace in the header file, and again it is familiar</p>
+<div>
+<pre class="mosync-code-cpp">namespace MyNamespace 
+{ 
+    ...  
+};</pre>
+</div>
+<p>Again note the semi-colon at the end. &nbsp;</p>
+<p>Inside any optional namespace declaration, you can create one or more classes (or structs).</p>
+<div>
+<pre class="mosync-code-cpp">class MyClass 
+{ 
+    ...  
+}; </pre>
+</div>
+<p>Once more, take notice of the semi-colon at the end of the class definition.&nbsp;</p>
+<p>Inside the class, you can create methods. C++ doesn't support properties in the way you may be used to. The visibility of methods is also different, as you are able (and encouraged to) define methods in groups by visibility. A class definition in a header file might typically look like this:</p>
+<div>
+<pre class="mosync-code-cpp">class Gamma 
+{ 
+public: 
+    Gamma(); 
+    virtual ~Gamma(); 
+    void incrementCounter(); 
+    int getCounter(); 
+protected: 
+    int mCounter; 
+private: 
+    bool isActive;  
+};</pre>
+</div>
+<p>So there are a few things here we can see. Firstly, there is a class definition as we've seen before. Inside this are three blocks of member definitions, ordered by visibility. In the public section, we can see a constructor for Gamma and a destructor (~Gamma()). The constructor will be called when the class is instantiated and the destructor when it is destroyed. This maybe obvious, but these are going to become very important in the next two sections of this guide.&nbsp;</p>
+<p>After the destructor, then there are two method declarations, <strong>incrementCounter()</strong> and <strong>getCounter()</strong>. We can see that <strong>incrementCounter()</strong> doesn't return any value and that <strong>getCounter()</strong> returns an integer. We've then got two members <strong>mCounter </strong>and <strong>isActive</strong>. You can if you really want define the visibility with each member, but this is unconventional.&nbsp;</p>
+<p>Creating the code to go with the header means creating a .cpp file as well. To continue this example, we could have <strong>Gamma.h </strong>and <strong>Gamma.cpp</strong> to contain the implementation.</p>
+<div>
+<pre class="mosync-code-cpp">#include "Gamma.h" 
+Gamma::Gamma() 
+{ 
+    mCounter = 0;  
+} 
+Gamma::~Gamma() 
+{ 
+} 
+void Gamma::incrementCounter() 
+{ 
+    mCounter++;  
+} 
+int Gamma::getCounter() 
+{ 
+    return mCounter;  
+}</pre>
+</div>
+<p>Several things to notice here. Each method needs to start with the class scope Gamma::. This means that you can implement several classes in the same .cpp, but it isn't normally recommended. Secondly, methods in C++ generally start with a lower-case letter, unlike most Java and C# classes. Thirdly, C++ doesn't support properties directly in the same way as C#, you need to create a method for get and set. Finally, as you'd expect, when you create an instance of Gamma, mCounter is set to 0 in the constructor. There is actually another way to do this, and one which is generally preferred in C++ for two reasons. The constructor could look like this</p>
+<div>
+<pre class="mosync-code-cpp">Gamma::Gamma() : mCounter(0) 
+{}</pre>
+</div>
+<p>mCounter will be initialised with a value of 0. This can be important in environments where it may be possible to access the class before the constructor has finished executing. With the initialisation as part of the constructor specification then you are guaranteed availability. Secondly, if your class defines references (more later), then these cannot be null. By specifying them in the constructor, then you can assign the reference and avoid this issue. More on objects, pointers and references soon!&nbsp;</p>
+<p>So, if my class Gamma requires other objects or functions, then the include file can be added in the C++ file, and not in the header. It is a very good rule to only have the includes you need in the header, and if the class is used entirely internally, then #include it in the cpp file.</p>
+<p>It is possible to have objects as public members in a C++ class, for instance</p>
+<div>
+<pre class="mosync-code-cpp">class Delta 
+{ 
+public: 
+    int counter;  
+};</pre>
+</div>
+<p>This is as bad an idea in C++ as it is in Java and C#.&nbsp; There is nothing intrinsically wrong with it, but you don't get any opportunity to clean input into mCounter, or to check that its value is only changed when it is safe to do so.</p>
+<h2>Inheritance</h2>
+<p>C++ supports multiple inheritance, that is actual base classes with actual implementation and not just interfaces. When you specify your class, you can specify which classes to inherit from, as well as the visibility of the inheritance</p>
+<div>
+<pre class="mosync-code-cpp">class Delta : public Alpha, public Beta, private Gamma</pre>
+</div>
+<p>So there are two things to say about multiple inheritance in a MoSync context. Firstly, be careful. We're sure that you regularly observe SOLID design principles and the Liskov Subsitution Principle, but C++ can be a handgun. It's an incredibly powerful piece of technology, but easy to abuse. Don't get lost in inheritance. Secondly, lots of casting of your classes between interfaces and classes is slow. The device has to do looks ups to get the correct addresses to access the object according to the interface or inherited class. We'll come back to this later.&nbsp;</p>
+<p>So, those are the warnings, and here is the good news: inheritance is cool, it makes your coding easier if you've thought it through properly. Multiple inheritance means that you can use classes which in C++ are called mix-ins. You can have a little utility class which you may want to access in a variety of contexts. In C++, you can mix in this functionality directly into your class, without having the overhead of instantiating a new class to do it. Your class may be a little larger, but there are benefits in not having to create a new instance of the utility whenever you want to use it. You can also then cast classes as these mix-ins if you need to, as long as you are prepared to change your mind about this if it gets too slow.&nbsp;</p>
+<p>Interfaces in C++ are just classes, there is no 'interface' declaration. You create a class to inherit from with virtual methods. It is unusual to prefix interface classes in C++ with the letter I.</p>
+<p>In C#</p>
+<div>
+<pre class="mosync-code-cpp">public interface Alpha 
+{ 
+    public abstract void doSomething();  
+}</pre>
+</div>
+<p>In C++</p>
+<div>
+<pre class="mosync-code-cpp">class Alpha 
+{ 
+public: 
+    virtual void doSomething() =  0;  
+};</pre>
+</div>
+<p>Virtual methods can be overridden, but there is no need for an 'override' command.</p>
+<div>
+<pre class="mosync-code-cpp">class Beta : public Alpha 
+{ 
+public: 
+    void doSomething();  
+};</pre>
+</div>
+<p>The implementation of doSomething will be the one used, as there is no implementation in Alpha. This is called pure virtual method and it can be identified by the = 0.</p>
+<p>This is what makes it a true interface. Any class which inherits from Alpha must implement doSomething(). Alternatively, you can provide an empty method</p>
+<div>
+<pre class="mosync-code-cpp">class Beta
+{ 
+public: 
+    virtual void performOperation() {}  
+};</pre>
+</div>
+<p>This method provides an empty implementation, which means that you don't have to implement the method <strong>performOperation()</strong>.</p>
+<h2>Objects, Pointers and References</h2>
+<p>One of the great advantages of memory-managed environments like .net and Java is that you don't have to worry about whether objects are created in the heap or on the stack. You can go through an entire career in managed programming without ever having to worry about it. C++ is more complicated, but instead of 'complicated' most people use the word 'powerful'. &nbsp;</p>
+<p>Just to remind you, stack memory is local to the scope of the code where it was created. Heap memory is shared across the entire scope of the application. You need to consider when you create an object whether it is on the stack or in the heap. Objects on the heap need to be explicitly destroyed with the command delete. Objects on the stack will be deleted when they go out of scope. The rule with C++ generally is to only create objects on the heap when you absolutely need to. Creating objects on the heap can be much slower than creating them on the stack. When you've been working in managed environments for a while, you forget that searching for free memory in the heap is an expensive operation. Every time you use new then it has to do that search. Creating objects on the heap is necessary though when you want to be able to control their lifespan, for instance in factory classes which may create objects which have a lifespan greater than that of the factory itself.&nbsp;</p>
+<p>To create an object on the stack, simply declare it.</p>
+<div>
+<pre class="mosync-code-cpp">String myString;</pre>
+</div>
+<p>To create an object on the heap, you need to use <strong>new</strong></p>
+<div>
+<pre class="mosync-code-cpp">String* myString = new String();</pre>
+</div>
+<p>The asterisk (*) here means that you have created a pointer to a String object. This is the address a particular object or interface starts. The actual position of the asterisk can vary, so you may read</p>
+<div>
+<pre class="mosync-code-cpp">String *myString = new String();</pre>
+</div>
+<p>or</p>
+<div>
+<pre class="mosync-code-cpp">String * myString = new String();</pre>
+</div>
+<p>The first form, with type*, is preferred and recommended for two reasons. Firstly, the command is in the format &lt;type&gt; &lt;name&gt;. The type is String pointer, and it is called myString. If you don't put the asterisk next to the type, then you are saying that myString is a String, which it isn't. Secondly the asterisk has some other meanings in other contexts. &nbsp;<strong>*myString</strong> means something else, so its use is ambiguous if you declare as &lt;type&gt; *&lt;name&gt;.&nbsp;</p>
+<p>There is another type called a <em>reference</em>. A reference is an address like a pointer, but unlike a pointer it cannot have a null value. References are declared with an ampersand (&amp;).</p>
+<div>
+<pre class="mosync-code-cpp">String* myString = NULL; //Is OK 
+String&amp; myString; //Will cause a compiler error</pre>
+</div>
+<p>References are particularly valuable as a way to pass stack objects.</p>
+<div>
+<pre class="mosync-code-cpp">String&amp; Gamma::getHeadline() 
+{ 
+    return myString;   
+}</pre>
+</div>
+<p>In this example, <strong>myString </strong>has previously been created as an object on the stack. &nbsp;<strong>getHeadine()</strong> will return a reference to <strong>myString</strong> and not pass the entire object back as a return value.</p>
+<div>
+<pre class="mosync-code-cpp">String&amp; headline = gamma.getHeadline(); </pre>
+</div>
+<p>Shows how you can create a reference with an assignment.&nbsp;</p>
+<p>When you access methods on an object, you need to know whether it is an object or a reference, or a pointer. Members are accessed in objects and references using a period (.) e.g.</p>
+<div>
+<pre class="mosync-code-cpp">myString.clear();</pre>
+</div>
+<p>When you have a pointer, you access members using -&gt; e.g.</p>
+<div>
+<pre class="mosync-code-cpp">myString-&gt;clear();</pre>
+</div>
+<p>You can covert between pointers and reference using an asterisk. Firstly, you can dereference a pointer and treat it as an object.</p>
+<div>
+<pre class="mosync-code-cpp">String* myString = new String(); 
+myString-&gt;append("hello world", 11); 
+String&amp; strref = *myString; 
+strref.clear();</pre>
+</div>
+<p>Interesting. The asterisk is used to say "the object that this pointer points to". &nbsp;</p>
+<p>You can create pointers to objects, even if they are on the stack. This also means that having a pointer to an object is not the same as knowing that the object on the heap. This is useful when you want to use objects with methods which expect a pointer.</p>
+<div>
+<pre class="mosync-code-cpp">int Gamma::getStringLength(String* testString) 
+{ 
+    return testString-&gt;length();  
+} 
+… 
+String hello = "Hello World"; 
+int strLen = getStringLength(&amp;testString);</pre>
+</div>
+<p>This is a bit of a contrived example, but you can see that by using an ampersand before the object name, it is saying "the address of this object". Both String* and &amp;testString will have the same value.&nbsp;</p>
+<h2>Memory Management</h2>
+<p>Being able to create objects in both the stack and the heap, and the lack of an automatic garbage collector, means that you have to think about the lifespan of each and every object that you create and where you create it. As we've said above, create objects onto the stack wherever possible. When you create an object on the stack, it will have a scope of the lifespan of it's location. &nbsp;</p>
+<p>For instance, if you create an object in a method</p>
+<div>
+<pre class="mosync-code-cpp">void Gamma::doSomething() 
+{ 
+// String will be created here 
+String myString; 
+    … 
+// String will be automatically destroyed and the memory 
+// freed because we've reached the end of the method.  We 
+// don't need to do anything else.  
+} </pre>
+</div>
+<p>Objects can also have the scope of an object. Consider this header file&nbsp;</p>
+<div>
+<pre class="mosync-code-cpp">class Gamma 
+{ 
+public: 
+    Gamma(); 
+    virtual ~Gamma(); 
+private: 
+    String mString;  
+};</pre>
+</div>
+<p>In the second example, there will be an object called mString on the stack. It will be created when an instance of Gamma is created, and destroyed when Gamma is destroyed. You don't need to do anything else. Easy, isn't it?&nbsp;</p>
+<p>You need to be much more careful when you are creating objects on the heap. They won't be automatically destroyed when the method or object goes out of scope. Objects on the heap are really useful because of this. You can create an object in one class and pass the pointer to another class, or you can use it internally.&nbsp;</p>
+<p>There is a design pattern called Resource Allocation is Initialisation (RAII). This pattern says that when you create a class, create the objects you need in the constructor and destroy then in the destructor.</p>
+<div>
+<pre class="mosync-code-cpp">//Constructor 
+Gamma::Gamma() 
+{ 
+// Instance heap objects you need here 
+myString = new String();  
+} 
+// Destructor 
+virtual Gamma::~Gamma() 
+{ 
+    delete myString;  
+}</pre>
+</div>
+<p>This means that although myString will be created on the heap, then when Gamma goes out of scope myString will be destroyed. &nbsp;&nbsp;</p>
+<p>There are many cases where this isn't appropriate though. You could have an application which needs to send complex messages between classes. Each message is of the class 'Message'.&nbsp;</p>
+<div>
+<pre class="mosync-code-cpp">class Message 
+{ 
+public: 
+    void setMessage(const char* message); 
+    const char* getMessage(); 
+    void setStatus(int status);  
+    int getStatus(); 
+private: 
+    String mMessage; 
+    int mStatus;  
+};</pre>
+</div>
+<p>It’s a little class which can store a text message and a status value. We can see that when Message is instanced, a string and an int are allocated on the stack.&nbsp;</p>
+<p>Class Gamma needs to send messages to class Delta. Delta has the following method.</p>
+<div>
+<pre class="mosync-code-cpp">void Delta::receiveMessage(Message* message) 
+{ 
+// Got the message  
+}</pre>
+</div>
+<p>Objects on the heap are really powerful, but with that power comes great responsibility. Here is a quick review of some things to remember&nbsp;</p>
+<ul>
+<li>If at all possible, create objects on the stack, not in the heap. Its faster and less likely to introduce a bug.&nbsp;</li>
+<li>Normally, the class which created an object should destroy it. RAII is a good pattern.&nbsp;</li>
+<li>Whenever you write the word 'new' think about where the word 'delete' is going to go. It has to go somewhere or you will have a memory leak.&nbsp;</li>
+<li>When you pass responsibility for deleting an object, then add a comment to that effect so it is clear where the responsibility lies.&nbsp;</li>
+<li>Only have one place where the object should be destroyed. If you try to destroy the same object twice, you will get a runtime error.</li>
+</ul>
+<p>If you look on the MoSync forum, or in the MAP library, you will find some debug methods for creating objects. These functions replace new and delete and keep a track of which objects have been instanced on the heap and which source file did it. When your application exits on the emulator, it will report about which objects haven't been deleted. This can help you track down memory leaks. To use them, replace all of your new keywords with <strong>newobject() </strong>and delete with<strong> deleteobject()</strong>.</p>
+<h2>Design Considerations and Optimization</h2>
+<p>So you've got some killer design skills for Java or .net. Maybe you've mastered IoC containers or double dispatch and you can see how they are going really help in C++. This is good, and you can certainly use these techniques, but there are some other considerations you need to keep in mind with mobile development. If you've been doing desktop or enterprise development, then you're used to working in environments which are much more powerful than mobile. You will have lots and lots of small, specialised classes which are great for working with. Each class supports multiple interfaces and has been created to perform one small task. The reality of non-managed environments and polymorphism is that creating classes is slow, and casting objects is slow. Not so slow that you shouldn't do it, or you will be waiting all the time for your application, but slow enough that if you do use design patterns which involve a lot of tiny classes, and a lot of casting between interfaces, then you may be wondering why the application isn't as speedy as you imagined.&nbsp;</p>
+<p>You will get better speed by creating fewer classes with fewer interfaces, and on the stack rather than on the heap. Flatter designs will result in faster code. Of course, this is then a trade between the design you would use in Java and the speed you want in C++, and in many instances you won't find the code slow, but if you've got routines which create lots of instances of objects (in a loop for instance), then you need to be aware of where you can improve speed.&nbsp;</p>
+<p>If you can combine classes to put methods together in the same object, then you will save memory and be faster. Better still, if you can create utility functions in C rather than C++ objects then this will be even faster. Typically factories make a good example where C code can be used, as well as utilities like decorators don't have to be in classes. Many developers on the web will tell you to code in C by default, and only use C++ and classes where you need to.</p>
+</body>
+</html>

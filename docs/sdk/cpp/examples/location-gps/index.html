@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>Location</title>
+</head>
+<body>
+<h1>Location</h1>
+<p>This application tests the on-board GPS functionality of the phone, via the MoSync Location API.<!--break--></p>
+<p><img src="images/Location_0.png" align="none" width="241" height="319"></p>
+<p>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<h2>Behaviour</h2>
+<p><strong><em>Note</em></strong>: This application will only work successfully on a device with activated GPS capabilities. It will run on the MoSync emulator, but no GPS service will be detected.</p>
+<p>When the application starts, instrcutions are displayed. Tap the screen (or press the fire button of left softkey) to start the GPS location detection. A "Start" message and return code will be displayed: if GPS is available the return code 1 will be shown. If the device does not have GPS capabilities (including the MoSync MoRE emulator), or the GPS function is not activated on the device, the return code -1 is displayed.</p>
+<p>While location detection is active, the following data is shown, periodically refreshed:</p>
+<ul>
+<li>The qualification state of the received data (in this example 4 = fully qualified)</li>
+<li>The latitude and longitude (in this example 59.33, 18.07)</li>
+<li>The horizontal and vertical accuracy in metres (in this example 200m and 50m)</li>
+<li>The time taken to retrieve the location data</li>
+</ul>
+<h2>Key Presses</h2>
+<ul>
+<li>Fire or left-softkey or tapping the screen — starts and stops GPS location detection.</li>
+<li>0 or right-softkey&nbsp;— exits the program</li>
+</ul>
+<p>&nbsp;</p>
+<dl></dl></body>
+</html>

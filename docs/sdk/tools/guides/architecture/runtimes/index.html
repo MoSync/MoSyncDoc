@@ -1,0 +1,16 @@
+<html>
+<head>
+<title>The Runtimes</title>
+</head>
+<body>
+<h1>The Runtimes</h1>
+<p>The MoSync runtimes consist of libraries and programs that execute your code on a given target device. They provide a uniform interface to low-level system APIs, including graphics, audio, event handling and communications.</p>
+<p><!--break--></p>
+<p>While MoSync runtimes are tiny and efficient, they are still very sophisiticated pieces of engineering. Learn more about the architecture <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/architecture/runtime-architecture/index.html">here</a>.</p>
+<h2>Software as a contract</h2>
+<p>When people hear “runtime”, they usually think of one of two things; either a lightweight support system like the C runtime library or a Java-style virtual machine. Our definition is broader.</p>
+<p>We think of MoSync as a contract between the generators — the things that produce MoSync IL — and the runtimes, which execute it on a set of devices. In some cases, this is indeed a virtual machine, but not always. For lower-end Java phones, we don’t even have to use pre-generated runtimes — each application your write can be transformed directly to Java bytecode. We currently have a prototype implementation of this transformation. However, we still call the result a "runtime" because it essentially makes the MoSync IL executable. In the case of iPhone we convert the MoSync IL into C++ and output it in an Xcode project which includes the iPhone syscall libraries.</p>
+<h2>Not your father's VM</h2>
+<p>The MoSync runtimes that are virtual machines are not the kind of VM most people would think of. They’re register-based, generally smaller than 100k and very, very fast. Where possible, they recompile your entire program to native ARM machine code before executing it. With the tiny footprint and native recompilation, there’s never any need to worry about performance.</p>
+</body>
+</html>

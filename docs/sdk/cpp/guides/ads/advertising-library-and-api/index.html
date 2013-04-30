@@ -1,0 +1,54 @@
+<html>
+<head>
+<title>The Advertising Library and API</title>
+</head>
+<body>
+<h1>The Advertising Library and API</h1>
+<p>The MoSync <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___advertising_lib.html">Advertising C++ Library</a> and <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___ads_a_p_i.html">Advertising C API</a> make it easy for C/C++ programmer's to create advertisements and display them in mobile applications. You can get and set properties to determine if the advertisement should be visible in a certain context.<!--break--></p>
+<p>For a list of the platforms supported by the MoSync Advertising Library and API see our <a href="http://www.mosync.com/documentation/manualpages/featureplatform-matrix">Feature/Platform Support</a> page.</p>
+<h2>Example application</h2>
+<p>We make use of the NativeUI layouts to display advertisements. That means that the advertisment matches the look and feel of the target platform.</p>
+<p>Here is a typical advertisement, in this case a banner ad, which we have implemented in the example application <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/nativeuidemo/index.html">NativeUIDemo</a>:</p>
+<p><img src="images/advertising-android-annotated.png" align="none" width="400" height="282"></p>
+<p>Take a look at the code of that example to see how we have implemented the advertisment feature.</p>
+<h2>Getting a publisher ID</h2>
+<p>To create a new banner on Android and test it during development, a publisher ID is required. You can get it by registering with <a href="https://accounts.google.com/NewAccount?service=admob&amp;hl=en_US&amp;continue=https%3A%2F%2Fwww.admob.com%2Fhome%2Flogin%2Fgoogle&amp;followup=https%3A%2F%2Fwww.admob.com%2Fhome%2Flogin%2Fgoogle&amp;jc=1">Google AdMob</a>.</p>
+<p>For iOS no ID is required during development. When you add your application to the App Market you will need to provide information during the registration process.</p>
+<h2>The MoSync C++ Advertising Library</h2>
+<p>At the C++ level we have created a simple library contains two classes:</p>
+<ul>
+<li><strong>Banner</strong> — Provides a widget that displays advertisement to the user. When the user taps a banner, it triggers an action programmed into the advertisement. Your application is notified when an action starts or stops. This class requires our <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-nativeui-library/index.html">NativeUI Library</a>; it can only be added to a <strong>NativeUI</strong> layout object.</li>
+</ul>
+<ul>
+<li><strong>BannerListener</strong> —&nbsp; Provides methods for handling any changes in a <strong>Banner</strong> object. The class’s methods are called when a new advertisement is loaded, when a user interacts with an advertisement, and when errors occur.</li>
+</ul>
+<p>The Advertising Library really makes developer’s life really easy: only three lines of code are needed to get a banner working inside your application:</p>
+<pre class="mosync-code-cpp">Banner* banner = new Banner("yourPublisherID");
+banner-&gt;requestContent(true);
+aLayout-&gt;addBanner(banner);</pre>
+<p>In this example, on both iOS and Android, the advertisement will be created at the default banner size of 320 * 50 pixels. On Android you can specify other sizes for the advertisement in the constructor, including rectangular banner, IAB full banner and leaderboard sizes.</p>
+<p>For full details of the Advertising Library classes and methods, see the <a href="http://www.mosync.com/files/imports/doxygen/latest/html/index.html">MoSync API Reference</a>.</p>
+<h2>The MoSync C Advertising API</h2>
+<p>The Advertising Library makes use of the set of C functions in the Advertising API:</p>
+<ul>
+<li><strong>maAdsBannerCreate</strong>&nbsp;— Creates a new banner. (Publisher ID required for Android.)</li>
+<li><strong>maAdsBannerDestroy</strong> — Destroy a banner.</li>
+<li><strong>maAdsAddBannerToLayout</strong> — Add a banner to a layout widget (requires the MoSync NativeUI).</li>
+<li><strong>maAdsRemoveBannerFromLayout</strong> — Remove a banner from a layout widget.</li>
+<li><strong>maAdsBannerSetProperty</strong> — Set a banner property value.</li>
+<li><strong>maAdsBannerGetProperty</strong> — Get a banner property value.</li>
+</ul>
+<p>Ad banner properties that can be got/set include:</p>
+<ul>
+<li>MA_ADS_HEIGHT — Get height.</li>
+<li>MA_ADS_WIDTH — Get width.</li>
+<li>MA_ADS_VISIBLE — Set/get visible status. Layouts will ignore invisible banners.</li>
+<li>MA_ADS_ENABLED — Set/get enables status.</li>
+<li>MA_ADS_TEST_DEVICE — Set device to recieve test ads.</li>
+<li>MA_ADS_REQUEST_CONTENT — Set request status.</li>
+<li>MA_ADS_IS READY — Returns true if the ad is sucessfully loaded and ready to display.</li>
+</ul>
+<p>For full details of the Advertising API functions and properties, see the <a href="http://www.mosync.com/files/imports/doxygen/latest/html/index.html">MoSync API Reference</a>.</p>
+<p>&nbsp;</p>
+</body>
+</html>

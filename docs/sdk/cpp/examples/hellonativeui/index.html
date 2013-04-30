@@ -1,0 +1,38 @@
+<html>
+<head>
+<title>HelloNativeUI</title>
+</head>
+<body>
+<h1>HelloNativeUI</h1>
+<p>HelloNativeUI is a well-commented example application for beginners. It consists of a very simple graphical user interface application that uses the NativeUI library and Moblet framework. It illustrates how to create NativeUI screens, and how to position widgets and handle events.<!--break--></p>
+<table class="doclayout" border="0"><tbody><tr><td style="width: 40%;" valign="top"><img src="images/hello_native_ui_1.png" align="left" width="240" height="353"></td><td style="width: 40%;" valign="top"><img src="images/hello_native_ui_2.png" align="none" width="242" height="362"></td><td style="width: 40%;" valign="top">&nbsp;</td></tr>
+</tbody></table>
+<p>These screens show the look of the application on Android: its appearance is, of course, different on different platforms because it uses each platform's native GUI controls and settings. Note also that this example will not work on the MoSync emulator (MoRE) because it has no Native UI support yet.<br><br>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<h3><a name="Behaviour_9297645403704449_205_9044372598878492" id="Behaviour_9297645403704449_205_9044372598878492"></a>Behaviour</h3>
+<p>When the application runs, the user is presented with a simple NativeUI screen with four widgets:</p>
+<ul>
+<li>a label with the instructions "Enter a password:"</li>
+<li>an edit box operating in password mode</li>
+<li>a button for clearing the password field&nbsp;</li>
+<li>a button for submitting the password</li>
+</ul>
+<p>On clicking the <strong>Submit </strong>button, the password is validated (just validates the length of the password for demonstration purposes). <br><br>Examine the source code of the application&nbsp;to learn how the program works. The code commenting highlights various aspects of working with NativeUI screens and widgets, including:</p>
+<ul>
+<li>How to define a screen.</li>
+<li>How to identify the root of a screen's widget hierarchy.</li>
+<li>How to use a layout widget to arrange other widgets.</li>
+<li>How to define widgets and use their methods.</li>
+<li>How to detect events and respond to them.</li>
+</ul>
+<p>To understand how NativeUI and MAUI (an alternative GUI solution that use's MoSync's own screens and widgets to ensure graphical consistency across all platforms), compare this example application with the <span style="color: #000000;">HelloMAUI </span>example application.</p>
+<h3><a name="Key_Presses_05540954561933553__24646072218707205" id="Key_Presses_05540954561933553__24646072218707205"></a>User Interaction</h3>
+<ul>
+<li>Tapping the screen's <strong>Clear </strong>button - clears the edit box.</li>
+<li>Tapping the screen's <strong>Submit </strong>button - validates the contents of the edit box.</li>
+<li>Back key - exits the program.</li>
+</ul>
+<h3>Source code</h3>
+<p>You can take a look at the source code for this example at GitHub:<a href="https://github.com/MoSync/MoSync/tree/ThreeZero/examples/cpp/HelloNativeUI"> https://github.com/MoSync/MoSync/tree/ThreeZero/examples/cpp/HelloNativeUI<br></a></p>
+<p>&nbsp;</p>
+</body>
+</html>

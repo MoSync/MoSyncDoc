@@ -1,0 +1,16 @@
+<html>
+<head>
+<title>MultiTouch</title>
+</head>
+<body>
+<h1>MultiTouch</h1>
+<p>This simple application shows how to handle multitouch events so that your applications can react to pinches, swipes and rotatation. This application is based on the MoSync Moblet framework.<!--break--></p>
+<p><img src="images/multitouch-example-app.png" align="none" width="240" height="320"></p>
+<p>This example is included in the MoSync SDK installation in the <em>/examples/Moblet</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<h2>Behaviour</h2>
+<p>When the application runs, the screen is intially blank. Touch the screen in one, two, or more places. (If you are running the application in the MoRE emulator, right-click on the screen to start MoRE's <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/emulators/emulating-device/index.html">multitouch emulation mode</a>.) At each touch point a red rectangle will be displayed, along with the ID of the touch point.</p>
+<p>(Note that only some touchscreen devices support multitouch, and that the maximum number of touch points a device can handle varies: iPhone = 5, iPad = 11, HTC Wildfire = 3, Samsung Galaxy S = 5, MoRE emulator = 2.)</p>
+<p>Try lifting one or more fingers, and pinching, skewing, swiping - the rectangles will follow your touches. Touch IDs are reused when you lift a finger and then touch again.</p>
+<p>Examine the source code of the application to learn how the program works. Note the use of <strong>MAUtil::Map</strong> to store the collection of touch IDs and their coordinates.</p>
+</body>
+</html>

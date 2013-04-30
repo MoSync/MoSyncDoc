@@ -1,0 +1,240 @@
+<html>
+<head>
+<title>Using MAUtil Set, Map, HashMap</title>
+</head>
+<body>
+<h1>Using MAUtil Set, Map, HashMap</h1>
+<p>The <strong>MAUtil </strong>classes <strong>Set</strong>, <strong>Map</strong> and <strong>HashMap</strong> provide generic containers similar to <strong>std::set</strong>, <strong>map</strong> and <strong>unordered_map</strong> in the STL or Java's <strong>Set</strong>, <strong>Map</strong> and <strong>Hashtable</strong>. They provide many of the same familiar operations. Here we describe examples for Set, Map, and HashMap:<a name="Set"></a></p>
+<h2><strong>Set</strong></h2>
+<pre class="mosync-code-cpp">/**
+ * @file Set.cpp
+ * @author Naveed Asif
+ *
+ * Description:
+ *
+ *  In this tutorial we will learn the use of Set
+ *  container. Initially a list of numbers is
+ *  created and then the difference between erase()
+ *  clear() is shown.
+ */
+
+#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;conprint.h&gt;
+#include &lt;MAUtil/Set.h&gt;
+
+using namespace MAUtil;
+
+class MyMoblet : public Moblet
+{
+public:
+    // Set is declared.
+    Set&lt;int&gt; myNumbers;
+
+    MyMoblet()
+    {
+        // Add some numbers.
+        myNumbers.insert(786);
+        myNumbers.insert(111);
+        myNumbers.insert(222);
+        myNumbers.insert(333);
+
+        // Shows the original dictionary in the console.
+        // Note: The dictionary values will be displayed in
+        // ascending order.
+        showDictionary();
+
+        // Locates and Erases any specific Number.
+        myNumbers.erase(333);
+
+        // Look at the dictionary and notice that 333 is erased.
+        showDictionary();
+
+        // This will delete all the members of container.
+        myNumbers.clear();
+
+        // Will show that you got 0 members.
+        showDictionary();
+    }
+
+    /**
+     * Called when a key is pressed on the keypad.
+     */
+    void keyPressEvent(int keyCode, int nativeCode)
+    {
+        if (MAK_BACK == keyCode || MAK_0 == keyCode)
+        {
+            close();
+        }
+    }
+
+    /**
+     * showDictionary function is used to display all the
+     * members in myNumbers container.
+     */
+    void showDictionary()
+    {
+        printf("I've got %d Numbers", myNumbers.size());
+        if (myNumbers.size() &gt; 0)
+        {
+            printf("Numbers are:");
+        }
+        for(Set&lt;int&gt;::Iterator iter = myNumbers.begin();
+            iter != myNumbers.end();
+            iter++)
+        {
+            printf("%d", *iter);
+        }
+    }
+};
+
+/*
+ * Main function where the program starts
+ */
+extern "C" int MAMain()
+{
+    Moblet::run(new MyMoblet());
+    return 0;
+}</pre>
+<div class="code">&nbsp;</div>
+<div class="section"><div class="info"><h2 class="title"><strong>Map</strong></h2>
+<pre class="mosync-code-cpp">/**
+ * @file Map.cpp
+ * @author Naveed Asif
+ *
+ * Description:
+ *
+ *  In this tutorial we will learn the use of Map
+ *  data structure. Initially a list of friends is
+ *  created and then the Iterator's methods begin(),
+ *  erase(), and find() are used.
+ */
+
+#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;conprint.h&gt;
+#include &lt;MAUtil/Map.h&gt;
+#include &lt;MAUtil/String.h&gt;
+
+using namespace MAUtil;
+
+class MyFriend
+{
+private:
+    String myName;
+    String myAddress;
+
+public:
+    MyFriend(String name, String address)
+    {
+        myName = name;
+        myAddress = address;
+    }
+
+    void show()
+    {
+        printf("%s, %s", myName.c_str(), myAddress.c_str());
+    }
+};
+
+class MyMoblet : public Moblet
+{
+public:
+    // Map is declared.
+    Map&lt;String, MyFriend*&gt; myFriends;
+
+    MyMoblet()
+    {
+        // Add some friends.
+        addFriend("Rupert Bear", "Norwood, England");
+        addFriend("Ghuman", "Stockholm, Sweden");
+        addFriend("Windy Miller", "Trumpton 2323");
+
+        // Shows the original dictionary in the console.
+        // Note: The dictionary values will be displayed in
+        // ascending order.
+        showDictionary();
+
+        // Finds a friend using the find method and displays it
+        // in the console.
+        printf("--------------");
+        printf("Found friend:");
+        MyFriend* myFriend = myFriends.find("Rupert Bear")-&gt;second;
+        myFriend-&gt;show();
+
+        // Locates and erases a friend.
+        myFriends.erase("Ghuman");
+
+        // Look at the dictionary and notice that "Ghuman" is erased.
+        showDictionary();
+
+        // Finds the first entered friend.
+        printf("--------------");
+        printf("My first friend is:");
+        Map&lt;String, MyFriend*&gt;::Iterator iter = myFriends.begin();
+        iter-&gt;second-&gt;show();
+    }
+
+    /**
+     * Add a new friend to the dictionary.
+     */
+    void addFriend(String name, String address)
+    {
+        myFriends.insert(name, new MyFriend(name, address));
+    }
+
+    /**
+     * Called when a key is pressed on the keypad.
+     */
+    void keyPressEvent(int keyCode, int nativeCode)
+    {
+        if (MAK_BACK == keyCode || MAK_0 == keyCode)
+        {
+            close();
+        }
+    }
+
+    /**
+     * showDictionary function is used to display all the
+     * pair values in myFriends Map function
+     */
+    void showDictionary()
+    {
+        printf("--------------");
+        printf("I've got %d friends:", myFriends.size());
+        for(Map&lt;String, MyFriend*&gt;::Iterator iter = myFriends.begin();
+            iter != myFriends.end();
+            iter++)
+        {
+            iter-&gt;second-&gt;show();
+        }
+    }
+};
+
+/*
+ * Main function where the program starts
+ */
+extern "C" int MAMain()
+{
+    Moblet::run(new MyMoblet());
+    return 0;
+}
+</pre>
+<h2 class="title"><strong>HashMap</strong></h2>
+<p class="title">The HashMap works same like Map does except that Map always displays results in ascending order. You can simply change Map to HashMap in above example and it will work.</p>
+<h2 class="title">Similarities</h2>
+</div>
+<a name="similatiries" id="similatiries"></a><p>The containers have a number of things in common. They have default constructors, copy constructors and destructors. Elements are copied by value, so care should be taken when dealing with pointers. Large elements should be passed by pointer or reference-counted. There are <strong>Iterator</strong>s and <strong>ConstIterator</strong>s. The functions <strong>find()</strong>, <strong>begin()</strong> and <strong>end()</strong> can return either type. The&nbsp;<strong>erase()</strong>&nbsp;function works either with a <strong>Key</strong> or with an <strong>Iterator</strong>, but not with a <strong>ConstIterator</strong>. We can also use&nbsp;<strong>size()</strong> and <strong>clear()</strong>&nbsp;functions.</p>
+<p>The constructor has an optional argument for specifying the comparison function. The default comparison function uses the Key's <strong>operator&lt;</strong>, so if your Key doesn't have it and you can't readily add it, this argument is useful.</p>
+</div>
+<div class="section"><div class="info"><h2 class="title">Differences</h2>
+</div>
+<a name="differences" id="differences"></a><p><strong>Set</strong> has only one datum per element, whereas&nbsp;<strong>Map</strong> and <strong>HashMap</strong> have two data per element: a <strong>Key</strong> and a <strong>Value</strong>. Both must be specified when inserting a new element. Both are also accessible from Iterators. Map and HashMap also have the <strong>operator[]</strong>.</p>
+<p><strong>HashMap</strong>'s constructor has an optional argument for specifying the hash function. The default value is <strong>THashFunction&lt; Key &gt;</strong>. This template function has no default implementation. MoSync ships with implementations for <strong>MAUtil::String</strong> and <strong>int</strong>. If you use another key type, you'll need to implement a hash function for it.</p>
+<p><strong>Set</strong> and <strong>Map</strong> are sorted. The comparison function decides the sorting order.</p>
+<p><strong>HashMap</strong> is unsorted. The comparison function is only used in case of hash collision. While HashMap <strong>Iterators</strong> present the elements in a certain order, that order may change whenever an element is added or removed and should not be relied upon.</p>
+</div>
+<div class="info"><h2 class="title">Further information</h2>
+</div>
+<p><a name="furtherReading" id="furtherReading"></a></p>
+<p>All the classes have reference documentation. Also, the source code is available in <strong>$MOSYNCDIR/include/MAUtil/</strong> in your MoSync package.</p>
+</body>
+</html>

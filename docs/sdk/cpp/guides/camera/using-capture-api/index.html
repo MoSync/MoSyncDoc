@@ -1,0 +1,103 @@
+<html>
+<head>
+<title>The Capture C API</title>
+</head>
+<body>
+<h1>The Capture C API</h1>
+<p>The MoSync Capture C API provides a set of simple C-level functions for accessing the default camera interface on the device and providing the user with a simple interface without you needing to set up a complete user interface in your application. (This API is also used under-the-hood by the Wormhole JavaScript Library's <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/capture.md.html#Capture">Capture API</a>.)<!--break--></p>
+<p>The Capture API is supported on Android and iOS. For a complete list of platform support, see <a href="http://www.mosync.com/documentation/manualpages/featureplatform-matrix">Feature/Platform Support</a>.</p>
+<p></p>
+<h2>Capture API functions</h2>
+<p>The MoSync Capture API consists of a set of low-level syscall functions:</p>
+<p><strong>maCaptureSetProperty</strong> — Sets capture properties.</p>
+<p><strong>maCaptureGetProperty</strong> — Retrieves capture properties.</p>
+<p><strong>maCaptureAction</strong> — Opens the camera application of the device, to record a video or take a photograph. The parameter given to maCaptureAction can be one of the following:</p>
+<ul>
+<li>MA_CAPTURE_ACTION_RECORD_VIDEO — Starts video capture.</li>
+<li>MA_CAPTURE_ACTION_STOP_RECORDING — Stops capture (on iOS only).</li>
+<li>MA_CAPTURE_ACTION_TAKE_PICTURE — Starts image capture.</li>
+</ul>
+<p>The operation is asynchronous, the result is delivered in an event of type EVENT_TYPE_CAPTURE. The content of the event is an MACaptureEventData data structure. The type field contains the type of capture event (MA_CAPTURE_EVENT_TYPE_IMAGE, MA_CAPTURE_EVENT_TYPE_VIDEO, MA_CAPTURE_EVENT_TYPE_CANCEL), and the handle field contains a handle to the capture object.</p>
+<p>Save a captured image using function maCaptureWriteImage. Access a captured video using function maCaptureGetVideoPath. Free the capture object using function maCaptureDestroyData.<br><br>Note: The image format for MA_CAPTURE_EVENT_TYPE_IMAGE is JPEG on Android and PNG on iOS.</p>
+<p><strong>maCaptureImageDataToFile</strong> — Saves a captured image to a file.</p>
+<p><strong>maCaptureGetVideoPath</strong> — Gets full path to a recorded video.</p>
+<p><strong>maCaptureGetImagePath</strong> — Gets full path to a taken picture (available on Android only).</p>
+<p><strong>maCaptureDestroyData</strong> — Destroys a image/video data object.</p>
+<h2>Capture API properties</h2>
+<ul>
+<li>MA_CAPTURE_MAX_DURATION in seconds.</li>
+<li>MA_CAPTURE_VIDEO_QUALITY set with a video quality constant.</li>
+<li>MA_CAPTURE_CAMERA_ROLL (only on iOS).</li>
+<li>MA_CAPTURE_FLASH set with a flash mode constant (only on iOS).</li>
+<li>MA_CAPTURE_CAMERA_CONTROLS (only on iOS).</li>
+</ul>
+<h2>Capture API events</h2>
+<ul>
+<li>MA_CAPTURE_EVENT_TYPE_IMAGE — Sent after a image has been taken.</li>
+<li>MA_CAPTURE_EVENT_TYPE_VIDEO — Sent after a video has been taken.</li>
+<li>MA_CAPTURE_EVENT_TYPE_CANCEL — Sent if the user cancels taking image/video.</li>
+</ul>
+<h2>Taking a picture with the Capture API</h2>
+<p>1. Launch image capture user interface:<strong></strong></p>
+<pre class="mosync-code-cpp">maCaptureAction(MA_CAPTURE_ACTION_TAKE_PICTURE);</pre>
+<p>2.&nbsp; Listen for MA_CAPTURE_EVENT_TYPE_IMAGE events in custom event listener, and save the image to a file:</p>
+<pre class="mosync-code-cpp">void MainScreen::customEvent(const MAEvent&amp; event)
+{
+&nbsp; char path[1024];
+&nbsp; char os[64];
+&nbsp; 
+&nbsp; if (event.type == EVENT_TYPE_CAPTURE)
+&nbsp; {
+&nbsp;&nbsp;&nbsp; MACaptureEventData eventData = event.captureData;
+&nbsp;&nbsp;&nbsp; if (eventData.type == MA_CAPTURE_EVENT_TYPE_IMAGE)
+&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Get path to local file storage.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; maGetSystemProperty("mosync.path.local", path, sizeof(path));
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Note: On Android image format is JPEG, on iOS PNG.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; maGetSystemProperty("mosync.device.OS", os, sizeof(os));
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (strcmp(os, "Android") == 0)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; strcat(path, "MyPhoto.jpg");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; strcat(path, "MyPhoto.png");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; maCaptureWriteImage(eventData.handle, path, sizeof(path));
+      // Deallocate the image data object when done with it.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; maCaptureDestroyData(eventData.handle);
+&nbsp;&nbsp;&nbsp; }
+&nbsp; }
+}
+</pre>
+<p>3. If you wish to get a handle to an image object with the captured image, there is example code that shows how to do this on GitHub:</p>
+<ul>
+<li>Helper functions: <a href="https://gist.github.com/3017801">https://gist.github.com/3017801</a></li>
+<li>Full code example (including helper functions): <a href="https://gist.github.com/3017765">https://gist.github.com/3017765</a></li>
+</ul>
+<h2>Recording video with the Capture API</h2>
+<p>1. Launch the native image picker in video recording mode:</p>
+<pre class="mosync-code-cpp">maCaptureAction(MA_CAPTURE_ACTION_RECORD_VIDEO);</pre>
+<p>2.&nbsp; Listen for MA_CAPTURE_EVENT_TYPE_VIDEO type events in customEvent listener, and grab the video handle:</p>
+<pre class="mosync-code-cpp">void MainScreen::customEvent(const MAEvent&amp; event)
+{
+    if (event.type == EVENT_TYPE_CAPTURE)
+    {
+        mLatestVideoRecordedHandleeventData= event.captureData;
+        if (eventData.type == MA_CAPTURE_EVENT_TYPE_VIDEO)
+        {   
+            // Grab the video object handle.
+            mLatestPictureTakenHandle = eventData.handle;
+        }
+    }
+}
+</pre>
+<p>3.&nbsp; Get the full path of the recorded video using the video object handle:</p>
+<pre class="mosync-code-cpp">char videoPath[MAX_BUF_SIZE];
+maCaptureGetVideoPath(mLatestVideoRecordedHandle, videoPath,  MAX_BUF_SIZE);
+maMessageBox("Video file path = %s", videoPath);</pre>
+<p>4. The video can be played in a video widget using the full path:</p>
+<pre class="mosync-code-cpp">videoWidget-&gt;setVideoFilePath(videoPath);</pre>
+<p>5. Deallocate the image data object when it is not needed anymore using<strong> maCaptureDestroyData</strong>.</p>
+</body>
+</html>

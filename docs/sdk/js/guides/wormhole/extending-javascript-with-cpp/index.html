@@ -1,0 +1,100 @@
+<html>
+<head>
+<title>Extending HTML5 Mobile Apps with C++</title>
+</head>
+<body>
+<h1>Extending HTML5 Mobile Apps with C++</h1>
+<p>With the MoSync SDK you are not restricted to just coding in HTML5/JavaScript. You can use the Wormhole communication bridge to talk to C/C++ from JavaScript&nbsp;— really useful when you want to extend your HTML5/JavaScript application with custom code written in C++.<!--break--></p>
+<p></p>
+<p>If you are not familiar with how to create an HTML5 project, please read the tutorial <a href="TEMPLATE_DOC_PATH/sdk/js/tutorials/quick-start/how-create-html5-project-mosync/index.html">Developing Apps in HTML5/JavaScript.</a></p>
+<h2>Invoke C++ Code from JavaScript</h2>
+<p>The following example code is based on the <strong>HTML5/JS/C++ Hybrid Project Template</strong>. This template illustrates how to invoke custom C++ code from JavaScript. The UI has buttons for making the device vibrate and beep.</p>
+<p>To create a project based on this template, launch MoSync SDK, and create an app in the Eclipse-based IDE, using the <strong>HTML5/JS/C++ Hybrid Project</strong> template. Then you will get the source code discussed below.</p>
+<p>The template app uses the Wormhole C++ library (classes HybridMoblet and MessageStream) and the JavaScript libraries included in the file wormhole.js (all included with the application template).</p>
+<h2>Sending String Messages</h2>
+<p><em>It is good to know that two message formats are supported by Wormhole:</em> JSON messages and String stream messages. The example we discuss here uses String streams.</p>
+<p>String streams are a performant way of sending messages from JavaScript to C++. This method is generally faster than JSON messages (on some platforms 20x faster). Parsing on the C++ side is very efficient, and streams of string messages are concatenated before passed to C++. This makes sending a large number of small messages efficient.</p>
+<p>The JavaScript function <strong>mosync.bridge.send()</strong> is used to send string messages to C++:</p>
+<pre class="mosync-code-js">mosync.bridge.send(messageArray, callbackFunction)
+</pre>
+<p>This function takes two parameters. The first parameter "messageArray" is an array of strings.These values will be sent to C++. By convention, the protocol for sending custom messages is based on the first element in the array being the string<strong> "Custom"</strong>, and the second element being the name ("action") of the message, like "Beep". Then follows any parameters. (See example below.)</p>
+<p>The second parameter "callbackFunction" is an optional function that you can use to send back a result value from C++ to JavaScript. The communication mechanism is asynchronous, which is why a callback function is used to pass the result back from C++ to JavaScript.</p>
+<p>Here is an example of a JavaScript call that sends a custom message C++ to make the device vibrate (here we do not need to use any callback function):</p>
+<pre class="mosync-code-cpp">mosync.bridge.send(["Custom", "Vibrate", "500"]);</pre>
+<p>This JavaScript code is found in file <strong>index.html</strong> in the generated template application.</p>
+<p>In the corresponding implementation in C++, the message <strong>"Vibrate"</strong> is first registered in the constructor of the the application's Moblet, in class MyMoblet. A Moblet is the main object in a MoSync application, and the constructor is a good place to declare message to method bindings.</p>
+<p>The <strong>addMessage</strong> method binds the message name to a C++ method:</p>
+<pre class="mosync-code-cpp">addMessageFun(
+    "Vibrate",
+    (FunTable::MessageHandlerFun)&amp;MyMoblet::vibrate);</pre>
+<p>This C++ code is found in file <strong>main.cpp</strong> in the generated template application.</p>
+<p>Here is the C++ code for the <strong>vibrate</strong> method:</p>
+<pre class="mosync-code-cpp">void vibrate(Wormhole::MessageStream&amp; message)
+{
+    int duration = MAUtil::stringToInteger(message.getNext());
+    maVibrate(duration);
+}</pre>
+<p>The call to <strong>message.getNext()</strong> retrives a char pointer (char*) to the next parameter in the message stream, in this case the duration time ("500"). If there are no more messages, NULL is returned.</p>
+<p>Note that when a message handling method is called, the first two elements of the original string array sent from JavaScript have been "consumed" by the message handling framework, and the first call to message.getNext() will therefore return a pointer to the first parameter in our message, the value "500".</p>
+<p>You can also have messages with no parameters. The <strong>"Beep"</strong> message is an example of this. Here is the call made from JavaScript:</p>
+<pre class="mosync-code-cpp">mosync.bridge.send(["Custom", "Beep"]);</pre>
+<p>The message handler is registered like this in C++:</p>
+<pre class="mosync-code-cpp">addMessageFun(
+    "Beep",
+    (FunTable::MessageHandlerFun)&amp;MyMoblet::beep);</pre>
+<p>And here is the C++ code for the <strong>beep</strong> method:</p>
+<pre class="mosync-code-cpp">void beep(Wormhole::MessageStream&amp; message)
+{
+    maSoundPlay(BEEP_WAV, 0, maGetDataSize(BEEP_WAV));
+}</pre>
+<p>Next, we will take alook at how to return values from C++ to JavaScript.</p>
+<h2>How to Call JavaScript Code from C++</h2>
+<p>Note that the code below is not part of the code you get with the template application. You can however type it in yourself, to further explore how the code works.</p>
+<p>To evaluate JavaScript code in the WebView from C++, you can use the <strong>HybridMoblet::callJS()</strong> method. Here is an example:</p>
+<pre class="mosync-code-cpp">callJS("alert('Hello World')");
+</pre>
+<p>The following snippets illustrate how to invoke C++ from JavaScript and call a JavaScript callback function.</p>
+<p>Here is the JavaScript part:</p>
+<pre class="mosync-code-js">mosync.bridge.send(
+    ["Custom", "GetScreenSize"], 
+    function(width, height) {
+        alert("Screen size: " + width + ", " + height);
+    });
+</pre>
+<p>And here is the C++ part. First register the message handler in the MyMoblet constructor:</p>
+<pre class="mosync-code-cpp">addMessageFun(
+    "GetScreenSize",
+    (FunTable::MessageHandlerFun)&amp;MyMoblet::getScreenSize);</pre>
+<p>Then define the <strong>getScreenSize</strong> method. Here we create a script that invokes the JavaScript function <strong>mosync.bridge.reply()</strong> with the callbackId of the message and the result parameters (this will call the function specified above, in the call to mosync.bridge.send):</p>
+<pre class="mosync-code-cpp">void getScreenSize()
+{
+    const char* callbackId = message.getNext();
+&nbsp;&nbsp;&nbsp; char script[512];
+&nbsp;&nbsp;&nbsp; sprintf(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; script,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "mosync.bridge.reply(%d, %d, %d)",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; callbackId,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EXTENT_X(maGetScrSize()),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EXTENT_Y(maGetScrSize()));
+&nbsp;&nbsp;&nbsp; callJS(script);
+}
+</pre>
+<p>The JavaScript function mosync.bridge.reply() always takes the callbackId as the first argument. You can then supply a variable number of arguments (zero to many) that will be passed to the callback function in JavaScript.</p>
+<h2>Under The Hood</h2>
+<p>If you wish to dig deeper, you can explore the MoSync source code at GitHub, and you can also take a look at the example program WebViewGeoLocation, which is a low-level example that does not use the Wormhole library. Note that wormhole.js is a generated file, made up of several JavaScript source files (which means it is not found in the GitHub repository).</p>
+<p>Items of interest:</p>
+<ul>
+<li>The source code of the <a href="https://github.com/MoSync/MoSync/tree/ThreeTwo/libs/Wormhole">Wormhole library</a> at GitHub.</li>
+<li>The JavaScript files that make up wormhole.js are found in <a href="https://github.com/MoSync/MoSync/tree/ThreeTwo/libs/Wormhole/jslib">jslib</a></li>
+<li>The class <a href="https://github.com/MoSync/MoSync/blob/ThreeTwo/libs/Wormhole/HybridMoblet.h">HybridMoblet </a>is the basic building block in a MoSync HTML5 application</li>
+<li>Classes <a href="https://github.com/MoSync/MoSync/blob/ThreeTwo/libs/Wormhole/MessageStream.h">MessageStream </a>and <a href="https://github.com/MoSync/MoSync/blob/ThreeTwo/libs/Wormhole/MessageHandler.h">MessageHandler </a>handles messages from JavaScript</li>
+<li>The JavaScript NativeUI and PhoneGap implementations are found in <a href="https://github.com/MoSync/MoSync/tree/ThreeTwo/libs/Wormhole/Libs">Libs</a></li>
+</ul>
+<p>Documentation:</p>
+<ul>
+<li><a href="http://www.mosync.com/files/imports/doxygen/latest/html5/index.html">Wormhole JavaScript API reference</a></li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

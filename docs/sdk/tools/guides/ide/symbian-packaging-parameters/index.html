@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>Developing Symbian Applications</title>
+</head>
+<body>
+<h1>Developing Symbian Applications</h1>
+<p>When you package an application for a Symbian device, you need to specify a UID for the package. MoSync can generate test UIDs for you to use during development. Optionally, can also self-sign your packages by specifying a key file and certificate. Here we describe how to set UIDs and do self-signing.</p>
+<p><!--break--></p>
+<p></p>
+<h2>Symbian Unique Identifiers (UIDs)</h2>
+<p>Symbian requires that each application has a UID to uniquely identify it.</p>
+<p>When you create a project, MoSync automatically generates random UIDs for you within the range reserved by the Symbian Foundation for development and testing use. There are different ranges of these reserved UIDs in different editions of Symbian.</p>
+<p>To view or change the current UIDs for an application, right-click on your project in the <strong>Project Explorer</strong> view, and select <strong>Properties </strong>&gt; <strong>MoSync Project</strong> &gt; <strong>Symbian</strong>.</p>
+<p><img src="images/projectproperties-symbian.png"></p>
+<p>If you need to, you can generate new random UIDs in the reserved range by clicking the <strong>Generate Test UIDs</strong> button.</p>
+<p>These UIDs are intended just for use while you are doing development on your own machine. When you application is ready for public distribution, you will need to enter, in these boxes, UIDs provided by the Symbian Foundation for your application. Visit <a href="https://www.symbiansigned.com/app/page">www.symbiansigned.com</a> for more information.</p>
+<h2>Self-Signing a Symbian Application</h2>
+<p>To install Symbian applications on 3rd and 5th edition devices, they must be signed. MoSync generates a default private key file and certificate for self-signing.</p>
+<p>If you wish to use your own key file and certificate to sign a particular application, right-click on your project in the <strong>Project Explorer</strong> view, and select <strong>Properties </strong>&gt; <strong>MoSync Project</strong> &gt; <strong>Symbian</strong> &gt; <strong>Self-Signing</strong>.</p>
+<p><img src="images/projectproperties-symbian-selfsigning_0.png"></p>
+<p>(The default key file and certificate for all projects is shown in this screenshot.)</p>
+<p>Tick the <strong>Enable Project Specific Settings</strong> checkbox. Enter the paths to your key file and certificate. In the <strong>Passkey </strong>field, enter&nbsp; the password for the key file. Click <strong>Apply</strong>.</p>
+<h2>Using OpenSSL</h2>
+<p>The MoSync SDK includes <strong>OpenSSL</strong> which you can use to generated private key files and certificates. OpenSSL can be found in the MoSync <em>/bin</em> folder. Visit <a href="http://www.openssl.org/">www.openssl.org</a> for more information.</p>
+<h2><a name="limitationssymbian"></a>Known Issues and Limitations</h2>
+<p>For known issues and limitations with our Symbian implementation, see our <a href="http://jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&amp;requestId=10124">Issue Tracker</a>.</p>
+<p>&nbsp;</p>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<html>
+<head>
+<title>PhotoGallery Explained</title>
+</head>
+<body>
+<h1>PhotoGallery Explained</h1>
+<p>This article discusses programming techniques used in <a href="TEMPLATE_DOC_PATH/sdk/js/examples/photogallery/index.html">PhotoGallery</a> example application, which is included in the <em>examples/html5</em> folder of the MoSync SDK. In particular we look at the JavaScript APIs for file upload and camera capture, but we also discuss server programming, user interface programming in JavaScript, and how to extend an HTML5/JS application with custom C++ code.<!--break--></p>
+<p></p>
+<h2>Useful Reading</h2>
+<p>Before reading this document, it is useful to have read the <a href="TEMPLATE_DOC_PATH/sdk/js/tutorials/quick-start/how-create-html5-project-mosync/index.html">HTML5/JavaScript Development Guide</a>.</p>
+<p>The source code of the PhotoGallery example is available for online browsing at <a href="https://github.com/MoSync/MoSync/tree/ThreeOne/examples/html5/PhotoGallery">GitHub</a>. (Note that the JavaScript library in file <strong>LocalFiles/js/wormhole.js</strong> is not on GitHub, since it is generated from <a href="https://github.com/MoSync/MoSync/tree/ThreeOne/libs/Wormhole/jslib">several source files</a>. It is however available in the example code shipped with the MoSync SDK.)</p>
+<p>If you have not seen it yet, there is a description of the <a href="TEMPLATE_DOC_PATH/sdk/js/examples/photogallery/index.html">PhotoGallery example</a> with screenshots.</p>
+<h2>Programming Techniques Demonstrated</h2>
+<p>The PhotoGallery example application makes use of a wide range of programming techniques, with file upload and camera capture being the central ones. It also demonstrates how to use WebView widgets in a NativeUI <strong>Tab Screen</strong> container.</p>
+<p>The following is a list of functionality demonstrated by the example:</p>
+<ul>
+<li>How to upload files to a web server using the <strong>FileTransfer</strong> object in JavaScript.</li>
+<li>How to capture images from the camera device using the <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/capture.md.html#Capture">Capture JavaScript API</a>.</li>
+<li>How to use PHP to receive uploaded images and store them on a server.</li>
+<li>How to download JSON data from a PHP server to display images.</li>
+<li>How to create a user interface based on multiple WebView widgets, embedded in tabbed panes, using a declarative style of specifying the user interface.</li>
+<li>How to communicate between WebViews, using a hidden WebView that acts as a mediator and implements the application logic in JavaScript.</li>
+<li>How to add custom C++ code in a straightforward declarative style using method pointers.</li>
+</ul>
+<h2>User Interface Design</h2>
+<p>When developing HTML5 applications is sometimes difficult to fit the entire user interface within a single WebView. NativeUI Tabs, available on Android, iOS, and Windows Phone, are a convenient way to organise the user interface. By using tabbed WebViews, each WebView can implement a screen in the user interface. This way, the app uses the platform's native way of organising the UI, and it becomes snappy to navigate between the screens of the user interface. At the same time, HTML and CSS can be used to develop the user interface of the actual screens, and the application logic can be implemented in JavaScript.</p>
+<p>Technically, the Wormhole library that limits the full use of the Wormhole JavaScript API to the main WebView (which is hidden in a NativeUI app). But WebViews can send messages to each other, which means that they can access to services in the Wormhole API through the main WebView. The PhotoGallery example application makes use of this functionality. You can use this technique in your own applications to enable multiple WebViews to communicate with each other.</p>
+<h2>Implementation Overview</h2>
+<p>The code consists of the following implementation files:</p>
+<p><strong>main.cpp</strong> - This is the starting point of the application. Depending on your needs, you can add functionality missing in JavaScript to this file (or call code in other files to do the actual work). In PhotoGallery, there is custom code added to download JSON data from a server.</p>
+<p><strong>LocalFiles/index.html</strong> - The main JavaScript implementation file, which contains application logic and&nbsp; declaration of NativeUI widgets. Note that the WebView running this code is hidden and is not visible in the user interface. This file is the heart<span> (or brain, if you like)</span> of the application. This WebView has full access to the <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/index.html">Wormhole JavaScript API</a>.</p>
+<p><strong>LocalFiles/page-camera.html</strong> - The WebView displayed in the Camera tab. This WebView sends messages to the main WebView defined in index.html to make calls to camera and file upload services.</p>
+<p><strong>LocalFiles/page-gallery.html</strong> - The WebView displayed in the Gallery tab. This WebView sends messages to the main WebView defined in index.html to download JSON data.</p>
+<p><strong>LocalFiles/page-about.html</strong> - The WebView displayed in the About tab. This WebView displays information about the application, it does not make use of any native functionality.</p>
+<p><strong>LocalFiles/style.css</strong> - Style sheet definitions used by the visble WebViews.</p>
+<p><strong>LocalFiles/img</strong> - Folder that contains images used by the user interface of the application.</p>
+<p><strong>Server/upload.php</strong> - PHP script that implements the server side of the application. This script provides two services, image file upload and download of a list of uploaded images as a JSON array.</p>
+<h2>JavaScript code Structure</h2>
+<p>Each of the html files contains a JavaScript object (closure) that implements the required functionality. In file index.html this object is called <strong>app</strong>, in page-camera.html it is called <strong>camera</strong>, and finally in page-gallery.html it is called <strong>gallery</strong> (the about screen contains no JavaScript code).</p>
+<p>As mentioned, the application logic is in file <strong>index.html</strong> ("page-app.html" might have been a more appropriate name for this file, but "index.html" is the convention for the main file in an HTML project). The JavaScript code on the Camera and Gallery page handle user interface requests, calling the application code in index.html. This adds modularity to the code, and decouples the user interface layer from the application layer. The hidden WebView running the code in index.html becomes a "mediator" that coordinates request made from theWebView visible in the UI.</p>
+<h2>Sending Messages Between WebViews</h2>
+<p>When having an application that uses multiple WebViews, it is very useful to have the ability to communicate between them. This is done by remotely evaluating JavaScript code in another WebView.</p>
+<p>In the PhotoGallery example app, the main WebView is defined in file <strong>index.html</strong>. Since the application uses NativeUI, the main WebView is hidden. It contains one section with application logic in JavaScript, and one section that contains the user interface markup code.</p>
+<p>The WebViews visible in the tabs, evaluate JavaScript code in the main (hidden) WebView in <strong>index.html</strong>, to perform tasks such as image capture and file upload. The hidden WebView requests the PhoneGap library to do these tasks, and then passes back the results to the visible WebViews, using the same mechanism of evaluating JavaScript in another WebView.</p>
+<p>Here is an example of how to send a message to the main WebView to capture an image. This code makes the expression <strong>app.snapPhoto() </strong>be evaluated in the main WebView:</p>
+<pre class="mosync-code-cpp">/**
+ * Open the camera ui to take a picture.
+ */
+camera.snapPhoto = function()
+{
+    mosync.bridge.callJS(
+        mosync.nativeui.MAIN_WEBVIEW,
+        "app.snapPhoto()");
+};</pre>
+<p>And here is how the result of the image capture is communicated back to the WebView in <strong>page-camera.html</strong>. The code first obtains the NativeUI handle of the Camera WebView (this is a MoSync handle, and integer essentially), then it pieces together a JavaScript expression that calls the function <strong>camera.setPhotoUrl</strong> with the file name of the captured image, and passes that expression to the Camera WebView, where it is evaluated:</p>
+<pre class="mosync-code-cpp">// Pass the URL of the captured image to the camera page.
+var cameraWebViewHandle =
+    mosync.nativeui.getWidgetHandleById("cameraWebView");
+mosync.bridge.callJS(
+    cameraWebViewHandle,
+    "camera.setPhotoURL('" + fileURL + "')");</pre>
+<h2>Taking Pictures with the Camera</h2>
+<p>The PhoneGap Capture API is used to snap a picture. Here is the code in <strong>index.html</strong> that does the capture:</p>
+<pre class="mosync-code-cpp">navigator.device.capture.captureImage(
+    // Callback that gets the image that was captured.
+    function(mediaFiles)
+    {
+        var filePath = mediaFiles[0].fullPath;
+        var fileURL = "file://" + filePath;
+
+        removeAllImageFilesExcept(
+            filePath,
+            function()
+            {
+                // Pass the URL of the captured image to the camera page.
+                var cameraWebViewHandle =
+                    mosync.nativeui.getWidgetHandleById("cameraWebView");
+                mosync.bridge.callJS(
+                    cameraWebViewHandle,
+                    "camera.setPhotoURL('" + fileURL + "')");
+            },
+            function(errorMessage)
+            {
+                alert(errorMessage);
+            });
+    },
+    function(error)
+    {
+        alert("Could not take picture. Error code: " + error.code);
+    });</pre>
+<p>On success, the custom function <strong>removeAllImageFilesExcept</strong> is called. This function removes any previous snapshot files if present, to avoid the memory card of the device from being filled with image files. (Note that you have to explicitly delete captured image files.) We pass a callback to <strong>removeAllImageFilesExcept</strong> that will call back to the Camera WebView, passing the URL of the image file to be displayed.</p>
+<h2>Uploading Files to a Server</h2>
+<p>Uploading a picture to the server is done using the PhoneGap FileTransfer API. This is done from the main WebView in <strong>index.html</strong>. Here is the code that performs the upload:</p>
+<pre class="mosync-code-cpp">app.uploadPhoto = function(fileURL)
+{
+    var options = new FileUploadOptions();
+    options.fileKey = "file";
+    options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+    options.mimeType = app.getMimeType(options.fileName);
+    options.params = null;
+
+    var transfer = new FileTransfer();
+
+    transfer.upload(
+        fileURL,
+        "http://dev.mosync.com/mobilelua/PhotoGallery/upload.php",
+        function(result)
+        {
+            alert("Photo uploaded");
+        },
+        function(error)
+        {
+            alert("Could not upload photo - error: " + error.code);
+        },
+        options);
+};</pre>
+<p>As you can see in the code, you pass the URL of the file to upload (this is a "file://" URL that points to the path of the image file), and the URL of the server that will receive the upload. The upload server is currently hosted on a MoSync server, to provide a live example of how this service works. The code for the server script is also available as part of the PhotoGallery example application, in file Server/upload.php. The options object passed to the upload function contains additional parameter, such as upload file name and mime-type.</p>
+<h2>Download Images</h2>
+<p>Downloading images is done by custom code implemented in C++. Note that actual images are not downloaded, rather a list of image URLs are downloaded. The actual images are downloaded by the WebView, using HTML image elements. The list of image URLs is an array in JSON format.</p>
+<p>The JSON download is initiated by this function in <strong>index.html</strong>:</p>
+<pre class="mosync-code-cpp">app.downloadPhotoList = function()
+{
+    var galleryWebViewHandle =
+      mosync.nativeui.getWidgetHandleById("galleryWebView");
+    mosync.bridge.send([
+        "Custom",
+        "DownloadPhotoList",
+        "" + galleryWebViewHandle,
+        "http://dev.mosync.com/mobilelua/PhotoGallery/upload.php"]);
+};</pre>
+<p>Note that we pass the MoSync NativeUI handle of the Gallery WebView as part of the <strong>DownloadPhotoList</strong> message. This is used by the C++ side to pass back the result to the WebView in the Gallery tab. The script <strong>upload.php</strong> will be called without any parameters (a plain GET request is made), and in this case the script returns a JSON array with the uploaded images.</p>
+<p>Custom C++ code in file <strong>main.cpp</strong> performs the actual download. The class doing the work is <strong>MyPhotoListDownloader</strong>, which inherits from <strong>Wormhole::HighLevelTextDownloader</strong>, an easy to use high-level downloader class. The C++ function <strong>downloadPhotoList</strong> kicks off the download:</p>
+<pre class="mosync-code-cpp">/**
+ * Called from JavaScript to download a list of photos.
+ */
+void downloadPhotoList(Wormhole::MessageStream&amp; stream)
+{
+    // Get the Gallery WebView widget handle.
+    int webViewHandle = MAUtil::stringToInteger(stream.getNext());
+
+    // Get download url.
+    const char* url = stream.getNext();
+
+    // Initiate download.
+    (new MyPhotoListDownloader(webViewHandle))-&gt;get(url);
+}</pre>
+<p>We first get the handle to the WebView widget, which is passed in the message, and then get the URL of the upload script, and finally we create and start the downloader object. The widget handle is passed to the downloader, so that it knows where to send the download result. (Note that we do not keep any reference to the downloader instance, it is "self-destructed" when the download is finished.)</p>
+<p>The following code in <strong>MyPhotoListDownloader</strong> is called when the download is completed. Note that the handle to the Gallery WebView is used when passing back the JSON array of image URLs (the JSON data is in the variable <strong>result</strong>):</p>
+<pre class="mosync-code-cpp">// Call JavaScript with the result.
+MAUtil::String url = "javascript:gallery.setPhotoList(";
+url += result;
+url += ")";
+
+maWidgetSetProperty(
+    mGalleryWebViewHandle,
+    MAW_WEB_VIEW_URL,
+    url.c_str());</pre>
+<p>This code makes the function <strong>gallery.setPhotoList</strong> defined in file <strong>page-gallery.html</strong> be evaluated. The function dynamically constructs HTML image elements that points to the URLs supplied in the JSON data.</p>
+<p>If you want to have a look at the JSON data that gets downloaded, open the following URL in a web browser:</p>
+<p><a href="http://dev.mosync.com/mobilelua/PhotoGallery/upload.php">http://dev.mosync.com/mobilelua/PhotoGallery/upload.php</a></p>
+<p>To summarise, the code for downloading data requires code in both JavaScript and C++. It could be generalised (and added to the Wormhole JavaScript library) to make downloading work directly from JavaScript (and when WebSockets are supported on all platforms, they can be used instead). As it stands now, however, in the PhotoGallery example, it serves as an illustration of how to call custom C++ code from JavaScript and pass back the result.</p>
+<h2>Binding JavaScript Messages to C++ Functions</h2>
+<p>To make the C++ function <strong>downloadPhotoList</strong> be called when the message <strong>DownloadPhotoList</strong> is sent from JavaScript, we make the following binding in file <strong>main.cpp</strong>:</p>
+<pre class="mosync-code-cpp">mMyMessageHandler.addMessageFun(
+    "DownloadPhotoList",
+    (FunTable::MessageHandlerFun)&amp;MyMoblet::downloadPhotoList);</pre>
+<p>The first parameter to <strong>addMessageFun</strong> is the name of the message command, and the second parameter is a pointer to a member function. <strong>FunTable::MessageHandlerFun</strong> is a function pointer type that is used when invoking message handling functions. The binding will make the given function to be called automatically when the given command is received by C++.</p>
+<p>Here goes a simplified example to make the steps a bit clearer. Assume we wish the make a custom function that makes the device vibrate for a certain period. Here is how we send the message from JavaScript:</p>
+<pre class="mosync-code-cpp">// Vibrate for 2 seconds.
+mosync.bridge.send([
+    "Custom",
+    "Vibrate",
+    "2000"]);</pre>
+<p>The first element in the message array is the message type, which must be "Custom". Then follows the command name, and then zero or more parameters. All parameters must be strings.</p>
+<p>In C++ we need to do two things, register the message function, and define the actual function. Here is how to register a function:</p>
+<pre class="mosync-code-cpp">mMyMessageHandler.addMessageFun(
+    "Vibrate",
+    (FunTable::MessageHandlerFun)&amp;MyMoblet::vibrate);</pre>
+<p>And here is the <strong>vibrate</strong> function (on iOS the duration parameter is ignored):</p>
+<pre class="mosync-code-cpp">void vibrate(Wormhole::MessageStream&amp; stream)
+{
+    int duration = MAUtil::stringToInteger(stream.getNext());
+    maVibrate(duration);
+}</pre>
+<h2>What is Next?</h2>
+<p>You can use the PhotoGallery example as a template for your own applications. If you have questions or feedback, go to the <a href="http://www.mosync.com/forum/592">JavaScript section of the developer forum</a> and share your experience with making web-based and hybrid apps using MoSync SDK and MoSync Reload.</p>
+<p>&nbsp;</p>
+</body>
+</html>

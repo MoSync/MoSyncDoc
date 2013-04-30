@@ -1,0 +1,174 @@
+<html>
+<head>
+<title>In-App Advertisement for JavaScript Developers</title>
+</head>
+<body>
+<h1>In-App Advertisement for JavaScript Developers</h1>
+<p>This tutorial for HTML5 and JavaScript developers explains how you can integrate <a href="http://www.inmobi.com">InMobi</a> banners into you MoSync HTML5 application.</p>
+<p><!--break--></p>
+<h2>Getting Started With In-App Advertisements Using InMobi<strong><br></strong></h2>
+<p>InMobi is an ad banner provider you can use for in-app adverticements in your HTML5/JS app.</p>
+<p>An easy way to get started is to use InMobi's test account. In the long run, however, you will need your own InMobi developer account and a site id. MoSync developers can sign up for an account with InMobi at <a href="http://www.inmobi.com/partners/mosync">www.inmobi.com/partners/MoSync</a>. See <a href="http://developer.inmobi.com/wiki/index.php?title=JavaScript">InMobi's JavaScript documentation</a> for more information about their JavaScript API.</p>
+<p>To try out the InMobi Ad API, you can use either MoSync Reload or the MoSync SDK.</p>
+<p><a href="http://www.inmobi.com/partners/mosync"><img src="images/inmobi-new-logo.jpg" align="none" width="175" height="70"></a></p>
+<div>
+<h2>Using&nbsp;MoSync Reload</h2>
+</div>
+<h3>1. Start Reload</h3>
+<div>
+Start the Reload Server/Development UI (to get started with Reload, consult the guide <a href="TEMPLATE_DOC_PATH/reload/guides/quick-start/mosync-reload-quick-start/index.html">Using MoSync Reload</a>).</div>
+<h3>2. Create a New Project</h3>
+<div>
+In the Reload Development UI, create a New Project with type <strong>Web based</strong>, and name it <strong>MyAdsApp</strong>.<span style="font-size: 12px;"></span></div>
+<h3>3. Connect a Device</h3>
+<div>
+If needed, install the Reload Client app on one or more devices/emulators, and connect to the server (again, consult the guide <a href="TEMPLATE_DOC_PATH/reload/guides/quick-start/mosync-reload-quick-start/index.html">Using MoSync Reload</a> for further instructions).<br><span style="font-size: 12px;"></span></div>
+<h3>4. Reload the App</h3>
+<p>Run the app on your device to confirm that it works by pressing <strong>Reload</strong> in the Development UI. You should see this user interface displayed on connected devices:</p>
+<div>
+<div>
+<p><img src="images/MyAdsAppBasic_0.png" align="none" width="240" height="400"></p>
+</div>
+<div>
+<span style="font-size: 12px;"><span style="font-size: 12px;"></span></span><h3><span style="font-size: 12px;">5. Add Code To Display an Ad Banner<br></span></h3>
+<div>
+<span style="font-size: 12px;">Open the file <strong>index.html</strong> in the LocalFiles folder of the project.</span></div>
+<div>
+<span style="font-size: 12px;"><br></span></div>
+<div>
+<span style="font-size: 12px;">Add the followoing code from the <span style="font-size: 12px;"><span style="font-size: 12px;"><a href="http://developer.inmobi.com/wiki/index.php?title=JavaScript" target="_blank" style="font-size: 12px;">InMobi JavaScript documentation</a> </span></span>to the place in index.html where you want the ad banner to display. Add it for example right after the opening <strong>body</strong> tag in index.html:</span></div>
+<div>
+<span style="font-size: 12px;"><span style="font-size: 12px;"></span></span><pre class="mosync-code-js">&lt;script&gt;
+  var inmobi_conf = {
+    siteid : "4028cba631d63df10131e1d3191d00cb",
+    slot : "15",
+    test: true }; 
+&lt;/script&gt;
+&lt;script src="http://cf.cdn.inmobi.com/ad/inmobi.js"&gt;&lt;/script&gt;</pre>
+</div>
+<div>
+<span style="font-size: 12px;"><span style="font-size: 12px;">The <strong>siteid</strong> "4028cba631d63df10131e1d3191d00cb" is a test it provided by InMobi. The <strong>slot</strong> number "15" specifies that the add should be 320 by 50 in size (see<a href="http://developer.inmobi.com/wiki/index.php?title=JavaScript#Slot_Sizes"> list of slot sizes</a> for further details).</span></span></div>
+<h3><span style="font-size: 12px;">6. Test the Result<br></span></h3>
+<div>
+<span style="font-size: 12px;">Save the file index.html and press the Reload button in the Development UI to see the result. The app should now look something like this, displaying the </span><span>testbanner at the top of the screen:</span></div>
+<div>
+<span><br></span></div>
+</div>
+<div>
+<span style="font-size: 12px;"><img src="images/MyAdsAppBanner_0.png" align="none" width="240" height="400"></span></div>
+<div>
+<span style="font-size: 12px;"><br></span></div>
+<div>
+<span style="font-size: 12px;"><span style="font-size: 12px;">You can also add interstitial ads to your app using similar code.<span style="font-size: 12px;"><span style="font-size: 12px;"> For interstitial ads you need to use specific slot numbers. To experiment further with the Ad API and learn more</span></span>, please consult the <a href="http://developer.inmobi.com/wiki/index.php?title=JavaScript">InMobi's JavaScript Documentation</a>.</span></span></div>
+<h2>Using the Eclipse-based MoSync SDK</h2>
+<p>Using InMobi's JavaScript advertisement API with the MoSync SDK is as simple as using it with Reload. Just open the MoSync Eclipse IDE and create a new project in the from the HTML/JS WebUI template, then edit the file index.html as outlined above.</p>
+<p>To get started with developing HTML5/JS apps using MoSync SDK, check out the guide <a href="http://www.mosync.com/HTML5-JavaScript-App-Development">Getting Started with HTML5 and JavaScript</a>.</p>
+<h2>Full Code Example</h2>
+<p>The following is the full code example for the updated version of index.html:</p>
+<pre class="mosync-code-js">&lt;!DOCTYPE html&gt;
+&lt;!--
+* @file index.html
+*
+* Template application that shows examples of how to access
+* device services from JavaScript using the Wormhole library.
+--&gt;
+&lt;html&gt;
+&nbsp; &lt;head&gt;
+&nbsp;&nbsp;&nbsp; &lt;meta name="viewport" content="width=320, user-scalable=no"&gt;
+&nbsp;&nbsp;&nbsp; &lt;meta http-equiv="Content-type" content="text/html; charset=utf-8"&gt;
+&nbsp;&nbsp;&nbsp; &lt;title&gt;Wormhole Template App&lt;/title&gt;
+&nbsp;&nbsp;&nbsp; &lt;link rel="stylesheet" href="style.css" type="text/css" media="screen" title="no title" charset="utf-8"&gt;
+&nbsp;&nbsp;&nbsp; &lt;script type="text/javascript" charset="utf-8" src="js/wormhole.js"&gt;&lt;/script&gt;
+&nbsp;&nbsp;&nbsp; &lt;script type="text/javascript"&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /**
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * Displays the device information on the screen.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function displayDeviceInfo()
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; document.getElementById("platform").innerHTML = device.platform;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; document.getElementById("version").innerHTML = device.version;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; document.getElementById("uuid").innerHTML = device.uuid;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; document.getElementById("name").innerHTML = device.name;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; document.getElementById("width").innerHTML = screen.width;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; document.getElementById("height").innerHTML = screen.height;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /**
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * Vibrate device.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function vibrate()
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; navigator.notification.vibrate(500);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /**
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * Play one beep sound.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function beep()
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; navigator.notification.beep(1);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /**
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * Change page background to a random color.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function changeColor()
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var color = "#" +
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Math.random() * 0xFFFFFF + 0x1000000)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .toString(16).substr(1,6);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; document.documentElement.style.backgroundColor = color;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; document.body.style.backgroundColor = color;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Register event listeners.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // The "deviceready" event is sent when the system
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // has finished loading.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; document.addEventListener(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "deviceready",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; displayDeviceInfo,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; true);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Close the application when the back key is pressed.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; document.addEventListener(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "backbutton",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function() { mosync.app.exit(); },
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; true);
+&nbsp;&nbsp;&nbsp; &lt;/script&gt;
+&nbsp; &lt;/head&gt;
+&nbsp; &lt;body&gt;
+&nbsp;&nbsp;&nbsp; &lt;div id="screen"&gt;
+
+      // Start of ad banner code.
+&nbsp;&nbsp;  &nbsp; &lt;script&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp; var inmobi_conf = {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp; siteid : "4028cba631d63df10131e1d3191d00cb",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp; slot : "15",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp; test: true
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   };
+&nbsp;&nbsp;&nbsp;   &lt;/script&gt;
+&nbsp;&nbsp;&nbsp;   &lt;script src="http://cf.cdn.inmobi.com/ad/inmobi.js"&gt;&lt;/script&gt;
+      // End of ad banner code.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;div class="pane" id="heading"&gt;Customized Wormhole Technology&lt;/div&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;div class="pane" id="info"&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;div class="infoItem"&gt;Platform: &lt;span id="platform"&gt;&amp;nbsp;&lt;/span&gt;&lt;/div&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;div class="infoItem"&gt;Version: &lt;span id="version"&gt;&amp;nbsp;&lt;/span&gt;&lt;/div&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;div class="infoItem"&gt;UUID: &lt;span id="uuid"&gt;&amp;nbsp;&lt;/span&gt;&lt;/div&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;div class="infoItem"&gt;Name: &lt;span id="name"&gt;&amp;nbsp;&lt;/span&gt;&lt;/div&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;div class="infoItem"&gt;Width: &lt;span id="width"&gt;&amp;nbsp;&lt;/span&gt;&lt;/div&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;div class="infoItem"&gt;Height: &lt;span id="height"&gt;&amp;nbsp;&lt;/span&gt;&lt;/div&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/div&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;div class="pane button" onclick="vibrate()"&gt;Vibrate&lt;/div&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;div class="pane button" onclick="beep()"&gt;Beep&lt;/div&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;div class="pane button" onclick="changeColor()"&gt;Change Color&lt;/div&gt;
+&nbsp;&nbsp;&nbsp; &lt;/div&gt;
+&nbsp; &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</div>
+</body>
+</html>

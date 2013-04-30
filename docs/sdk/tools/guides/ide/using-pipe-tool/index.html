@@ -1,0 +1,92 @@
+<html>
+<head>
+<title>Compilation, Linking, and Assembly</title>
+</head>
+<body>
+<h1>Compilation, Linking, and Assembly</h1>
+<p>Pipe-Tool is MoSync's code transformation engine. It combines the functions of a code linker and assembler, and performs code verification, optimization and dead code elimination to produce highly optimized outputs for each of the target platforms.</p>
+<p><!--break--></p>
+<h2>Invoking Pipe-Tool</h2>
+<p>Pipe-Tool is automatically invoked by the MoSync IDE during the normal build process (when you click the <strong>Run</strong> button, or build a package), so in the normal case you don't need to do anything to use Pipe-Tool, just run or build your project.</p>
+<p>When it is invoked, Pipe-Tool makes several passes through your code. It is very fast: it takes only around one second to make six passes through a 25000 line application.</p>
+<p>For specialist uses, Pipe-Tool can also be run on demand from the command line.</p>
+<h3>Code Compilation</h3>
+<p>As the first step of the build process, the MoSync Eclipse IDE invokes the <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/architecture/toolchain/index.html">GCC compiler</a> to compile your application code.&nbsp;</p>
+<h2>Code Verification and Optimization</h2>
+<p>A little later in the build process, Pipe-Tool takes the output from GCC and the resource pre-compiler (for information about resource compilation, see our <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/resource-compiler-reference/index.html">Resource Compiler Reference</a>) and performs code verification, code optimization, and dead code elimination. Code verification includes among other things:</p>
+<ul style="font-family: Verdana;"><li>Bounds checking</li>
+<li>Division error detection</li>
+<li>Stack abuse detection</li>
+<li>Function tracing</li>
+</ul>
+<p>Depending partly on the output required by the target platform, Pipe-Tool's code optimization features help create faster, smaller programs by:</p>
+<ul style="font-family: Verdana;"><li>Converting immediate values to constant register values</li>
+<li>Eliminating jump-to-jump occurrences</li>
+<li>Rewriting functions to perform constant value inlining</li>
+<li>Analyzing and optimizing program flow</li>
+<li>Analyzing and optimizing register life</li>
+<li>Performing memory index reduction and adaptive index scaling</li>
+</ul>
+<p>During the dead code elimination phase, Pipe-Tool looks through the application tree, marking any nodes that are unreachable. Unlike a traditional linker that marks only whole objects or functions for elimination, Pipe-Tool eliminates dead code down to the lowest level of granularity: right down to individual instructions and bytes.</p>
+<h3>Linking</h3>
+<p>After optimization, Pipe-Tool links the MoSync IL from GCC with the pre-compiled MoSync libraries, and the compiled resource binary to create the MoSync bytecode, Java bytecode, or C/C++ source code that will be packaged with the platform runtimes.</p>
+<h3>Assembly</h3>
+<p>When a program has been optimized and linked, Pipe-Tool sends the internal representation of the program to the compiler backend. The backend transforms the application into a representation that can be understood by the target architecture. Most commonly the program gets assembled into MoSync bytecode which in turn may be interpreted or recompiled by the MoSync runtimes. We also have experimental support for producing a Java bytecode representation of the application that can be executed on Java virtual machines.</p>
+<h2>Using Pipe-Tool from the Command Line</h2>
+<h3>Compiling Resources</h3>
+<p>If your resources are declared via a LST file (see the <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/resource-compiler-reference/index.html">Resource Compiler Reference</a>) you can invoke the resource compiler from the Pipe-Tool command line, if you really need to:</p>
+<p><strong>pipe-tool -R</strong> <em>options outfile infile1 </em>[<em>infile2 </em>...]</p>
+<h3>Building a Library</h3>
+<p>In <strong>-L</strong> mode, Pipe-Tool combines the specifed infiles (<strong>.s</strong> files) into a single library <strong>.lib</strong> file.</p>
+<p><strong>pipe-tool -L</strong> <em>options outfile infile1 </em>[<em>infile2 </em>...]</p>
+<h3>Building an Application</h3>
+<p>In <strong>-B</strong> mode, Pipe-Tool combines the specifed infiles to create a single output file.</p>
+<p><strong>pipe-tool -B</strong> <em>options outfile infile1 </em>[<em>infile2 </em>...]</p>
+<h3>Manual Page</h3>
+<p>The <em>options </em>are described in the Pipe-Tool manual page, which can displayed using:</p>
+<p><strong>pipe-tool -h</strong>&nbsp;</p>
+<pre class="mosync-code-cpp">Usage: pipe-tool &lt;mode&gt; [options] outfile infile1 [infile2 ...]
+
+Mode Switches:
+&nbsp; -L&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; create library
+&nbsp; -R&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; compile resources
+&nbsp; -B&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; build application
+
+General options:
+&nbsp; -h | --help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; show this usage info
+&nbsp; -error-paths&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; show file paths in errors
+&nbsp; -xerr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; extra information in case of errors
+&nbsp; -master-dump&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; also dump the input into a single text file
+&nbsp; -s&lt;dir&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; search &lt;dir&gt; for input libraries
+
+Build application (-B) options:
+&nbsp; -entry=sym&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; set code entry point (default 'crt0_startup')
+&nbsp; -datasize=size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; set data size (default 1048576)
+&nbsp; -stacksize=size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; set stack size (default 131072)
+&nbsp; -heapsize=size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; set heap size (default 524288)
+&nbsp; -appcode=value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; set application code (default 'TEST'(0x54455354))
+&nbsp; -p=vendor/model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link with device profile
+&nbsp; -dump-syms&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dump symbol tables
+&nbsp; -dump-unref&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dump unreferenced symbols
+&nbsp; -sld=file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output source/line translation
+&nbsp; -stabs=file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output debug information
+&nbsp; -elim&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eliminate unreferenced code/data
+&nbsp; -no-verify&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; prevent code verification
+&nbsp; -java&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; build a Java class file
+&nbsp; -gcj=flags&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for -java option: set flags for GCJ
+&nbsp; -cpp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; build C++ source code
+&nbsp; -cs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; build C# source code
+
+Resource compiler (-R) options:
+&nbsp; -depend=file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output dependencies in makefile syntax
+
+Librarian (-L) options:
+&nbsp; -quiet&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; don't display the component files
+
+Library mode (-L) is used to combine .s files into a .lib library file.
+In resource mode (-R), resource files are compiled to the output file.
+In normal mode (-B), one or more input files are built and linked to create a
+single output file.
+</pre>
+</body>
+</html>

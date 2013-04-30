@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>A Tour of the MoSync IDE</title>
+</head>
+<body>
+<h1>A Tour of the MoSync IDE</h1>
+<p><strong></strong>The MoSync IDE is based on Eclipse. We've made several modification to Eclipse to make it a great tool for cross-platform mobile application development, plus of course added some unique MoSync features! In this guide we will take you on a whirlwind tool of the IDE, and give you pointers to more detailed descriptions of each feature.<!--break--></p>
+<p>The IDE lets you edit both HTML5/JavaScript (great for defining user interfaces) and C/C++ (ideal for any heavy lifting your app needs to do).</p>
+<p>Before you start this tour, quickly create a hybrid HTML5/C++ application following our <a href="TEMPLATE_DOC_PATH/sdk/js/tutorials/quick-start/getting-started-html5-and-javascript/index.html">Getting Started with HTML5 and JavaScript</a> tutorial. Once you have done that...</p>
+<p><strong>1.</strong> Edit the code! The index.html file is a standard web page with &lt;head&gt; and &lt;body&gt; tags. Paste in your existing HTML and JavaScript, or create new pages as necessary. Add JavaScript libraries like the <a href="TEMPLATE_DOC_PATH/sdk/js/guides/wormhole/html5-javascript-wormhole/index.html">MoSync Wormhole JavaScript Library</a>, jQuery and jQTouch. Set styles in styles.css, or add stylesheets as needed. Put your app's resource files (images, videos, audio and font files) in the Local Files folder. Read our tutorial <a href="TEMPLATE_DOC_PATH/sdk/js/tutorials/quick-start/how-create-html5-project-mosync/index.html">Developing HTML5 and JavaScript Apps</a>. Explore our <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/index.html">HTML5/JavaScript API Reference</a>.<br><br>The MoSync IDE features <strong>JavaScript Proposals</strong> and <strong>C++ Template Proposals</strong> to help you when you code. Just press CTRL+SPACEBAR:</p>
+<p><img src="images/JavaScript-Proposals.png" align="none" width="650" height="412"></p>
+<p><strong>2.</strong> Check your project's build settings (right-click on project &gt; <strong>Properties</strong> &gt; <strong>MoSync Project</strong> &gt; <strong>Build Settings</strong>). Here you can modify build strategies, see the libraries currently included, set compiler flags, and so on:</p>
+<p><img src="images/Getting-Started-With-HTML5-and-JavaScript-B1.png" align="none" width="650" height="485"></p>
+<p>See <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/build-configurations/index.html">Build Configurations and Settings</a> for more information.</p>
+<p><strong>3.</strong> Set your project's active profile (the one that the MoSync SDK builds for when you click the <strong>Run</strong> button) by clicking the Set Active Profile button:</p>
+<p><img src="images/Build-Profile.png" align="none" width="632" height="138"></p>
+<p>Choose desired capabilities by clicking the <strong>Select Capabilities</strong> button in the <strong>Active Profile</strong> dialog. If you chose the <strong>HTML5/JS WebUI Project</strong> template for your project, for example, the "Must have" capability box for HTML5 is ticked, limiting the platforms available for your project:</p>
+<p><img src="images/Getting-Started-With-HTML5-and-JavaScript-B3.png" align="none" width="650" height="372"></p>
+<p>See <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/using-device-profiles/index.html">Platform and Device Profiles</a> for more information.<strong><br></strong></p>
+<p><strong>4.</strong> Upload your app to a device over Bluetooth. See <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/scanning-for-device/index.html">Scanning for a Device</a> and <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/sending-to-device/index.html">Sending to a Device</a>.</p>
+<p><img src="images/scan-bluetooth.png" align="none" width="239" height="210"></p>
+<p><strong>5.</strong> Output your final packages for all profiles by clicking the <strong>Build for all Profiles</strong> icon&nbsp;<img src="images/Build-for-all-profiles.png" align="none" width="27" height="26"> on the main IDE toolbar. A package will be created for each of your selected profiles:</p>
+<p><img src="images/Getting-Started-With-HTML5-and-JavaScript-B5.png" align="none" width="450" height="211"></p>
+<p>Your application packages will appear in the <strong>Release Packages</strong> folder in your project:</p>
+<p><img src="images/Getting-Started-With-HTML5-and-JavaScript-B5b.png" align="none" width="252" height="349"></p>
+<p>For more information about packaging your application, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/finalizing-applications/index.html">Finalizing Applications</a>.</p>
+<p><strong>6.</strong> Check out the <a href="TEMPLATE_DOC_PATH/index.html">example applications</a> installed with the MoSync Mobile SDK. We've examples for pure&nbsp; HTML5/JavaScript apps, C/C++ apps, and hybrid apps that use both HTML5/JavaScript <em>and</em> C/C++!</p>
+<table class="doclayout" border="0"><tbody><tr><td><img src="images/NFC.png" width="210px" height="349px"></td><td><img src="images/LoveSMS.png" width="210px" height="349px"></td><td><img src="images/GeoLocation.png" width="210px" height="349px"></td><td><img src="images/WebViewTwitter1.png" width="210px" height="349px"></td></tr>
+</tbody></table>
+<p>You can import all the examples from the MoSync IDE's <strong>Welcome</strong> screen (<strong>Help</strong> &gt; <strong>Welcome</strong>). Or you can import individual examples as your need them — see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<p><img src="images/welcome_screen02.png" align="none" width="650" height="399"></p>
+<p><strong>7.</strong> Also on the <strong>Welcome</strong> screen you'll find a link to our <a href="http://www.mosync.com/forum">Mobile Development Forums</a>. We've an active user community who would love to hear from you, to learn from you, and to help you.</p>
+<p><img src="images/Getting-Started-With-HTML5-and-JavaScript-B7.png" align="none" width="650" height="378"></p>
+<p><strong>8.</strong> Explore the MoSync SDK's other <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/projects-and-templates/index.html">HTML5 templates</a>:</p>
+<ul>
+<li>The <strong>HTML/JS NativeUI Project</strong> template makes use of the Wormhole JavaScript Library's NativeUI module to render native user interface widgets.</li>
+<li>The <strong>HTML/JS/C++ Hybrid Project</strong> template makes use of C/C++ libraries for controlling underlying platform capabiliites (in the template, examples are given for vibration and sound alerts).</li>
+</ul>
+<p>We also have many different templates for <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/projects-and-templates/index.html">C and C++ projects</a>. Check them out too. And when you are ready to dig deeper, explore our extensive <a href="http://www.mosync.com/documentation">documentation library</a>.</p>
+<p>&nbsp;</p>
+</body>
+</html>

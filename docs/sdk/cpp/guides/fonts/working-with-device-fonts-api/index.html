@@ -1,0 +1,59 @@
+<html>
+<head>
+<title>The Device Fonts C API</title>
+</head>
+<body>
+<h1>The Device Fonts C API</h1>
+<p>The Device Font C API provides a set of syscall functions that create and manage font handles. The font handles behave like any other <strong>MAHandle </strong>object and can be used either in the context of <strong>maDrawTextW </strong>or NativeUI as needed by the application (Note that MAUI does not support this font system).&nbsp;<!--break--><em><strong>&nbsp;</strong></em></p>
+<p></p>
+<h2>About the Device Fonts API</h2>
+<blockquote><p><em><strong></strong></em>For a list of the platforms on which this API is supported, see <a href="TEMPLATE_DOC_PATH/sdk/tools/references/feature-platform-support/index.html">Feature/Platform Support</a>.</p>
+</blockquote><p>The system works around the concept of font handles. You can obtain a font handle in two ways:</p>
+<ul>
+<li>By using <strong>maFontLoadDefault </strong>that gives you a limited range of standard fonts (Sans Serif, Serif and Monospace), and allows you to specify the style, or</li>
+<li>By using <strong>maFontLoadWithName </strong>(along with <strong>maFontGetCount </strong>and <strong>maFontGetName </strong>) which gives you acces to the entire range of fonts installed in the device.</li>
+</ul>
+<p>Once you acquire a font handle, you can use it either with:</p>
+<ul>
+<li><strong>maDrawText </strong>(and <strong>maDrawTextW</strong>) by passing it to the <strong>maFontSetCurrent </strong>function. Any subsequent calls to <strong>maDrawText&nbsp;</strong>will use that font.</li>
+<li>NativeUI by passing it as the parameter for the <strong> fontHandle </strong>property of various widgets that can present text on the screen.</li>
+</ul>
+<p>You can have multiple font handles loaded at any time. A font handle can be used by multiple widgets and <strong>maFontSetCurrent </strong>at the same time. If for some reason you find yourself not in need of a font handle any more, you can delete it using <strong>maFontDelete</strong>. Never attempt to delete a font that is being used by a NativeUI widget or <strong>maFontSetCurrent</strong>.<br><br>Both <strong>maDrawText </strong>and NativeUI widgets will work even if a font handle is not specified, in which case they will use a default system font.</p>
+<h2>A Note on Size and Color</h2>
+<p>Color is handled by the systems that use the font objects, and as such they are not part of this API. NativeUI Widgets have a font color property that is set independently of the font object. <strong>maDrawText </strong>uses the color set by <strong>maSetColor</strong>.<br><br>Size is set at font creation, and is part of the font object. However, currently NativeUI objects have a "set font size" property. The behavior when using font handles in conduction with the font size property is undefined. Users are advised to only set the font size during the creation of the font handle if they plan to use fonts other than the default one in their applications.</p>
+<h2>Constants</h2>
+<p>The folowing constants are defined in the Device Font API:</p>
+<ul>
+<li>FONT_TYPE_SANS_SERIF</li>
+<li>FONT_TYPE_SERIF</li>
+<li>FONT_TYPE_MONOSPACE</li>
+<li>FONT_STYLE_NORMAL</li>
+<li>FONT_STYLE_BOLD</li>
+<li>FONT_STYLE_ITALIC</li>
+</ul>
+<p>Note that you can use both bold and italic styles by using FONT_STYLE_BOLD|FONT_STYLE_ITALIC.</p>
+<h2>Syscalls</h2>
+<ul>
+<li><strong>maFontLoadDefault </strong>loads a font by specifying the type, style, and size, from a predetermined list of standard fonts.</li>
+<li><strong>maFontGetCount </strong>gets a count of the available fonts installed on the device.</li>
+<li><strong>maFontGetName </strong>gets the post-script name of a font that is installed in the device, by providing it's index.</li>
+<li><strong>maFontLoadWithName </strong>loads a font by providing it's post-script name, and size.</li>
+<li><strong>maFontSetCurrent </strong>sets the font of <strong>maDrawText </strong>and <strong>maDrawTextW</strong>, and returns the previously used font handle.</li>
+<li><strong>maFontDelete </strong>deletes a font.</li>
+</ul>
+<h2>Using the Device Font API</h2>
+<p>Using different fonts and font weights is an easy way to bring attention to the important information in your application. A very simple thing you could do is call <strong>maFontLoadDefault </strong>three times to create a normal, a bold, and an italic version of the FONT_TYPE_SANS_SERIF font, then use these fonts with <strong>maFontSetCurrent </strong>(or NativeUI widgets) as they are needed.<br><br>Or suppose your application allows the user to enter and edit blocks of text, and you want to allow the users to be able to make use of all the fonts available on the device. You can code a NativeUI widget that lists all the installed fonts, and allows the user to select one. To do this you could first call <strong>maGetCount </strong>to get the total number of fonts, and then fill the list by subsequently calling <strong>maFontGetName </strong>for all indices. When the user selects a font from that list, your code calls <strong>maFontLoadWithName</strong>, with that font's name as a parameter, and passes the handle to the <strong>EditBox </strong>widget.<br><br>As a third example, suppose you want to use Comic-Sans in your application, even though it's the worst font ever seen other that for comics. that font is not available on all devices, so to make sure that every one of your users has to suffer that travesty of typography, you can bundle it with your application, and when the time comes to unleash it upon the unsuspecting eyes of your users, you call <strong>maLoadFontWithName("ComicSans",12)</strong>, and load the handle to your widgets.</p>
+<h2>Result Codes</h2>
+<ul>
+<li>RES_FONT_OK indicates that the call to a font syscall was successful.</li>
+<li>RES_FONT_INVALID_HANDLE indicates that an invalid font handle was passed.</li>
+<li>RES_FONT_INDEX_OUT_OF_BOUNDS indicates that the index was off the list size.</li>
+<li>RES_FONT_NO_TYPE_STYLE_COMBINATION indicates that a default font with that combination does not exist.</li>
+<li>RES_FONT_NAME_NONEXISTENT indicates that there is no font with that name on the device.</li>
+<li>RES_FONT_LIST_NOT_INITIALIZED indicates that <strong>maFontGetCount()</strong> was not called first.</li>
+<li>RES_FONT_INSUFFICIENT_BUFFER indicates that the buffer is not big enough to store the font name.</li>
+<li>RES_FONT_INVALID_SIZE indicates that an invalid size was passed.</li>
+<li>RES_FONT_DELETE_DENIED indicates that the font cannot be deleted because it is in use. <strong>maFontDelete(handle) </strong>fails with this return code.</li>
+</ul>
+</body>
+</html>

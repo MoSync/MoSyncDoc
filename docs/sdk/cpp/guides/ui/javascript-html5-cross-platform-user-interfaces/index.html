@@ -1,0 +1,104 @@
+<html>
+<head>
+<title>JavaScript/HTML5 Cross-Platform User Interfaces</title>
+</head>
+<body>
+<h1>JavaScript/HTML5 Cross-Platform User Interfaces</h1>
+<p class="p1">These developer guidelines provide a brief overview of what should be considered when creating HTML5 (or hybrid HTML5/C++) MoSync apps that should be used on devices with varying screen sizes.<!--break--></p>
+<p class="p1"></p>
+<h2 class="p1">Prerequisites and preparations</h2>
+<p class="p2">This overview considers a typical MoSync HTML5 based app. Although there is nothing to stop you from importing your own framework for cross platform HTML5 based apps, for this overview we use the WormholeDemo example provided with the MoSync download. That example already has most of what you need already in place.</p>
+<p class="p2"><span>The WormholeDemo example shows you how to use jQuery and jqTouch to style the app with native looking graphical elements. It also shows how to use different style sheets depending on which platform is being run. This may be extended to include screen size and whether the device is tablet. (To learn the inner workings of this, see the embedded script of the project's index.html file)&nbsp;</span></p>
+<p class="p2">To import WormholeDemo, start the MoSync IDE and follow the instructions here: <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html</a>.</p>
+<h2 class="p2">Get your units straight</h2>
+<p class="p2">The proliferation of screen sizes, device types and web clients pushes cross platform enabled web pages into using relative units instead of absolute units. (Google 'responsive web design' for more info.)</p>
+<p class="p2"><span>One commonly used unit is&nbsp;</span><strong>px</strong><span>, or&nbsp;</span><strong>CSS pixels</strong><span>. CSS pixels is <em>not</em> physical pixels. CSS pixels is the number of 'pixels' that is reported by the web browser. It may happen to be the number of physical pixels, but often its not:</span></p>
+<ul>
+<li>Zooming a web page will obviously not change the number of physical pixels. But the number of CSS pixels will change. Doing a 2x zoom will half the CSS pixel width and height of the device.</li>
+<li>For HTML5 based user interfaces, you will often want to disable zooming to make your app look less browser-based. To do this, add this line to the MyMoblet constructor of main.cpp in WormholeDemo just right after the call to extractFileSystem:</li>
+</ul>
+<pre class="p2">getWebView()-&gt;disableZoom();</pre>
+<p class="p2">Some devices reports the number of CSS pixels as the number of physical pixels divided by a device-specific pixel ratio. For example, the iPhone 3 has 320 physical pixels, and a full screen web view has 320 CSS pixels on this device. However, the 640 pixel retina display will still report 320 CSS pixels. The obvious advantage with this approach is that web pages that were made with the older iPhone in mind will (almost always) work without any changes.</p>
+<p><span>An important relative unit is&nbsp;<strong>em</strong>. This unit is based on the standard font size. (Which is usually 16px, CSS pixels, that is.)</span></p>
+<p><span>Another important relative unit is&nbsp;<strong>%</strong>&nbsp;(percentage). An HTML element can have a width and height specified in a percentage of its parent element.</span></p>
+<p><span>In general, using the relative units is preferred since it will adapt more readily to exotic screen sizes.</span></p>
+<h2 class="p2">Rule of thumb</h2>
+<p class="p2">Some UI elements should not be proportionally resized. Whereas general layouts, list widths, etc, are well suited for CSS percentage units, there is a category of graphical element that is not: Buttons. Or to be precise, anything that requires the user to touch some area of the screen. It is appropriate to assign at least 7-10 mm minimum target area and 2 mm padding between elements. Infrequently used targets can be smaller and targets that trigger actions that are not easy to undo (such as deleting a document or sending a message) should be larger.&nbsp;</p>
+<h2 class="p2">Tablets are different</h2>
+<p class="p2">The larger screen real estate of tablets adds yet another dimension to consider. As an example, the image below shows a popular Android e-mail client. A larger screen could easily display the full message on the right-hand side of the screen, while keeping the list of messages to the left.</p>
+<p class="p2"><img src="images/formfactors.png" align="middle" width="320" height="480"></p>
+<p class="p2">So, not only do we have to consider the display size, but also how that display size can enrich the user experience.&nbsp;</p>
+<h3 class="p1">How can we detect that we are using a tablet?</h3>
+<p class="p2">There is no future-proof, bullet-proof way to do this. But we may apply some heuristics. This code could be inserted right after the mosync.isWindowsPhone variable in wormhole.js. (This JavaScript file is included when you create a new MoSync HTML5 project).</p>
+<pre class="p2">mosync.getPixelDevicePixelRatio = function() {
+  return window.devicePixelRatio === undefined ? 1 : window.devicePixelRatio;
+};
+mosync.getAndroidDips = function() {
+  return window.screen.width / mosync.getPixelDevicePixelRatio();
+}
+mosync.isRetina = (mosync.isIOS &amp;&amp; mosync.getPixelDevicePixelRatio() &gt; 1);
+// 641 dips is a good threshold for 'tablet' type Android devices, modify at will.
+mosync.isLargeScreen = mosync.isRetina || (mosync.isAndroid &amp;&amp; getAndroidDips() &gt;= 641);&nbsp;</pre>
+<p class="p2">Note: the above code only works for Android and iOS.&nbsp;</p>
+<h2 class="p2">Landscape to portrait, portrait to landscape</h2>
+<p class="p2">By default, MoSync does not support orientation changes. To make sure it works for all platforms, add these lines to the MyMoblet constructor of main.cpp in WormholeDemo just right after the call to extractFileSystem:</p>
+<pre class="p2">maScreenSetOrientation(SCREEN_ORIENTATION_DYNAMIC);
+maScreenSetSupportedOrientations(MA_SCREEN_ORIENTATION_LANDSCAPE_LEFT |
+  MA_SCREEN_ORIENTATION_LANDSCAPE_RIGHT | MA_SCREEN_ORIENTATION_PORTRAIT |
+  MA_SCREEN_ORIENTATION_PORTRAIT_UPSIDE_DOWN);</pre>
+<h2 class="p2">Using device dependent style sheets</h2>
+<p class="p2">The MoSync Wormhole framework allows for determining the currently running platform. This can be used to dynamically load the proper style sheet. The WormholeDemo example does this in the initialization of the HTML5:</p>
+<pre class="p2">// Load different themes for different platforms.
+if (mosync.isIOS)&nbsp;{
+  loadjscssfile("js/themes/apple/theme.css", "css");
+  // Fire up JQTouch.
+  var jQT = $.jQTouch({
+    statusBar : 'black',
+  });
+} else if ... // Other platforms</pre>
+<p class="p1"><span>We may add other criteria such as whether it is an iPad, a hires (retina) display, or a tablet. Then we can use a special CSS file that is appropriate for that platform. Please note that It's perfectly ok to call loadjscssfile several times with different CSS files -- this makes it easier to share styles across several platforms.</span></p>
+<h2 class="p2">Images, icons, and its ilk</h2>
+<p class="p2"><span>It is preferrable not to auto-scale icons, logos or other images that have been designed with pixel boundaries in mind. This could result in blurry, low quality icons. (Pictures may be fine to scale automatically, though.)</span></p>
+<p class="p2"><span></span>Here is a list of all image sizes that you may need to provide and that MoSync supports. The size in parenthesis is how much of the image that may contain non-transparent pixels. (The image format is transparent PNG or all platforms.)&nbsp;</p>
+<table border="0"><tbody><tr><td><strong>Platform</strong></td><td><strong>Type of image</strong></td><td><strong>Image Size (physical pixels)</strong></td></tr>
+<tr><td>iOS</td><td><span>Navigator bar icon*</span></td><td>20 x 20</td></tr>
+<tr><td>iOS (hires)</td><td><span>Navigator bar icon*</span></td><td>40 x 40</td></tr>
+<tr><td>iOS</td><td><span>Tab bar icon*</span></td><td>30 x 30</td></tr>
+<tr><td>iOS (hires)</td><td><span>Tab bar icon*</span></td><td>60 x 60</td></tr>
+<tr><td>iOS (iPhone)</td><td><span>Launcher icon</span></td><td>57 x 57</td></tr>
+<tr><td>iOS (iPhone, hires)</td><td><span>Launcher icon</span></td><td>114 x 114</td></tr>
+<tr><td>iOS (iPad)</td><td><span>Launcher icon</span></td><td>72 x 72</td></tr>
+<tr><td>Windows Phone</td><td><span>Action icon*</span></td><td>48 x 48 (26 x 26)</td></tr>
+<tr><td>Windows Phone</td><td><span>Launcher icon</span></td><td>62 x 62</td></tr>
+<tr><td>Windows Phone</td><td><span>Windows Phone Tile image</span></td><td>137 x 137</td></tr>
+<tr><td>Android (ldpi)</td><td><span>Action icon*</span></td><td>24 x 24 (22 x 22)</td></tr>
+<tr><td>Android (mdpi)</td><td><span>Action icon*</span></td><td>32 x 32 (28 x 28)</td></tr>
+<tr><td>Android (hdpi)</td><td><span>Action icon*</span></td><td>48 x 48 (42 x 42)</td></tr>
+<tr><td>Android (xdpi)</td><td><span>Action icon*</span></td><td>64 x 64 (56 x 56)</td></tr>
+<tr><td>Android (ldpi)</td><td><span>Launcher icon</span></td><td>36 x 36 (32 x 32)</td></tr>
+</tbody></table>
+<p class="p2">* If you want the HTML5 app to be native looking.</p>
+<p class="p2">For more information on assigning app icons, see&nbsp;<a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/adding-application-icons/index.html">TEMPLATE_DOC_PATH/sdk/tools/guides/ide/adding-application-icons/index.html</a>.</p>
+<h2 class="p2">How to responsively load images</h2>
+<p>To scale images to the proper size, you may either load the image and scale it to the proper size (using for example the above mentioned em/percentage units). But as previously mentioned, some images are not meant for just scaling them proportionally. Attached to this article is the JavaScript file mosponsive.js (for some unrelated reason renamed; please re-rename when downloading). This script handles HTML img tag rewriting. To use it, just include it in your index.html file right after wormhole.js.</p>
+<p>How does it work? Let's show an example where we want one image for general android devices, one image for high density screens and one image for high density, android devices:</p>
+<pre>&lt;img src="image0.png"
+     data-android="image1.png"
+     data-xhdpi="image2.png"
+     data-android-xhdpi="image3.png"/&gt;  </pre>
+<p>On startup, the script will rewrite the above tag and make sure that the proper image is used. The script handles all img attributes that starts with "data-" and then tries to match each criteria to the current device.</p>
+<p>The script can handle three kinds of criteria: platform, screen density and screen size.</p>
+<p>The platform is any one of android, ios or wp.</p>
+<p>The screen density is how many pixels there are per inch (ppi): ldpi (~120 ppi), mdpi (~160 ppi), hdpi (~240 ppi) and xhdpi (~320 ppi).</p>
+<p>The screen size is the width of the device, measured in&nbsp;<em>device-independent pixels</em> (dp). This roughly corresponds to the actual size of the device; one device independent pixel is ~1/160". (For more info, see for example&nbsp;<a href="http://en.wikipedia.org/wiki/Device_independent_pixel">http://en.wikipedia.org/wiki/Device_independent_pixel</a>). The available screen sizes are small (&gt;426 dp wide), medium (&gt;470 dp wide), large (&gt;720 dp wide) and xlarge (&gt;960 dp wide) -- more or less following the Android standard but ignoring height.&nbsp;</p>
+<h2 class="p2">A few words about fonts</h2>
+<p class="p2"><span>There are just a handful of native fonts for Android, Windows Phone have more and later versions of iOS even more (see iosfonts.com for a good overview) – but more importantly, they share no fonts. <span>The at-rule @font-face can bridge this font gap. Android, iOS and Windows Phone all&nbsp;</span>support TrueType fonts; add one to the project's LocalFiles directory and refer to it in the @font-face at-rule:</span></p>
+<pre>@font-face {
+  font-family: crayon;
+  src: url('DK_Crayon_Crumble.ttf');
+}</pre>
+<h2 class="p2">Final words</h2>
+<p class="p2">Creating a cross-platform app requires a lot a effort. But by using relative units and selecting CSS styles dynamically, complexity can be brought down to a workable level.&nbsp;</p>
+<p class="p2"><em>PS. Did we mention that you can create a fully native UI in MoSync just using HTML? Have a look here: <a href="TEMPLATE_DOC_PATH/sdk/js/examples/wormholenativeui/index.html">TEMPLATE_DOC_PATH/sdk/js/examples/wormholenativeui/index.html</a>. DS.</em></p>
+</body>
+</html>

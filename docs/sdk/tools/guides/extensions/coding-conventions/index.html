@@ -1,0 +1,133 @@
+<html>
+<head>
+<title>Coding Conventions</title>
+</head>
+<body>
+<h1>Coding Conventions</h1>
+<p>These coding conventions are guidelines for developers creating MoSync code. These conventions are largely inspired by and derived from existing ones in well-known programming environments such as Java and SDL. As such, they shouldn't come across as exotic to any moderately experienced programmer.<!--break--></p>
+<p>[toc maxlevel=2;]</p>
+<h2>Header Files&nbsp;</h2>
+<h4>The #define Guard</h4>
+<p>All header files should have&nbsp;#define&nbsp;guards to prevent multiple inclusion. The format of the symbol name should be&nbsp;&lt;PROJECT&gt;_&lt;PATH&gt;_&lt;FILE&gt;_H_.</p>
+<h4>Header File Dependencies</h4>
+<p>Don't use an&nbsp;#include&nbsp;when a forward declaration would suffice.</p>
+<h4>Inline Functions</h4>
+<p>Define functions inline only when they are small, say, 10 lines or less.</p>
+<h4>Function Parameter Ordering</h4>
+<p>When defining a function, parameter order is: inputs, then outputs.</p>
+<h4>Names and Order of Includes</h4>
+<p>Use standard order for readability and to avoid hidden dependencies: C library, C++ library, other libraries' .h, your project's .h.</p>
+<h2>Scoping&nbsp;</h2>
+<h4>Nonmember, Static Member, and Global Functions</h4>
+<p>Prefer nonmember functions within a namespace or static member functions to global functions; use completely global functions rarely.</p>
+<h4>Local Variables</h4>
+<p>Place a function's variables in the narrowest scope possible, and initialize variables in the declaration.</p>
+<h4>Static and Global Variables</h4>
+<p>Static or global variables of class type are forbidden: they cause hard-to-find bugs due to indeterminate order of construction and destruction.</p>
+<h2>Classes&nbsp;</h2>
+<h4>Doing Work in Constructors</h4>
+<p>In general, constructors should merely set member variables to their initial values. Any complex initialization should go in an explicit&nbsp;Init()&nbsp;method.</p>
+<h4>Default Constructors</h4>
+<p>You must define a default constructor if your class defines member variables and has no other constructors. Otherwise the compiler will do it for you, badly.</p>
+<h4>Structs vs. Classes</h4>
+<p>Use a struct only for passive objects that carry data; everything else is a class.</p>
+<h4>Inheritance</h4>
+<p>Composition is often more appropriate than inheritance. When using inheritance, make it public.</p>
+<h4>Multiple Inheritance</h4>
+<p>Only very rarely is multiple implementation inheritance actually useful. We allow multiple inheritance only when at most one of the base classes has an implementation; all other base classes must be pure interface classes tagged with the Interface suffix.</p>
+<h4>Interfaces</h4>
+<p>Interfaces should be named using an I- prefix. Example:&nbsp;IMySexyInterface</p>
+<h4>Access Control</h4>
+<p>Make data members private, and provide access to them through accessor functions as needed. Typically a variable would be called mFoo and the accessor function&nbsp;getFoo(). You may also want a mutator function&nbsp;setFoo().</p>
+<h4>Declaration Order</h4>
+<p>Use the specified order of declarations within a class: public: before private:, methods before data members (variables), etc.</p>
+<h4>Write Short Functions</h4>
+<p>Prefer small and focused functions.</p>
+<h2>Other C++ Features</h2>
+<h4>Reference Arguments</h4>
+<p>All parameters passed by reference must be labeled const.</p>
+<h4>Use of const</h4>
+<p>We strongly recommend that you use const whenever it makes sense to do so.</p>
+<h4>64-bit Portability</h4>
+<p>Code should be 64-bit and 32-bit friendly. Bear in mind problems of printing, comparisons, and structure alignment.</p>
+<h4>Preprocessor Macros</h4>
+<p>Be very cautious with macros. Prefer inline functions, enums, and const variables to macros.</p>
+<h2>Naming&nbsp;</h2>
+<h4>General Naming Rules</h4>
+<p>Function names, variable names, and filenames should be descriptive; eschew abbreviation. Types and variables should be nouns, while functions should be "command" verbs.</p>
+<h4>Type and Namespace Names</h4>
+<p>Type names start with a capital letter and have a capital letter for each new word, with no underscores:&nbsp;MyExcitingClass, MyExcitingEnum.</p>
+<h4>Variable Names</h4>
+<p>They start with a capital letter and have a capital letter for each new word, with no underscores. A m- prefix is used for member variables. A s- prefix is used for static variables. For instance:&nbsp;myExcitingLocalVariable, mMyExcitingMemberVariable, sMyExcitingMemberVariable</p>
+<h4>Constant Names</h4>
+<p>Use capitals and underscore as a separator: DAYS_IN_A_WEEK.</p>
+<h4>Function Names</h4>
+<p>Regular functions have mixed case; accessors and mutators match the name of the variable:&nbsp;myExcitingFunction(), myExcitingMethod(), getMyExcitingMemberVariable(), setMyExcitingMemberVariable().</p>
+<h4>Enumerator Names</h4>
+<p>Enumerators should be named either like constants or like macros:&nbsp;ENUM_NAME.</p>
+<h4>Macro Names</h4>
+<p>You're not really going to define a macro, are you? If you do, they're like this:&nbsp; MY_MACRO_THAT_SCARES_SMALL_CHILDREN.&nbsp;</p>
+<h2>Comments&nbsp;</h2>
+<h4>File Comments</h4>
+<p>Start each file with a copyright notice, followed by a description of the contents of the file.</p>
+<h4>Class Comments</h4>
+<p>Every class definition should have an /** accompanying comment */ that describes what it is for and how it should be used.</p>
+<h4>Function Comments</h4>
+<p>Every function should have a /** declaration comment */ which describes use of the function, using @param and @return syntax.</p>
+<h4>Variable Comments</h4>
+<p>In general the actual name of the variable should be descriptive enough to give a good idea of what the variable is used for. In certain cases, more comments are required.</p>
+<h4>Implementation Comments</h4>
+<p>In your implementation you should have comments in tricky, non-obvious, interesting, or important parts of your code.</p>
+<h4>Punctuation, Spelling and Grammar</h4>
+<p>Pay attention to punctuation, spelling, and grammar; it is easier to read well-written comments than badly written ones.</p>
+<h2>Formatting</h2>
+<h4>Line Length</h4>
+<p>Each line of text in your code should be at most 80 characters long.</p>
+<h4>Preprocessor Directives</h4>
+<p>Preprocessor directives should not be indented but should instead start at the beginning of the line.</p>
+<h4>Class Format</h4>
+<p>Sections in public, protected and private order, each indented one space.</p>
+<h4>Indents and spaces</h4>
+<p>Inconsistent use of indents, tabs and spaces is a problem in much the same way as inconsistent naming is. Most text editors have the necessary options. For example, in Visual Studio, go Tools &gt; Options &gt; Text Editor &gt; C/C++ &gt; Tabs.<br>&nbsp;<br>The following should apply to all MoSync code: one level of indention equals one tab. A tab is defined as the ASCII character \t. The actual screen size of the indents can thus be set by and for each user with no ill effects for others.</p>
+<h2>Syscalls</h2>
+<p>Syscalls are named using a ma- prefix. Only actual Syscalls and IOCTLs are named this way. Examples:<br>&nbsp;<br>void maDisposeLayer(Handle layer);<br>void maSetMap(Handle layer, Handle srcMapResource, int destX, int destY);</p>
+<h2>Library functions</h2>
+<p>Library functions that are directly associated with the manipulation of some complex datatype (such as a struct) should be prefixed with the name of the type followed by an underscore, followed by the function name in camel case. Examples:</p>
+<pre class="mosync-code-cpp">MAVec3_normalize(MAVec3* v);
+MARect_containsPoint(const MAVec3* v, const MAPoint2d* p);&nbsp;
+</pre>
+<p>Library functions that are not directly and strongly related to a datatype should be prefixed with an identifying name for the library, which should always contain an initial 'MA'. Examples:</p>
+<pre class="mosync-code-cpp">MAMath_solveLinearSystem();
+MAInet_sendMail();</pre>
+<h2>Design Patterns</h2>
+<h4>Syscalls and extensions</h4>
+<p>Syscalls and extensions constitute the lowest-level APIs available in MoSync. They are typically directly mapped to underlying platform features and are also subject to a number of restrictions:<br>&nbsp;<br>The number of parameters is limited to four. If more information must be passed, the stack or struct pointers can be used.<br>Parameters cannot be function pointers. If a notification mechanism is required, one is required to make use of (custom) events.<br>The only allowed parameter types are primitive IDL types (see IDL documentation) and IDL structs that actually are declared in the relevant IDL file.<br>The only allowed return types are primitive IDL types.<br>MoSync memory cannot be allocated within syscalls, other than in the specific case of built-in or custom events.</p>
+<h4>Syscalls that manipulate objects/resources</h4>
+<p>Allocation, manipulation and deallocation of native objects (resources) is typically implemented by means of handles.<br>Typically, there is an maCreateX() function, which takes a placeholder handle to represent the allocated native object. Subsequent access to this object is provided through other syscalls that accept handles as their first parameter.<br>Finally, all objects are destroyed using maDestroyObject(). As an example, these are some functions that create and manipulate images:<br>&nbsp;</p>
+<pre class="mosync-code-cpp">void maCreateImageFromData(
+in Handle placeholder,
+in Handle data,
+in int offset,
+in int size
+);
+void maCreateImageRaw(
+in Handle placeholder,
+in MAAddress src,
+in Extent size,
+in int alpha
+);
+void maDrawImage(
+in Handle image,
+in int left,
+in int top
+);
+void maDrawImageRegion(
+in Handle image,
+in MARect srcRect,
+in MAPoint2d dstPoint,
+in int transformMode
+);</pre>
+<h2>Asynchronous operations</h2>
+<p style="text-align: justify; margin-top: 0pt; margin-bottom: 0pt;" dir="ltr">Since MoSync doesn't support user-created threads, it is important to provide asynchronous interfaces to time-consuming native functionality such as network communication. Since syscalls can't accept function pointers, the central MoSync event system is used to provide progress notification. A few built-in event types are provided in the EVENT struct, but there's also a void* provided that can be used for custom events.</p>
+</body>
+</html>

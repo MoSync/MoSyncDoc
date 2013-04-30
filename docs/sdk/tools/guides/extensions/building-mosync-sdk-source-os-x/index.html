@@ -1,0 +1,79 @@
+<html>
+<head>
+<title>Building the MoSync SDK for OS X</title>
+</head>
+<body>
+<h1>Building the MoSync SDK for OS X</h1>
+<p>These
+ instructions describe how to build an OS X installation package for the
+ MoSync SDK. The completed installation package is an .dmg file, just 
+like our <a href="http://www.mosync.com/download">featured releases</a> and our <a href="http://www.mosync.com/nightly-builds">nightly builds</a>.</p>
+<p>To build a full installation package that includes all the
+ MoSync runtimes, you will need a Windows, a Mac OS X, and a Linux 
+machine. If you want an installation package that just has the iPhone 
+runtime, you can build the whole thing on a single OS X machine.<!--break--></p>
+<p>To be able to follow these instructions you will need to be<a href="http://developer.apple.com/programs/register/"> registered</a> as an Apple Developer. Instructions for<a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-mosync-source-windows/index.html"> building the MoSync SDK for Windows</a> are also available.</p>
+<p></p>
+<h2>Hardware Requirements</h2>
+<p>To build the MoSync Eclipse IDE, the MoSync libraries, and the MoSync tools, you will need a Mac OS X Snow Leopard (OS X v. 10.6) computer capable of running Xcode.<br class="kix-line-break"><br>To build the MoSync <em>runtimes </em>you will need:</p>
+<ul>
+<li>For the Java ME, Android, Symbian, and Windows Mobile runtimes, Windows (Windows XP, Windows Vista or Windows 7) computer capable of running Visual Studio C++ 2005. </li>
+<li>For the iPhone runtime, you can use your Mac OS X computer.</li>
+<li>For the Moblin runtimes, you need a Linux computer running the i386 version of Ubuntu.</li>
+</ul>
+<p>If you only want the iPhone runtime, everything can be built on OS X.</p>
+<h2>Preparing the Mac</h2>
+<p><strong>1. </strong>Download and install Xcode 3.2.5 toolset from the<a href="http://developer.apple.com/iphone/login.action"> iPhone Dev Center</a>, including the iPhone SDK.<br><br><strong>2. </strong>Download and install the 32-bit version of<a href="http://www.finkproject.org/"> Fink for Snow Leopard</a>.<br><br><strong>3. </strong>Download and install <a href="http://www.macports.org/">MacPorts</a>.</p>
+<p><strong>4. </strong>Download and install <a href="http://s.sudre.free.fr/Software/Iceberg.html">IceBerg</a> for Mac OS X.<br><br><strong>5. </strong>From the Terminal, run the following commands:</p>
+<p><pre class="mosync-code-cpp">sudo fink -b install sdl
+sudo fink -b install sdl-image
+sudo fink -b install sdl-ttf
+sudo fink -b install sdl-sound
+sudo port install freeimage +universal
+sudo port install ImageMagick +universal
+sudo port install doxygen</pre>
+</p>
+<h2>Getting the MoSync Source Code</h2>
+<p><strong>6. </strong>Get the MoSync source code from github repository:</p>
+<p><pre class="mosync-code-cpp">git clone https://github.com/MoSync/MoSync.git MoSync</pre>
+</p>
+<h2>Getting Eclipse</h2>
+<p><strong>7. </strong>Clone the MoSync Eclipse Repository into the same path as MoSync:</p>
+<p><pre class="mosync-code-cpp">git clone https://github.com/MoSync/Eclipse.git Eclipse</pre>
+</p>
+<p><strong>8. </strong>Download the zip-package <a href="http://www.mosync.com/down/target-platform.zip">here</a> that contains everything needed to build the Eclipse-based IDE and put it in the folder:</p>
+<p><pre class="mosync-code-cpp">/MoSync/tools/ReleasePackageBuild/</pre>
+</p>
+<h2>Making the MoSync Package</h2>
+<p><strong>9.</strong> In your checked out version of the MoSync SDK trunk, go to the folder:</p>
+<p><pre class="mosync-code-cpp">/MoSync/tools/ReleasePackageBuild/</pre>
+</p>
+<p>then run:</p>
+<p><pre class="mosync-code-cpp">./build_mac_package.sh</pre>
+</p>
+<p><strong>10.</strong> If everything goes as it should, the script will build a <strong>.dmg</strong> installation package in the folder called /results.<br><br><strong>11. </strong>Install the <strong>.dmg</strong> installation package on an OS X machine.<br><br><strong>12.</strong> If required, <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-moblin-runtimes-linux/index.html">build the Moblin runtimes on Linux</a>.<br><br><strong>13. </strong>If required, build the Windows Mobile, &nbsp;Java ME, Android, and Symbian runtimes on Windows (see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-mosync-source-windows/index.html">Building the MoSync SDK on Windows</a>).<br><br><strong>14. </strong>Add the runtimes to the folder:</p>
+<p><pre class="mosync-code-cpp">/Applications/MoSync/profiles</pre>
+</p>
+<p><strong>15. </strong>Done.</p>
+<h2>Building an iPhone Runtime for the MoSync SDK on Windows</h2>
+<p>If you want to create an iPhone runtime <em>to use with the Windows version of the MoSync SDK </em>(see<a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-mosync-source-windows/index.html"> building the MoSync SDK for Windows</a> ), here’s how:<br><br><strong>1. </strong>Follow the instructions above for Preparing the Mac and Getting the MoSync Source Code. (You do not need to get Eclipse or make the MoSync package.)<br><br><strong>2. </strong>Give your user the correct permissions to the /MoSync folder by entering the following command at the Terminal (replace user with you actual user name):</p>
+<p><pre class="mosync-code-cpp">sudo chown -R user  /Applications/MoSync</pre>
+</p>
+<p><strong>3. </strong>To build the MoSync base prerequisites, go to your cloned MoSync source directory and run the command:</p>
+<p><pre class="mosync-code-cpp">ruby workfile.rb base</pre>
+</p>
+<p><strong>4. </strong>Now you are ready to build the iPhone runtime from source. In your checked out version of the MoSync SDK trunk do:</p>
+<p><pre class="mosync-code-cpp">cd runtimes/cpp/platforms/iphone
+cp Classes/impl/config_platform.h.example Classes/impl/config_platform.h
+ruby buildLibraries.rb
+cp -R template $MOSYNCDIR/profiles/runtimes/iphoneos/1/</pre>
+</p>
+<p><strong>5.</strong> Find the runtime in the folder:</p>
+<p><pre class="mosync-code-cpp">/Applications/MoSync/profiles/runtimes/iphoneos/1/</pre>
+</p>
+<p><strong>6. </strong>Copy it to your MoSync installation directory on your Windows computer in the folder:</p>
+<p><pre class="mosync-code-cpp">\MoSync\profiles\runtimes\iphoneos\1\</pre>
+</p>
+<p><strong>7. </strong>Done.</p>
+</body>
+</html>

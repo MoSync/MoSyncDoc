@@ -1,0 +1,264 @@
+<html>
+<head>
+<title>HelloWorld, Deconstructed</title>
+</head>
+<body>
+<h1>HelloWorld, Deconstructed</h1>
+<p>In our beginners tutorial <a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/quick-start/creating-your-first-cpp-application/index.html">Creating Your First C/C++ Application</a> we asked you to paste our "Hello World" application into the IDE. In this tutorial we are going to take a much deeper look at that code, including how we handle events like key presses using our Moblet framework.</p>
+<p><!--break--><strong><em> </em></strong></p>
+<p><strong>A note to absolute beginners: </strong>C/C++ applications can be a little overwhelming at first, but with a little persistence you will soon get the hang of it. As you go through this tutorial, try <em>typing </em>each line into the MoSync IDE, rather than just cutting and pasting. That way you''ll get a better feel for laying out the code and getting the syntax right. As you type, you will be given interactive help by the IDE, which can be very useful. Remember to use the Moblet Project template when you create you project.</p>
+<p><strong>A note to experienced C++ developers: </strong>You probably know a lot of this stuff already, so feel free to skip ahead to our extensive collection of <a href="http://www.mosync.com/content/code-examples">tutorials </a>and <a href="TEMPLATE_DOC_PATH/HOME_PATH/index.html">example applications</a>. On the other hand, if you do read on, maybe you will learn something important you didn't know about C/C++ or MoSync, like that tricky <strong>MAMain </strong>entry point....</p>
+<h2>Hello World (Naked)</h2>
+<p>Here is the code we asked you paste into the MoSync IDE in our <a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/quick-start/creating-your-first-cpp-application/index.html">Creating Your First Application</a> tutorial:</p>
+<div>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+
+using namespace MAUtil;
+
+class MyMoblet : public Moblet
+{
+public:
+    MyMoblet()
+    {
+        maSetColor(0xFFFFFF),
+        maDrawText(0, 32, "Hello World!");
+        maUpdateScreen();
+    }
+
+    void keyPressEvent(int keyCode, int nativeCode)
+    {
+        if(keyCode == MAK_0 || keyCode == MAK_BACK || keyCode == MAK_SOFTRIGHT)
+        {
+            close();
+        }
+    }
+
+    void keyReleaseEvent(int keyCode, int nativeCode)
+    {
+    }
+};
+
+extern "C" int MAMain()
+{
+    MyMoblet myMoblet;
+    Moblet::run( &amp;myMoblet );
+    return 0;
+}</pre>
+</div>
+<p>Now let's take a close look at what is going on in each of these lines of code.</p>
+<h2>Including Library Classes</h2>
+<p>The program starts with a <em>directive </em>to include the contents of the <strong>Moblet.h</strong> header file from MoSync's <strong>MAUtil </strong>directory:</p>
+<div>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;</pre>
+</div>
+<p>In C/C++, header files are an important way to connect together the different files of a program. It is common practice to put the generic code that you might want to use in many places in a separate file and two create a header file that contains forward definitions (declarations of classes, functions, and data types) for that generic code. Then you use an <strong>#include</strong> statement to include the header file in your other code modules. The header file acts like an interface to your generic code. That way you can reuse your generic code in many places, but only have to make updates to it in one place. For information, see <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/libs/working-with-mosync-libraries/index.html">Working with MoSync Libraries</a>.</p>
+<p>Here we are using a header file to connect our main application file with the pre-compiled library file (<strong>mautil.lib</strong>) that contains the generic code for Moblets.</p>
+<p>The "<strong>#</strong>" sign indicates that this directive is to be handled the preprocessor&nbsp;— a program that will be called by the compiler as the first step of translating our source code into an executable binary file. In this case the directive instructs the preprocessor to read in the declarations in <strong>Moblet.h</strong>. We will explain what a Moblet is, and how you use it, a little later on.</p>
+<h2>Using Namespaces</h2>
+<p>Our next statement specifies that we will be using the MAUtil namespace as the base reference for our objects:</p>
+<div>
+<pre class="mosync-code-cpp">using namespace MAUtil;</pre>
+</div>
+<p>The effect of using this namespace is to say "look in the set of things called "MAUtil" to find the definitions of the identifiers I use in this program". By specifying the namespace here our code becomes more readable. If we didn't have this line, we would have to explicitly reference the scope of MAUtil objects, we would have to write <strong>MAUtil::Moblet</strong> every time we wanted to use the Moblet class.</p>
+<h2>Inheriting From a Base Class</h2>
+<p>The next thing we need to do in our application is define its classes. Here we define a new class, based on the Moblet class, called <strong>MyMoblet</strong>:</p>
+<div>
+<pre class="mosync-code-cpp">class MyMoblet : public Moblet {</pre>
+</div>
+<p><strong>Moblet </strong>is a MoSync base class - a class which is meant to be built upon to do something useful. In the C++ world, a class is essentially a set of data and functions which manipulate that data (often referred to as instance variables and methods in other object-oriented languages).&nbsp; A class is a blueprint: in a running application the class is used to create actual objects (instances) as they are needed.</p>
+<p>Usually a class represents something concrete — although it's sometimes a little hard to understand what that thing is. In the case of Moblet it represents a simplified event handler for a mobile device.</p>
+<p>As we will see later, <strong>Moblet </strong>takes care of the application main loop for you. All you need to do is subclass it and implement functions for the events that you want to your program to respond to (such as key presses, screen touches, and new connections). A Moblet application responds to events in a consistent way regardless of the device it runs on. That means we do not need different code for an Android device, Symbian device, a Windows Mobile device, or a phone running Java ME.</p>
+<p>To learn more about the events that Moblet can detect, and the various types of listeners you can set up, look up Moblet in the <em>MoSync API Reference Guide</em> in the IDE under <strong>Help </strong>&gt; <strong>API Reference</strong> &gt; <strong>Classes </strong>&gt; <strong>MAUtil::Moblet</strong>.</p>
+<p>Our new class, <strong>MyMoblet </strong>inherits all the chracteristics of the <strong>Moblet </strong>base class, and adds to it. What we will be adding are functions that will perform actions when events occur.</p>
+<p>The keyword "public" before the Moblet identifier means that other classes and functions in our application can access all the public members of the Moblet base class when using MyMoblet. That is to say, what is defined as public in <strong>Moblet </strong>becomes public in <strong>MyMoblet</strong>, even if we don't get around to listing them in <strong>MyMoblet</strong>.</p>
+<h2>Declaring Public Members</h2>
+<p>The data members (instance variables) and member functions (methods) within a class can be either public or private. If they are in the public section of the class, they can be accessed from other classes. Here we start the list of public members of our MyMoblet class:</p>
+<div>
+<pre class="mosync-code-cpp">public:</pre>
+</div>
+<h2>Defining a Constructor</h2>
+<p>The first public member of our MyMoblet class is a method, the constructor. The constructor gets called when an instance of the class (an object) is created. In this case it is a parameterless constructor as we don't need to pass in any data:</p>
+<div>
+<pre class="mosync-code-cpp">    MyMoblet() {</pre>
+</div>
+<p>(In the case of MyMoblet there is no destructor to clean up after the object once it has fulfilled its usefulness, simply because it would be empty. Constructors and destructors can be implicit: if you don't specify a constructor or destructor, the compiler will put it in.)</p>
+<h2>Using Syscalls</h2>
+<p>The <strong>MyMoblet </strong>constructor contains three function calls which will be executed in sequential order. (You can distinguish function calls from data members in a class because they are immediately followed by 0, 1, or more parameters in parentheses.)</p>
+<p>These three function calls - we call them <strong>syscalls </strong>- are to low-level, device-independent functions that are defined in the main MoSync syscall header file, <strong>maapi.h</strong>. You'll be using the functions defined in <strong>maapi.h</strong> a lot in your applications, so it's worth getting to know it intimately. Read about <strong>maaip.h</strong> syscalls in the <em>MoSync API Reference Guide</em> in the IDE under <strong>Help </strong>&gt; <strong>API Reference</strong> &gt; <strong>Files </strong>&gt; <strong>maapi.h</strong>.</p>
+<p>The first syscall sets the colour of the output to white:</p>
+<div>
+<pre class="mosync-code-cpp">        maSetColor(0xFFFFFF);</pre>
+</div>
+<p>From now on, until it is explicitly changed, all output from text and drawing commands will be displayed in this colour. Note that each statement within the method is terminated by a semicolon in C/C++.</p>
+<p>The second syscall in the MyMoblet constructor renders the text "Hello World!" to the backbuffer at the coordinates x=0 and y=32:</p>
+<div>
+<pre class="mosync-code-cpp">        maDrawText(0, 32, "Hello World!");</pre>
+</div>
+<p>The coordinates 0,0 are the top left corner of the screen. The y-axis increases as you head downwards, the x-axis increases as you head rightwards.</p>
+<p>To make screen update flicker free, drawing is done to a so called backbuffer, which later, when everything is drawn, will be copied in to the display. Thus the text is not yet visible at this point in the program.</p>
+<p>The third syscall is what updates the physical screen of the device with the contents of the backbuffer:</p>
+<div>
+<pre class="mosync-code-cpp">        maUpdateScreen();</pre>
+</div>
+<p>If you forget this last statement, and that's easy to do, you would just see a blank screen when you ran your application!</p>
+<h2>Grouping Statements With Brackets</h2>
+<p>Curly brackets are used to group statements in C/C++. Now that we are at the end of the constructor, we close the opening curly bracket at the beginning:</p>
+<div>
+<pre class="mosync-code-cpp">    }</pre>
+</div>
+<p>(The bracket that marks the beginning of the class will be closed it later on, when our class is complete.)</p>
+<h2>Detecting Key Presses</h2>
+<p>The second public method of our MyMoblet class is <strong>keyPressEvent</strong>:</p>
+<div>
+<pre class="mosync-code-cpp">    void keyPressEvent(int keyCode, int nativeCode) {</pre>
+</div>
+<p>Before the name of the method, we need to state the type of the data that the method returns. In this case, the method does not return anything ("void" = nothing).</p>
+<p>The <strong>keyPressEvent </strong>method is called whenever a key is pressed on the device's keypad. It is passed two parameters by the MoSync runtime — the runtime is that part of MoSync which interfaces with the device's operating system and which handles the syscalls from your application.</p>
+<p>The first parameter is a device-independent code representing a key, a MAK code. Regardless of the device, if the 0 key on the device's keypad is pressed, the keycode will be <strong>MAK_0</strong>, and if the device has a back key it will be <strong>MAK_BACK</strong>.</p>
+<p>You can find all the MAK codes in the <em>MoSync API Reference Guide</em> in the IDE under <strong>Help </strong>&gt; <strong>API Reference</strong> &gt; <strong>File Members</strong> &gt; <strong>Defines </strong>&gt; <strong>M</strong>.</p>
+<p>The second parameter is device-specific (native) key code. That's needed because the MoSync MAK codes are not an exhaustive list of all the buttons ever made available on a mobile device, instead they are a common subset. Your phone may have a button which is specific to that model, for instance the volume keys or the back button on an Android phone. If you know what the value of those keys, you can act on them here.</p>
+<p>The <strong>keyPressEvent </strong>method is one of several methods we have inherited from the <strong>Moblet </strong>base class. Here we replace (override) the method with our own version. When the program runs and an instance of <strong>MyMoblet </strong>is created, the C++ runtime system will detect that the instance has a method that replaces the method in the base class. Methods that can be overridden like this are called "virtual methods" in C++.</p>
+<h2>Closing Applications</h2>
+<p>Now we define what should happen if the zero key on the keypad has been pressed (or the back button, or the soft-right key), and in this case we are just going to exit the program using Moblet's <strong>close </strong>function:</p>
+<div>
+<pre class="mosync-code-cpp">        if(keyCode == MAK_0 || keyCode == MAK_BACK || keyCode == MAK_SOFTRIGHT)
+        {
+            close();
+        }
+    }</pre>
+</div>
+<p>The close method releases any resources used by the object and ends the execution of the program.</p>
+<p>The Moblet base class also includes a <strong>closeEvent </strong>method. That method can be used to detect a forced application close detected by the MoSync runtime on the device. By overriding it in your Moblet-based class, you can perform essential data-saving tasks - you only have a second or so! - before your application is forced to terminate by the devices OS.</p>
+<h2>Detecting Other Events</h2>
+<p>There are many other event detection methods in the Moblet base class that you can override, including pointer movements, focus changes, Bluetooth connection, timers, and so on. The <strong>keyReleaseEvent </strong>which comes next in our example is another method that you will commonly want to implement in a Moblet-based application. It isn't actually needed for this simple application, but it works in a similar way to the keyPressEvent we used above.</p>
+<div>
+<pre class="mosync-code-cpp">    void keyReleaseEvent(int keyCode, int nativeCode) {</pre>
+</div>
+<p>For a complete list of the events See the <em>MoSync API Reference Guide</em> in the SDK under <strong>Help </strong>&gt; <strong>API Reference</strong> &gt; <strong>Classes </strong>&gt; <strong>MAUtil::Moblet</strong>.)</p>
+<h2>Commenting Code</h2>
+<p>We've left a comment which you can replace with your own code for key release events:</p>
+<div>
+<pre class="mosync-code-cpp">        // todo: handle key releases - put your code here.
+    }</pre>
+</div>
+<p>Single line C/C++ comments are preceded by two forward slash characters // and terminate at the line end. Anything on the right side of both forward slashes would not be read by the compiler (actually the parser).</p>
+<p>You can also use a single forward slash followed by an asterisk to indicate the start of a comment. To end the comment, type an asterisk followed by a forward slash, for example:</p>
+<div>
+<pre class="mosync-code-cpp">/* This is a comment */ </pre>
+</div>
+<p>This type of comment can be spread over several lines.</p>
+<p>There are no private data members or functions needed for the MyMoblet class, so we can just close its definition now. Note that we need to put a semicolon after bracket that closes a class.</p>
+<pre>};</pre>
+<p>Now we have completed our definition of the MyMoblet class, which is the only class we need in this simple application. If we needed more classes, we would put them here.</p>
+<h2>Defining the Application Start Point</h2>
+<p>We move on to defining the entry point of our program. This is the place where the execution of the application starts when it is run:</p>
+<div>
+<pre class="mosync-code-cpp">extern "C" int MAMain() {</pre>
+</div>
+<p>In C you always have a function called <strong>main()</strong> that is called when the program execution starts. In a MoSync application, the <strong>main()</strong> function is actually implemented in the runtime. (Remember, that's the part of the application that interfaces with the device's operating system, and hides the complexity of the OS from your application.) In <em>your </em>application you need to use <strong>MAMain()</strong> to mark its start point. Just think of <strong>MAMain()</strong> as a synonym for <strong>main()</strong>.</p>
+<p>Because C++ is an object-oriented programming language which includes (and is built upon) the procedurally-oriented C language, C++ programs can consist of both C++ classes (like <strong>MyMoblet</strong>) and C statements like this one. Unlike our earlier methods, this one is a C function (hence the <strong>extern "C"</strong> bit). A function is like a method, but is not associated with an object, and is defined outside of the classes in the program. In C++, you can freely mix between C and C++ but you always have to start your applications in C.</p>
+<h2>Running our Moblet Application</h2>
+<p>There is a static method in the <strong>Moblet </strong>class called <strong>run </strong>(a static method is associated with the class, not with any instance). This is what starts your application. To call the <strong>run </strong>method you need to pass it a pointer to a new instance of our <strong>MyMoblet </strong>class, so we create one with the "new" keyword:</p>
+<div>
+<pre class="mosync-code-cpp">    Moblet::run(new MyMoblet());</pre>
+</div>
+<p>This constructs the <strong>MyMoblet </strong>instance and runs the code in the <strong>MyMoblet </strong>constructor.</p>
+<h2>Returning Results</h2>
+<p>C <strong>main </strong>methods should always return an integer (int), so we return 0, by which we indicate that the program has successfully ended:</p>
+<div>
+<pre class="mosync-code-cpp">    return 0;
+}</pre>
+</div>
+<p>And that's it. Our application is now ready to build and run.</p>
+<h2>Hello World (Fully Clothed)</h2>
+<pre class="mosync-code-cpp">/** 
+* This application provides a very basic example of how to use MoSync
+* to print the text "Hello World" to a device's screen. The code is very
+* well commented so that you can see exactly what's happening at each step.
+* The application makes use of MoSync's Moblet framework to handle events.
+*
+* @file helloworld.cpp
+*
+* @author Chris Hughes
+*/
+
+/*Include the header files for MoSync Moblets so that we can
+*access the Moblet library code from our application.
+*/
+#include &lt;MAUtil/Moblet.h&gt;
+
+/*Declare the MAUtil namespace so that we can use the short forms of
+*identifiers in our code. This allows us to write, for example,  "Moblet"
+*instead of "MAUtil::Moblet".
+*/
+using namespace MAUtil;
+
+/*Create the wrapper for the entire application. It is here that we will manage
+*the application and handle events. To create the wrapper we make our own
+*implementation of the MoSync Moblet base class. There can be only one Moblet
+*in an application.
+*/
+class MyMoblet : public Moblet
+{
+
+// Define our new class's public methods.
+public:
+    /*First, the constructor, which we will call whenever we need an
+    *instance of MyMoblet. In this case, the constructor consists
+    *of three syscalls.
+    */
+    MyMoblet() 
+    {
+        // The first syscall sets the background colour.
+        maSetColor(0xFFFFFF);
+
+        // The second syscall writes the text "Hello World" to the backbuffer.
+        maDrawText(0, 32, "Hello World!");
+
+        // The third syscall copies the contents of the backbuffer to the
+        // physical screen.
+        maUpdateScreen();
+    }
+
+    /*Next, a method for detecting key presses. This is a method we have
+    *inherited from the Moblet base class and here we will override that
+    *method with some processing of our own.
+    */
+    void keyPressEvent(int keyCode, int nativeCode)
+    {
+        //Close the application if the zero, back, or soft-right key is pressed.
+        if(keyCode == MAK_0 || keyCode == MAK_BACK || keyCode == MAK_SOFTRIGHT)
+        {
+            close();
+        }
+    }
+
+    // Finally, a code stub we might need to use later for another event type.
+    void keyReleaseEvent(int keyCode, int nativeCode) 
+    {
+        // to do: handle key releases - put your code here.
+    }
+};
+
+/*Now we get to the entry point for the application - the place where
+*processing starts.
+*/
+extern "C" int MAMain() 
+{
+    // Create the instance of MyMoblet
+    MyMoblet myMoblet;
+
+    // Run the Moblet to start the application.
+    Moblet::run( &amp;myMoblet );
+
+    /*MyMoblet will run until it is closed by the user pressing key 0. When
+    *it's closed we end our program in a well-behaved way by returning zero.
+    */
+    return 0;
+}</pre>
+<h2>What Next?</h2>
+<p>If you are new to C++, there are many useful references and tutorial sites on the Internet that can help you learn more. We particularly recommend the C++ language tutorials at <a href="http://www.cplusplus.com/doc/tutorial">http://www.cplusplus.com/doc/tutorial</a>.</p>
+<p>We have several other beginner's application examples which you can find in the MoSync IDE, for example: <span style="font-size: small;"></span><a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/helloworld/index.html">HelloWorld</a>, <span style="font-size: small;"></span><a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/hellomoblet/index.html">HelloMoblet</a>, <span style="font-size: small;"></span><a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/hellonativeui/index.html">HelloNativeUI</a>, <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/helloopengles/index.html"><span style="font-size: small;">HelloOpenGLES.</span></a></p>
+<p>We have a more advanced example of a <strong>Moblet </strong>application in our programmer's guide <a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/basic/event-driven-object-oriented-applications/index.html">Event-Driven OO Applications</a>, and in our tutorial <a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/maui/starting-new-moblet-project/index.html">Starting a New Moblet Project</a>.</p>
+</body>
+</html>

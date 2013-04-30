@@ -1,0 +1,17 @@
+<html>
+<head>
+<title>Setting Application Permissions</title>
+</head>
+<body>
+<h1>Setting Application Permissions</h1>
+<p>Some mobile devices (particularly Symbian and JavaME devices) require that your application has permission to access functions and services like Bluetooth, camera, contacts, Internet access, OpenGL, push notifications, sensors, and file storage. The MoSync SDK makes it easy to grant access to such services and functions.</p>
+<p><!--break--></p>
+<p>An error on a device, such as the Symbian OS error "-46 KErrPermissionDenied", is a sure sign that your application is trying to access a device function or service without the necessary permissions.</p>
+<p>You can set the access permissions that your app needs from the <strong>Properties </strong>menu for your project. Highlight your project in <strong>Project Explorer</strong>, then select <strong>Project </strong>&gt; <strong>Properties </strong>&gt; <strong>MoSync Project</strong> &gt; <strong>Application Permissions</strong>.</p>
+<p>Use the checkboxes to grant access to the device services that you application uses when it executes.</p>
+<p><img src="images/application-permissions_0.png" align="none" width="650" height="504"></p>
+<p>Click <strong>OK</strong> to apply the changes, then rebuild your project.</p>
+<p>We strongly recommend that you grant your application just enough permissions to run properly, and no more. This is not only for the sake of security, but also to avoid annoying end-users who might decide that an application that has unnecessary permissions is suspicious and is doing stuff that it shouldn't.</p>
+<p>&nbsp;</p>
+</body>
+</html>

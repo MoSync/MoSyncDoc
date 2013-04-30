@@ -1,0 +1,233 @@
+<html>
+<head>
+<title>File Storage Syscall Functions</title>
+</head>
+<body>
+<h1>File Storage Syscall Functions</h1>
+<p>MoSync code libraries provide several APIs that you can use to manage a device's file system resources. These APIs are built upon a set of syscall functions which provide the basic interface to the MoSync Runtime on the device and through that to the file system itself. Here we take a deeper look at these important syscalls.<!--break--></p>
+<p></p>
+<h2>Other APIs</h2>
+<p>MoSync libraries provide several APIs through which your application can access a device's native file system:</p>
+<ul>
+<li>HTML5 application code can make use of the <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/file.md.html#File">File API</a> in the <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/index.html">Wormhole JavaScript Library</a>. The File API is both W3C and PhoneGap compatible.</li>
+</ul>
+<ul>
+<li>C/C++ application code can make use of the MoSync <a href="http://www.mosync.com/files/imports/doxygen/latest/html/_file_8h.html">MAFS API</a>, a brief overview of which can be found <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/storage/mafs-library/index.html">here</a>. It supplies a fixed <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/storage/mafs-library/index.html">bundle of virtual files</a> accessible through C stdio-type functions and can write changes to the native file system.</li>
+</ul>
+<ul>
+<li>From C/C++ you can also use the <a href="http://www.sourceware.org/newlib/libc.html">Newlib C Library</a>, which exposes all the standard C io functions.</li>
+</ul>
+<p>All these functions rely at the lowest level on MoSync File syscall functions, which we describe further in this tutorial.</p>
+<h2>MoSync File Syscall Functions</h2>
+<p>All MoSync syscalls for files are declared in <a href="http://www.mosync.com/files/imports/doxygen/latest/html/maapi_8h.html">maapi.h</a> and have names beginning with "maFile". They include <strong>maFileOpen, maFileRead</strong>, <strong>maFileWrite</strong>, <strong>maFileClose</strong> and many others.</p>
+<p>The full details of these functions are available in the <a href="http://www.mosync.com/files/imports/doxygen/latest/html/index.html">MoSync API reference</a> documentation for <strong>maapi.h</strong>.</p>
+<h2>File basics</h2>
+<p>Before a file can be accessed, a handle to it must be opened. Once a handle has been aquired, the file can be created, written, read, renamed, truncated and deleted. All handles must be closed once you're done with them, or your program will leak memory.</p>
+<p>Directories are a special type of file that contains other files. Directories cannot be read, written, or truncated, but they can be created, deleted and renamed. The names of directories always end with a slash ('/').</p>
+<h2>Example: File Listing</h2>
+<p>Before files can be opened you must know their names.</p>
+<p>You may read the list of root directories and their contents using <strong>maFileList</strong>, or find your app's private directory using:</p>
+<pre class="mosync-code-cpp"> maGetSystemProperty("mosync.path.local"); </pre>
+<p>This function prints a list of all files in readable directories on the entire device. Note: on most devices, it will take a <em>long</em> time to complete.</p>
+<pre class="mosync-code-cpp">void printFileList(const char* path) {
+    // The buffer is static to conserve stack space.
+    static char buffer[1024];
+
+    MAHandle list = maFileListStart(path, "*", 0);
+    if(list &lt; 0) {
+        printf("maFileListStart error %i", list);
+        return;
+    }
+    int size;
+    while((size = maFileListNext(list, buffer, sizeof(buffer))) &gt; 0) {
+        // Since the program can take so long to run, we check for 
+                // keypresses often.
+        checkEvents();
+
+        if(size &gt; (int)sizeof(buffer)) {
+            printf("Buffer too small!\n");
+            return;
+        }
+
+        // Print the path and name of the file we found.
+        printf("%s%s\n", path, buffer);
+
+        // If we found a directory, print its contents.
+        if(buffer[size-1] == '/') {
+            MAUtil::String subDir(path);
+            subDir += buffer;
+            printFileList(subDir.c_str());
+        }
+    }
+    maFileListClose(list);
+}
+
+int MAMain() {
+    printFileList("");
+}</pre>
+<h2>Example: Reading a File</h2>
+<p>This program reads a named file from the local path. If the file does not exist, it is created. If the local path does not exist, an attempt is made to use the root of the first available filesystem instead.</p>
+<pre class="mosync-code-cpp">#include &lt;ma.h&gt;
+#include &lt;maassert.h&gt;
+#include &lt;conprint.h&gt;
+#include &lt;MAUtil/String.h&gt;
+#include &lt;MAUtil/FileLister.h&gt;
+
+static int getSystemProperty(const char* key, MAUtil::String&amp; dst) {
+    int size = maGetSystemProperty(key, NULL, 0);
+    if(size &lt; 0)
+        return size;
+    dst.resize(size-1);
+    maGetSystemProperty(key, dst.pointer(), size);
+    return size;
+}
+
+static MAUtil::String getLocalPath() {
+    // Do this here to work around a MoRE bug.
+    FileLister fl;
+    fl.start("/");
+
+    MAUtil::String path;
+    // Try getting the local path.
+    int result = getSystemProperty("mosync.path.local", path);
+    // If it works, fine.
+    if(result &gt; 0) {
+        printf("Got local path: %i\n", result);
+        return path + "/";
+    }
+
+    // Otherwise, get the first root directory.
+    fl.start("");
+    result = fl.next(path);
+    MAASSERT(result &gt; 0);
+    return path;
+}
+
+static bool tryToRead() {
+    // Construct the filename.
+    MAUtil::String filename = getLocalPath() + "foo.txt";
+
+    // Open the file handle.
+    printf("Open '%s'\n", filename.c_str());
+    MAHandle file = maFileOpen(filename.c_str(), MA_ACCESS_READ);
+    if(file &lt; 0) {
+        printf("Error %i\n", file);
+        return false;
+    }
+
+    // Check if the file exists.
+    int res = maFileExists(file);
+    MAASSERT(res &gt;= 0);
+    if(!res) {
+        printf("File does not exist.\n");
+        maFileClose(file);
+        return false;
+    }
+
+    // Get the file size.
+    int size = maFileSize(file);
+    printf("Size: %i\n", size);
+    MAASSERT(size &gt;= 0);
+
+    // Read the file data.
+    static char data[64];
+    MAASSERT(size &lt; (int)sizeof(data));
+    res = maFileRead(file, data, size);
+    MAASSERT(res == 0);
+
+    // Print some data.
+    data[32] = 0;
+    printf("%s\n", data);
+
+    // Close the file.
+    printf("Closing...\n");
+    res = maFileClose(file);
+    MAASSERT(res == 0);
+
+    printf("Done.\n");
+    return true;
+}
+
+static bool tryToWrite() {
+    // Construct the filename.
+    MAUtil::String filename = getLocalPath() + "foo.txt";
+
+    // Open the file handle.
+    printf("Open '%s'\n", filename.c_str());
+    MAHandle file = maFileOpen(filename.c_str(), MA_ACCESS_READ_WRITE);
+    if(file &lt; 0) {
+        printf("Error %i\n", file);
+        return false;
+    }
+
+    // If the file exists...
+    int res = maFileExists(file);
+    MAASSERT(res &gt;= 0);
+    if(res) {
+        // Truncate it, deleting any old data.
+        printf("Truncating file...\n");
+        res = maFileTruncate(file, 0);
+        MAASSERT(res == 0);
+    } else {
+        // Otherwise, create it.
+        printf("Creating file...\n");
+        res = maFileCreate(file);
+        MAASSERT(res &gt;= 0);
+    }
+    // In either case, we now have an empty file at our disposal.
+
+    // Write some data.
+    static const char data[] = "This data is written to the file.";
+    res = maFileWrite(file, data, sizeof(data));
+    MAASSERT(res == 0);
+
+    // Close the file.
+    printf("Closing...\n");
+    res = maFileClose(file);
+    MAASSERT(res == 0);
+
+    printf("Done.\n");
+    return true;
+}
+
+extern "C" int MAMain() {
+    InitConsole();
+    gConsoleLogging = 1;
+    printf("Hello World!\n");
+
+    if(!tryToRead())
+        tryToWrite();
+
+    FREEZE;
+}
+</pre>
+<h2>Example: Reading an Image File</h2>
+<p>This snippet reads an image file from the local/root path, then decodes it and displays it on screen.</p>
+<pre class="mosync-code-cpp">    // Allocate a data object.
+    MAHandle data = maCreatePlaceholder();
+    res = maCreateData(data, size);
+    MAASSERT(res == RES_OK);
+
+    // Read the file data.
+    res = maFileReadToData(file, data, 0, size);
+    MAASSERT(res == 0);
+
+    // Decode the data into an image.
+    MAHandle image = maCreatePlaceholder();
+    res = maCreateImageFromData(image, data, 0, size);
+    MAASSERT(res == RES_OK);
+
+    // Display the image.
+    maDrawImage(image, 0, 0);
+    maUpdateScreen();
+</pre>
+<h2>Conclusion</h2>
+<p>These are just a few of the many things you can do with files. Feel free to experiment, but be careful.</p>
+<p>Most systems allow you to overwrite important files. If your app did that, the user would probably get upset.</p>
+<h2>Further reading</h2>
+<ul>
+<li>FileLister C++ wrapper: <a href="http://www.mosync.com/files/imports/doxygen/latest/html/class_file_lister.html">documentation</a>, <a href="https://github.com/MoSync/MoSync/blob/master/libs/MAUtil/FileLister.cpp">source code</a>.</li>
+<li>Example programs, source code: <a href="https://github.com/MoSync/MoSync/blob/master/testPrograms/fileList/main.cpp">fileList</a>, <a href="https://github.com/MoSync/MoSync/blob/master/testPrograms/fileRead/main.cpp">fileRead</a>, <a href="https://github.com/MoSync/MoSync/blob/master/testPrograms/fileWrite/main.cpp">fileWrite</a>, <a href="https://github.com/MoSync/MoSync/blob/master/testPrograms/fileRename/main.cpp">fileRename</a>, <a href="https://github.com/MoSync/MoSync/blob/master/testPrograms/fileSpace/main.cpp">fileSpace</a>.</li>
+</ul>
+</body>
+</html>

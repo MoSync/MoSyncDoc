@@ -1,0 +1,100 @@
+<html>
+<head>
+<title>Working with JavaScript Prototypes</title>
+</head>
+<body>
+<h1>Working with JavaScript Prototypes</h1>
+<p>The object hierarchy in JavaScript enables any object (which in JavaScript is just about everything) to inherit methods and properties. The parent object from which a child inherits is called the child object's "prototype". Prototypes are a great way to teach JavaScript new tricks, and we are going to take a look at some of the things you can do with them in this tutorial.<!--break--></p>
+<h2>Extending Objects with Methods and Properties</h2>
+<p>Let's start by looking at how we normally add a custom method or property to an object in JavaScript, starting with pre-defined objects. In the following code we create a new object (<strong>myImage</strong>) based on one of JavaScript's built-in objects (<strong>Image</strong>) and add a custom property (<strong>size</strong>) to it:</p>
+<pre class="mosync-code-cpp">var myImage = new Image();
+myImage.size = '50k';</pre>
+<p>Similarly we can add custom properties to our own custom objects. Here we first define our custom object (<strong>circle</strong>) using JavaScript's function keyword, then we create a new object (<strong>myCircle</strong>) based on it, then we add a custom property (<strong>diameter</strong>) to it:</p>
+<pre class="mosync-code-cpp">// Create a custom object type
+function circle() {};
+
+// Create an instance of it
+var myCircle = new circle();
+
+// Add a property
+myCircle.diameter = 4;</pre>
+<p>In the case of both <strong>myImage</strong> and <strong>myCircle</strong>, the new property exists only for our new instance. If we were to create another <strong>Image</strong> instance (or <strong>circle</strong> instance), that new instance would not have the <strong>size</strong> (or <strong>diameter</strong>) property. And if you tried to read that property, it would return as "undefined".</p>
+<h2>Extending Instances of a Custom Object</h2>
+<p>Suppose we want <em>all</em> instances of a particular object to inherit a method or property&nbsp;— for example if we wanted all images to have the <strong>size</strong> property. How do we do that? We can do it by adding the method or property to our base object's prototype. It is very easy to do this: all we need to do is insert the <strong>prototype</strong> keyword before the property:</p>
+<pre class="mosync-code-cpp">// Create a custom object and add a custom property to it
+function circle() {};
+circle.prototype.pi = 3.14;</pre>
+<p>Now all <strong>circle</strong> instances will have the property <strong>pi</strong>, and when a new one is created the initial value of that property will be <strong>3.14</strong>. We can quickly check this is true using an alert:</p>
+<pre class="mosync-code-cpp">var myCircle = new circle();
+alert(myCircle.pi); // Displays 3.14</pre>
+<p>Extending an object's prototype in this way means that all objects created from the prototype will get the new method or property. (At the very top of the JavaScript object hierarchy is a prototype object simply called <strong>Object</strong>. Any methods or properties that <strong>Object</strong> has get inherited by all the objects in your JavaScript code. It is not, however, a good idea to add methods or properties to <strong>Object</strong> itself; usually you will add such extensions to more specialized objects lower down the object hierarchy.)</p>
+<h2>Extending Instances of a Built-In Object</h2>
+<p>You can use the <strong>prototype</strong> keyword with any custom JavaScript object (as we saw above) and also with built-in JavaScript objects like images, strings, dates, and arrays. For example, we can add a custom <strong>maxSize</strong> property to <em>all</em> images like this:</p>
+<pre class="mosync-code-cpp">Image.prototype.maxSize = "500k";</pre>
+<p>The prototype object can be used with methods as well as properties. In the following example we extend the built-in <strong>Number</strong> object by adding a method (<strong>toRad</strong>) that calculates the value of a number in radians (this is a useful method if you end up working with latitude, longitude and distance calculations). First we check to see if the browser's JavaScript implementation already has this method available in its <strong>Number</strong> prototype, and if it does not, we add the method to the prototype:</p>
+<pre class="mosync-code-cpp">if (typeof(Number.prototype.toRad) === "undefined") {
+    Number.prototype.toRad = function() {
+        return this * Math.PI / 180;
+    }
+}</pre>
+<p>(The keyword <strong>this</strong> in the code above refers to the object on which we invoked the method. For example, when evaluating this code, the value of <strong>this</strong> in the <strong>toRad</strong> method will refer to the value of <strong>n</strong>, which is <strong>45</strong>:</p>
+<pre class="mosync-code-cpp">var n = 45;
+alert(n.toRad());
+// Note that calling 45.toRad() will give a syntax error</pre>
+<p>By now I am sure you can see that a <strong>prototype</strong> is like a class object in other languages in that it defines the properties shared by all instances of the class. However, unlike a class, a prototype can be retrieved and changed at runtime. New methods and properties can be added and existing methods and properties can be removed.</p>
+<h2>Some Basic Utility Functions for JavaScript</h2>
+<p>If you are used to programming in languages like C/C++, you may find that JavaScript is missing many of the built-in functions you normally use. By extending your JavaScript prototypes it is easy to add the missing functions you need. Here are some quick examples:</p>
+<h3>Remove leading and trailing spaces from strings</h3>
+<pre class="mosync-code-cpp">String.prototype.trimSpaces = function () {  
+    return this.replace( /^\s*(\S*(\s+\S+)*)\s*$/, "$1");   
+};   
+var myText = '   Some text.   ';  
+alert(myText.trimSpaces()); // Displays 'Some text.'</pre>
+<h3>Pad numbers with zeros</h3>
+<pre class="mosync-code-cpp">Number.prototype.padWithZeros = function (width) {  
+    var text = this.toString();  
+    for(; text.length &lt; width; ){  
+        text = '0' + text;  
+    }  
+    return text;  
+};    
+var myNumber = 9876;  
+alert(myNumber.padWithZeros(9)); // Displays 000009876 </pre>
+<h3>Capitalize strings</h3>
+<pre class="mosync-code-cpp">String.prototype.initialCap = function(){
+    if(this.length == 0) return this;
+    return this[0].toUpperCase() + this.substr(1);
+}
+var myText = 'foo';
+alert(myText.initialCap() ); // Displays 'Foo'</pre>
+<h3>Convert strings to numbers</h3>
+<pre class="mosync-code-cpp">String.prototype.toNumber = function(){
+    return Number(this);
+}
+var myString = '42';
+alert(myString.toNumber() ); // Displays 42</pre>
+<h2>Prototypes in MoSync Wormhole</h2>
+<p>To give an example of how prototypes are used in library code, here are some code snippets from the PhoneGap library, which is included in the <a href="TEMPLATE_DOC_PATH/sdk/js/guides/wormhole/html5-javascript-wormhole/index.html">MoSync Wormhole JavaScript Library</a> (that is our library that makes it possible for your JavaScript apps to talk to services on your mobile device).</p>
+<pre class="mosync-code-cpp">// Define the Notification object.
+var Notification = function() {
+};
+
+// Add the vibrate method to the prototype of the Notification object.
+Notification.prototype.vibrate = function(mills)
+{
+    // Calls into native code to perform the vibrate service.
+    PhoneGap.exec(null, null, "Notification", "vibrate", {duration:mills});
+};
+
+// Create a new Notification child object and set the
+// global variable navigator.notification to refer to it.
+if (typeof navigator.notification === "undefined") {
+    navigator.notification = new Notification();
+}
+
+// How to call the vibrate method in your own MoSync application code:
+navigator.notification.vibrate(500);
+</pre>
+<p><br><br></p>
+</body>
+</html>

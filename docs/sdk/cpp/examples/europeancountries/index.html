@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>EuropeanCountries</title>
+</head>
+<body>
+<h1>EuropeanCountries</h1>
+<p>This example app demonstrates how to use the MoSync NativeUI's <strong>ListView</strong> widget to present an alphabetical list. <!--break--></p>
+<table class="doclayout" border="0"><tbody><tr><td>&nbsp;<em><img src="images/iOS1.png" align="none" width="220" height="328"></em></td><td>&nbsp;<img src="images/iOS2.png" align="none" width="219" height="328"></td></tr>
+<tr><td><em>CountriesListScreen on iOS</em></td><td><em>CountryInfoScreen on iOS</em></td></tr>
+<tr><td>&nbsp;<img src="images/Android1.png" align="none" width="220" height="384"></td><td>&nbsp;<img src="images/Android2.png" align="none" width="229" height="385"></td></tr>
+<tr><td><em>CountriesListScreen on Android</em></td><td><em>CountryInfoScreen on Android</em></td></tr>
+<tr><td>&nbsp;<img src="images/WP7_1.png" align="none" width="220" height="362"></td><td>&nbsp;<img src="images/WP7_2.png" align="none" width="215" height="364"></td></tr>
+<tr><td><em>CountriesListScreen on WP7</em></td><td><em>CountryInfoScreen on WP7</em></td></tr>
+</tbody></table>
+<p>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<p>This example app runs on all platforms supported by the NativeUI Library (see <a href="TEMPLATE_DOC_PATH/sdk/tools/references/feature-platform-support/index.html">Feature/Platform Support</a>).</p>
+<h2>Application screens</h2>
+<p>The example application has three screens: <strong>CountriesListScreen</strong>, <strong>CountryInfoScreen</strong>, <strong>DisclaimerScreen</strong>.</p>
+<h3>CountriesListScreen</h3>
+<p>This screen is shown when the application starts. It contains all fifty countries that belong even partially to Europe continent. All countries are alphabetically arranged inside the list, from “A” to “V”. Each <strong>ListViewItem</strong> object shown on this screen has an title, the name of country, and an image, the flag of the country. Both the country name and flag are read from local files, which will be explained later.</p>
+<h3>CountryInfoScreen</h3>
+<p>This screen is shown when the user taps on one of the list items from <strong>CountriesListScreen</strong>.<br> On top of the screen you can see a label containing the name of the currently shown country, one button of the left used to navigate back to the previous screen and one button of the right used to show the <strong>DisclaimerScreen.</strong>&nbsp;</p>
+<blockquote><p><strong>Note</strong>: On the Android platform, the back button is not shown because the device’s physical back button is used to navigate to the previous screen. The disclaimer button is moved at the bottom of screen.</p>
+</blockquote><p>Below the country name you can see information about the selected country such as population, area, languages, government and capital.</p>
+<h3>DisclaimerScreen</h3>
+<p>This screen is used to explain that all the information and flags are taken from <a href="http://www.wikipedia.org/">Wikipedia</a>.</p>
+<blockquote><p><strong>Note</strong>: As with <strong>CountryInfoScreen</strong>, it has an back button on iOS and WP7 platforms, but on Android the device’s back button is used to navigate back to the previous screen.</p>
+</blockquote><h2>Application data</h2>
+<p>Text data is stored in JSON encoded files that can be found under <strong>LocalFiles</strong> folder, while images are stored under the <strong>Resources</strong> folder. <br> <br> To add/remove a country to/from the list you have to modify the <strong>CountryTable</strong> file. It contains a list of alphabetically arranged files that will be read when the application starts. The countries order from this file is the same as the one shown by the <strong>CountriesListScreen.</strong><br> <br> Each country data is read from a single file that can be found in the above mentioned file. Here’s how <strong>Sweden</strong> country file looks like:</p>
+<pre class="mosync-code-cpp">{
+    "Name" : "Sweden",
+    "FlagID": 46,
+    "Population" : "9,514,406",
+    "Area" : "449,964 sq km",
+    "Languages" : "The official language of Sweden is Swedish, a North Germanic language, related and very similar to Danish and Norwegian, but differing in pronunciation and orthography.",
+    "Government" : "Sweden is a constitutional monarchy, in which King Carl XVI Gustaf is head of state, but royal power has long been limited to ceremonial and representative functions.",
+    "Capital" : "Stockholm"
+}</pre>
+<p>As you can see it contains six string encoded values and one as a number.</p>
+<blockquote><p><strong>Note</strong>: The <strong>FlagID</strong> value is used as a number and it represents the resource id flag for this country. The list with all the flag images can be found in the <strong>Resources.lst</strong> file.</p>
+</blockquote></body>
+</html>

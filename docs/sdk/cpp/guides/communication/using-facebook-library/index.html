@@ -1,0 +1,452 @@
+<html>
+<head>
+<title>The Facebook C++ Library</title>
+</head>
+<body>
+<h1>The Facebook C++ Library</h1>
+<p>The MoSync Facebook C++ Library implements most of the Facebook Graph C API. Here we describe how to connect to Facebook through the Facebook library, retrieve information about them, post links, vidoes and other object types, create new albums, and a whole host of other cool operations.</p>
+<p><!--break--></p>
+<h3>Introduction</h3>
+<p>Facebook is a modeled as a social graph. Its official API, the <a href="http://developers.facebook.com/docs/reference/api/">Facebook Graph API</a>, represents the objects in the graph (people, photos, albums, events...) and the connections between them (friend relationships, photo tags...).<br>&nbsp;<br>Every object in the social graph has a unique ID. You can fetch any object from Facebook if you know the ID. Alternatively, people with usernames can be accessed using their username as an ID. There is also a special identifier "me" which refers to the current user.<br>&nbsp;<br>You can retrieve the public information about a user (first name, last name, profile picture) by using the ID or the username. To get additional information about a user, you must first get their permission for which you need to get an access token. After you obtain the access token, you can perform authorized requests and publish on behalf of that user.<br>&nbsp;<br>The MoSync Facebook Library defines a <strong>FacebookManager </strong>class that provides the interface between the Facebook platform and your own application. Use this class if you want to retrieve data, publish on Facebook, or retrieve an <strong>access token</strong> for your application.</p>
+<h3>Authentication and access tokens</h3>
+<p>Authentication involves retrieving the access token and asking for extended permissions. For the official Facebook documentation on the authorization flow see: <a href="http://developers.facebook.com/docs/authentication/">http://developers.facebook.com/docs/authentication/</a>.<br>&nbsp;<br>Retrieving a user access token allows your application to access a user’s basic information (that is information that is available publicly or by default on Facebook). If your application needs more than this basic information, you must request specific permissions from the user.<br>&nbsp;<br>To get the access token from Facebook you must first redirect the user to the Facebook <a href="http://developers.facebook.com/docs/reference/dialogs/oauth">OAuth Dialog</a>. With the MoSync Facebook Library this is very easy:</p>
+<pre class="mosync-code-cpp">String appID = "13234625675"; //the application id
+mFacebookManager = new FacebookManager( app_ID );
+String oAuthUrl = mFacebookManager-&gt;getOAuthUrl();
+mLoginScreen = new FacebookLoginScreen();
+mLoginScreen-&gt;setUrl ( oAuthUrl );
+mLoginScreen-&gt;show(); //displays the login screen</pre>
+<p>After the user logs in, we are redirected to the <strong> redirect_uri</strong>. The access token is passed in the <strong>redirect_uri</strong>. The <strong>redirect_uri</strong> must be parsed to get the access token. An example of how to extract the access token can be found in our <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/facebookdemo/index.html">FacebookDemo</a> example application in <strong>FacebookDemoMoblet::customEvent</strong>.<br>&nbsp;<br>After retrieving the access token, we must send it to the FacebookManager:</p>
+<pre class="mosync-code-cpp">mFacebookManager-&gt;setAccessToken(accessToken); </pre>
+<h3>Permissions</h3>
+<p>You must request specific permissions from the user if your app needs more information than the user has made available to everyone on Facebook. To do this, pass the <strong>FacebookManager </strong>the permissions you need.</p>
+<p><strong><em>Note</em></strong>: If your application also needs permissions, you must pass those permissions to <strong>FacebookManager</strong> when it is first created.<br>&nbsp;<br>In the MoSync Facebook Library we specialize the <strong>GetPermissionsFor </strong>template class for each Facebook object type. It is used to fill a <strong>Set </strong>object with the permissions that are needed to make connections to a Facebook object or to publish an object.</p>
+<pre class="mosync-code-cpp">MAUtil::Set&lt;MAUtil::String&gt; permissions;</pre>
+<p>To get the permissions needed to retrieve a Note object for the current user or current user’s friend (also for the connections of Note objects) we use:</p>
+<pre class="mosync-code-cpp">// "user_notes" "friends_notes"
+GetPermissionsFor&lt;Note&gt;::retrievingData(permissions); </pre>
+<p>To get the permissions needed to publish a note on behalf of the user or user’s friend we use:</p>
+<pre class="mosync-code-cpp">//"create_note", "publish_stream"
+GetPermissionsFor&lt;Note&gt;::publishingData(permissions); </pre>
+<p>To get all the permissions available, so that we can make any request (retrieve data, connections, and publish), we use:</p>
+<pre class="mosync-code-cpp">// "user_notes" , "friends_notes", "create_note", "publish_stream"
+GetPermissionsFor&lt;Note&gt;::allPosibleRequests(permissions); </pre>
+<p>You can also just get the permissions needed to retrieve a field from a user object (for example, a biography), or for a connection, as we show in the example below:</p>
+<pre class="mosync-code-cpp">MAUtil::Set&lt;MAUtil::String&gt; permissions;
+ 
+permissions.insert("offline_access"); //ask for a access_token that doesn’t expire
+GetPermissionsFor&lt;User&gt;::Retrieve::onlyConnections(permissions);
+GetPermissionsFor&lt;User&gt;::publishingData(permissions);
+GetPermissionsFor&lt;Album&gt;::allPosibleRequests(permissions);
+GetPermissionsFor&lt;Checkin&gt;::allPosibleRequests(permissions);
+GetPermissionsFor&lt;Comment&gt;::allPosibleRequests(permissions);
+GetPermissionsFor&lt;Note&gt;::allPosibleRequests(permissions);
+GetPermissionsFor&lt;Photo&gt;::allPosibleRequests(permissions);
+GetPermissionsFor&lt;Post&gt;::allPosibleRequests(permissions);
+ 
+//the app id that is generated when you create your application
+String application_ID = "7125765764";
+ 
+mFacebookManager = new FacebookManager(application_ID, permissions);
+String oAuthUrl = mFacebookManager-&gt;getOAuthUrl();
+ 
+mLoginScreen = new FacebookLoginScreen();
+mLoginScreen-&gt;setUrl(oAuthUrl);
+mLoginScreen-&gt;show(); //this displays the login screen</pre>
+<h3>Implemented Graph API objects</h3>
+<p>Our Facebook Library implements most of the Facebook objects described in the Graph API documentation (<a href="http://developers.facebook.com/docs/reference/api/">http://developers.facebook.com/docs/reference/api/</a>). The implementation can be found in <em>/Facebook_lib/GraphAPI/GetFacebookObjects/FacebookObjects</em> in your installed MoSync package.</p>
+<p>Objects currently implemented include:</p>
+<ul>
+<li>Album</li>
+<li>Checkin</li>
+<li>Comment</li>
+<li>Event</li>
+<li>FriendList</li>
+<li>Group</li>
+<li>Link</li>
+<li>Note</li>
+<li>Photo</li>
+<li>Post</li>
+<li>StatusMessage</li>
+<li>User&nbsp;</li>
+<li>Video</li>
+</ul>
+<h3>Fetching public information about an object</h3>
+<p>You can access the properties of an object using the <strong>FacebookManager</strong>. To retrieve an object your application has to register as an <strong>ObjectRequestListener </strong>with the <strong>FacebookManager</strong>. To do this, we inherit from <strong>ObjectRequestListener </strong>and override the functions we are interested in.</p>
+<p>If we want to retrieve User objects, we override <strong>void facebookObjectReceived(const User &amp;)</strong>. If we want to retrieve Album objects, we override <strong>void facebookObjectReceived(const Album &amp;)</strong>.</p>
+<p>For example, to access the public information about a User, with the username <a href="https://graph.facebook.com/btaylor">btaylor</a> and an album with the id <a href="https://graph.facebook.com/99394368305">99394368305</a> (Coca-Cola's wall photos):</p>
+<pre class="mosync-code-cpp">class MyApplication: public ObjectRequestListener
+{
+public:
+   // ObjectRequestListener override. This function will be called by the
+   // FacebookManager when a User object is retrieved from Facebook
+   virtual void facebookObjectReceived(const User &amp;object);
+
+   // ObjectRequestListener override. This function will be called by the
+   // FacebookManager when an Album object is retrieved from Facebook.
+   virtual void facebookObjectReceived(const Album &amp;object);
+
+   //ObjectRequestListener override. Called when the request fails.
+   virtual void queryError(int code, const MAUtil::String &amp;path);
+};
+
+String application_ID = "13234625675"; //the application id
+mFacebookManager = new FacebookManager( application_ID );
+
+mFacebookManager-&gt;setObjectRequestListener(this);
+mFacebookManager-&gt;requestObject&lt;User&gt;(btaylor);
+mFacebookManager-&gt;requestObject&lt;Album&gt;(99394368305); </pre>
+<p>When the response from Facebook is received, the JSON data is parsed and converted to the type of object we requested (e.g User). <strong>FacebookManager </strong>sends this object to the listener.</p>
+<h3>Retrieving connections</h3>
+<p>We use FacebookManager to retrieve connections for an object. To make a connection request we need to know the ID of the object. If the Facebook object is the current user, we can use me instead of an ID. We also need to inherit from <strong>ConnectionsManagerListener </strong>and register with the FacebookManager as a listener.<br>&nbsp;<br>To see what connections are available for an object we use the Connections template class found in <em>/GetConnections/Connections.h</em>. The template is specialized for every Facebook object type defined by the library.<br>&nbsp;<br>To see what connections are available for an album, we use the <strong>Connections&lt;Album&gt;</strong> class. <strong>Connections&lt;Album&gt; </strong> has four static functions that correspond to the four connections an Album can have: likes, photos, comments, picture. Each returns a string representing the keyword for that connection. For example, <strong>Connections&lt;Album&gt;::likes()</strong> returns "likes".<br>&nbsp;<br>The <strong>Connections&lt;Checkin&gt;</strong> class defines two functions that return the keywords for the two connections that a Checkin has (likes and comments), so to ask for all the connections a Checkin we use:</p>
+<pre class="mosync-code-cpp">mFacebookManager-&gt;requestConnection( ckeckin_id, Connections&lt;Checkin&gt;::likes() );
+mFacebookManager-&gt;requestConnection( checkin_id, Connections&lt;Checkin&gt;::comments() );</pre>
+<p>To request the albums, feed, and notes connections for the current user, and also request the comments connections for one of the user’s albums we use:</p>
+<pre class="mosync-code-cpp">class MyApplication : public ConnectionsManagerListener
+{
+public:
+    MyApplication();
+ 
+    //The following functions are ConnectionsManagerListener  overrides.
+    //connType parameter - represents the keyword for the connection we requested.
+    //For the news feed for example it will be "feed".
+    //objectId parameter -  string representing the id of the object for which
+    // we requested the connection.
+ 
+    //Function called by FacebookManager when the "albums" connection
+    //is retrieved from Facebook.
+    void received( const Vector&lt;Album&gt; &amp;albums, const String &amp;connType, const String &amp;objectId );
+ 
+    //Function called by FacebookManager when the "feed"  connection
+    //is retrieved from Facebook.
+    void received( const Vector&lt;Post&gt; &amp;posts, const String &amp;connType, const String objectId );
+ 
+    //Function called by FacebookManager when the "notes"  connection
+    //is retrieved from Facebook.
+    void received(   const Vector&lt;Note&gt; &amp;notes, const String &amp;connType, const MAUtil::String objectId ) ;
+ 
+    //Function called by FacebookManager when the "comments" connection
+    //is retrieved from //Facebook
+    void received( const MAUtil::Vector&lt;Comment&gt; &amp;comments, const MAUtil::String  &amp;connType, const String &amp;objectId )
+ 
+    //override of ConnectionsManagerListener called when the request failed
+    void queryError(int code, const MAUtil::String &amp;path) ;
+};
+ 
+MyApplication::MyApplication()
+{
+    //the application id
+    String application_ID = "13234625675";
+    mFacebookManager = new FacebookManager( application_ID );
+    mFacebookManager-&gt;setConnectionRequestListener(this);
+   
+    //request for the albums connection for the curent user
+    mFacebookManager-&gt;requestConnection( Connections&lt;User&gt;::albums(), "me" );
+   
+    //request for the notes connection for the curent user
+    mFacebookManager-&gt;requestConnection( Connections&lt;User&gt;::notes(), "me");
+ 
+    //request for the feed connection for the curent user
+    mFacebookManager-&gt;requestConnection( Connections&lt;User&gt;::feed() , "me");   
+}
+
+void MyApplication::received(  const Vector&lt;Album&gt; &amp;albums, const String &amp;connType, const String &amp;objectId)  
+{   
+    Album firstAlbum = albums[0];
+    mFacebookManager-&gt;requestConnection( Connections&lt;User&gt;::comments(), firstAlbum.getId() );
+}</pre>
+<p>We can request only the fields you want from an object. For example, if we just want to retrieve the name and ID of all of the user’s albums we do not want any other fields. To do this we call the overload function <strong>requestConnection </strong>and pass it a vector with jus the fields we want:</p>
+<pre class="mosync-code-cpp">Vector&lt;String&gt; fields;
+fields.add("id");
+fields.add("name");
+
+mFacebookManager-&gt;requestConnection("albums", fields, "me");</pre>
+<h3>Publishing To and Deleting From Facebook&nbsp;&nbsp;&nbsp;</h3>
+<p>We use FacebookManager to publish to Facebook or to delete Facebook objects. To get the result of a publish or delete request, we inherit from the <strong>PublishingListener </strong>class and register with the <strong>FacebookManager </strong>as a <strong>PublishingListener</strong>:</p>
+<pre class="mosync-code-cpp">class MyApplication: public PublishingListener
+{
+public:
+
+    //PublishingListener override
+    //This function is called when a remove or an unlike request
+     //was completed successfuly
+    void publishingResponseReceived(bool success, const String &amp;path);
+
+    //PublishingListener override
+    //This function is called when a new Facebook object was created successfully.
+    void publishingResponseReceived(bool const String &amp;newObjectId, const String &amp;path);
+
+    //PublishingListener override.  Called when the request fails.
+    virtual void queryError(int code, const MAUtil::String &amp;path);
+};
+
+String application_ID = "13234625675";  //the application id
+mFacebookManager = new FacebookManager( application_ID );
+
+MyApplication *myApp = new MyApplication();
+
+//register as a PublishingListener, so that MyApplication is informed
+//about the result of the publish request.
+mFacebookManager-&gt;setPublishingListener(myApp); </pre>
+<h3>Liking and unliking objects</h3>
+<p>To like a Facebook object we call the <strong>FacebookManager </strong>function <strong>void Like(const String &amp;id)</strong>. The "id" parameter is the ID of the object to be liked. To like an album, for example, we use:</p>
+<pre class="mosync-code-cpp">mFacebookManager-&gt;like( album.getId() );</pre>
+<p>Similarly, to unlike a Facebook object we call the FacebookManager function void Unlike(const String &amp;id).</p>
+<pre class="mosync-code-cpp">mFacebookManager-&gt;unlike( comment.getId() );&nbsp;
+</pre>
+<p>Here comment represents some Comment object we retrieved from Facebook.</p>
+<h3>Adding an object</h3>
+<p>Various types of objects can be added to Facebook through the functions in the <strong>FacebookManager </strong>class. For a comprehensive list of the functions available through this class, see the <a href="http://www.mosync.com/files/imports/doxygen/latest/html/index.html">MoSync API Reference</a>.</p>
+<p>Objects that can be added include:</p>
+<ul>
+<li>Comments</li>
+<li>Users to FriendLists or Groups</li>
+<li>FriendLists</li>
+<li>Events and EventResponses</li>
+<li>Notes</li>
+<li>Albums</li>
+<li>Checkins</li>
+<li>Posts, Links, and StatusMessages on Walls</li>
+</ul>
+<p>To add a comment on a Facebook object we call the FacebookManager function <strong>addComment</strong>:</p>
+<pre class="mosync-code-cpp">String myMessage = "I like this post";
+mFacebookManager-&gt; addComment(post.getId(), myMessage);</pre>
+<p>Here we use post.getId to identify the object to which we wish to add the comment. Similarly we can use the FacebookManager function addUser to add a User object to a FriendList:</p>
+<pre class="mosync-code-cpp">mFacebookManager-&gt;addUser( myFriendList.getId(), "7692649746983");</pre>
+<p>Here "7692649746983" is the unique ID of the friend we want to add.<br><br>Some functions in FacebookManager are a little more complicated. To add an event on behalf of the current user (or one of that user's friends) we use the function <strong>addEvent </strong>which requires several parameters, along with some optional ones:</p>
+<pre class="mosync-code-cpp">void addEvent(
+     const MAUtil::String &amp;USER_ID,                                //mandatory
+    const MAUtil::String &amp;eventName,                           //madatory
+    const UnixTimeStamp &amp;eventStart_time,                      //mandatory
+    const UnixTimeStamp &amp;eventEnd_time = UnixTimeStamp(),      //optional
+    const MAUtil::String &amp;message= "",                         //optional
+    const MAUtil::String &amp;location = "",                       //optional
+    const MAUtil::String &amp;privacyType = "OPEN");               //optional
+
+For example:
+
+//event name
+String eventName = "party";   
+
+//event starts in 06/12/2012 at 8:15 :30
+UnixTimeStamp startTime(Date("2012", "12", "6"), Time("8","15","30"));
+
+//event ends in 06/12/2012 at 11:20:00
+UnixTimeStamp endTime(Date("2012", "12", "6"), Time("11", "20","00"));
+
+//the event’s description
+String eventDescription = " MoSync annual Christmas party";
+
+//the event takes place in Stockholm
+String eventLocation = "Stockholm";
+
+mFacebookManager-&gt;addEvent(  "me",
+eventName,
+startTime,
+endTime,   
+eventDescription,
+eventLocation);</pre>
+<p>To add a Post on the user’s wall (or on one of the user's friends walls) we call addPostOnWall:</p>
+<pre class="mosync-code-cpp">void addPostOnWall(  
+    const MAUtil::String &amp;ID,                       //mandatory
+    const MAUtil::String &amp;message,                  //mandatory
+    const MAUtil::String &amp;link,                     //mandatory
+    const MAUtil::String &amp;name = "",                //optional
+    const MAUtil::String &amp;caption = "",             //optional
+    const MAUtil::String &amp;description = "");        //optional&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+</pre>
+<p>For example:</p>
+<pre class="mosync-code-cpp">mFacebookManager-&gt;addPostOnWall ( "me",                   //id
+    "Post added with MOSYN SDK",                          //message
+    "http://www.youtube.com/watch?v=FL7yD-0pqZg",         //link
+    "New Post :)",                                        //name
+    "Link from You Tube"                                  //caption       
+    "Testing adding a post on wall with MOSYNC_SDK");     //description</pre>
+<p>The result will be a wall post that looks something like this:<br><img src="images/FacebookLibrary.png" align="none" width="640" height="228"></p>
+<h3>Removing objects</h3>
+<p><strong>FacebookManager </strong>provides a set of functions for removing objects the Graph API. The objects that can be removed include:</p>
+<ul>
+<li>Users from FriendLists and Groups</li>
+<li>Comments</li>
+<li>FriendLists</li>
+<li>Notes</li>
+</ul>
+<p>To remove a user from a FriendList we call the FacebookManager function <strong>removeUserFrom</strong>:<br><br></p>
+<pre class="mosync-code-cpp">String myFriendListID = "1234567";
+String friendID = "0101010101";
+mFacebookManager-&gt;removeUserFrom ( myFriendListID, friendID);</pre>
+<h3>A larger example</h3>
+<p>In this example we retrieve albums, posting a link on the user's wall, post a link for all the user's friends, add a like and a comment to an album, and delete a FriendList.</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">class MyApplication: public MAUtil::Moblet, public ConnectionsManagerListener, public PublishingListener
+{
+public:
+
+   MyApplication();
+
+   // ConnectionsManagerListener overrides
+
+   /*
+   * This function is called when a "albums" Connection was completed sucessfully
+   */
+   virtual void received(const MAUtil::Vector&lt;Album&gt; &amp;albums,
+   const MAUtil::String &amp;connType,
+   const MAUtil::String &amp;objetcId);
+
+   /*
+   * This function is called when the "likes", "movies", "music", "books", "accounts",
+   * "activity", "friendlists", "interests" and "television" Connection was requested.
+   * @param connType - the ConnectionType. It can have the following values: "likes",
+   * "movies", "music", "books", "accounts", "activity", "friendlists", "interests"
+   * and "television"
+   */
+   virtual void received(const MAUtil::Vector&lt;CategoryData&gt; &amp;likes,
+   const MAUtil::String &amp;connType,
+   const MAUtil::String &amp;objetcId);
+
+   /*
+   * This function is called when the "friends", "members" or "tags" Connection
+   * was requested.
+   * @param connType - the ConnectionType. It can have the following values:
+   * "friends", "members" or "tags"
+   */
+   virtual void received(const MAUtil::Vector&lt;IdNamePair&gt; &amp;friends,
+   const MAUtil::String &amp;connType,
+   const MAUtil::String &amp;objetcId);
+
+   /*
+   * This function is called when a Connection was requested, and the request failed
+   */
+   virtual void errorReceivingConnection(int code,
+   const MAUtil::String &amp;connType,
+   const MAUtil::String &amp;id);
+
+   // PublishingListener overrides
+
+   / *
+   * This function is called when a remove or an unlike request was
+   * completed sucessfully.
+   */
+   virtual void publishingResponseReceived(bool success, const MAUtil::String &amp;path);
+
+   /*
+   * This function is called when a new object was created successfully
+   * (Album, Like, Comment, StatusMessage etc).
+   */
+   virtual void publishingResponseReceived(const MAUtil::String &amp;data, 
+   const MAUtil::String &amp;path);
+
+   /*
+   * This function is called when a publish/remove request failed
+   */
+   virtual void queryError(int code, const MAUtil::String &amp;path);
+
+private:
+
+   void requestAlbumsConnection();
+   void addComment(const String &amp;id);
+   void addLike(const String &amp;id);
+   void postLinkOnWall(const String &amp;id);
+   void requestFriendListsConnection();
+   void deleteFriendList(const String &amp;id);
+
+private:
+
+   FacebookManager *mFacebookManager;
+
+};
+
+MyApplication::MyApplication()
+{
+   String applicationId = "265721237478169";
+
+   mFacebookManager = new FacebookManager(applicationId);
+   mFacebookManager-&gt;setAccessToken("476927849827395873465923695798723"); 
+
+   //register as a ConnectionManagerListener so that we retrieve the
+   //requested data from FacebookManager
+   mFacebookManager-&gt;setConnectionRequestListener(this);
+
+   //register as a PublishingListener so that we are informed by the
+   //FacebookManager about the result of the publish request
+   mFacebookManager-&gt;setPublishingListener(this);
+
+   //request the albums of the user. We will add a comment and a like
+   //to the first album
+   requestAlbumsConnection();
+
+   //request the FriendLists of the user. We will delete the first FriendList
+   requestFriendListsConnection();
+
+   //Posting a link on wall for the user
+   
+   // We post for the current user (that logged in), so we can use "me" as an id.
+   postLinkOnWall("me");  
+}
+
+void MyApplication::requestAlbumsConnection()
+{
+   mFacebookManager-&gt;requestConnection("albums");
+}
+
+void MyApplication::addComment(const String &amp;ID)
+{
+   mFacebookManager-&gt;addComment("Testing adding a comment with MOSYNC SDK", ID); //adding the comment to the object with the id "ID"
+}
+
+void MyApplication::Like(const String &amp;ID)
+{
+   mFacebookManager-&gt;Like(ID); //like the Facebook objetc with the id "ID"
+}
+
+void MyApplication::postLinkOnWall(const String &amp;id)
+{
+   mFacebookManager-&gt;addLinkOnWall( id, //the id.
+   "http://www.mosync.com/", //the link we want to post
+   "Testing posting a link on wall with MOSYNC SDK"); //the message to display.
+}
+
+void MyApplication::requestFriendListsConnection()
+{
+   mFacebookManager-&gt;requestConnection("friendlists");
+}
+
+void MyApplication::deleteFriendList(const String &amp;id)
+{
+   mFacebookManager-&gt;removeFriendList(id);
+}
+
+//Retrieving albums
+
+void MyApplication::received(const MAUtil::Vector&lt;Album&gt; &amp;albums,
+const MAUtil::String &amp;connType,
+const MAUtil::String &amp;objetcId)
+{
+   Album album = albums[0];
+
+   addComment( album.getId() ); //Adding a comment to an album
+   addLike( album.getId() );    //Adding a like to an album
+}
+
+void MyApplication::received(const MAUtil::Vector&lt;CategoryData&gt; &amp;friendlists,
+const MAUtil::String &amp;connType,
+const MAUtil::String &amp;objetcId)
+{
+   if( connType == "friendlists" )
+   {
+       deleteFriendList( friendlists[0].getId() ); // f) deleting a FriendList.
+   }
+}
+
+void MyApplication::received(const MAUtil::Vector&lt;IdNamePair&gt; &amp;friends,
+const MAUtil::String &amp;connType,
+const MAUtil::String &amp;objetcId)
+{
+   if( connType == "friends" )
+   {
+       for (int i=0; i&lt;friends.Size(); i++) //Posting a link for all the user's friends
+       postLinkOnWall( friends[i].getId() );
+   }
+}</pre>
+</body>
+</html>

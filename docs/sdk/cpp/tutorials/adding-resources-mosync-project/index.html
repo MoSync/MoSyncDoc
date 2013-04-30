@@ -1,0 +1,284 @@
+<html>
+<head>
+<title>Using Resources in a Project</title>
+</head>
+<body>
+<h1>Using Resources in a Project</h1>
+<p>This tutorial provides an introduction to adding resources, such as images and sounds, to a MoSync application. These external files need to be added into the project, so that they can be packaged with your code and deployed to the device.</p>
+<p><!--break--></p>
+<p><em><strong>Note: new ways of organizing resources were introduced in the MoSync SDK 3.0; see: <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/resource-compiler-tutorial/index.html">Resource Compilation</a>.</strong></em></p>
+<p></p>
+<h2>The Resource Compiler</h2>
+<p>The resource compiler is part of MoSync's <strong><a href="TEMPLATE_DOC_PATH/sdk/tools/guides/architecture/toolchain/index.html">Pipe-Tool</a></strong> (<em>pipe-tool.exe</em>). When you build your application in Eclipse, the resource compiler concatenates all the resources your program needs into a file called "<em>resources</em>" and then it creates an index by which your program can access the resources.</p>
+<p>When it runs, the resource compiler looks for <strong>resource list files</strong> in your project. Resource list files are files that end with the <strong>.lst</strong> extension. Each resource list file references one or more resources. You don’t have to do anything special to make this work, you just need to create a file with a <strong>.lst</strong> extension and identify in it what resources you want to be included in the final packages.</p>
+<p>You can include any file that will be useful for your program. Typically these will be images (in <strong>.png</strong> format), sounds (in .<strong>mp3</strong> format), and MoSync-specific formats such as <strong>.mof</strong> font files.</p>
+<p>If you are going to be creating data at runtime, or want somewhere to store downloaded data, then the resource list file is also useful for that. You can create a <strong>placeholder</strong> resource which is going to have a handle, but doesn’t yet contain any data.</p>
+<p>There is a full description of all of the types of data you can put into a resource file in the <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/resource-compiler-reference/index.html">Resource Compiler Reference</a>. In this tutorial we will focus on a few of the common types of resource you are likely to use.</p>
+<h2>Creating a Resource List File</h2>
+<p>To add external resources to your app, you need to add a <strong>resource list file</strong> to your project. A resource list file is a text file with the <strong>.lst </strong>extension: <em>res.lst</em> or similar would be a good name for it.</p>
+<p>Create the resource list file by selecting <strong>&nbsp;</strong><strong>New </strong>&gt;<strong> Other</strong> from the MoSync IDE's <strong>File </strong>menu.</p>
+<p>Select <strong>MoSync Resource File</strong> from the list and click <strong>Next</strong>. Type a filename ending in ".lst" and click <strong>Finish</strong>. You’ll see the new file appear in the list of files in <strong>Project Explorer</strong>. It has an icon similar to a Pac-Man ghost. Double-click on the file to open it.</p>
+<p><em><strong>Tool tip</strong>: The Eclipse IDE can help with the syntax of writing resource list files with an Intellisense</em><em>-style option list as you type. Press period (.) and you’ll see it appear.</em></p>
+<h2>MAHeaders.h &amp; MAHandle</h2>
+<p>The resource compiler creates an index of resources of a special type called <strong>MAHandle</strong>. Under the hood, this is actually an <strong>int</strong>, but by giving it a special type name it is easy to see where you can use the resources.</p>
+<p>To use a resource you’ve compiled, you need to include a reference to file <strong>MAHeaders.h</strong> which the resource compiler will create in the root of your project:</p>
+<pre>#include &lt;MAHeaders.h&gt;</pre>
+<p>This file is a list of C #define directives, mapping the name you’ve given to your resources to the internal index number of the resource in the compiled <em>resources </em>file. You can use these definitions in your code.</p>
+<p>As an example, I’ve created a resource file with a font (which we will see later). My <em>res.lst</em> file contains this:</p>
+<pre>.res MYFONT
+.bin
+.include "pretty.mof"</pre>
+<p>and the <strong>MAHeaders.h</strong> file that the resource compiler creates contains this:</p>
+<pre>#define MYFONT 1</pre>
+<p>This means that if you’ve included <strong>MAHeaders.h</strong> in my source code, you can use the reference directly.</p>
+<pre>Font* f = new Font(MYFONT);</pre>
+<p>If you look at the documentation for <strong>Font</strong>, then the constructor is</p>
+<pre>Font(MAHandle handle);</pre>
+<p><strong>MAHandle </strong>means the name of the resource in the resource file (MYFONT), and the <strong>MAHeaders.h</strong> file maps between the name you have given it and its index position in the resources file. Whenever you see <strong>MAHandle</strong> in the MoSync documentation, it means the name you’ve given to a resource.</p>
+<h2>Images</h2>
+<p>One of the most common types of resource you’ll want to include will be an image. This should generally be a PNG file. Some phones can handle JPEG and GIF images, but PNG has the best overall support, as well as supporting an alpha level for transparency.</p>
+<p>To include an image, you need to declare it as a resource in the resource list file in the following way:</p>
+<pre>.res BACKGROUND_IMAGE
+.image "images/BG240.png"</pre>
+<p><em><strong>Note</strong>: the path to the resource cannot be absolute. Furthermore you must use either forward slashes (/) in the path or escaped backslashes (\\). </em></p>
+<p>When this compiles, we will have a reference to BACKGROUND_IMAGE in <strong>MAHeaders.h</strong>, and this code will create an image:</p>
+<pre>#include &lt;MAUI/Image.h&gt;
+...
+Image* i = new Image(0, 0, 100, 100, NULL, true, true,BACKGROUND_IMAGE);</pre>
+<p>This will create a new image from <em>BG240.png</em>, and automatically set the size correctly for the image.</p>
+<p>Alternatively, you can set the resource on an existing Image widget.</p>
+<pre>i-&gt;setResource(BACKGROUND_IMAGE);</pre>
+<p>This is useful for animation. More on that later.</p>
+<h2>Sounds</h2>
+<p>If you want to include a sound file, then there is a specific directive for this. You need to include it as a <strong>.media</strong> (or a <strong>.umedia</strong>) file.</p>
+<p>You also need to know the MIME type of the audio format you’ve want. You can look this up at <a href="http://www.iana.org/assignments/media-types/" target="_blank">http://www.iana.org/assignments/media-types/</a> but you’ll probably be using MP3 files. Not every phone will play every format (see <a href="http://www.mosync.com/documentation/manualpages/featureplatform-matrix">Feature/Platform Support</a>).</p>
+<p>To add an MP3 file, you’ll add this declaration in a resource list file:</p>
+<pre>.res MUSIC
+.media "audio/mpeg", "music.mp3"</pre>
+<p>To add a MIDI file, you’ll add:</p>
+<pre>.res MUSIC
+.media "audio/midi", "music.mid"</pre>
+<p>To use the sound in your application:</p>
+<pre>maSoundPlay(MUSIC, 0, maGetDataSize(MUSIC));</pre>
+<p>The second parameter here is the offset position to start playing from, and the last parameter is the number of bytes to play. The function <strong>maGetDataSize()</strong> returns the size of a resource.</p>
+<h2>Fonts</h2>
+<p>Fonts are bitmaps fonts which are specific to the MAUI user interface library. MoSync comes supplied with a couple of examples, as well as the software (the BMFonts tool) to make your own. To use them in your application, you need to include them in a resource list file.</p>
+<pre>.res MYFONT
+.bin
+.include "pretty.mof"</pre>
+<p>You can then use them in your own code as follows</p>
+<pre>Font* f = new Font(MYFONT);</pre>
+<p>Other tutorials will look at fonts in much more detail.</p>
+<h2>Placeholders</h2>
+<p>Placeholders provide a reference to a resource in <strong>MAHeaders</strong>, but that resource doesn’t exist yet. You’d use this in situations where you are going to either create a resource at runtime (like an image) or download data into a resource, and you want to use that resource in several places.</p>
+<p>For instance, if you were writing an app which downloaded an image, you could create a placeholder so you can reference it when it is available:</p>
+<pre>.res DOWNLOADEDIMAGE
+.placeholder</pre>
+<p>You can then download the image to the placeholder.</p>
+<pre>ImageDownloader* dl = new ImageDownloader();
+dl-&gt;beginDownloading("http://austinspad.net/img/front_batman.png", DOWNLOADEDIMAGE);</pre>
+<p>This is just an excerpt of the code required for downloading. See the <a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/communication/downloading-data/index.html">Downloading Data from the Internet </a>tutorial for more information and examples.<em><strong><br></strong></em></p>
+<p>When this has completed downloading, you can save the image to local storage:</p>
+<pre>MAHandle imagestore = maCreateStore("IMAGESTORE", MAS_CREATE_IF_NECESSARY);
+maWriteStore(imagestore, DOWNLOADEDIMAGE);
+maCloseStore(imagestore, 1);</pre>
+<p>Even if you don’t save it permanently, you can still access the Image you’ve created by referencing the placeholder name you’ve used. You can use this across your whole application, and not just in the scope of the downloader.</p>
+<p>You can also create placeholders at runtime. The difference with these is that the reference is not in <strong>MAHeaders.h</strong>, so it won’t be available to all the classes in your application.</p>
+<pre>MAHandle TEMPIMAGE = maCreatePlaceholder();</pre>
+<h2>Sequential Files</h2>
+<p>Not every file has to have its own resource label. You can create a series of resources which are each accessed from the same root<strong> MAHandle</strong>. For instance, if you wanted to create an animation in a <strong>MAUI::Image</strong> widget, you can set up four frames for the animation in the <strong>.lst</strong> file.</p>
+<pre class="mosync-code-cpp">.res ANIMATION
+.image "frame1.png"
+.res
+.image "frame2.png"
+.res
+.image "frame3.png"
+.res ENDANIMATION
+.image "frame4.png"</pre>
+<p>Each image has its own<strong> .res</strong> declaration, which will create an index number for it, but it doesn’t need to be named. As <strong>MAHandle </strong>is a synonym for ‘int’, you can perform arithmetic operations on it. This excerpt will update an image every time a downloader informs your listener that more data has been downloaded, and you can update an animation on screen to show your user that it is working.</p>
+<pre class="mosync-code-cpp">MAHandle h = ANIMATION;
+Image* waitingAnim = new Image(0, 0, 100, 100, NULL);
+...
+void NotifyProgress(Downloader* dl, int downloadedBytes, int totalBytes)
+{
+    h = h++;
+    if(h &gt; ENDANIMATION)
+    h = ANIMATION;
+    waitingAnim-&gt;setResource(h);
+}</pre>
+<p>When the listener’s <strong>notifyProgress </strong>method is called, the resource on the <strong>MAUI::Image</strong> widget is updated.</p>
+<h2>Loaded and Unloaded Resources</h2>
+<p>There are two variations on some of the examples we’ve seen. Normally, resource files are loaded into memory, and are read directly from there. With some files, this makes perfect sense. You should only include fonts you want to use, and it is going to need access to it. For other resources, such as media files (MP3) and program data, it may be wasteful to have all of them loaded into memory at the same time. You may have three MP3 files, but you can only play one at a time. To handle this more efficiently, you can mark these as being unloaded with either <strong>.ubin</strong> (for data files) and <strong>.umedia</strong> (for MP3 files). These will only then be loaded when required.</p>
+<p>You can also load other resources on demand. For instance, you can offer the user a choice of skins or background images for the application. Normally, all these resources will be loaded when the application starts, but you can defer it until a time when it is needed. This will reduce the start up time and the memory consumption. Loading resources on demand is slower overall than loading at start up though. The benefits are that you’re not loading resources you won’t need, and that the loading time is spread.</p>
+<p>There is no difference in how you use unloaded binary and media resources.</p>
+<p>There is another way to work with unloaded resources which are not <strong>.ubin</strong> or <strong>.umedia</strong>. The directive <strong>.skip </strong>means that this resource will not be loaded when the application starts. This is particularly useful if you’ve got large resources which you may not need. They are not taking up loading time or precious memory if you’re not going to use them.</p>
+<pre>.res BGIMAGE2
+.skip
+.image <strong>"resources/background2.png"</strong></pre>
+<p>Once you’ve created them, you can use them as you would any .image resource. There is no additional code required. They do take slightly longer to load than they would at application start up, but the user probably won’t even notice.</p>
+<h2>Strings and Localisation<strong><strong><br></strong></strong></h2>
+<p>One easy way to localise your application is to keep all the system text like buttons and labels held externally to your compiled application. The application can then read in the strings that it wants to use. You can create a different version of the resource file for each language.</p>
+<p>Reading in strings from the resource file isn’t necessarily obvious however, and I’ve created a few example of how you can do it.</p>
+<p>C++ Strings are very strange if you come from a Java or C# background. They are not as ubiquitous as they are in Java and C#, and are quite frankly, of limited use.</p>
+<p>They are not inherent objects, and many method calls do not accept Strings but char* or const char* instead. This means that you are constantly converting between String and char*, which can be verbose and laborious.</p>
+<p>The MoSync resource compiler handles strings in three different formats</p>
+<table>
+<tbody><tr><td><p><strong>.string</strong></p>
+</td><td><p>Does not include a null-terminator at the end of the string</p>
+</td></tr>
+<tr><td><p><strong>.cstring</strong></p>
+</td><td><p>Does include the null-terminator</p>
+</td></tr>
+<tr><td><p><strong>.pstring</strong></p>
+</td><td><p>A Pascal string, which puts a byte at the start of the string containing the length.</p>
+</td></tr>
+</tbody></table>
+<p>To read the value of the string, it isn’t as simple as</p>
+<pre>String* myString = new String(RESOURCENAME);</pre>
+<p>Instead, you have to make a more explicit call out to the resources file. There is an object which can help with this called <strong>DataHandler.</strong> This will let you read from the handle, and keeps track of its own position.</p>
+<pre class="mosync-code-cpp">bool GetString(DataHandler* dh, String&amp; output)
+{
+    char c;
+    output.clear();
+    if(!dh-&gt;read(&amp;c, 1))
+    {
+        return false;
+    }
+    while(c) 
+    {
+        output.append(&amp;c, 1);
+        if(!dh-&gt;read(&amp;c, 1)) 
+        {
+            return false;
+        }
+    }
+    return true;
+}</pre>
+<p>In the first example above, you can see that the method takes a DataHandler and a String as parameters. It uses the DataHandler to read from the resource file one character at a time, and builds the string.&nbsp;</p>
+<p>This on its own should be enough to convince you to always use <strong>.pstring</strong> whenever possible.</p>
+<p>You can avoid a String object and create the string in a faster way using this function.</p>
+<pre class="mosync-code-cpp">char* GetString(MAHandle stringResource)
+{
+    // Get the length of the string data.
+    int length = maGetDataSize(stringResource);
+
+    // Allocate space for the string data plus the
+    // null termination character.
+    char* buffer = new char[length + 1];
+
+    // Read data.
+    maReadData(stringResource, buffer, 0, length);
+
+    // Null terminate the string.
+    buffer[length] = '\0';
+
+    // Return the string.
+    return buffer;
+}</pre>
+<p>This returns a char* to your string, <em>but it doesn’t delete it.</em><strong> </strong>You will need to call</p>
+<pre>delete[] buffer;</pre>
+<p>when you’ve finished with it. It uses the function <strong>maGetDataSize()</strong> to determine the length of the string and then reads it in one go. It will add the null terminator on, so this would be suitable with resource string of the <strong>.string</strong> type.</p>
+<p>The next example read Pascal strings into a String object without doing it character by character:</p>
+<pre class="mosync-code-cpp">bool GetPascalString(MAHandle stringResource, String&amp; output)
+{
+    bool success = false;
+    output.clear();
+    DataHandler* dataHandler = new DataHandler(stringResource);
+    byte length;
+    if(dataHandler-&gt;read(&amp;length, 1))
+    {
+        char* buffer = new char[length];
+        dataHandler -&gt;read(buffer, length);
+        output.setData(new StringData&lt;char&gt;(buffer));
+        delete[] buffer;
+        success = true;
+    }
+    delete dataHandler ;
+    return success;
+}</pre>
+<p>It uses the DataHandler as well, and it creates a new <strong>StringData</strong> object with the string in. This would be a good way to read .pstrings from the resources file.</p>
+<p>Finally, the fourth way doesn’t make use of <strong>DataHandler</strong>, and will probably be the fastest and sleekest way to read strings:</p>
+<pre class="mosync-code-cpp">bool GetPascalStringWithoutDataHandler(MAHandle stringResource, String&amp; output)
+{
+    output.clear();
+    byte length;
+    
+    // Check that there is at least one byte.
+    if(maGetDataSize(stringResource) == 0)
+    return false;
+    
+    // Read byte size.
+    maReadData(stringResource, &amp;length, 0, 1);
+    char* buffer = new char[length];
+    maReadData(stringResource, buffer, 1, length);
+    output.setData(new StringData(buffer));
+    delete[] buffer;
+    return true;
+}</pre>
+<p>It uses the underlying <strong>maReadData()</strong> function, which is wrapped by DataHandler to read the string from the resource. It also creates a new StringData object, and it deletes its temporary char array.</p>
+<h2>Binary Data</h2>
+<p>You can create or load binary data to use in your application. This may be a proprietary data format, or it may be a way of creating screens dynamically using localised resource files. The directive .bin indicates that this should be included as raw binary data.</p>
+<p>There are two ways to do this. Firstly, if you’ve already got some binary data you want to use</p>
+<pre>.res BINARYDEMO
+.bin
+.include <strong>"resources/data.bin"</strong></pre>
+<p>This will include your data for you to process as you see fit.</p>
+<p>A second way is for you to describe it in the resource file itself.</p>
+<pre>.res BINARYDEMO
+.bin
+.byte 4 //The number of widgets
+.byte 1 //A label widget
+.pstring "This is the first item. It is a label"
+.byte 2 //A button widget
+.pstring "This is the second item. It looks like a button"
+.byte 1 //A label widget
+.pstring "The next item is an image"
+.byte 3 //An Image widget
+.word 14422 //The size of the image
+.include "resources/test.png"
+</pre>
+<p>I’ve created some content I want to put on to the screen, using some of the resource techniques we’ve already looked at. I can write a simple parser to create screen dynamically at runtime.</p>
+<p>(Creating screens at runtime is the subject of the tutorial <a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/maui/creating-new-screens/index.html">Creating New Screens</a>.)</p>
+<pre class="mosync-code-cpp">// Read the first byte. This determines the number of widgets
+maReadData(BINARYDEMO, &amp;length, 0, 1);
+while(completed &lt; length)
+{
+    // Read the next byte. This is the type of widget
+    maReadData(BINARYDEMO, &amp;widgetType, position, 1);
+    position++;
+    switch(widgetType)
+    {
+    case 1: // Label
+        position += getPString(BINARYDEMO, *text, position);
+        listbox-&gt;add(createLabel(text-&gt;c_str()));
+        break;
+    case 2: // Button
+        position += getPString(BINARYDEMO, *text, position);
+        listbox-&gt;add(createButton(text-&gt;c_str()));
+        break;
+    case 3: // Image
+        lprintfln("Creating image");
+
+        // Get the length of the image
+        maReadData(BINARYDEMO, &amp;imageLen, position, 4);
+        position += 4;
+        lprintfln("Image is %d bytes", imageLen);
+
+        // Create a temporary placeholder
+        MAHandle imagePlaceholder = maCreatePlaceholder();
+    
+        // Create an image from binary data
+        maCreateImageFromData(imagePlaceholder, BINARYDEMO, position, imageLen);
+
+        // Add the image to the listbox
+        listbox-&gt;add(new Image(0, 0, 100, 100, NULL, true, true, imagePlaceholder));
+        position += imageLen;
+        lprintfln("Image created");
+        break;
+    }
+    completed++;
+}</pre>
+<p>This is an extract from the accompanying source code. It reads through the binary data we’ve put into the resource file, and creates the appropriate widgets at runtime. You can change the content of you application by just changing the resource file. You can share the resource file with clients and translators without giving away all of your code. This is the screen it produces:</p>
+<p><img src="https://docs.google.com/a/mobilesorcery.com/File?id=ddwb2zz_19f8cfz2fz_b"></p>
+</body>
+</html>

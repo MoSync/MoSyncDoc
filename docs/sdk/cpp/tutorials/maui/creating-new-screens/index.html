@@ -1,0 +1,385 @@
+<html>
+<head>
+<title>Creating New MAUI Screens</title>
+</head>
+<body>
+<h1>Creating New MAUI Screens</h1>
+<p>Screens are the skeleton of your application. Screens provide the navigation and structure you will want. You can create screens with their widgets at design time, when you are writing your code, or you can interpret some data to create screens at runtime. We’ll be looking at both of these in this tutorial.<!--break-->[toc title: Topics; maxlevel: 2]</p>
+<h2>Instantiating a New Screen</h2>
+<p>The Screen is the container for the widgets you want to display. It contains functionality so screens know which one is visible, and they can be shown with one command.</p>
+<p>When you are creating your application, you will probably want to create screens with different information. To create a new screen at design time, you need to inherit from <strong>MAUI::Screen</strong>. When you create a new MAUI application in MoSync, then you get some example code to do this. I’ve built a new screen here to show a menu.</p>
+<h3>Menu.h</h3>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">#ifndef MENU_H_
+#define MENU_H_
+#include &lt;MAUI/Screen.h&gt;
+#include &lt;MAUI/Layout.h&gt;
+#include &lt;MAUI/Image.h&gt;
+#include &lt;MAUI/ListBox.h&gt;
+#include &lt;MAUI/Label.h&gt;
+#include "../Util.h"    // From MAUIex
+#include "../MAHeaders.h"
+using namespace MAUI;
+using namespace MAUtil;
+class Menu : public Screen
+{
+public:
+    Menu();
+    virtual ~Menu();
+    void keyPressEvent(int keyCode);
+private:
+    ListBox* contentBox;
+};
+#endif /* MENU_H_ */
+</pre>
+<p>We can see that class Menu inherits from Screen.</p>
+<p>In the C++ code we can see what a Screen might do. (This is not a complete listing.)</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">#include "Menu.h"
+// Constructor for Menu. Takes a pointer to the Moblet object created in main.cpp
+Menu::Menu(Moblet* moblet) : mlet(moblet)
+{
+    // Build the menu options
+    buildMenu();
+}
+
+/*
+ * Destructor
+ */
+Menu::~Menu()
+{
+}
+
+/*
+ * Add the menu options to the listbox
+ */
+void Menu::buildMenu()
+{
+    // Get a basic screen set up from the UI Builder
+    Widget* w = createScreen(EXITBUTTON, "Menu");
+    
+    // Get the layout from the created screen. Cast from Widget* to Layout*
+    Layout* layout = (Layout*)w-&gt;getChildren()[0];
+    
+    // Get the listbox from the layout. Cast from Widget* to ListBox*
+    listbox = (ListBox*)layout-&gt;getChildren()[1];
+    
+    // Create a button for each menu option, and add it to the listbox.
+    listbox-&gt;add(createButton("Music Demo"));
+    listbox-&gt;add(createButton("Font Demo"));
+    listbox-&gt;add(createButton("Image Demo"));
+    listbox-&gt;add(createButton("Animation Demo"));
+    listbox-&gt;add(createButton("Strings Demo"));
+    listbox-&gt;add(createButton("Skipped Resource Demo"));
+    listbox-&gt;add(createButton("Placeholder Demo"));
+    listbox-&gt;add(createButton("Binary Demo"));
+    
+    // Set the widget from the UIBuilder as the main widget for the screen
+    this-&gt;setMain(w);
+}</pre>
+<p>A screen contains <strong>Widgets</strong> (for more information, see the tutorial <a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/maui/introduction-maui/index.html">Introduction to MAUI</a>). In our example, we can see that in the constructor we call <strong>buildMenu</strong> which calls out to an external function to create Widgets on our behalf. These widgets will make up the content of our screen.</p>
+<p>The final command here is <strong>setMain(w);</strong> Each screen has one main widget, which is the parent widget of this screen. When this screen is painted, it calls the <strong>drawWidget</strong> method on the main widget to paint it. Each of the children of the main widget will be painted as well.</p>
+<p><strong>Note</strong>: Screens cannot have any sections which don’t have a widget on. The main widget will be resized to the size of the screen.</p>
+<p>To create the screen, you need to create a new instance of it. In the most simple example, the controlling <strong>Moblet</strong> (see the tutorial <a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/maui/starting-new-moblet-project/index.html">Starting a New Moblet Project</a>) will call an initial screen to start.</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+#include "Screens/Menu.h"
+
+using namespace MAUtil;
+using namespace MAUI;
+
+/*
+ * This is the Moblet class. This manages the events your
+ * application will need, like getting key presses and
+ * screen touches. It also creates an instance of the
+ * MAUI::Screen class 'Menu', and shows it on screen.
+ */
+class MAUIMoblet : public Moblet {
+public:
+    MAUIMoblet()
+    {
+        // Initialize menu.
+        menu = new Menu();
+        menu-&gt;show();
+    }
+    
+    /*
+     * The destructor.
+     */
+    virtual ~MAUIMoblet()
+    {
+        delete menu;
+    }
+    
+private:
+    Menu* menu;
+};
+
+/*
+ * This is where your application starts. It creates a new
+ * instance of MAUIMoblet (see above) and runs it. 
+ */
+extern "C" int MAMain() {
+    Moblet::run(new MAUIMoblet());
+    return 0;
+};</pre>
+<p>This moblet code has a reference to <strong>Menu.h</strong>, and when it is constructed, it creates a new instance of <strong>Menu</strong>. It then calls the method <strong>show()</strong>.</p>
+<p>Only one screen can be shown at a time. By calling the <strong>show()</strong> method on a screen you are indicating that this is the screen which should now be shown. There is also a <strong>hide()</strong> method, which isn't implemented in <strong>Screen</strong> directly. You can create <strong>Screens </strong>though which use it. If you've got screens which have some sort of processing capability, you can pause it while the <strong>Screen </strong>isn't shown if you want to.</p>
+<p>The screen which is being shown will automatically be passed key and screen events.</p>
+<h2>Capturing Keys and Screen Touches</h2>
+<p>Screen already contains the functionality to automatically receive events raised from the keyboard and the screen (on touchscreen devices), and we can react to these events by providing functionality for the following methods.</p>
+<pre>void keyPressEvent(int keyCode);
+void keyReleaseEvent(int keyCode);
+void pointerPressEvent(MAPoint2d point);
+void pointerMoveEvent(MAPoint2d point);
+void pointerReleaseEvent(MAPoint2d point);</pre>
+<p>Typically, we might want to capture these to control navigation on screen. In our menu, we’ve got a ListBox with the menu options. We want to capture key presses to navigate the menu.</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">/*
+ * This is inherited from Screen, and captures key presses.
+ */
+void Menu::keyPressEvent(int keyCode)
+{
+    // Select the key which has been pressed
+    switch(keyCode)
+    {
+    // Right Soft Key - ask the moblet to close the application.
+    case MAK_SOFTRIGHT:
+        mlet-&gt;closeEvent();
+        mlet-&gt;close();
+        break;
+        
+    // Move up the menu when the navigation up button, the navigation
+    // left button the number 2 or the number 4 buttons are pressed.
+    case MAK_UP:
+    case MAK_LEFT:
+    case MAK_2:
+    case MAK_4:
+        listbox-&gt;selectPreviousItem(true);
+        break;
+        
+    // Move down the menu when the navigation down, the navigation right,
+    // the number 8 or the number 6 buttons are pressed.
+    case MAK_DOWN:
+    case MAK_RIGHT:
+    case MAK_8:
+    case MAK_6:
+        listbox-&gt;selectNextItem(true);
+        break;
+        
+    // When the fire button or the number 5 are pressed, show the 
+    // selected screen from the vector.
+    case MAK_FIRE:
+    case MAK_5:
+        lprintfln("Showing screen %d", listbox-&gt;getSelectedIndex());
+        screens[listbox-&gt;getSelectedIndex()]-&gt;show();
+        break;
+    }
+}</pre>
+<p>The <strong>KeyPress </strong>and <strong>KeyRelease </strong>events pass an int, which is an index of the button pressed. These are constants in MoSync, and are in the format <strong>MAK_</strong>. There is a full list available in the <a href="/content/api-reference">MoSync API Reference Guide</a>. In this example, we’ve a simple<strong> switch</strong> statement. If the right soft key button is pressed, we end the application. If the up, left, 2 or 4 key is pressed, we tell the ListBox to go to the previous item. On the down, right, 6 or 8 buttons, we scroll down. When fire or 5 is pressed, we perform an action based on the selected item in the <strong>ListBox</strong>. We can see that we’ve created a navigation system just by simply plugging into the functions already available.</p>
+<p>When we capture a screen touch, we get a location on screen which has been touched.</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">void TouchListBox::pointerPressEvent(MAPoint2d point)
+{
+    locateItem(point);
+}</pre>
+<p>We can use this point to identify a widget which has been pressed, or perform any other action you may want to with the screen. I prefer for touch sensitive widgets to handle their own touch events, and I’ll be presenting my <strong>TouchListBox</strong> in the tutorial <a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/maui/creating-new-screens/index.html">Creating New Screens</a>.</p>
+<h2>Navigating to Other Screens</h2>
+<p>When you start writing MoSync apps, you’ll start by creating a couple of screens in the way described above, and then get stuck wondering how to navigate between screens. How does this screen go back to the one before? Or that one over there? In the MAUI example supplied with MoSync, there is a simple method for managing this.</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">LayoutScreen::LayoutScreen(Screen *previous) : previous(previous) 
+{
+    mainLayout = createMainLayout("", "back");
+    this-&gt;setMain(mainLayout);
+    ListBox* listBox = (ListBox*) mainLayout-&gt;getChildren()[0];
+    Layout *layout = new Layout(0, 0, scrWidth, 
+            scrHeight-mainLayout-&gt;getChildren()[1]-&gt;getHeight(), 
+            listBox, 3, 4);
+    layout-&gt;setMarginX(5);
+    layout-&gt;setMarginY(5);
+    layout-&gt;setPaddingLeft(5);
+    layout-&gt;setPaddingRight(5);
+    for(int i = RES_ICONS_START; i != RES_ICONS_END+1; i++) 
+    {
+        new Image(0, 0, 0, 0, layout, true, true, i);
+    }
+}</pre>
+<p>When you create a LayoutScreen, you have to pass it the pointer to the previous screen. In my menu example, to create a LayoutScreen, enter</p>
+<pre>Screen layoutScreen = new LayoutScreen(this));</pre>
+<p>where <strong>this</strong> is the menu screen. This means that the LayoutScreen has an anchor to another screen, and when it wants to show the menu again, it can call the show() method on it.</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">/*
+ * Pressing soft right key will display previous screen.
+ */
+void LayoutScreen::keyPressEvent(int keyCode) 
+{
+    if(keyCode == MAK_SOFTRIGHT) 
+    {
+        previous-&gt;show();
+    }
+}</pre>
+<p>This screen doesn’t have to worry about hiding itself. Calling <strong>show()</strong> on another screen will hide this one.</p>
+<h2>Creating Screens Dynamically</h2>
+<p>As well as these fixed screens, you can create Screens at runtime. There may be many occasions where you don’t know what you want on screen yet. It may depend on something the user does, or it may be that it is based on data downloaded from the internet. To manage these, I’ve used a screen which can parse input data and create widgets based on it. This means I can theoretically have any number of screens in my application without running out of memory. I keep a small pool of maybe five screens alive at any one time, and when I need the sixth new screen, I delete the first one. Should I need the first one again, I can recreate it.</p>
+<p>The data for your dynamic screen may be included as a binary file in your resources, which is good for default data, explicitly build into your resource files, or downloaded and put into a data store.</p>
+<p>If you’ve already got some binary data you want to use, you can include it in the resources file.</p>
+<pre>.res BINARYDEMO
+.bin
+.include "resources/data.bin"</pre>
+<p>A second way is for you to describe it in the resource file itself.</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">.res DYNAMICSCREENDEMO
+.bin
+.byte 4 // The number of widgets
+.byte 1 // A label widget
+.pstring "This is the first item. It is a label"
+.byte 2 // A button widget
+.pstring "This is the second item. It looks like a button"
+.byte 1 // A label widget
+.pstring "The next item is an image"
+.byte 3 // An Image widget
+.word 14422 // The size of the image</pre>
+<p>I use my own format. I’ve a server which compiles data for my applications and sends it to the phone.</p>
+<p>I can build a screen at runtime based on the values in the resource file:</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">#ifndef BINARYSCREEN_H_
+#define BINARYSCREEN_H_
+#include "UIBuilder.h"
+#include &lt;MAUI/Screen.h&gt;
+#include &lt;MAUI/Image.h&gt;
+#include &lt;conprint.h&gt;
+#include "MAHeaders.h"
+using namespace MAUI;
+using namespace MAUtil;
+class BinaryScreen : public Screen
+{
+public:
+    BinaryScreen(Screen* returnTo);
+    virtual ~BinaryScreen();
+    void keyPressEvent(int keyCode);
+private:
+    void buildScreen();
+    Screen* homeScreen;
+    ListBox* listbox;
+    int getPString(MAHandle stringResource, String&amp; output, int startPos);
+};
+#endif /* BINARYSCREEN_H_ */
+</pre>
+<p>This<strong> </strong><strong>BinaryScreen </strong>has a reference to the previous screen, so it can return. It also has a method for reading strings from the resource file.&nbsp; This code reads sequentially through the data in the resource file and determines the type of widget it wants to create. It then builds that widget and set the data in it accordingly.</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">#include "BinaryScreen.h"
+BinaryScreen::BinaryScreen(Screen* returnTo) : homeScreen(returnTo)
+{
+    buildScreen();
+}
+
+/*
+ * The destructor.
+ */
+BinaryScreen::~BinaryScreen()
+{
+}
+
+/*
+ * Pressing soft right key shall display home screen.
+ */
+void BinaryScreen::keyPressEvent(int keyCode)
+{
+    switch(keyCode)
+    {
+    case MAK_SOFTRIGHT:
+        homeScreen-&gt;show();
+        break;
+    }
+}
+
+/*
+ * This will build screen dynamically at runtime with 
+ * layout and list box.
+ */
+void BinaryScreen::buildScreen()
+{
+    // Get a basic screen set up from the UI Builder
+    Widget* w = createScreen(BACKBUTTON, "Menu");
+    
+    // Get the layout from the created screen. Cast from Widget* to Layout*
+    Layout* layout = (Layout*)w-&gt;getChildren()[0];
+    
+    // Get the listbox from the layout. Cast from Widget* to ListBox*
+    listbox = (ListBox*)layout-&gt;getChildren()[1];
+    
+    // This is going to read through a binary resource to create widgets 
+    // dynamically. These are variables required for decoding widgets.
+    byte len;
+    int position = 1; // Skip the first byte
+    byte widgetType;
+    byte completed = 0;
+    String* text = new String();
+    short imageLen;
+    
+    // Read the first byte. This determines the number of widgets.
+    maReadData(BINARYDEMO, &amp;len, 0, 1); 
+    while(completed &lt; len)
+    {
+        // Read the next byte. This is the type of widget
+        maReadData(BINARYDEMO, &amp;widgetType, position, 1);
+        position++;
+        switch(widgetType)
+        {
+        case 1: // Label
+            position += getPString(BINARYDEMO, *text, position);
+            listbox-&gt;add(createLabel(text-&gt;c_str()));
+            break;
+        case 2: // Button
+            position += getPString(BINARYDEMO, *text, position);
+            listbox-&gt;add(createButton(text-&gt;c_str()));
+            break;
+        case 3: // Image
+            lprintfln("Creating image");
+            
+            // Get the length of the image.
+            maReadData(BINARYDEMO, &amp;imageLen, position, 4);
+            position += 4;
+            lprintfln("Image is %d bytes", imageLen);
+            
+            // Create a temporary placeholder
+            MAHandle imagePlaceholder = maCreatePlaceholder();
+            
+            // Create an image from binary data
+            maCreateImageFromData(imagePlaceholder, BINARYDEMO, position, imageLen);
+            
+            // Add the image to the listbox
+            listbox-&gt;add(new Image(0, 0, 100, 100, NULL, true, true, imagePlaceholder));
+            position += imageLen;
+            lprintfln("Image created");
+            break;
+        }
+        completed++;
+    }
+    this-&gt;setMain(w);
+    delete text;
+}
+
+/*
+ * This will read a Pascal string from the resources.
+ */
+int BinaryScreen::getPString(MAHandle stringResource, String&amp; output, intstartPos)
+{
+    output.clear();
+    byte len;
+    
+    // Check that there is at least one byte
+    if(maGetDataSize(stringResource) == 0)
+    return false;
+    maReadData(stringResource, &amp;len, startPos, 1);
+    char* buffer = new char[len + 1];
+    maReadData(stringResource, buffer, startPos + 1, len);
+    buffer[len] = '\0';
+    output.setData(new StringData(buffer));
+    delete[] buffer;
+    return len + 1;
+}</pre>
+<p>The BinaryScreen has a handle helper which will create widgets for it, but you can see that it processes the resource data, looks at the widget type byte and extracts the necessary data to build the screen.</p>
+<p>Building screens at runtime is <strong><em>much</em></strong> slower than having them built at compile-time, but it does make localisation easier, and potentially means that you only have to write one screen class, if this can handle all the content you may want.</p>
+</body>
+</html>

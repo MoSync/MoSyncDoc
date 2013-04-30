@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>The MAFS C++ Library</title>
+</head>
+<body>
+<h1>The MAFS C++ Library</h1>
+<p>MAFS is a reimplementation of the Standard C File I/O routines. It operates on either a binary image attached as a resource or using local stores for permanent storage. The binary image is actually a virtual filesystem generated using our tool Bundle.<!--break--></p>
+<p>This comes in handy when porting applications that use a lot of data stored as files in the file system: just use the <strong>Bundle </strong>tool on the data folder to generate an image, attach it as a resource in the MoSync application, and mount it using the API functions provided.<br><br> A policy has been implemented to handle transparently the permanent storage of files. The <strong>fopen </strong>function first looks to see if the file exists in permanent storage. If that is the case, everything is written or read from that permanent storage. If no file is found in permanent storage, it continues to search for the file in the binary image. Reading from such a file is done by buffering data from the binary resource. Whenever such a file is written to, a copy of the data is created and saved as permanent storage.<br><br> Any reference documentation for the <strong>f*</strong> functions of the Standard C File API will work as reference, but we've also included documentation for them in our own reference documentation. There are two special functions for mounting the filesystem image and unmounting it. There can only be one filesystem image mounted at once.</p>
+<p>Use the function <strong>setCurrentFileSystem </strong>to mount it and <strong>freeCurrentFileSystem </strong>to unmount it:</p>
+<ul>
+<li>The function <strong>setCurrentFileSystem </strong>takes two parameters, the first being a handle to the binary resource containing the <strong>Bundle</strong>-generated filesystem image. The second being an integer, where a value of 1 states that the filesystem should be treated as a case sensitive one (like on Unix systems) and a value of 0 states that it should not (like on Windows). <br><br></li>
+<li>The function <strong>freeCurrentFileSystem </strong>just unmounts the current file system and releases all the memory allocated for it.</li>
+</ul>
+<p>To show how it works, we begin by making a <strong>.bun</strong> file using the <strong>Bundle</strong>-tool.<br><br> First create a text-file:</p>
+<p><img src="images/mafs_text_file.png"></p>
+<p>Then generate the .bun-file:<br> <img src="images/mafs_bundle.png"></p>
+<p>Finally we include the .bun file as an unloaded binary resource:</p>
+<pre>.res R_TEST_FILESYSTEM
+.ubin
+.include "test.bun"
+</pre>
+<p>We can now write a small program that mounts the bun-file, opens and reads the text-file. Let's do it using the Moblet-architecture:</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;MAFS/File.h&gt;
+#include "MAHeaders.h"
+
+using namespace MAUtil;
+
+/*
+ * MyMoblet class that will show how to use File System.
+ */
+class MyMoblet : public Moblet
+{
+public:
+    MyMoblet()
+    {
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;char text[1024];
+
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;setCurrentFileSystem(R_TEST_FILESYSTEM, 0);
+
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;FILE *file = fopen("text.txt", "r");
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;if(!file) maPanic(1, "Could not open file!");
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;if(!fgets(text, 1024, file)) maPanic(1, "Could not read string!");
+
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;maSetColor(0x00ff00);
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;maDrawText(2, 2, text);
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;maUpdateScreen();
+&nbsp;&nbsp; &nbsp;}
+};
+
+/*
+ * The main execution of the program starts here.
+ */
+extern "C" int MAMain()
+{
+&nbsp;&nbsp; &nbsp;Moblet::run(new MyMoblet());
+&nbsp;&nbsp; &nbsp;return 0;
+};
+</pre>
+<p><br><br></p>
+</body>
+</html>

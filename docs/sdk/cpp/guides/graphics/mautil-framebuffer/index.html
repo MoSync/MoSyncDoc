@@ -1,0 +1,72 @@
+<html>
+<head>
+<title>MAUtil FrameBuffer</title>
+</head>
+<body>
+<h1>MAUtil FrameBuffer</h1>
+<p><strong>MAUtil::FrameBuffer</strong> emulates a 4 or 8 bits per pixel, palletized display using the FrameBuffer API of MoSync. To initialize the library you provide the <strong>FrameBuffer_init</strong> with information about the size, colour format and orientation of the screen.</p>
+<p><!--break--></p>
+<p>You may then set entries in the palette using either <strong>FrameBuffer_setPalette</strong> or<strong> FrameBuffer_setPaletteEntry</strong>.</p>
+<p>The <strong>FrameBuffer_copyRect</strong> colour converts, scales and rotates a selected area of the the source, treated as image pixels with the information provided when initializing the library, into the native framebuffer. The function will automatically scale the backbuffer to fit the screen using pixel doubling/halving. When doing pixel halving, the colours of the pixels will be averaged to get a better reproduction of the actual image. It is a very handy API for porting old desktop applications that used the framebuffer of the VGA/EGA display.<br><br> There's two important things to keep in mind:</p>
+<ul>
+<li><strong>FrameBuffer_init</strong> allocates memory for the native backbuffer (resolution of the screen <strong>x </strong>the colour depth), which requires the application to be given a larger heap size (If you get a panic saying '<strong>malloc failed</strong>', this is most likely the case).</li>
+<li>Whenever a <strong>EVENT_TYPE_SCREEN_CHANGED</strong> event is sent from the runtime, the native framebuffer gets invalidated, so is the <strong>MAUtil::FrameBuffer</strong> library, and needs to be reinitialized. Just use <strong>FrameBuffer_Close</strong> and <strong>FrameBuffer_init</strong> in sequence and everything should be just fine.</li>
+</ul>
+<p>Here is a simple example (written in C) showing how it is used:</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">#include &lt;ma.h&gt;
+#include &lt;MAUtil/FrameBuffer.h&gt;
+
+// We allocate a 160*120 pixels large 8 bits per pixel backbuffer.
+unsigned char backbuffer[160*120];
+
+int MAMain()
+{
+    int i;
+
+    // Initialize the FrameBuffer library with no special flags and the default orientation.
+    FrameBuffer_init(160, 120, ORIENTATION_0, 0);
+
+    // Create a greyscale palette.
+    for(i = 0; i &lt; 256; i++)
+    {
+        FrameBuffer_setPaletteEntry(i, i, i, i, 0);
+    }
+
+    while(1)
+    {
+        MAEvent event;
+
+        // Retrieve the time and use it to generate a color index for
+        // all pixels in the backbuffer.
+        int time = maGetMilliSecondCount()/10;
+        memset(backbuffer, time, 160*120);
+
+        while(maGetEvent(&amp;event))
+        {
+            switch(event.type)
+            {
+                // Make sure we catch the close event and if we do, exit.
+                case EVENT_TYPE_CLOSE:
+                    maExit(0);
+                    break;
+                // Whenever the screen area or orientation of the screen changes,
+                // we reinitialize the FrameBuffer library.
+                case EVENT_TYPE_SCREEN_CHANGED:
+                    FrameBuffer_close();
+                    FrameBuffer_init(160, 120, ORIENTATION_0, 0);
+                    break;
+            }
+        }
+
+    // Copy, convert, scale and rotate the backbuffer to the native backbuffer.
+    FrameBuffer_copyRect(0, 0, 160, 120, 0, 0, backbuffer, 160);
+
+    // Update the screen (copy the native backbuffer to the actual screen).
+    maUpdateScreen();
+    }
+    return 0;
+}
+</pre>
+</body>
+</html>

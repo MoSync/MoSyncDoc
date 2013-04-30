@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>The Runtime Architecture</title>
+</head>
+<body>
+<h1>The Runtime Architecture</h1>
+<p>MoSync has two primary runtime architectures - one implemented in C++ and one in Java. However, the design is very similar in both cases.</p>
+<p><!--break--></p>
+<p><img src="images/Runtime-Architecture.png" align="none" width="650" height="253"></p>
+<h2>Service Layer</h2>
+<p>A runtime includes a service layer providing file I/O, threading, networking, memory managment and other supporting functions.</p>
+<h2>Application framework</h2>
+<p>This module holds the runtime's entrypoint. Its size and responsibilities vary across platforms. However, it typically handles platform-specific event management, initialization and destruction.</p>
+<h2>Syscalls</h2>
+<p>This module is responsible for implementing the basic features required for all platforms - graphics, audio, networking etc. It interprets MoSync resource files and also provides event managment, initialization and destruction.</p>
+<h2>Resource system</h2>
+<p>This module provides facilities for managing resource objects, such as images, sounds and data blobs. It supports dynamic creation and destruction of resources, as well as conditionally loading resources depending on the platform (Android, iOS, etc.), the device's screen size, and so on.</p>
+<h2>Internal extensions</h2>
+<p>Some features may not be available on all platforms. Such features are implemented as numbered functions called through a single Syscall. That Syscall returns a specific error value if the function being called is not present. This allows developers to determine whether such a non-universal API is accessible in runtime.</p>
+<h2>Core</h2>
+<p>This module is responsible for the execution of MoSync programs. It interoperates with the syscalls and resource system. Cores come in a number of different flavors, all of which share a common interface to the above mentioned modules. These are the three main types:</p>
+<table>
+<thead><tr><th><strong>VM Core</strong></th><th><strong>Recompiler Core</strong></th><th><strong>Generated Core</strong></th></tr>
+</thead><tbody><tr><td>A VM core is a virtual machine that loads, interprets and executes MoSync bytecode directly. The execution is implemented in a single, small function, allowing for efficient JIT optimization. This is the type of core we use for Java ME.</td><td>A recompiler core loads MoSync bytecode and recompiles it into native code for the platform concerned, typically ARM machine code. The generated machine code is then executed. This is the type of core we use for Windows Mobile and Symbian.</td><td>This type of core neither inteprets nor recompiles MoSync bytecode - instead, it contains native code generated ahead of time from MoSync IL, and exposes an interface consistent with other core variants. This is the type of core we use for iPhone.</td></tr>
+</tbody></table>
+<p>The reason we have three types of cores is that each has its distinct advantages. VM cores are great for debugging and conformance verification and are fully dynamic, making it possible to load new code at runtime, which is useful for many types of applications. Recompiler cores are more efficient, but provide less debugging support. They are also dynamic, albeit with some recompilation overhead when loading new code. Finally, generated cores provide zero overhead for low end devices, while sacrificing dynamicite. They are not able to load code at runtime.</p>
+<p>All three types of core share a common interface - a generated or recompiler core works as a drop-in replacement for a VM core. This allows all the other modules to be shared across runtimes without modification.</p>
+</body>
+</html>

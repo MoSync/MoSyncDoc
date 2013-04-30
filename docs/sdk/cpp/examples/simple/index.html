@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>Simple</title>
+</head>
+<body>
+<h1>Simple</h1>
+<p>This example application catches key events and displays the keycodes of pressed keys.<!--break--></p>
+<p><img src="images/simple.png" align="none" width="240" height="320"></p>
+<p>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<h2>Behaviour</h2>
+<p>The screen says "Hello moblet!", after which the application awaits key presses. Each key (except the zero or right-softkey) will have its key codes (presscodes) echoed on-screen:</p>
+<ul>
+<li>The first number is the standard MoSync <strong>keyCode</strong> for that key on all devices that have it. A <strong>keyCode </strong>of "0" means that the key has no standard MoSync keyCode.</li>
+<li>The second number is the <strong>nativeCode </strong>for that key returned by the device. This will vary from device to device, although may be standard across particular platforms.</li>
+</ul>
+<p>The application also keeps count of the number of keys that have been pressed and released. Key combinations, such as SHIFT-A, will have two or more consecutive presscodes and releases as shown in the example screen above.</p>
+<p>There is no touchscreen support in this example, it just works with the physical keys of the device.</p>
+<h2>Key Presses</h2>
+<ul>
+<li>Any key to get key code</li>
+<li>0 or right-softkey - exits the application</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<dl></dl></body>
+</html>

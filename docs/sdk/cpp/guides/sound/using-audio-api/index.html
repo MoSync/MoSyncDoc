@@ -1,0 +1,326 @@
+<html>
+<head>
+<title>The Audio C API</title>
+</head>
+<body>
+<h1>The Audio C API</h1>
+<p>The MoSync Audio C API make it possible to play multiple audio tracks simultaneously on Android and iOS. In this guide we take a&nbsp; look at the functions in this API and give you two example programs which demonstrate the capabilities of this API.<!--break--></p>
+<p></p>
+<p>For a list of the platforms supported by the Audio C API, see <a href="http://www.mosync.com/documentation/manualpages/featureplatform-matrix">Feature/Platform Support</a>.</p>
+<h2 dir="ltr">Creating something to play</h2>
+<p>The <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___audio_a_p_i.html">MoSync Audio C API</a> provides a set of functions that make it possible to play background music and sound effects at the same time. The API is based on using two basic handles,&nbsp;<strong>MAAudioData</strong> and&nbsp;<strong>MAAudioInstance</strong>.</p>
+<p><strong>MoSyncs old Sound API made use of resources created as .media or .umedia resources in the resource .lst file. The new system uses .ubin resources.</strong> These are just binary resources which will be loaded and used by the Audio APIs maAudioDataCreateFromResource call.<br><br>To create an <strong>MAAudioData</strong> resource, use the <strong>maAudioDataCreateFromResource</strong> or <strong>maAudioDataCreateFromURL</strong> functions. The first takes a bundled MoSync resource; the latter a URL.</p>
+<ul>
+<li>On Android, the URL accepts the protocols “http://”, “https://”, and "file:///".</li>
+<li>On iOS it only accepts the "file://" protocol.</li>
+<li>If no protocol is added it assumes it's a file path.</li>
+<li>For protocol support on other platforms, see&nbsp; <a href="http://www.mosync.com/content/mosync-cross-platform-mobile-development-made-easy">Feature/Platform Support</a>.</li>
+</ul>
+<h2 dir="ltr">Streaming versus non-streaming resources</h2>
+<p>Audio resources can be streaming or non-streaming. General platform limitations mean that you can only stream one audio resource at the time. Use the flag MA_AUDIO_DATA_STREAM to identify the audio resource as a streaming resource that should not be loaded into memory but should instead be streamed from disk or over HTTP. Set the flag to 0 (zero) for all other sounds otherwise you may get an error.</p>
+<p>The streaming sound should, in a game perspective, be the background music while the non-streaming should be the sound effects.</p>
+<p>Different platforms have different quirks so when creating your resources you should take some things in consideration. For sound effects, the most reliable format is MP3. For non-streaming sounds you should generally use short samples, a couple of seconds in length.<br><br>You must check your return values, if you get a value &lt; 0, something bad happened.</p>
+<h2 dir="ltr">Creating an audio instance</h2>
+<p>To be able to play an audio resource you first need to create an audio instance. Do this using the <strong>maAudioInstanceCreate</strong> function. If you get a return value which is not &lt;0 then you are ready to play the resource.</p>
+<h2>Preparing a streaming audio resource</h2>
+<p>For a streaming audio resource you need to prepare the sound — that is, start processing the file into memory. You can prepare the audio resource <strong>asynchronously</strong> or <strong>synchronously</strong>. Preparing it asynchronously is recommended. (If you try to play the sound before preparing it, it will automatically be prepared synchronously and if that is done over a slow internet connection your app may freeze for a few seconds.)</p>
+<p>Call <strong>maAudioPrepare</strong> and set the <strong>async</strong> flag to <strong>1</strong>. The preparation will begin and you will receive an EVENT_TYPE_AUDIO_PREPARED event when it's finished buffering. This event will also contain the <strong>MAAudioInstance</strong> of the prepared sound.</p>
+<p>There is no need to prepare non-streaming audio resources.</p>
+<h2>Playing an audio resource</h2>
+<p>Before playing a resource you can set the number of times the sound should loop using <strong>maAudioSetNumberOfLoops</strong>: <strong>0</strong> means play once, <strong>1</strong> means play twice, and so on. A loop value of <strong>-1</strong> means that it should loop forever.<br><br>The current resource instance can also has it’s volume changed with <strong>maAudioSetVolume</strong>. Volume is a value between <strong>0</strong> and <strong>1</strong> where <strong>0</strong> is mute and <strong>1</strong> is full volume.<br><br><strong>maAudioGetLength</strong> gets the length of the sound in milliseconds while <strong>maAudioSetPosition</strong> lets you set the position in the file. You can also use <strong>maAudioGetPosition</strong> to get the current position in the file in milliseconds from the start. Note that these three functions may not be available for non-streaming sounds on all platforms. Check your return values and you will be safe.<br><br><strong>maAudioPlay</strong> will start playing the sound. The EVENT_TYPE_AUDIO_COMPLETED event will be fired when it’s finished. If you have set the number of loops to <strong>1</strong> you will hear the sound play twice and then you will get the event.<br><br>During playback you can always use <strong>maAudioPause</strong> to pause the current playback and it will be resumed by calling <strong>maAudioPlay</strong> again.<br><br> When you call <strong>maAudioStop</strong> the sound might get unprepared which means that you need to prepare it again. If you want to stop playback and start at the beginning again it’s better to use <strong>maAudioSetPosition</strong> and set the position to <strong>0</strong>.<br><br>When you don’t need to play a sound anymore you can destroy the <strong>MAudioInstance</strong> with <strong>maAudioInstanceDestroy</strong>. If you want to clean up the sound data just use <strong>maAudioDataDestroy</strong> to destroy the <strong>MAAudioData</strong>.<br><br></p>
+<h2 dir="ltr">Example: playing multiple sounds simultaneously</h2>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;conprint.h&gt;
+
+#include "MAHeaders.h"
+
+using namespace MAUtil;
+
+/**
+ * This example program will divide the screen into four sections, each sections
+ * will have a different color. It assumes there are four binary resources which
+ * is called RES_SOUND_1 to RES_SOUND_4 which contains small audio files. The
+ * resources needs to be defined as .ubin or .bin in the resource .lst or .lstx
+ * file.   
+ *
+ * When pressing either of these four sections a corresponding sound will play.    
+ *
+ */    
+class MyMoblet : public Moblet
+{
+public:
+
+    MyMoblet()
+    {
+        // Checking the size of the screen
+        int mWindowWidth = EXTENT_X(maGetScrSize());
+        int mWindowHeight = EXTENT_Y(maGetScrSize());
+
+        // Divide the screen in four sections
+        // and render each in different colors
+        mCenterX = mWindowWidth/2;
+        mCenterY = mWindowHeight/2;
+
+        maSetColor(0xff00ff);
+        maFillRect(0, 0, mCenterX, mCenterY);
+
+        maSetColor(0xffff00);
+        maFillRect(mCenterX, 0, mCenterX, mCenterY);
+
+        maSetColor(0x00ffff);
+        maFillRect(0, mCenterY, mCenterX, mCenterY);
+
+        maSetColor(0xff0000);
+        maFillRect(mCenterX, mCenterY, mCenterX, mCenterY);
+
+        maUpdateScreen();
+
+        // Init the sounds and send a panic if it failed
+        if (!initSounds())
+            maPanic(-1, "Couldn't initiate sound resources");
+
+    }
+
+    bool initSounds()
+    {
+        // MoSync resources are created in increasing order which
+        // means that you can use the first resource handle as
+        // a base and then access each resource by incrementing
+        // an offset.
+        for(int i = 0; i &lt; 4; i++)
+        {
+            // Create a maAudioData handle from the resource
+            mData[i] = maAudioDataCreateFromResource(
+                    NULL,
+                    (RES_SOUND_1+i),
+                    0,
+                    maGetDataSize((RES_SOUND_1+i)),
+                    0);
+            // If the maAudioData handle is less then 0 it failed
+            if(mData[i] &lt; 0)
+                return false;
+
+            // Create a maAudioInstance handle from the audio data.
+            // The instance is then used when playing the audio.
+            mInstance[i] = maAudioInstanceCreate(mData[i]);
+
+            // If the maAudioInstance handle is less then 0 it failed
+            if(mInstance[i] &lt; 0)
+                return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * This program only checks for the back and menu key,
+     * and when either of those are pressed the application
+     * will close. This will only happen on Android.
+    */
+    void keyPressEvent(int keyCode, int nativeCode)
+    {
+        if (MAK_BACK == keyCode || MAK_MENU == keyCode)
+        {
+            close();
+        }
+    }
+
+
+    /**
+     * Checks each key press on the screen and plays a sound according
+     * to which quadrant of the screen which was pressed.
+     * The touchid will be ignored, it's too identify which multitouch
+     * event which was fired. For this test a sound will play on each
+     * touch so it can handle multiple sounds at the same time. When
+     * a sound is playing and that screen section is touched again, that
+     * sound will restart meaning that all four samples will be able to 
+     * play at the same time, but only one instance of each.    
+     */
+    virtual void multitouchPressEvent(MAPoint2d p, int touchId)
+    {
+        // Quickly check which section on the screen is pressed
+        // by comparing the point event coordinates against the
+        // the center of the screen.   
+        int index;
+        if(p.y &gt; mCenterY)
+        {
+            if(p.x &gt; mCenterX)
+                index = 0;
+            else
+                index = 1;
+        }
+        else
+        {
+            if(p.x &gt; mCenterX)
+                index = 2;
+            else
+                index = 3;
+        }
+
+        // Stops the sound if this instance was already playing,
+        // if it's not playing nothing will happen. 
+        maAudioStop(mInstance[index]);
+        // Rewinds the instance to the start of the sound
+        maAudioSetPosition(mInstance[index], 0);
+        // Plays the sound
+        maAudioPlay(mInstance[index]);
+
+    }
+
+    // Ignored in this example 
+    virtual void multitouchMoveEvent(MAPoint2d p, int touchId)
+    {}
+
+    // Ignored in this example 
+    virtual void multitouchReleaseEvent(MAPoint2d p, int touchId)
+    {}
+
+    // Ignored in this example 
+    void keyReleaseEvent(int keyCode, int nativeCode)
+    {}
+
+    // Ignored in this example 
+    void pointerPressEvent(MAPoint2d point)
+    {}
+
+    // The center of the screen, calculated at start up 
+    int mCenterX;
+    int mCenterY;
+
+    // The four audio data handles 
+    MAAudioData mData[4];
+    // The four audio instance handles 
+    MAAudioInstance mInstance[4];
+};
+
+
+extern "C" int MAMain()
+{
+    Moblet::run(new MyMoblet());
+    return 0;
+}</pre>
+<h2 dir="ltr">Example: streaming over HTTP (on Android)</h2>
+<pre class="mosync-code-cpp">#include &lt;ma.h&gt;
+#include &lt;conprint.h&gt;
+
+/**
+ * A small test program which will stream an audio from http,
+ * prepare the sound and when it's prepared it will start playing
+ * it. When playing touching the screen will toggle between pause
+ * and resume.
+ */       
+extern "C" {
+int MAMain()
+{
+    printf("Streaming for URL");
+    printf("Press back button on Android to quit.");
+
+    // Create a streaming audio handle from a http URL 
+    int audioData = maAudioDataCreateFromURL(NULL,
+            "http://audio.ibeat.org/content/p1rj1s/p1rj1s_-_rockGuitar.mp3",
+            MA_AUDIO_DATA_STREAM);
+
+    // If it failed, send a panic!  
+    if(audioData &lt; 0)
+        maPanic(1, "Unable to create audio data.\n");
+
+    // Create an audio instance handle from the data handle
+    int audioInstance = maAudioInstanceCreate(audioData);
+
+    // If it failed, send a panic!  
+    if(audioInstance &lt; 0)
+            maPanic(1, "Unable to create audio instance.\n");
+
+    // Start preparing the data handle 
+    int preparing = maAudioPrepare(audioData, 1);
+
+    // If it failed, send a panic!  
+    if(preparing &lt; 0)
+        maPanic(1, "Unable to prepare audio.\n");
+
+    printf("Please wait while preparing.\n");
+
+    // Two flags keeping track of if we are playing or if
+    // we are paused.  
+    bool isPlaying = false;
+    bool isPaused = false;
+
+    // Just continue until the application closes 
+    while(1)
+    {
+        // Pause until we get an event 
+        maWait(0);
+        MAEvent event;
+        while(maGetEvent(&amp;event))
+        {
+            // If a key event was fired, check if it
+            // was the back key ( for Android ) and quit  
+            if(event.type == EVENT_TYPE_KEY_PRESSED)
+            {
+                if(event.key == MAK_BACK)
+                    maExit(0);
+            }
+            // If it was a screen touched event and we are
+            // playing the sound, toggle between paused
+            // and resumed.   
+            if(event.type == EVENT_TYPE_POINTER_PRESSED)
+            {
+                if(isPlaying)
+                {
+                    // toggle the paused flag 
+                    isPaused = !isPaused;
+
+                    // If we are pausing.. 
+                    if(isPaused)
+                    { 
+                        // Pause the sound and write the current location
+                        // and the length of the sound to the screen.  
+                        maAudioPause(audioInstance);
+                        int l = maAudioGetPosition(audioInstance);
+                        int ll = maAudioGetLength(audioInstance);
+                        printf("paused at %d of %d\n", l, ll);
+                    }
+                    // If we are resuming.. 
+                    else
+                    {
+                        // Play the sound again and it will resume
+                        // from it's current position.  
+                        maAudioPlay(audioInstance);
+                        printf("resumes!\n");
+                    }
+                }
+            }
+            // If the event was a audio prepared event
+            if(event.type == EVENT_TYPE_AUDIO_PREPARED)
+            {
+                // Check that the audio instance returned
+                // and the one we have locally is the same.  
+                if(audioInstance == event.audioInstance)
+                {
+                    // If the same, start playing the sound 
+                    maAudioPlay(audioInstance);
+                    isPlaying = true;
+                    printf("start\n");
+
+                    // Print the lenght of the clip to the screen 
+                    int l = maAudioGetLength(audioInstance);
+                    printf("Song lenght %d ms\n", l);
+                }
+                else
+                {
+                    // Preperation failed, send a panic!
+                    maPanic(0, "Preparation failed.\n");
+                }
+            }
+            // If the event was an audio completed event. 
+            if(event.type == EVENT_TYPE_AUDIO_COMPLETED)
+            {
+                printf("The audio completed!\n");
+            }
+        }
+    }
+}
+}</pre>
+<p><br><span style="font-size: 15px; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline;"></span><br><span style="font-size: 15px; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline;"></span></p>
+</body>
+</html>

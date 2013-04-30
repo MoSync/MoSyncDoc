@@ -1,0 +1,109 @@
+<html>
+<head>
+<title>Using MAUtil Vector</title>
+</head>
+<body>
+<h1>Using MAUtil Vector</h1>
+<p>The <strong>MAUtil::Vector</strong> class provides a generic, dynamically resizeable container similar to <strong>std::vector</strong> in the STL, Java's <strong>Vector</strong>&nbsp;or a .NET <strong>List.</strong>&nbsp;It provides many of the same familiar operations.&nbsp;</p>
+<p><!--break--> </p>
+<h2>Starting with Vectors</h2>
+<p>A <strong>Vector</strong>&nbsp;can be used as a generic collection, allowing you to grow the set whilst maintain the order in which items were added. &nbsp;Vectors add items as their value type. &nbsp;When you add or insert an item on the list, it adds the value or object to that list. &nbsp;If you have a <strong>Vector</strong>&nbsp;of a complex object type, it will add that object to the list, and not a pointer to it, unless you explicitly request it.</p>
+<p>For example</p>
+<pre class="mosync-code-cpp">Vector&lt;UserDetail&gt; mUserDetails;</pre>
+<p>Will create a <strong>Vector</strong> of UserDetail objects, and not a <strong>Vector</strong> of UserDetail*. &nbsp;Not all collections in MoSync behave in this manner. &nbsp;To create a <strong>Vector</strong>&nbsp;of pointers to UserDetails objects, use</p>
+<pre class="mosync-code-cpp">Vector&lt;UserDetail*&gt; mUserDetails;</pre>
+<p>Vectors are generic collections, so you define the type of object you want to store when you define the <strong>Vector</strong>. &nbsp;The snippet below demonstrate creating <strong>Vector</strong>&nbsp;of int on the stack.</p>
+<pre class="mosync-code-cpp">Vector&lt;int&gt; mInts;</pre>
+<p>Vectors store their items in contiguous memory. &nbsp;Internally, there is an array which is used for storage with the&nbsp;<strong>Vector</strong>&nbsp;class maintaining the order. &nbsp;Collections, including <strong>Vector</strong>, can cause you to run into memory allocation (malloc) errors if there isn't enough free <em>contiguous</em>&nbsp;memory left. &nbsp;Broadly speaking, if you are storing a complex object type like the UserDetail object in the example above, you are always better off storing pointers than the values. &nbsp;If you are using primitive types (int, byte), then store the values.</p>
+<h2>Adding items to a Vector</h2>
+<p>There are two ways you can add new items into a <strong>Vector, </strong>the<strong> add() </strong>and<strong>&nbsp;</strong>the <strong>insert()</strong>. &nbsp;The method <strong>add()</strong>&nbsp;appends the new item at the end of the list.</p>
+<pre class="mosync-code-cpp">mInts.add(5);</pre>
+<p>You can also insert an item into the <strong>Vector</strong>&nbsp;at a requested position using the method <strong>insert()</strong>.</p>
+<pre class="mosync-code-cpp">mInts.insert(2, 100);</pre>
+<p>Where the first parameter is the index number you wish to insert the number (on a zero-based index) and the second is the value you wish to store. &nbsp;All subsequent entries are moved along. &nbsp;This has the potential to be very slow on large collections, so try to sort items before you enter them into the <strong>Vector</strong>.&nbsp;</p>
+<p>As the <strong>Vector</strong>&nbsp;is based on an array, you can still access the items using the [] operators. &nbsp;You can use the index number to change the value of an item in an array. &nbsp;This won't cause objects to be deleted, so if you are storing pointers to objects, then you will need to delete the item to prevent a memory leak.</p>
+<pre class="mosync-code-cpp">UserDetails* mNewUser;
+Vector&lt;UserDetails*&gt; mUserDetails;
+...
+// Overwrite the first entry.
+UserDetails* temp = mUserDetails[0];
+mUserDetails[0] = mNewUser;
+delete temp; // Delete the old entry</pre>
+<h2>Removing Items from a Vector</h2>
+<p>You can remove an item from a <strong>Vector</strong>&nbsp;using the <strong>remove()</strong>&nbsp;method. &nbsp;There are two ways this can be called. &nbsp;Firstly, you can request for a specific index number to be removed, but you can also <strong>remove</strong>&nbsp;with an <strong>iterator</strong>. &nbsp;There is more about iterators below.</p>
+<pre class="mosync-code-cpp">mUserDetails.remove(0);</pre>
+<p>Again, removing items from the <strong>Vector</strong>&nbsp;won't delete them from memory if they are pointers to objects. &nbsp;You need to delete them explicitly or you will have a memory leak.</p>
+<pre class="mosync-code-cpp">UserDetails* temp = mUserDetails[0];
+mUserDetails.remove(0);
+delete temp;</pre>
+<p>Removing items from the end of the list is very quick, but if you remove from the middle (or the start) of the list, then the other items need to be reordered, which can be slow.</p>
+<h2>Iterating through Vectors</h2>
+<p>You can work you're way through all the items in a <strong>Vector</strong>&nbsp;in two different ways. &nbsp;As the <strong>Vector</strong>&nbsp;is based on an array, you can iterate through the items by index number<span style="line-height: 21px; font-size: 15px;"><strong><span style="font-size: small;"><span style="font-size: 12px; font-weight: normal; line-height: 18px;"><strong><span style="font-weight: normal;"><strong><span style="font-weight: normal;"><strong><span style="font-weight: normal;"><strong><span style="font-weight: normal;"><strong>&nbsp;</strong></span></strong></span></strong></span></strong></span></strong></span></span></strong></span></p>
+<pre class="mosync-code-cpp">Vector&lt;int&gt; numbers;
+.... 
+ // iterate through the vector using the 
+// [] operator, printing each element.
+for(int i = 0; i &lt; numbers.size(); i++) {
+    printf("numbers[i]: %d", numbers[i]);
+}</pre>
+<p>A second method is to use the <strong>iterator</strong>. &nbsp;Iterators are pointers to the items in the Vector, but are of a type</p>
+<pre class="mosync-code-cpp">Vector&lt;T&gt;::iterator</pre>
+<p>Note that with Vectors the iterator has a low-case 'i' whilst in other collections (Set for example) the iterator has an upper-case 'I'.</p>
+<pre class="mosync-code-cpp">Vector&lt;int&gt; numbers;
+for(Vector&lt;int&gt;::iterator i = numbers.begin(); i &lt; numbers.end(); i++)
+{
+  printf("%d", *i);
+}</pre>
+<p>You can use the iterator to step through items in the Vector using the iterators returned by the methods <strong>begin() </strong>and <strong>end()</strong>. &nbsp;Also note that the <strong>iterator</strong>&nbsp;is a pointer to the value, so you will have to dereference it with an *.</p>
+<p>Finally, there is a macro to make iteration more readable. &nbsp;You can use the macro&nbsp;<strong>Vector_each&nbsp;</strong>to iterate the&nbsp;<strong>Vector</strong>.&nbsp;</p>
+<pre class="mosync-code-cpp">Vector_each(int, i, numbers)
+{
+    // The iterator needs to be dereferenced.
+    printf("numbers[i]: %d", *i);
+}</pre>
+<p><strong>Vector_each</strong>&nbsp;takes three arguments; the type stored by the <strong>Vector</strong>, the variable name you want to refer to the <strong>iterator</strong>&nbsp;and finally the <strong>Vector</strong>&nbsp;itself.</p>
+<h2>Size and Capacity</h2>
+<p>There's an important distinction between the <em>size</em> and <em>capacity</em> of a <strong>Vector</strong>. Vectors grow dynamically to accomodate additional elements that are added to them. When an element is added, exceeding the current capacity, the <em>capacity</em> is doubled. However, the <em>size</em> only increases by one. This snippet demonstrates the behaviour:</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">for(int i = 0; i &lt; 10; i++)
+{
+    numbers.add(i);
+    printf("Size: %d  Capacity: %d", numbers.size(), numbers.capacity());
+}</pre>
+<p><br>The output looks like this:</p>
+<pre class="code"><!-- temp.cpp : generated by JHighlight v(unknown version) (http://jhighlight.dev.java.net) -->  Size: 1 Capacity: 4
+  Size: 2 Capacity: 4
+  Size: 3 Capacity: 4
+  Size: 4 Capacity: 8
+  Size: 5 Capacity: 8 
+  Size: 6 Capacity: 8
+  Size: 7 Capacity: 8
+  Size: 8 Capacity: 16
+  Size: 9 Capacity: 16
+  Size: 10 Capacity: 16</pre>
+<p>In this case, the memory used to store the Vector elements is reallocated twice, each time requiring all the elements to be copied to the newly allocated memory location.</p>
+<p>It is possible to <strong>reserve()</strong> a certain capacity, which is useful in cases when the number of elements to add is known beforehand (but not at compile time) in order to avoid superfluous reallocations:</p>
+<p>&nbsp;</p>
+<pre class="mosync-code-cpp">numbers.reserve(11);
+for(int i = 0; i &lt; 10; i++)
+{
+    numbers.add(i);
+    printf("Size: %d  Capacity: %d", numbers.size(), numbers.capacity());
+}</pre>
+<p>The output looks like this:</p>
+<pre class="code"><!-- temp.cpp : generated by JHighlight v(unknown version) (http://jhighlight.dev.java.net) -->  Size: 1 Capacity: 11
+  Size: 2 Capacity: 11
+  Size: 3 Capacity: 11
+  Size: 4 Capacity: 11
+  Size: 5 Capacity: 11 
+  Size: 6 Capacity: 11
+  Size: 7 Capacity: 11
+  Size: 8 Capacity: 11
+  Size: 9 Capacity: 11
+  Size: 10 Capacity: 11</pre>
+<p><br> <strong>Note</strong> <br> Most functions that somehow manipulate the size of the vector do not affect the capacity if the new size is smaller than the previous. Do not assume that resize(0) will free up memory if the Vector previously contained thousands of elements.</p>
+<h2>Internal Storage</h2>
+<div class="section"><p>The elements of a <strong>Vector</strong> are stored linearly in an array. This means that they can be accessed using pointers. There is a function <strong>pointer()</strong> which returns a <strong>T</strong>* pointer to the internal storage array. There are also two types of <em>typedef</em>ed iterators, one regular and one const. These map directly to <strong>T</strong>* pointers as well.</p>
+</div>
+</body>
+</html>

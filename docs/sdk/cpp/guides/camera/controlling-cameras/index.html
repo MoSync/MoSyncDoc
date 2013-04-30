@@ -1,0 +1,208 @@
+<html>
+<head>
+<title>The Camera C API</title>
+</head>
+<body>
+<h1>The Camera C API</h1>
+<p>In this tutorial we take a look at how to control a device's cameras through the MoSync Camera C API. With the Camera C API you can discover the number of cameras a device supports, set properties like zoom and image format, embed previews in your application, and, of course, take a picture. <br><!--break--><br>MoSync's Camera C API lets you take full controll of a device's cameras on the platforms it supports (see <a href="TEMPLATE_DOC_PATH/sdk/tools/references/feature-platform-support/index.html">Feature/Platform Support</a>). One of the major aspects of our implementation is the ability to use the camera preview as a NativeUI widget that can be controlled through the&nbsp;<a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___widget_a_p_i.html">Widget API</a>.</p>
+<p>We also have an example application for you to look at, <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/camerademo/index.html">CameraDemo</a>, that demonstrates some of the basic principles described here.</p>
+<h3>Camera C API Syscalls</h3>
+<p>Here are the list of the syscall functions in the Camera C API:</p>
+<ul>
+<li><strong>maCameraNumber</strong> returns an integer indicating the number of available cameras on the device.</li>
+<li><strong>maCameraSelect </strong>selects a camera associated with the index. The index is between zero and the number returned by <strong>maCameraNumber </strong>- 1. The default selected camera is the back-facing camera (0) which will be used if the user does not use this function.&nbsp;</li>
+<li><strong>maCameraSetPreview </strong>binds the selected camera to the widget specified by the handle. If called before calling <strong>maCameraSelect </strong>(for the first time) the default camera (back facing) will be bound to the preview.</li>
+<li><strong>maCameraSetProperty </strong>adjusts the properties on the selected (or default) camera.</li>
+<li><strong>maCameraGetProperty </strong>gets the assigned value for the specified property, or reads the values for read only properties.</li>
+<li><strong>maCameraFormatNumber </strong>returns the number of available formats in the device.</li>
+<li><strong>maCameraFormat </strong>stores a image size format in the list of user formats.</li>
+<li><strong>maCameraSnapshot </strong>takes a picture and stores it in memory in the place reserved by a placeholder. To use this function with the default device's picture size, a user can pass -1 as the <strong>formatIndex</strong>.</li>
+<li><strong>maCameraStart </strong>starts the live view on the preview widget. If no native preview is set, a fullscreen preview will automatically be initiated.</li>
+<li><strong>maCameraStop </strong>stops the live view. When using the fullscreen default preview it will destroy that view and returns to the old view of the application.</li>
+</ul>
+<h3>General Usage</h3>
+<p>The recommended way of using the new Camera API is together with <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___widget_a_p_i.html">Widget API</a>. To use the camera together with the Widget API follow these steps:<br>&nbsp;<br>1. Get the number of available cameras on the device by calling <strong>maCameraNumber</strong>.<br>&nbsp;<br>2. Add an instance of MAW_CAMERA_PREVIEW to your application with <strong>maWidgetCreate</strong>.<br>&nbsp;<br>3. Set the widget parameters (only width and height are recommended).<br><br>4. Select one of the cameras by calling <strong>maCameraSelect</strong>:</p>
+<pre class="mosync-code-cpp">maCameraSelect(MA_CAMERA_CONST_BACK_CAMERA);</pre>
+<p>5. Bind the preview and the camera by calling <strong>maCameraSetPreview </strong>so that the camera uses that preview for its live view.</p>
+<pre class="mosync-code-cpp">void createCameraWidget ()
+{
+    mCameraPreview = maWidgetCreate(MAW_CAMERA_PREVIEW);
+    widgetSetPropertyInt(
+        mCameraPreview,
+        MAW_WIDGET_WIDTH,
+        MAW_CONSTANT_FILL_AVAILABLE_SPACE);               
+    widgetSetPropertyInt(
+        mCameraPreview,
+        MAW_WIDGET_HEIGHT,
+        MAW_CONSTANT_FILL_AVAILABLE_SPACE);
+    // Bind the widget to the selected camera.
+    maCameraSetPreview(mCameraPreview);
+    maWidgetAddChild( mMainLayoutWidget, mCameraPreview);
+}</pre>
+<p>6. Check the available functionality on the device’s camera (zoom support, flash support, etc.) by calling <strong>maCameraGetProperty</strong>.</p>
+<pre class="mosync-code-cpp">    char buffer[256];
+    maCameraGetProperty(MA_CAMERA_FLASH_SUPPORTED, buffer, 256);</pre>
+<p>7. Start the camera by calling <strong>maCameraStart</strong>.<br><br>8. Change the properties as required by calling <strong>maCameraSetProperty</strong>.<br><br>9. Call <strong>maCameraSnapshot </strong>to take snapshots. Here is an example function that takes a picture snapshot and store the image data in using a place holder called <strong>mLastImage</strong>.</p>
+<pre class="mosync-code-cpp">void takeSnaphot()
+{
+    // Destroy image object if there is a previous snapshot made.
+    if (mLastImage)
+    {
+        maDestroyPlaceholder(mLastImage);
+    }
+
+    // Create new placeholder for image and take snapshot.
+    mLastEnc = maCreatePlaceholder();
+    int result = maCameraSnapshot(mCurrentSizeIndex, mLastOmage);
+    if (result != MA_CAMERA_RES_OK)
+    {
+        maPanic(result, "Failed to takeSnapshot");
+    }
+}</pre>
+<p>10. Call <strong>maCameraStop </strong>to stop the camera when you are finished with it.</p>
+<p>11. Destroy the Widget if required.</p>
+<h3>Camera Properties</h3>
+<p>Camera properties can be set and read through the <strong>maCameraSetProperty </strong>and <strong>maCameraGetProperty</strong> functions:<br><br><em>Read/Write:</em></p>
+<ul>
+<li>MA_CAMERA_FLASH_MODE -- Sets the mode of flash for the camera (auto, infinity, macros, fixed).</li>
+</ul>
+<ul>
+<li>MA_CAMERA_FOCUS_MODE -- Sets the mode of focusing for the camera (auto, infinity, macros, fixed).</li>
+<li>MA_CAMERA_IMAGE_FORMAT -- Sets the image format (MA_CAMERA_IMAGE_JPEG, MA_CAMERA_IMAGE_RAW).</li>
+<li>MA_CAMERA_ZOOM -- Sets the zoom level (zero to MA_CAMERA_MAX_ZOOM).</li>
+</ul>
+<p><em>Read Only:</em></p>
+<ul>
+<li>MA_CAMERA_ZOOM -- The maximum zoom supported by the device.</li>
+<li>MA_CAMERA_ZOOM_SUPPORTED -- True if the device supports zoom.</li>
+<li>MA_CAMERA_FLASH_SUPPORTED -- True if the device supports flash.</li>
+</ul>
+<p>For more details about these functions, see the <a href="http://www.mosync.com/files/imports/doxygen/latest/html/index.html">MoSync API Reference Manual</a>.</p>
+<h3>Implementation</h3>
+<p><img src="images/CameraAPI-architecture.png" align="none" width="453" height="380"></p>
+<h3>Example program</h3>
+<p>Here is an example program that displays a camera preview widget and a button that currently does nothing (it could be used to take a smapshot, for instance).</p>
+<pre class="mosync-code-cpp">#include &lt;ma.h&gt;
+#include &lt;mavsprintf.h&gt;
+#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;NativeUI/Widgets.h&gt;
+#include &lt;NativeUI/WidgetUtil.h&gt;
+
+using namespace MAUtil;
+using namespace NativeUI;
+
+/**
+ * Simple test application for the Camera API.
+ * Displays a camera preview widget and a button
+ * that currently has no functionality.
+ */
+class SimpleCameraMoblet :
+    public Moblet,
+    public FocusListener,
+    public ButtonListener
+{
+public:
+    /**
+     * The constructor creates the user interface.
+     */
+    SimpleCameraMoblet()
+    {
+        createFocusListener();
+        createUI();
+        startCameraPreview();
+    }
+
+    /**
+     * Destructor.
+     */
+    virtual ~SimpleCameraMoblet()
+    {
+        // Deleting the parent widget deletes all child widgets.
+        delete mScreen;
+    }
+
+    void createFocusListener()
+    {
+        addFocusListener(this);
+    }
+
+    void focusLost()
+    {
+        maCameraStop();
+    }
+
+    void focusGained()
+    {
+        maCameraStart();
+    }
+
+    void createUI()
+    {
+        // Create a NativeUI screen that will hold layout and widgets.
+        mScreen = new Screen();
+
+        // Create a Vertical Layout that will hold widgets.
+        mLayout = new VerticalLayout();
+        mLayout-&gt;fillSpaceHorizontally();
+        mLayout-&gt;fillSpaceVertically();
+
+        // Create Camera Preview.
+        mCameraPreview = new CameraPreview();
+        mCameraPreview-&gt;fillSpaceHorizontally();
+        mCameraPreview-&gt;fillSpaceVertically();
+        mLayout-&gt;addChild(mCameraPreview);
+
+        // Create a button.
+        mButton = new Button();
+        mButton-&gt;setText("Press Me");
+        mButton-&gt;fillSpaceHorizontally();
+        mButton-&gt;wrapContentVertically();
+        mButton-&gt;addButtonListener(this);
+        mLayout-&gt;addChild(mButton);
+
+        // Add the layout to the screen.
+        mScreen-&gt;setMainWidget(mLayout);
+
+        // Show the screen.
+        mScreen-&gt;show();
+    }
+
+    void startCameraPreview()
+    {
+        maCameraSelect(0);
+        mCameraPreview-&gt;bindToCurrentCamera();
+        maCameraStart();
+    }
+
+    void keyPressEvent(int keyCode, int nativeCode)
+    {
+        if (MAK_BACK == keyCode || MAK_0 == keyCode)
+        {
+            maCameraStop();
+            close();
+        }
+    }
+
+    void buttonClicked(Widget* button)
+    {
+        ((Button*) button)-&gt;setText("This button does nothing");
+    }
+
+private:
+    Screen* mScreen;
+    VerticalLayout* mLayout;
+    Button* mButton;
+    CameraPreview* mCameraPreview;
+};
+
+/**
+ * Main function that is called when the program starts.
+ */
+extern "C" int MAMain()
+{
+    Moblet::run(new SimpleCameraMoblet());
+    return 0;
+}
+</pre>
+</body>
+</html>

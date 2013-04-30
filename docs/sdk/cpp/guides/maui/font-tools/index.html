@@ -1,0 +1,83 @@
+<html>
+<head>
+<title>Working with Fonts in MAUI</title>
+</head>
+<body>
+<h1>Working with Fonts in MAUI</h1>
+<p>The MAUI::Font class draws text using bitmap fonts defined in a mof-file. In this guide we show how to convert a bitmap font to a mof-file, and how to add the file as a resource to a MoSync project. We then create a MAUI::Font instance and draw some text with it.</p>
+<p><!--break--></p>
+<p></p>
+<blockquote><p><strong>Note</strong>: An improved way of handling fonts for some platforms in MoSync was introduced in release 2.6. See our Developer Guide called <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/fonts/working-with-device-fonts-api/index.html">Working With the Device Fonts API</a>.</p>
+</blockquote><h2>The BMFont and mof.exe Tools</h2>
+<p>We will be using two tools in this tutorial:</p>
+<ul>
+<li><p><strong> BMFont</strong> is a bit map font generator that can render any existing truetype font as a bitmap font. This program is bundled with the <strong><em>MoSync SDK for Windows</em></strong> and can be found in the <em>/bin/BMFont</em> folder along with its documentation. (If you are using the <em><strong>MoSync SDK for OS X</strong></em> you will need to find your own font tool for creating a bitmap font, or use one of the bitmap fonts that are readily available for that platform.)</p>
+</li>
+<li><p><strong>mof.exe</strong> is a command line tool that converts bitmap font files to mof format required by <strong>MAUI::Font</strong>. It can be found in the <em>/bin</em> folder.</p>
+</li>
+</ul>
+<h2><em><strong></strong></em>Font Settings</h2>
+<p>First, create a new folder for the project called <em>/fonttest</em> in the MoSync <em>/projects</em> directory.</p>
+<p>Now open the BMFont tool and configure its settings as follows:</p>
+<p><em>For BMFont v1.12 and MoSync 2.5+</em>:</p>
+<p><img src="images/bitmap-fonts-2.png" align="left" width="290" height="409">&nbsp; <img src="images/bitmap-fonts-3.png" align="none" width="288" height="567"></p>
+<p><em>For BMFont v1.9 and MoSync 2.4 and earlier</em>:</p>
+<p><img src="images/mauifont_bmfont_setup.png"></p>
+<p>Note that:</p>
+<ul style="margin-left: 40px;"><li><strong>Charset </strong>should be <strong>OEM: ANSI</strong> (not Unicode)</li>
+<li><strong>Font descriptor</strong> should be <strong>Binary</strong></li>
+<li><strong>Textures </strong>should be <strong>png</strong></li>
+</ul>
+<h2>Building the Font</h2>
+<p>Select all the characters that you want to include in your font. (If you want all characters, use the <strong>Edit </strong>&gt; <strong>(Un)Select All Chars</strong> command.)</p>
+<p>Select <strong>Options </strong>&gt; <strong>Visualize </strong>to see what your bitmap font will look like:</p>
+<p><img src="images/mauifont_bmfont_visualize.png"><br> <br>Next, select <strong>Options </strong>&gt; <strong>Save bitmap font as</strong> and save your font to our <em>/fonttest </em>folder as a Bitmap font (*.fnt) file: <br><br><img src="images/mauifont_bmfont_saveas.png"></p>
+<h2>Converting the Font</h2>
+<p>Convert the font using the MAUI font generator (<strong>mof.exe</strong>) from the Windows command line:</p>
+<p><img src="images/bitmap-fonts-7.png" align="none" width="640" height="304"></p>
+<p>The MAUI font generator takes the following parameters:</p>
+<ul>
+<li><strong>-fontData</strong> the bitmap font file to convert (.fnt)</li>
+<li><strong>-fontImage</strong> the font texture file (.png)</li>
+<li><strong>-outFile</strong> the output file (.mof)</li>
+<li><strong>-fontColor</strong> the font colour in hexadecimal. The default colour is white.</li>
+</ul>
+<p><a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/building-and-running-examples/index.html" title="Import" id="g9a1">Import</a> the newly created .mof file into your project.</p>
+<h2>Using the Font</h2>
+<p>The resulting <strong>mof</strong>-file can be added to your MoSync project as a binary resource and passed to the constructor of MAUI::Font to create a runtime instance of the font.</p>
+<p>To draw text using the font, use one of the methods <strong>drawString</strong> or <strong>drawBoundedString</strong>. The <strong>drawBoundedString</strong> method features linebreaking and is therefore slower, so it is recommended to use <strong>drawString</strong> when possible. We'll show this by making a simple example. <br><br>Start Eclipse and create a new project called fonttest. Make it a Moblet project. Also, in the project's build settings, add MAUI.lib to Additional Libraries. <br><br>Begin by adding a new resource file called <strong>res.lst</strong> with the contents:</p>
+<pre class="mosync-code-cpp">.res R_FONT
+.bin
+.include "myfont.mof"
+</pre>
+<p>In the source file, add the following inclusions:&nbsp;</p>
+<pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet&gt;
+#include &lt;MAUI/Font.h&gt;
+#include &lt;MAHeaders.h&gt;
+</pre>
+<p><strong>Font.h</strong>. is required for bitmap font handling. <strong>MAHeaders.h</strong>, which will be generated from the compiled resource file, contains the handles to the resources in the resource file.</p>
+<p>In the code we will begin by adding an instance of <strong>MAUI::Font</strong> as a member to the Moblet. We will also make sure it is initialized with a handle to our font resource.</p>
+<pre class="mosync-code-cpp">using namespace MAUtil;
+class MyMoblet : public Moblet {
+private:
+    MAUI::Font font;
+public:
+    MyMoblet() : font(R_FONT) {
+    }
+</pre>
+<p>Finally we use the font to draw a text whenever the user presses a key.</p>
+<pre class="mosync-code-cpp">    void keyPressEvent(int keyCode) {
+        font.drawString("Hello world!", 2, 2);
+        maUpdateScreen();
+    }
+    void keyReleaseEvent(int keyCode) {
+        // todo: handle key releases
+    }
+};
+extern "C" int MAMain() {
+    Moblet::run(new MyMoblet());
+    return 0;
+};
+</pre>
+</body>
+</html>

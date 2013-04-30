@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>The MoSync Toolchain</title>
+</head>
+<body>
+<h1>The MoSync Toolchain</h1>
+<p>The MoSync IDE uses a custom GCC backend that outputs MoSync Intermediate Language. This is fed into Pipe-Tool, our transformation engine, which builds code trees, analyzes, optimizes and outputs bytecode or java ready for packaging with the appropriate runtime. The packager does the work of producing the installable packages for your platforms and devices.</p>
+<p><!--break--></p>
+<p></p>
+<h2>The Build Process</h2>
+<p>When you <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/finalizing-applications/index.html">finalize </a>your application, the MoSync Eclipse IDE manages the entire build process for you, activating all the tools in the toolchain with the appropriate options and settings.</p>
+<p>The IDE uses <strong>GCC </strong>to compile your code and <strong>Pipe-Tool</strong> to link it with the MoSync libraries and your resources. The IDE then combines the resulting bytecode or java source code with the appropriate platform <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/architecture/runtimes/index.html">runtime</a> to create the executable packages for each target device.</p>
+<p><img src="images/Toolchain.png" height="417" width="669"></p>
+<p>If needed, control over the options and settings for compilation, linking, and packaging is available through the <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/build-configurations/index.html">build configurations and settings</a> for your project.&nbsp; It is also possible of course to run GCC and Pipe-Tool individually from the command line.</p>
+<h2>GCC</h2>
+<p>MoSync's implementation of GCC (the GNU Compiler Collection) compiles your program into an assembly-like format called <em>MoSync Intermediate Language</em> (MoSync IL).</p>
+<p>The GCC backend defines a simple machine with a variable number of 32-bit registers and a flat memory model. Currently we are using GCC 3.4.6. For more information about GCC, see <a href="http://gcc.gnu.org/onlinedocs/">http://gcc.gnu.org/onlinedocs</a>.</p>
+<p>MoSync IL contains detailed metadata about your program, including symbol mappings and control flow information. MoSync IL is extremely rich, so much so in fact that you could pretty well convert it back to its source form if you wanted to.</p>
+<h2><a name="pipe-tool"></a>Pipe-Tool</h2>
+<p>Pipe-Tool is our transformation engine. It combines the functions of a resource compiler, linker, and code optimizer.</p>
+<p>Pipe-Tool combines the MoSync IL output from GCC with the pre-compiled MoSync libraries into various target formats, including MoSync bytecode, Java bytecode, and C/C++ source code, ready for packaging. In the process, it also performs code verification, optimization, and dead code elimination to produce highly optimized outputs.</p>
+<p>Pipe-Tool is also used by the MoSync Resource Compiler to package and index the external resources (images, audio files, binary files, etc.) that your application needs when it executes. For more information, see our <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/resource-compiler-reference/index.html">Resource Compiler Reference</a>.</p>
+<h2>The Packager</h2>
+<p>The MoSync Packager is invoked whenever you build your project. The Packager may be called multiple times if you are <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/finalizing-applications/index.html">Finalizing </a>your application for distribution. Each run of the Packager produces either an installable package, or a project that needs to be finished in another tool, as shown below:</p>
+<p><img src="images/MoSync-packaging.png" align="none" width="650" height="635"></p>
+<p><img src="images/ared1_0.png" align="left" width="25" height="23"></p>
+<p>Your codebase can be pure HTML/JavaScript or pure C/C++, or a mixture of both, depending on your needs. The green arrows show how projects containing HTML/JavaScript can be packaged, the blue arrows show how pure C/C++ projects can be packaged.</p>
+<p><img src="images/ared2.png" align="left" width="25" height="23"> The MoSync Packager is invoked by the MoSync IDE's Finalizer for each target platform (or target device in legacy mode). The output from the Packager is one of the following:</p>
+<p><img src="images/ared3.png" align="left" width="25" height="23">An installable package for Android (from any codebase) or an installable package for JavaME, Moblin, Symbian, Blackberry, or Windows Mobile (from a pure C/C++ codebase). All these packages can be sent directly to a device and installed in the normal way.</p>
+<p><img src="images/ared4.png" align="left" width="25" height="23">A Visual Studio project. This project needs to be built in Microsoft Visual Studio to create the installable package for a Windows Phone device.</p>
+<p><img src="images/ared5.png" align="left" width="25" height="23"></p>
+<p>An Apple Xcode project. This project needs to be built in Xcode to create the installable package for an iOS device.</p>
+<p>(The Packager can actually create the full binaries for Windows Phone and iOS, but only if you have Visual Studio and Xcode installed, respectively.)</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

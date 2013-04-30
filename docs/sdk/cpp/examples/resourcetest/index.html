@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>ResourceTest</title>
+</head>
+<body>
+<h1>ResourceTest</h1>
+<p>ResourceTest is a simple application for all platforms that demonstrates how to use the Resource Compiler and how to handle the resource loading/unloading.<!--break--></p>
+<table class="doclayout" border="0"><tbody><tr><td><img src="images/ResourceTest01_0.png" align="none" width="210" height="312"></td><td><img src="images/ResourceTest02.png" align="none" width="210" height="312"></td><td><img src="images/ResourceTest03.png" align="none" width="210" height="312"></td></tr>
+<tr><td><em>Start screen on Android</em></td><td><em>Platform image loaded on Android</em></td><td><em>Screen image loaded on Android</em></td></tr>
+</tbody></table>
+<p>This application uses the MoSync MAUI C++ Library, and works on all platforms supported by this library (see <a href="http://www.mosync.com/documentation/manualpages/featureplatform-matrix">Feature/Platform Support</a>).</p>
+<p>This example is included in the MoSync SDK installation in the /examples folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<h2 dir="ltr">Behaviour</h2>
+<p>When launched, this application displays a start screen with two buttons. Touch the Platform button to load and display an image appropriate to the platform, touch the Screen button to load and display and image appropriate for the device's screen size.</p>
+<h2>In the code</h2>
+<p>This example implements the resource loading on different conditions using an XML list. When built and launched on a device, it checks for the platform (iOS, Android, Windows Phone, etc.) and screen type (small, normal, large, xlarge) and displays the corresponding image according to the user’s choice.</p>
+<p>The project has:</p>
+<ul>
+<li style="list-style-type: disc; font-size: 13px; font-family: Arial; color: #000000; background-color: #ffffff; font-weight: normal; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline;">One source file <strong>main.cpp</strong>, which contains the main application logic, the resource loading/unloading and the MAUI user interface.</li>
+<li style="list-style-type: disc; font-size: 13px; font-family: Arial; color: #000000; background-color: #ffffff; font-weight: normal; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline;">Resource files (images) displayed according to the platform and screen type.</li>
+</ul>
+<p style="padding-left: 30px;"><img src="images/ResourceTest04_0.png" align="none" width="229" height="347"></p>
+<h2>Touchscreen and key control</h2>
+<ul>
+<li>Tap the desired button to see the current platform or the screen type.</li>
+<li>Tap again or press the BACK button (if available) to return.</li>
+<li>Use the BACK button (if available) to close the application.</li>
+</ul>
+<p>&nbsp;</p>
+</body>
+</html>

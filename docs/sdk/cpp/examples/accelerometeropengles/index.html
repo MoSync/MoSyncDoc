@@ -1,0 +1,16 @@
+<html>
+<head>
+<title>AccelerometerOpenGLES</title>
+</head>
+<body>
+<h1>AccelerometerOpenGLES</h1>
+<p>This example application makes use of the MoSync Sensor API and OpenGL API to graphically display the orientation of the device.<!--break--></p>
+<p><em><strong>Note: </strong></em>This example only works properly on a physical device with an accelerometer. Currently only Android and iOS devices are supported, and no emulators.</p>
+<p><img src="images/AccelerometerOpenGL.png" align="none" width="210" height="350"></p>
+<p>This example is included in the MoSync SDK installation in the <em>/OpenGLES/examples</em> folder. For information on importing the examples into your workspace, see<a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html"> Importing the Examples</a>.</p>
+<h2>Behaviour</h2>
+<p>When it is started on a suitable device, this application displays a quad (finite plane) tangential to the ground. The rectangle remains stationary regardless of changes to the orientation of the device. Use the Back button to close the application.</p>
+<h2>In the Code</h2>
+<p>This example makes use of the Sensor API to collect data from the devices accelerometer, and makes use of the Open GL API to display graphically that data. The 3D rendering is done in a seperate module so if you dare you can try and plug in your own 3D renderer and see how your 3D world looks from different angles using the accelerometer. To do this you just implement the Renderer interface and the two functions <strong>init </strong>and <strong>render</strong>. Look at the default renderer implementation called <strong>SimpleRenderer </strong>to see how it is done.</p>
+</body>
+</html>

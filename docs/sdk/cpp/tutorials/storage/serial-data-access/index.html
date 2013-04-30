@@ -1,0 +1,402 @@
+<html>
+<head>
+<title>Serial Data Access</title>
+</head>
+<body>
+<h1>Serial Data Access</h1>
+<p>I've recently been writing a tutorial on storing and reading data on the device in MoSync. &nbsp;For part of the tutorial, I wanted to use some classes which I'd already written which allow you serial access to your data, and are an extension to the included <strong>DataHandler</strong>&nbsp;class.</p>
+<p>However, they felt out of place in the tutorial as they aren't included in the standard SDK, and could have been confusing to new users, but I do feel that they are worth sharing. &nbsp;I use them a lot for serialising data to and from storage. &nbsp;I'm sure that someone is going to say that they are not as efficient as DataHandler, but this is the old 'runtime vs design-time' argument.</p>
+<p>There are two classes which should feel familiar to Java and C# developers - StreamReader and StreamWriter. &nbsp;These are not as flexible as their Java and C# counterparts - they only work with device stores and not connections (yet, that is an idea though!), but it does take a lot of the management pain away. &nbsp;They will automatically write out p-strings, so you don't have to for instance.</p>
+<p>Even with DataHandler, if you're writing a string out you need some code which might look like</p>
+<p><pre class="mosync-code-cpp">DataHandler* handler = new DataHandler(myData);
+
+handler-&gt;write(username.length(), 4);
+handler-&gt;write(username.c_str(), username.length());
+handler-&gt;write(password.length(), 4);
+handler-&gt;write(password.c_str(), password.length());</pre>
+</p>
+<p>You have to ask DataHandler to write the length first, and then the data. &nbsp;With StreamWriter, you can just pass it the string.</p>
+<p><pre class="mosync-code-cpp">StreamWriter sw;
+sw.setSource(dsdata); //The MAHandle to the store
+sw.WriteString("Sam is ace");</pre>
+</p>
+<p>It can handle a wide variety of data formats, bytes, shorts, uints et cetera, and when I use it I know that I've got consistency between how I read and write data. &nbsp;Anyway, some code.</p>
+<p>StreamReader.h</p>
+<p><pre class="mosync-code-cpp">#ifndef _STREAMREADER_H_
+#define _STREAMREADER_H_
+
+#include &lt;ma.h&gt;
+#include &lt;maTime.h&gt;
+
+class StreamReader
+{
+    public:
+        StreamReader(MAHandle h);
+        StreamReader();
+        ~StreamReader();
+        
+        byte ReadByte();
+        short ReadInt16();
+        ushort ReadUInt16();
+        int ReadInt32();
+        uint ReadUInt32();
+        long ReadInt64();
+        ulong ReadUInt64();
+        time_t ReadDateTime();
+        double ReadDouble();
+        void ReadImage(MAHandle h);
+        char* ReadChars(int count);
+        char* ReadString();
+        char* ReadShortString();
+        
+        int getPosition();
+        void setPosition(int pos);
+
+        void setSource(MAHandle h);
+
+    private:
+        MAHandle source;
+        int position;
+};
+
+#endif
+</pre>
+</p>
+<p>StreamReader.cpp</p>
+<p><pre class="mosync-code-cpp">#include "StreamReader.h"
+#include &lt;conprint.h&gt;
+
+StreamReader::StreamReader()
+{}
+
+StreamReader::StreamReader(MAHandle h)
+{
+    position = 0;
+    source = h;
+}
+
+StreamReader::~StreamReader()
+{
+}
+
+byte StreamReader::ReadByte()
+{
+    byte b;
+    maReadData(source, &amp;b, position, 1);
+    position += 1;
+
+    return b;
+}
+
+short StreamReader::ReadInt16()
+{
+    short s;
+    maReadData(source, &amp;s, position, 2);
+    position += 2;
+
+    return s;
+}
+
+ushort StreamReader::ReadUInt16()
+{
+    ushort us;
+    maReadData(source, &amp;us, position, 2);
+    position += 2;
+
+    return us;
+}
+
+int StreamReader::ReadInt32()
+{
+    int i;
+    maReadData(source, &amp;i, position, 4);
+    position += 4;
+
+    return i;
+}
+
+uint StreamReader::ReadUInt32()
+{
+    uint ui;
+    maReadData(source, &amp;ui, position, 4);
+    position += 4;
+
+    return ui;
+}
+
+long StreamReader::ReadInt64()
+{
+    long l;
+    maReadData(source, &amp;l, position, 8);
+    position += 8;
+
+    return l;
+}
+
+ulong StreamReader::ReadUInt64()
+{
+    ulong ul;
+    maReadData(source, &amp;ul, position, 8);
+    position += 8;
+
+    return ul;
+}
+
+time_t StreamReader::ReadDateTime()
+{
+    time_t t;
+    uint u;
+    maReadData(source, &amp;u, position, 4);
+    t = (time_t)u;
+    position += 4;
+
+    return t;
+}
+
+double StreamReader::ReadDouble()
+{
+    double d;
+    maReadData(source, &amp;d, position, 8);
+    position += 8;
+
+    return d;
+}
+
+char* StreamReader::ReadChars(int count)
+{
+    char* c = new char[count];
+    maReadData(source, c, position, count);
+    position += count;
+
+    return c;
+}
+
+char* StreamReader::ReadString()
+{
+    uint strlen;
+    maReadData(source, &amp;strlen, position, 4);
+    ////lprintfln("String length is %d", strlen);
+    position += 4;
+
+    char* tempString = new char[strlen + 1];
+    maReadData(source, tempString, position, strlen);
+    position += strlen;
+    tempString[strlen] = 0;
+    ////lprintfln("String is: '%s'", tempString);
+    return tempString;
+}
+
+char* StreamReader::ReadShortString()
+{
+    ////lprintfln("Reading string from position:%d", position);
+    ushort strlen;
+    maReadData(source, &amp;strlen, position, 2);
+    ////lprintfln("String length is %d", strlen);
+    position += 2;
+
+    char* tempString = new char[strlen + 1];
+    maReadData(source, tempString, position, strlen);
+    position += strlen;
+    tempString[strlen] = 0;
+    ////lprintfln("String is: '%s'", tempString);
+    return tempString;
+
+}
+
+void StreamReader::ReadImage(MAHandle h)
+{
+    uint imageLength = ReadUInt32();
+    
+    maCreateImageFromData(h, source, position, imageLength);
+    position += imageLength;
+}
+
+int StreamReader::getPosition()
+{
+    return position;    
+}
+
+void StreamReader::setPosition(int pos)
+{
+    position = pos;
+}
+
+void StreamReader::setSource(MAHandle h)
+{
+  position = 0;
+  source = h;
+}
+</pre>
+</p>
+<p>StreamWriter.h</p>
+<p><pre class="mosync-code-cpp">/*
+ * StreamWriter.h
+ *
+ *  Created on: 10 Feb 2010
+ *      Author: sjp
+ */
+
+#ifndef STREAMWRITER_H_
+#define STREAMWRITER_H_
+#include &lt;ma.h&gt;
+#include &lt;maTime.h&gt;
+#include &lt;MAUtil/String.h&gt;
+using namespace MAUtil;
+
+class StreamWriter
+{
+    public:
+        StreamWriter(MAHandle h);
+        StreamWriter();
+        ~StreamWriter();
+
+        void WriteByte(byte b);
+        void WriteInt16(short s);
+        void WriteUInt16(ushort s);
+        void WriteInt32(int i);
+        void WriteUInt32(uint i);
+        void WriteInt64(long l);
+        void WriteUInt64(ulong u);
+        void WriteDateTime(time_t t);
+        void WriteDouble(double d);
+        void WriteBytes(byte* bytes, int count);
+        void WriteChars(char* chars);
+        void WriteString(String&amp; s);
+        void WriteShortString(String&amp; s);
+
+        int getPosition();
+        void setPosition(int pos);
+
+        void setSource(MAHandle h);
+
+    private:
+        MAHandle source;
+        int position;
+        void write(void* d, int len);
+};
+
+#endif /* STREAMWRITER_H_ */
+</pre>
+</p>
+<p>StreamWriter.cpp</p>
+<p><pre class="mosync-code-cpp">/*
+ * StreamWriter.cpp
+ *
+ *  Created on: 10 Feb 2010
+ *      Author: sjp
+ */
+#include "StreamWriter.h"
+#include &lt;mastring.h&gt;
+
+StreamWriter::StreamWriter(MAHandle h)
+{
+  position = 0;
+  source = h;
+}
+
+StreamWriter::StreamWriter()
+{}
+
+StreamWriter::~StreamWriter()
+{}
+
+void StreamWriter::WriteByte(byte b)
+{
+  write(&amp;b, 1);
+}
+
+void StreamWriter::WriteInt16(short s)
+{
+  write(&amp;s, 2);
+}
+
+void StreamWriter::WriteUInt16(ushort s)
+{
+  write(&amp;s, 2);
+}
+
+void StreamWriter::WriteInt32(int i)
+{
+  write(&amp;i, 4);
+}
+
+void StreamWriter::WriteUInt32(uint i)
+{
+  write(&amp;i, 4);
+}
+void StreamWriter::WriteInt64(long l)
+{
+  write(&amp;l, 8);
+}
+
+void StreamWriter::WriteUInt64(ulong u)
+{
+  write(&amp;u, 8);
+}
+
+void StreamWriter::WriteDateTime(time_t t)
+{
+  write(&amp;t, 4);
+}
+
+void StreamWriter::WriteDouble(double d)
+{
+  write(&amp;d, 8);
+}
+
+void StreamWriter::WriteBytes(byte* bytes, int count)
+{
+  write(&amp;count, 4);
+  write(bytes, count);
+}
+
+void StreamWriter::WriteChars(char* chars)
+{
+  uint len = (uint)strlen(chars);
+  write(&amp;len, 4);
+  write(chars, len);
+}
+
+void StreamWriter::WriteString(String&amp; s)
+{
+  uint len = (uint)s.length();
+  write(&amp;len, 4);
+  write(s.pointer(), len);
+}
+
+void StreamWriter::WriteShortString(String&amp; s)
+{
+  ushort len = (ushort)s.length();
+  write(&amp;len, 2);
+  write(s.pointer(), len);
+}
+
+int StreamWriter::getPosition()
+{
+  return position;
+}
+
+void StreamWriter::setPosition(int pos)
+{
+  position = pos;
+}
+
+void StreamWriter::setSource(MAHandle h)
+{
+  source = h;
+  position = 0;
+}
+
+void StreamWriter::write(void* d, int len)
+{
+  if(len &gt; 0)
+  {
+    //LOG("Writing data %s at position %d", d, position);
+    maWriteData(source, d, position, len);
+    position += len;
+  }
+}
+</pre>
+</p>
+</body>
+</html>

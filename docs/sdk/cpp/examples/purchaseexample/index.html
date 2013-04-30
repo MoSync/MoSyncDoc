@@ -1,0 +1,48 @@
+<html>
+<head>
+<title>PurchaseExample</title>
+</head>
+<body>
+<h1>PurchaseExample</h1>
+<p>This example app demonstrates how to use the MoSync Purchase C++ Library to manage in-app purchases, transaction histories, and receipts. Some configuration steps must be completed before running this app on a device.<!--break--></p>
+<table class="doclayout" border="0"><tbody><tr><td><img src="images/in-app-purchase-products-and-history.png" align="none" width="210" height="350"></td><td><img src="images/in-app-purchase-visa_0.png" align="none" width="210" height="350"></td><td><img src="images/in-app-purchase-receipt.png" align="none" width="210" height="350"></td></tr>
+<tr><td><em>Main screen on Android</em></td><td><em>Purchase screen on Android</em></td><td><em>Receipt details on Android</em></td></tr>
+<tr><td><em><img src="images/in-app-purchase-products-and-history-ios.png" align="none" width="210" height="315"></em></td><td><em><img src="images/in-app-purchase-confirmation-screen-ios.png" align="none" width="210" height="315"></em></td><td><em><img src="images/in-app-purchase-receipt-ios.png" align="none" width="210" height="315"></em></td></tr>
+<tr><td><em>Main screen on iOS</em></td><td><em>Confirmation screen on iOS</em></td><td><em>Receipt details on iOS</em></td></tr>
+</tbody></table>
+<p>This application uses the <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___purchase_lib.html">MoSync Purchase C++ Library</a>, and works on all platforms supported by this library (see <a href="http://www.mosync.com/documentation/manualpages/featureplatform-matrix">Feature/Platform Support</a>).</p>
+<p>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
+<blockquote><p><strong>Note</strong>: Before building and running this example app, you need to set your Android developer key, and the product IDs that can be purchased. Open the file <strong>config.h</strong> file in the project. You will find complete instructions for configuring the application there. Second, set up the project's provisioning profile by pointing it to the provision file -- that's the file that you get when you have registered with Apple as a developer and go through the iOS Provisioning Portal.</p>
+</blockquote><h2 dir="ltr">Behaviour</h2>
+<p>When this application is started, the <strong>MainScreen</strong> is shown.The screen consists of two main parts:</p>
+<ul>
+<li>"Buy" section with a <strong>BUY</strong> button and a list of available products for sale.</li>
+<li>"History" section with a list of purchased items.</li>
+</ul>
+<p>From here the user can choose which products to purchase, by selecting a product (checking its corresponding check box). Tapping the <strong>BUY</strong> button initiates a purchase.</p>
+<p>The purchase request is computed in the backend in the <strong>ApplicationController</strong> class. The <strong>ApplicationController</strong> notifies the <strong>MainScreen</strong> of all the purchase events, and displays them in dialog boxes, especially error messages.</p>
+<h2>In the code</h2>
+<p>The project is divided into several files:</p>
+<ul>
+<li><strong>Main.cpp</strong> is the application's main entry point.</li>
+<li><strong>Config.h</strong> is where you must fill in your own Android developer public key.</li>
+<li><strong>MainScreen.cpp</strong> the main screen of the application, that presents a list of available products, and a purchase history list.&nbsp; The first section will not display to the user the productIds, but the product names, and single-item selection is ensured by check boxes assigned to each one. The developer should create it's own product list in the <strong>createProductIdList</strong> method. For now, only Android has a product added, and that is a reserved product ID for testing. The second section (history) displays the names of the purchased products in a scrollable list view. Each item is selectable, and it's selection triggers the receipt dialog with all the receipt information.</li>
+<li><strong>ApplicationController.cpp</strong> the controller that handles all purchase-related events. The controller is responsible for updating the UI with all purchase events.</li>
+<li><strong>Util.cpp</strong> contains utility function for the application, to detect current platform.</li>
+</ul>
+<p>When you test on Android, make sure you follow the steps listed in the official help page for testing <a href="http://developer.android.com/guide/market/billing/billing_testing.html">http://developer.android.com/guide/market/billing/billing_testing.html</a> , so that you will be able to test both reserved products and your own products.</p>
+<p>The application's flow is as follows:</p>
+<ul>
+<li>when the user selects a product and presses BUY a new <strong>Purchase</strong> object (<strong>mCurrentPurchase</strong>) is created, and automatically the controller is set as&nbsp; a <strong>PurchaseListener</strong>. From now on, the current purchase object will point to <strong>mCurrentPurchase</strong>, and all purchases will be held in the <strong>mPurchases</strong> vector.</li>
+<li>the <strong>ApplicationController</strong> class waits for <strong>productValid</strong> purchase event.</li>
+<li>after the event is received, the purchase is requested: <strong>mCurrentPurchase-&gt;requestPurchase()</strong>.</li>
+<li>the <strong>ApplicationController</strong> waits for <strong>requestCompleted</strong> purchase event.</li>
+<li>the checkout UI is displayed, allowing the user to enter personal financial information.</li>
+<li>after the event is received, the <strong>MainScreen</strong> is updated and the product name appears in the history list.</li>
+<li>at any time, the user may select one purchased product, to get its receipt. Note that there may be a small delay in showing the receipt dialog, as the receipt validation is done asynchronously.</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;For a complete screencast of a similar example application, please visit our YouTube MoSync Dev Channel <a href="http://www.youtube.com/watch?v=0pR8ioATAH4&amp;feature=plcp">here</a>.</p>
+<p>&nbsp;</p>
+</body>
+</html>
