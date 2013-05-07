@@ -44,6 +44,10 @@ def pathPageDocMenu
   pathTemplates + "page-doc-menu.html"
 end
 
+def pathPageSearch
+  pathTemplates + "page-search.html"
+end
+
 def pathPageSdkHome
   pathTemplates + "page-sdk-home.html"
 end
@@ -101,6 +105,7 @@ end
 MENU_START_HOME="TEMPLATE_THEME_MENU_START_HOME"
 MENU_START_SDK="TEMPLATE_THEME_MENU_START_SDK"
 MENU_START_RELOAD="TEMPLATE_THEME_MENU_START_RELOAD"
+MENU_START_SEARCH="TEMPLATE_THEME_MENU_START_SEARCH"
 MENU_CPP_GUIDES="TEMPLATE_THEME_MENU_CPP_GUIDES"
 MENU_CPP_TUTORIALS="TEMPLATE_THEME_MENU_CPP_TUTORIALS"
 MENU_CPP_EXAMPLES="TEMPLATE_THEME_MENU_CPP_EXAMPLES"
@@ -117,9 +122,7 @@ MENU_ALL = [
 MENU_START_HOME,
 MENU_START_SDK,
 MENU_START_RELOAD,
-MENU_START_HOME,
-MENU_START_SDK,
-MENU_START_RELOAD,
+MENU_START_SEARCH,
 MENU_CPP_GUIDES,
 MENU_CPP_TUTORIALS,
 MENU_CPP_EXAMPLES,
@@ -143,6 +146,7 @@ def webSiteBuild
   webSiteClean
   webSiteCopyLibs
   webSiteBuildDocHomePage
+  webSiteBuildSearchPage
   webSiteBuildSdkHomePage
   webSiteBuildSdkDocPages
   webSiteBuildSdkIndexPages
@@ -150,6 +154,10 @@ def webSiteBuild
   webSiteBuildReloadDocPages
   webSiteBuildReloadIndexPages
 end
+
+#----------------------------------------------------#
+#               Copying Website Files                #
+#----------------------------------------------------#
 
 # Copy documentation files to a temporary documentation
 # directory, containig both SDK and Reload doc files.
@@ -197,6 +205,18 @@ def webSiteBuildDocHomePage
     :templateFile => pathPageTemplate(),
     :pageTitle => title,
     :selectedMenuItem => MENU_START_HOME
+    )
+end
+
+def webSiteBuildSearchPage
+  title = "Documentation Search"
+  webSiteBuildPage(
+    :outputFile => pathWebSite() + "search.html",
+    :pageFile => pathPageSearch(),
+    :menuFile => pathPageDocMenu(),
+    :templateFile => pathPageTemplate(),
+    :pageTitle => title,
+    :selectedMenuItem => MENU_START_SEARCH
     )
 end
 
