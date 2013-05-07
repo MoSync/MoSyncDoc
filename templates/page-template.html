@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TEMPLATE_PAGE_TITLE</title>
+
+    <meta name="viewport" content="width=devicewidth,initial-scale=1.0,user-scalable=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <link rel="stylesheet" href="TEMPLATE_JS_PATH/jquery.mobile-1.3.0/jquery.mobile-1.3.0.min.css" />
+
+    <style>
+    .ui-header .ui-title
+    {
+        margin-right: 10%;
+        margin-left: 10%;
+    }
+    
+    @media all and (min-width: 800px)
+    {
+      #page-menu
+      {
+        width: 272px;
+        float: left;
+      }
+      #page-content
+      {
+        /*width: 70%;*/
+        /*float: right;*/
+        margin-left: 300px;
+        left: -300px;
+      }
+      #button-panel-menu
+      {
+        display: none;
+      }
+    }
+
+    @media all and (max-width: 799px)
+    {
+      #page-menu
+      {
+        width: 100%;
+        display: none;
+      }
+      #page-content 
+      {
+        width: 100%;
+      }
+    }
+    </style>
+
+    <script src="TEMPLATE_JS_PATH/jquery.mobile-1.3.0/jquery.js"></script>
+
+    <script>
+    // Do one-time initialisation here.
+    $(document).on('mobileinit', function() {
+        // Set default transitions.
+        $.mobile.defaultPageTransition = "none";
+        $.mobile.defaultDialogTransition = "none";
+        $.mobile.ajaxEnabled = false;
+        $.mobile.hashListeningEnabled = false;
+        $.mobile.buttonMarkup.hoverDelay = 50;
+    });
+    </script>
+
+    <script src="TEMPLATE_JS_PATH/jquery.mobile-1.3.0/jquery.mobile-1.3.0.min.js"></script>
+
+    <script>
+    /*
+    // Insert header and panel into page.
+    $(document).on("pagebeforecreate", function(event)
+    {
+        console.log("pagebeforecreate: " + event.target.id);
+        $("#" + event.target.id).append($("#slide-panel").html());
+        $("#" + event.target.id).prepend($("#slide-header").html());
+        // No need to call .trigger('create') here.
+    });
+
+    function showSlide(slideId)
+    {
+        console.log("Show slide: " + slideId);
+        console.log($("#" + slideId).html());
+        $("#slide-container").html(
+            $("#" + slideId).html());
+        $("#page-slide").trigger("create");
+        //$("#panel-content").panel("close");
+    }
+    */
+    
+    // Not used.
+    function showDocPage(path)
+    {
+        /*$.mobile.changePage(path, { 
+            //pageContainer: $("#page-content"),
+            //role: "content",
+            transition: "none" });
+        */
+        $("#page-container").load(path);
+    }
+
+	function performSearch(event)
+	{
+		if (event.which == 13)
+		{
+			var searchString = encodeURIComponent($(event.target).val());
+			console.log("search string: " + searchString);
+			window.location =
+				"http://www.mosync.com/content/search-mosync?as_q=" +
+				searchString;
+		}
+	}
+</script>
+</head>
+
+<body>
+    <div data-role="page" id="page-template">
+        
+        <div data-role="header" data-position="fixed" data-theme="a">
+            <h1>TEMPLATE_PAGE_TITLE</h1>
+             <div data-type="horizontal" data-role="controlgroup" class="ui-btn-left">
+               <a href="#"
+                 data-rel="back"
+                 data-role="button"
+                 data-icon="back">Back</a>
+               <a href="#panel-menu"
+                 id="button-panel-menu"
+                 data-role="button"
+                 data-icon="bars">Menu</a>
+            </div>
+            <a data-ajax="false"
+                href="TEMPLATE_DOC_PATH/index.html"
+                class="ui-btn-right"
+                data-icon="home">Home</a>
+        </div>
+        
+        <div data-role="content" id="page-container">
+            <div id="page-menu">
+                TEMPLATE_PAGE_MENU
+            </div>
+            <div id="page-content">
+                TEMPLATE_PAGE_CONTENT
+            </div>
+        </div>
+        
+        <!-- Dynamic Panel -->
+        <div data-role="panel"
+            id="panel-menu"
+            data-position="left"
+            data-display="overlay"
+            data-mini="false"
+            data-theme="c">
+           TEMPLATE_PANEL_MENU
+        </div>
+
+    </div>
+</body>
+</html>

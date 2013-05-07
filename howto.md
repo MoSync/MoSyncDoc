@@ -7,6 +7,8 @@ It should be noted that the documenation in this repository is NOT in the final 
 
 The purpose with this repository is to have the documentation under version control.
 
+For an explanation of how to use the website build scripts, see file howto-scripts.md.
+
 ## File format
 
 You can use HTML or Markdown. At present Markdown files need to be manually converted to HTML. A tool for this is [Pandoc](http://johnmacfarlane.net/pandoc/).
@@ -91,8 +93,10 @@ Markdown guide: http://daringfireball.net/projects/markdown/
 
 The scripts directory contains scripts for building the documentation web site, and for managing analysing the documentation.
 
-This directory also contains a central script called "structure.rb" with contains a list of all pages in the documentation. When adding a new page, it needs to be added to this script. Further details about how to do this will follow. In the mean time, ask the documentation administrator to do this.
+This directory contains a central script called "structure.rb" with contains a list of all pages in the documentation. When adding a new page, it needs to be added to this script. Further details about how to do this will follow. In the mean time, ask the documentation administrator to do this.
 
-## Attitude
+File howto-scripts.md contains further information on how to use the builds scripts.
+
+## Spirit
 
 Think of documentation as a catalouge of goodies to pick from. Or a bowl of candy with colourful and inviting items to try out. Or use your own picture to help create documentation that makes the reader to eagerly want to try out things and discover more. And writing plain on-the-spot documentation is always useful and appreciated ;-)
