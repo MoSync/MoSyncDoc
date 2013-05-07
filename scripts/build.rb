@@ -5,9 +5,10 @@
 # This is a way to copy files.
 # FileUtils.cp_r(Dir[sourceDir + "*"], destDir)
 
-require 'fileutils'
-require 'pathname'
+require "fileutils"
+require "pathname"
 require "open-uri"
+require "kramdown"
 
 # The structure file contains all pages and category info.
 load 'structure.rb' 
@@ -137,7 +138,8 @@ MENU_RELOAD_RELEASE_NOTES,
 #----------------------------------------------------#
 
 def webSiteBuild
-  webSiteCopyDocs
+  webSiteCopyDocsForBuild
+  webSiteConvertMarkdownToHtml
   webSiteClean
   webSiteCopyLibs
   webSiteBuildDocHomePage
@@ -151,7 +153,7 @@ end
 
 # Copy documentation files to a temporary documentation
 # directory, containig both SDK and Reload doc files.
-def webSiteCopyDocs
+def webSiteCopyDocsForBuild
   puts "Cleaning docs temp directory"
   # Clean target directory.
   fileCleanPath(Pathname.new(pathDocs()))
@@ -195,7 +197,7 @@ def webSiteBuildDocHomePage
     :templateFile => pathPageTemplate(),
     :pageTitle => title,
     :selectedMenuItem => MENU_START_HOME
-	)
+    )
 end
 
 #----------------------------------------------------#
@@ -212,14 +214,14 @@ def webSiteBuildSdkHomePage
     :templateFile => pathPageTemplate(),
     :pageTitle => title,
     :selectedMenuItem => MENU_START_SDK
-	)
+    )
 end
 
 # Build all SDK documentation pages.
 def webSiteBuildSdkDocPages
   webSiteBuildDocPages(
     docSdkPages(), 
-	pathPageSdkMenu())
+    pathPageSdkMenu())
 end
 
 # Build SDK index pages for all categories and page types.
@@ -284,14 +286,14 @@ def webSiteBuildReloadHomePage
     :templateFile => pathPageTemplate,
     :pageTitle => title,
     :selectedMenuItem => MENU_START_RELOAD
-	)
+    )
 end
 
 # Build all Reload documentation pages.
 def webSiteBuildReloadDocPages
   webSiteBuildDocPages(
     docReloadPages(), 
-	pathPageReloadMenu())
+    pathPageReloadMenu())
 end
 
 def webSiteBuildReloadIndexPages
@@ -346,13 +348,13 @@ def webSiteBuildDocPages(pages, menuFile)
       :templateFile => pathPageTemplate(),
       :pageTitle => title,
       :selectedMenuItem => webSiteGetMenuItemTypeForPage(page)
-	  )
+      )
     
-	# Copy images to destination directory.
-	imageSourceDir = pathDocs() + pageTargetFile(page) + "/images"
-	imageDestDir = pathWebSite() + pageTargetFile(page)
+    # Copy images to destination directory.
+    imageSourceDir = pathDocs() + pageTargetFile(page) + "/images"
+    imageDestDir = pathWebSite() + pageTargetFile(page)
     puts "Copy images from " + imageSourceDir + " to " + imageDestDir
-	FileUtils.cp_r(Dir[imageSourceDir], imageDestDir)
+    FileUtils.cp_r(Dir[imageSourceDir], imageDestDir)
   end
 end
 
@@ -633,13 +635,13 @@ def docDownloadImages
       # and download and save image.
       url = docGetImageDownloadURL(imgTag)
       if url != nil then
-	    destFile = docGetImagePath(url, filePath.parent)
+        destFile = docGetImagePath(url, filePath.parent)
         puts "    downloading from: " + url
         puts "    writing image to: " + destFile.to_s
         docDownloadImage(url, destFile)
         puts "    done"
-	  else
-	    puts "    *** IMAGE NOT DOWNLOADED: " + imgTag
+      else
+        puts "    *** IMAGE NOT DOWNLOADED: " + imgTag
         # A hack indeed.
         externalImages += filePath.to_s + ": " + $lastImageUrl + "\n"
       end
@@ -659,7 +661,7 @@ def docUpdateImageTags
   Pathname.glob(pathDocs() + "**/*.html").each do |filePath|
     n = n + 1
     puts "Updating File " + n.to_s + ": " + filePath.to_s
-	
+    
     # Iterate over all images in the file.
     html = fileReadContent(filePath)
     html.scan(/<img.*?>/) do |imgTag|
@@ -668,16 +670,16 @@ def docUpdateImageTags
       if url != nil then
         # Update img tag.
         parts = imgTag.split(/src="(.*?)"/)
-		imageFileName = docGetImagePath(url, "")
-		imageFileName = imageFileName.gsub(" ", "%20")
+        imageFileName = docGetImagePath(url, "")
+        imageFileName = imageFileName.gsub(" ", "%20")
         newImgTag = parts[0] + "src=\"" + imageFileName + "\"" + parts[2]
         puts "  new img: " + newImgTag
         # Update image tag.
         html = html.gsub(imgTag, newImgTag)
-	  else
-	    puts "    *** IMAGE IGNORED: " + imgTag
+      else
+        puts "    *** IMAGE IGNORED: " + imgTag
       end
-	end
+    end
 
     # Write the updated file.
     fileSaveContent(filePath, html)
@@ -689,7 +691,7 @@ end
 def docGetImageDownloadURL(imgTag)
   srcMatch = imgTag.scan(/src="(.*?)"/)
   if not srcMatch.empty? then 
-	src = srcMatch[0][0]
+    src = srcMatch[0][0]
     $lastImageUrl = src # Useful for logging when returning nil below
     if src.start_with?("http://www.mosync.com") then
       return src
@@ -697,8 +699,8 @@ def docGetImageDownloadURL(imgTag)
       return src
     elsif src.start_with?("http://") or 
       src.start_with?("https://") then
-	  # Return nil here if images from other domains
-	  # should not be downloaded.
+      # Return nil here if images from other domains
+      # should not be downloaded.
       puts "    *** External image: " + src
       return nil
     elsif src.start_with?("/") then
@@ -806,8 +808,8 @@ end
 def pageHasAllLabels?(page, labels)
   labels.each do |label|
     if not pageHasLabel?(page,label) then
-	  return false
-	end
+      return false
+    end
   end
   return true
 end
@@ -878,7 +880,7 @@ def htmlUpdateLinks(html)
     html = html.gsub(
       "http://www.mosync.com/" + pageOriginalFile(page), 
       "/NEWDOC_UPDATED_URL_TEMPLATE_DOC_PATH/" + pageTargetFile(page) + "/index.html")
-	# Replace short urls
+    # Replace short urls
     html = html.gsub(
       pageOriginalFile(page), 
       "NEWDOC_UPDATED_URL_TEMPLATE_DOC_PATH/" + pageTargetFile(page) + "/index.html")
@@ -934,6 +936,40 @@ def fileGetPageTitle(filePath)
 end
 
 ######################################################
+#                    MARKDOWN PROCESSING                    #
+######################################################
+
+# Convert all .md files in the docs-tmp directory
+# to HTML.
+# TODO: How should we handle syntax highlight of code
+# blocks in markdown?
+def webSiteConvertMarkdownToHtml
+  puts "Converting Markdown files to HTML"
+  template = "<html>
+<head>
+<title>TEMPLATE_TITLE</title>
+</head>
+<body>
+TEMPLATE_BODY
+</body>
+</html>"
+  n = 0
+  Pathname.glob(pathDocs() + "**/*.md").each do |path|
+    n = n + 1
+    puts "Converting File " + n.to_s + ": " + path.to_s
+    infile = path.to_s
+    outfile = path.sub_ext(".html").to_s
+    markdown = fileReadContent(infile)
+    htmlBody = Kramdown::Document.new(markdown, :auto_ids => false).to_html
+    title = htmlGetTagContents(htmlBody, "h1")
+    fullHtml = template
+      .gsub("TEMPLATE_TITLE", title)
+      .gsub("TEMPLATE_BODY", htmlBody)
+    fileSaveContent(outfile, fullHtml)
+  end
+end
+
+######################################################
 #                       UNUSED                       #
 ######################################################
 
@@ -957,7 +993,7 @@ def not_used_updatePathSymbols
   Pathname.glob("../**/*.html").each do |filePath|
     n = n + 1
     puts "Updating File " + n.to_s + ": " + filePath.to_s
-	
+    
     # Replace all symbols in file.
     html = fileReadContent(filePath)
     html = html.gsub("RELATIVE_", "TEMPLATE_")
@@ -974,8 +1010,8 @@ end
 def listExportedPagesNotInDocs
   exportedFileNames = 
     Pathname.glob(pathExports + "**/*.html").collect do |filename|
-	  filename.to_s.gsub(pathExports, "").gsub("/index.html", "")
-	end
+      filename.to_s.gsub(pathExports, "").gsub("/index.html", "")
+    end
   importedFileNames = allPages().collect do |page|
     pageOriginalFile(page)
   end
@@ -1000,16 +1036,16 @@ VALUES (NULL,'ORIGINAL_PATH','TARGET_PATH',NULL,NULL,'301',NOW(),'');"
   targetFileNames = allPagesNotIgnore().collect do |page|
     originalPath = pageOriginalFile(page)
     targetPath = pageTargetFile(page)
-	if (targetPath == HOME_PATH) then
-	  targetPath = "docs/index.html"
-	else
-	  targetPath = "docs/" + targetPath + "/index.html"
-	end
-	deleteStatement = deleteTemplate.gsub("ORIGINAL_PATH", originalPath)
-	insertStatement = insertTemplate.
-		gsub("ORIGINAL_PATH", originalPath).
-			gsub("TARGET_PATH", targetPath)
-	sql += deleteStatement + "\n" + insertStatement + "\n"
+    if (targetPath == HOME_PATH) then
+      targetPath = "docs/index.html"
+    else
+      targetPath = "docs/" + targetPath + "/index.html"
+    end
+    deleteStatement = deleteTemplate.gsub("ORIGINAL_PATH", originalPath)
+    insertStatement = insertTemplate.
+        gsub("ORIGINAL_PATH", originalPath).
+            gsub("TARGET_PATH", targetPath)
+    sql += deleteStatement + "\n" + insertStatement + "\n"
   end
   
   puts sql
@@ -1036,6 +1072,9 @@ end
 # Commands
 if (ARGV.include? "html2md")
     #convertHtmlToMarkdown
+elsif (ARGV.include? "md2html")
+  #webSiteCopyDocsForBuild
+  webSiteConvertMarkdownToHtml
 elsif (ARGV.include? "cleanmd")
     #cleanmd
 elsif (ARGV.include? "importall")
@@ -1055,9 +1094,9 @@ elsif (ARGV.include? "cleanweb")
 elsif (ARGV.include? "listexports")
     #listExportedPagesNotInDocs
 elsif (ARGV.include? "listtargets")
-	#listTargetFileNames
+    #listTargetFileNames
 elsif (ARGV.include? "redirects")
-	generateRedirectSQL
+    generateRedirectSQL
 else
     puts "Options:"
     #puts "  html2md"

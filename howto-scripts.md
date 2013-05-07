@@ -14,6 +14,13 @@ Also note that the scripts are included only in the MoSyncDoc repository. The Re
 ## Running scripts
 To run scripts manually, cd to the scripts directory and run the scripts from there (the way paths are set up assume this).
 
+## Installing kramdown
+kramdown is a Markdown to HTML converter for Ruby. This module must be installed before building the website. Use this one-time command on your machine to install it:
+
+    gem install kramdown
+    
+For additional details, see the [kramdown home page](http://kramdown.rubyforge.org/installation.html).
+
 ## Building the documentation website
 To build the website, make sure you have checked out MoSyncDoc and ReloadDoc repositories in a common parent folder. For example like this:
 
