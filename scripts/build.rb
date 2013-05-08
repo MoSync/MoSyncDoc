@@ -1051,7 +1051,7 @@ def generateRedirectSQL
   deleteTemplate = "DELETE FROM mosyncweb_path_redirect where source = 'ORIGINAL_PATH';"
   insertTemplate = "INSERT INTO mosyncweb_path_redirect (rid,source,redirect,query,fragment,type,last_used,language)
 VALUES (NULL,'ORIGINAL_PATH','TARGET_PATH',NULL,NULL,'301',NOW(),'');"
-
+#TODO: Change NOW() to: unix_timestamp(now())
   sql = ""
   targetFileNames = docAllPagesNotIgnore().collect do |page|
     originalPath = pageOriginalFile(page)
