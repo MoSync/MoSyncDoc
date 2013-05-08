@@ -8,8 +8,7 @@ REDIRECT="REDIRECT"
 IGNORE="IGNORE"
 
 # Home path of new website (used for redirect).
-# TODO: Update this.
-HOME_PATH = "HOME_PATH"
+HOME_PATH = ""
 
 # Main documentation categories (main subjects)
 COMPANY="Company Info"
@@ -75,6 +74,7 @@ XML="XML"
 
 $pages = [
 #[oldfile,newfile,[tag-1,tag-2,tag-n]]
+["documentation",HOME_PATH,[REDIRECT]],
 ["blog/2010/03/creating-xml-documents","sdk/cpp/tutorials/xml/creating-xml-documents",[SDK,CPP,TUTORIAL,XML]],
 ["blog/2010/03/working-json-data","sdk/cpp/tutorials/json/working-with-json-data", [SDK,CPP,TUTORIAL,JSON]],
 ["blog/2010/05/serial-data-access","sdk/cpp/tutorials/storage/serial-data-access",[SDK,CPP,TUTORIAL,STORAGE]],

@@ -1053,7 +1053,7 @@ def generateRedirectSQL
 VALUES (NULL,'ORIGINAL_PATH','TARGET_PATH',NULL,NULL,'301',NOW(),'');"
 
   sql = ""
-  targetFileNames = allPagesNotIgnore().collect do |page|
+  targetFileNames = docAllPagesNotIgnore().collect do |page|
     originalPath = pageOriginalFile(page)
     targetPath = pageTargetFile(page)
     if (targetPath == HOME_PATH) then
@@ -1077,12 +1077,12 @@ end
 
 # Helper function to run shell commands.
 def sh(cmd)
-    #TODO: optimize by removing the extra shell
-    #the Process class should be useful.
-    $stderr.puts cmd
-    if (!system(cmd)) then
-        error "Command failed: '#{$?}'"
-    end
+  #TODO: optimize by removing the extra shell
+  #the Process class should be useful.
+  $stderr.puts cmd
+  if (!system(cmd)) then
+    error "Command failed: '#{$?}'"
+  end
 end
 
 ######################################################
@@ -1091,41 +1091,42 @@ end
 
 # Commands
 if (ARGV.include? "html2md")
-    #convertHtmlToMarkdown
+  #convertHtmlToMarkdown
 elsif (ARGV.include? "md2html")
   #webSiteCopyDocsForBuild
-  webSiteConvertMarkdownToHtml
+  #webSiteConvertMarkdownToHtml
 elsif (ARGV.include? "cleanmd")
-    #cleanmd
+  #cleanmd
 elsif (ARGV.include? "importall")
-    #docImportAll
+  #docImportAll
 elsif (ARGV.include? "importhtml")
     #docImportHTML
 elsif (ARGV.include? "downloadimages")
     #docDownloadImages
 elsif (ARGV.include? "updateimagetags")
-    #docUpdateImageTags
+  #docUpdateImageTags
 elsif (ARGV.include? "cleandoc")
-    #docClean
+  #docClean
 elsif (ARGV.include? "buildweb")
-    webSiteBuild
+  webSiteBuild
 elsif (ARGV.include? "cleanweb")
-    #webSiteClean
+  #webSiteClean
 elsif (ARGV.include? "listexports")
-    #listExportedPagesNotInDocs
+  #listExportedPagesNotInDocs
 elsif (ARGV.include? "listtargets")
-    #listTargetFileNames
+  #listTargetFileNames
 elsif (ARGV.include? "redirects")
-    generateRedirectSQL
+  generateRedirectSQL
 else
-    puts "Options:"
-    #puts "  html2md"
-    #puts "  cleanmd"
-    #puts "  importall (importhtml + downloadimages + updateimagetags)"
-    #puts "  importhtml (imports HTML from Drupal export)"
-    #puts "  downloadimages (download images)"
-    #puts "  updateimagetags (update img urls)"
-    #puts "  cleandoc (cleans documentation folder)"
-    puts "  buildweb (builds website)"
-    #puts "  cleanweb (cleans website folder)"
+  puts "Options:"
+  #puts "  html2md"
+  #puts "  cleanmd"
+  #puts "  importall (importhtml + downloadimages + updateimagetags)"
+  #puts "  importhtml (imports HTML from Drupal export)"
+  #puts "  downloadimages (download images)"
+  #puts "  updateimagetags (update img urls)"
+  #puts "  cleandoc (cleans documentation folder)"
+  puts "  buildweb (builds website)"
+  puts "  redirects (generete SQL for Drupal redirects)"
+  #puts "  cleanweb (cleans website folder)"
 end
