@@ -102,6 +102,7 @@ end
 ######################################################
 
 # Menu items that can be highlighted
+
 MENU_START_HOME="TEMPLATE_THEME_MENU_START_HOME"
 MENU_START_SDK="TEMPLATE_THEME_MENU_START_SDK"
 MENU_START_RELOAD="TEMPLATE_THEME_MENU_START_RELOAD"
@@ -135,6 +136,28 @@ MENU_SDK_RELEASE_NOTES,
 MENU_RELOAD_GUIDES,
 MENU_RELOAD_RELEASE_NOTES,
 ]
+
+# Theme Swatches
+
+def swatchDocHome
+  "b"
+end
+
+def swatchSdk
+  "c"
+end
+
+def swatchReload
+  "a"
+end
+
+def swatchItem
+  "e"
+end
+
+def swatchMenuDivider
+  "d"
+end
 
 #----------------------------------------------------#
 #             Build Website Entry Point              #
@@ -203,6 +226,7 @@ def webSiteBuildDocHomePage
     :pageFile => pathPageDocHome(),
     :menuFile => pathPageDocMenu(),
     :templateFile => pathPageTemplate(),
+    :swatch => swatchDocHome(),
     :pageTitle => title,
     :selectedMenuItem => MENU_START_HOME
     )
@@ -215,6 +239,7 @@ def webSiteBuildSearchPage
     :pageFile => pathPageSearch(),
     :menuFile => pathPageDocMenu(),
     :templateFile => pathPageTemplate(),
+    :swatch => swatchDocHome(),
     :pageTitle => title,
     :selectedMenuItem => MENU_START_SEARCH
     )
@@ -232,6 +257,7 @@ def webSiteBuildSdkHomePage
     :pageFile => pathPageSdkHome(),
     :menuFile => pathPageSdkMenu(),
     :templateFile => pathPageTemplate(),
+    :swatch => swatchSdk(),
     :pageTitle => title,
     :selectedMenuItem => MENU_START_SDK
     )
@@ -241,13 +267,14 @@ end
 def webSiteBuildSdkDocPages
   webSiteBuildDocPages(
     docSdkPages(), 
-    pathPageSdkMenu())
+    pathPageSdkMenu(),
+    swatchSdk())
 end
 
 # Build SDK index pages for all categories and page types.
 def webSiteBuildSdkIndexPages
-  title = "C/C++ Coding Guides"
-  webSiteBuildSdkIndexPage([SDK,CPP,GUIDE], "sdk/cpp/guides/", title, MENU_CPP_GUIDES)
+  #title = "C/C++ Coding Guides"
+  #webSiteBuildSdkIndexPage([SDK,CPP,GUIDE], "sdk/cpp/guides/", title, MENU_CPP_GUIDES)
   
   title = "C/C++ Tutorials"
   webSiteBuildSdkIndexPage([SDK,CPP,TUTORIAL], "sdk/cpp/tutorials/", title, MENU_CPP_TUTORIALS)
@@ -255,8 +282,8 @@ def webSiteBuildSdkIndexPages
   title = "C/C++ Examples"
   webSiteBuildSdkIndexPage([SDK,CPP,EXAMPLE], "sdk/cpp/examples/", title, MENU_CPP_EXAMPLES)
   
-  title = "JavaScript Coding Guides"
-  webSiteBuildSdkIndexPage([SDK,JS,GUIDE], "sdk/js/guides/", title, MENU_JS_GUIDES)
+  #title = "JavaScript Coding Guides"
+  #webSiteBuildSdkIndexPage([SDK,JS,GUIDE], "sdk/js/guides/", title, MENU_JS_GUIDES)
   
   title = "JavaScript Tutorials"
   webSiteBuildSdkIndexPage([SDK,JS,TUTORIAL], "sdk/js/tutorials/", title, MENU_JS_TUTORIALS)
@@ -264,11 +291,12 @@ def webSiteBuildSdkIndexPages
   title = "JavaScript Examples"
   webSiteBuildSdkIndexPage([SDK,JS,EXAMPLE], "sdk/js/examples/", title, MENU_JS_EXAMPLES)
   
+  #TODO: Not used Remove
   #title = "All Examples"
   #webSiteBuildSdkIndexPage([CPP,JS,EXAMPLE], "sdk/overviews/examples/", title)
   
-  title = "SDK Tools Guides"
-  webSiteBuildSdkIndexPage([SDK,TOOLS,GUIDE], "sdk/tools/guides/", title, MENU_SDK_GUIDES)
+  title = "SDK Tools Tutorials"
+  webSiteBuildSdkIndexPage([SDK,TOOLS,TUTORIAL], "sdk/tools/guides/", title, MENU_SDK_GUIDES)
   
   title = "SDK Tools References"
   webSiteBuildSdkIndexPage([SDK,TOOLS,REFERENCE], "sdk/tools/references/", title, MENU_SDK_REFERENCES)
@@ -289,7 +317,8 @@ def webSiteBuildSdkIndexPage(
     pageShortPath,
     pageTitle,
     selectedMenuItem,
-    pathPageSdkMenu())
+    pathPageSdkMenu(),
+    swatchSdk())
 end
 
 #----------------------------------------------------#
@@ -304,6 +333,7 @@ def webSiteBuildReloadHomePage
     :pageFile => pathPageReloadHome(),
     :menuFile => pathPageReloadMenu(),
     :templateFile => pathPageTemplate,
+    :swatch => swatchReload(),
     :pageTitle => title,
     :selectedMenuItem => MENU_START_RELOAD
     )
@@ -313,12 +343,13 @@ end
 def webSiteBuildReloadDocPages
   webSiteBuildDocPages(
     docReloadPages(), 
-    pathPageReloadMenu())
+    pathPageReloadMenu(),
+    swatchReload())
 end
 
 def webSiteBuildReloadIndexPages
-  title = "IDE/Tools Guides"
-  webSiteBuildReloadIndexPage([RELOAD,GUIDE], "reload/guides/", title, MENU_RELOAD_GUIDES)
+  title = "Tutorials"
+  webSiteBuildReloadIndexPage([RELOAD,TUTORIAL], "reload/guides/", title, MENU_RELOAD_GUIDES)
   
   title = "Release Notes"
   webSiteBuildReloadIndexPage([RELOAD,RELEASE_NOTE], "reload/release-notes/", title, MENU_RELOAD_RELEASE_NOTES)
@@ -336,7 +367,8 @@ def webSiteBuildReloadIndexPage(
     pageShortPath,
     pageTitle,
     selectedMenuItem,
-    pathPageReloadMenu())
+    pathPageReloadMenu(),
+    swatchReload())
 end
 
 #----------------------------------------------------#
@@ -345,7 +377,7 @@ end
 
 # Build all documentation pages in the given collection
 # of page meta data, using the supplied menu file.
-def webSiteBuildDocPages(pages, menuFile)
+def webSiteBuildDocPages(pages, menuFile, swatch)
 
   # Build web page for each documentation page.
   n = 0
@@ -366,6 +398,7 @@ def webSiteBuildDocPages(pages, menuFile)
       :pageFile => pageFile,
       :menuFile => menuFile,
       :templateFile => pathPageTemplate(),
+      :swatch => swatch,
       :pageTitle => title,
       :selectedMenuItem => webSiteGetMenuItemTypeForPage(page)
       )
@@ -386,7 +419,8 @@ def webSiteBuildIndexPage(
   pageShortPath,
   pageTitle,
   selectedMenuItem,
-  menuFile)
+  menuFile,
+  swatch)
   
   # Create page output path.
   outputFile = pathWebSite() + pageShortPath + "index.html"
@@ -394,7 +428,7 @@ def webSiteBuildIndexPage(
   puts "Building index page: " + outputFile.to_s
   
   # Get content HTML as a String.
-  html = webSiteBuildIndexListForLabels(labels, pageShortPath)
+  html = webSiteBuildIndexListForLabels(labels, pageShortPath, swatch)
   
   # Build the page. Here we pass the HTML data
   # as a String object using the pageHtml param.
@@ -403,6 +437,7 @@ def webSiteBuildIndexPage(
     :pageHtml => html,
     :menuFile => menuFile,
     :templateFile => pathPageTemplate(),
+    :swatch => swatch,
     :pageTitle => pageTitle,
     :selectedMenuItem => selectedMenuItem
     )
@@ -412,7 +447,7 @@ end
 # pages of the given category and type.
 # baseDir is a string naming the directory of the
 # target page, e.g. "sdk/cpp/guides/".
-def webSiteBuildIndexListForLabels(labels, baseDir)
+def webSiteBuildIndexListForLabels(labels, baseDir, swatch)
   # Filter pages.
   pages = docPages()
   pages = pagesForLabels(pages, labels)
@@ -427,7 +462,8 @@ def webSiteBuildIndexListForLabels(labels, baseDir)
     html += webSiteBuildLinkListForPages(
       pagesForLabel(pages, label),
       label,
-      baseDir)
+      baseDir,
+      swatch)
   end
 
   # Return the result String.
@@ -438,14 +474,14 @@ end
 # baseDir is a string naming the directory of the
 # target page, e.g. "cpp/guides/".
 # TODO: Sort list by title of pages.
-def webSiteBuildLinkListForPages(pages, label, baseDir)
-  html = "<ul data-role=\"listview\" data-inset=\"true\">\n"
-  html += "<li data-role=\"list-divider\">#{label}</li>\n"
+def webSiteBuildLinkListForPages(pages, label, baseDir, swatch)
+  html = "<ul data-role=\"listview\" data-inset=\"true\" data-theme=\"#{swatch}\">\n"
+  html += "<li data-role=\"list-divider\" data-theme=\"#{swatch}\">#{label}</li>\n"
   pages.each do |page|
     title = pageGetTitleFromTargetFile(page)
     target = pageTargetFile(page) + "/index.html"
     url = target.split(baseDir)[1]
-    html += "<li><a data-ajax=\"false\" href=\"#{url}\">#{title}</a></li>\n"
+    html += "<li data-theme=\"#{swatchItem()}\"><a data-ajax=\"false\" href=\"#{url}\">#{title}</a></li>\n"
   end
   html += "</ul>\n"
   html
@@ -461,6 +497,7 @@ def webSiteBuildPage params
   pageHtml = params[:pageHtml]
   menuFile = params[:menuFile]
   templateFile = params[:templateFile]
+  swatch = params[:swatch]
   pageTitle = params[:pageTitle]
   selectedMenuItem = params[:selectedMenuItem]
 
@@ -500,6 +537,7 @@ def webSiteBuildPage params
     :pageData => pageData,
     :menuData => menuData,
     :templateData => templateData,
+    :swatch => swatch,
     :selectedMenuItem => selectedMenuItem,
     :relativeDocPath => relativeDocPath.to_s,
     :relativeJsPath => relativeJsPath.to_s
@@ -519,6 +557,7 @@ def webSiteBuildPageFromTemplateData(params)
   pageData = params[:pageData]
   menuData = params[:menuData]
   templateData = params[:templateData]
+  swatch = params[:swatch]
   selectedMenuItem = params[:selectedMenuItem]
   relativeDocPath = params[:relativeDocPath]
   relativeJsPath = params[:relativeJsPath]
@@ -537,12 +576,23 @@ def webSiteBuildPageFromTemplateData(params)
   html = html.gsub("TEMPLATE_PANEL_MENU", menuData)
   html = html.gsub("TEMPLATE_MENU_INSET", "false")
   
+  # Set theme swatch letters.
+  html = html.gsub("TEMPLATE_THEME_PAGE_MAIN", webSiteDataTheme(swatch))
+  html = html.gsub("TEMPLATE_THEME_PAGE_HEADER", webSiteDataTheme(swatch))
+  html = html.gsub("TEMPLATE_THEME_MENU_PANEL", webSiteDataTheme(swatch))
+  html = html.gsub("TEMPLATE_THEME_MENU_LIST", webSiteDataTheme(swatch))
+  html = html.gsub("TEMPLATE_THEME_MENU_DIVIDER", webSiteDataTheme(swatchMenuDivider()))
+  html = html.gsub("TEMPLATE_THEME_MENU_ITEM", webSiteDataTheme(swatchItem()))
+  html = html.gsub("TEMPLATE_THEME_MENU_SEARCH_BOX", webSiteDataTheme(swatchItem()))
+  html = html.gsub("TEMPLATE_THEME_CONTENT_LIST", webSiteDataTheme(swatch))
+  html = html.gsub("TEMPLATE_THEME_CONTENT_ITEM", webSiteDataTheme(swatchItem()))
+
   # Set selected menu item.
   MENU_ALL.each do |menuItem|
     if menuItem == selectedMenuItem then
-      html = html.gsub(menuItem, "data-theme=\"b\"")
+      html = html.gsub(menuItem, webSiteDataTheme(swatch))
     else
-      html = html.gsub(menuItem, "")
+      html = html.gsub(menuItem, webSiteDataTheme(swatchItem))
     end
   end
   
@@ -554,28 +604,34 @@ def webSiteBuildPageFromTemplateData(params)
   html
 end
 
+def webSiteDataTheme(swatchLetter)
+  " data-theme=\"" + swatchLetter + "\" "
+end
+
 # Get the menu item template placeholder for a 
 # documentation page.
 def webSiteGetMenuItemTypeForPage(page)
-  if pageHasAllLabels?(page, [SDK,CPP,GUIDE]) then
-    MENU_CPP_GUIDES
-  elsif pageHasAllLabels?(page, [SDK,CPP,TUTORIAL]) then
+  # Document type GUIDE is not used.
+  
+  #if pageHasAllLabels?(page, [SDK,CPP,GUIDE]) then
+  #  MENU_CPP_GUIDES
+  if pageHasAllLabels?(page, [SDK,CPP,TUTORIAL]) then
     MENU_CPP_TUTORIALS
   elsif pageHasAllLabels?(page, [SDK,CPP,EXAMPLE]) then
     MENU_CPP_EXAMPLES
-  elsif pageHasAllLabels?(page, [SDK,JS,GUIDE]) then
-    MENU_JS_GUIDES
+  #elsif pageHasAllLabels?(page, [SDK,JS,GUIDE]) then
+  #  MENU_JS_GUIDES
   elsif pageHasAllLabels?(page, [SDK,JS,TUTORIAL]) then
     MENU_JS_TUTORIALS
   elsif pageHasAllLabels?(page, [SDK,JS,EXAMPLE]) then
     MENU_JS_EXAMPLES
-  elsif pageHasAllLabels?(page, [SDK,TOOLS,GUIDE]) then
+  elsif pageHasAllLabels?(page, [SDK,TOOLS,TUTORIAL]) then
     MENU_SDK_GUIDES
-  elsif pageHasAllLabels?(page, [SDK,TOOLS,GUIDE]) then
+  elsif pageHasAllLabels?(page, [SDK,TOOLS,REFERENCE]) then
     MENU_SDK_REFERENCES
   elsif pageHasAllLabels?(page, [SDK,RELEASE_NOTE]) then
     MENU_SDK_RELEASE_NOTES
-  elsif pageHasAllLabels?(page, [RELOAD,GUIDE]) then
+  elsif pageHasAllLabels?(page, [RELOAD,TUTORIAL]) then
     MENU_RELOAD_GUIDES
   elsif pageHasAllLabels?(page, [RELOAD,RELEASE_NOTE]) then
     MENU_RELOAD_RELEASE_NOTES

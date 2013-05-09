@@ -1,24 +1,23 @@
 <!-- Reload menu page -->
-<ul data-role="listview" data-inset="TEMPLATE_MENU_INSET" data-mini="false" data-theme="c">
-	<li data-role="list-divider" data-theme="c">
+<ul data-role="listview" data-inset="TEMPLATE_MENU_INSET" data-mini="false" TEMPLATE_THEME_MENU_LIST>
+	<li data-role="list-divider" TEMPLATE_THEME_MENU_SEARCH_BOX>
 		<input type="search" name="search" class="search-box" value="" onkeydown="performSearch(event)" />
 	</li>
 
-	<li data-role="list-divider" data-theme="a">Start</li>
+	<li data-role="list-divider" TEMPLATE_THEME_MENU_DIVIDER>Start</li>
 	<li TEMPLATE_THEME_MENU_START_HOME><a data-ajax="false" href="TEMPLATE_DOC_PATH/index.html">Documentation Home</a></li>
 	<li TEMPLATE_THEME_MENU_START_SDK><a data-ajax="false" href="TEMPLATE_DOC_PATH/sdk/index.html">MoSync SDK</a></li>
 	<li TEMPLATE_THEME_MENU_START_RELOAD><a data-ajax="false" href="TEMPLATE_DOC_PATH/reload/index.html">MoSync Reload</a></li>
 	
-	<li data-role="list-divider" data-theme="b">MoSync Reload IDE and Tools</li>
-	<li TEMPLATE_THEME_MENU_RELOAD_GUIDES><a data-ajax="false" href="TEMPLATE_DOC_PATH/reload/guides/index.html">Guides</a></li>
+	<li data-role="list-divider" TEMPLATE_THEME_MENU_DIVIDER>MoSync Reload IDE and Tools</li>
+	<li TEMPLATE_THEME_MENU_RELOAD_GUIDES><a data-ajax="false" href="TEMPLATE_DOC_PATH/reload/guides/index.html">Tutorials</a></li>
 	<li TEMPLATE_THEME_MENU_RELOAD_RELEASE_NOTES><a data-ajax="false" href="TEMPLATE_DOC_PATH/reload/release-notes/index.html">Release Notes</a></li>
 	
-	<li data-role="list-divider" data-theme="b">JavaScript (MoSync SDK)</li>
-	<li><a rel="external" href="http://www.mosync.com/files/imports/doxygen/latest/html5/index.html">API Reference</a></li>
-	<li><a data-ajax="false" href="TEMPLATE_DOC_PATH/js/guides/index.html">Coding Guides</a></li>
-	<li><a data-ajax="false" href="TEMPLATE_DOC_PATH/js/tutorials/index.html">Tutorials</a></li>
-	<li><a data-ajax="false" href="TEMPLATE_DOC_PATH/js/examples/index.html">Example Apps</a></li></li>
+	<li data-role="list-divider" TEMPLATE_THEME_MENU_DIVIDER>JavaScript (MoSync SDK)</li>
+	<li TEMPLATE_THEME_MENU_ITEM><a rel="external" href="http://www.mosync.com/files/imports/doxygen/latest/html5/index.html">API Reference</a></li>
+	<li TEMPLATE_THEME_MENU_ITEM><a data-ajax="false" href="TEMPLATE_DOC_PATH/sdk/js/tutorials/index.html">Tutorials</a></li>
+	<li TEMPLATE_THEME_MENU_ITEM><a data-ajax="false" href="TEMPLATE_DOC_PATH/sdk/js/examples/index.html">Example Apps</a></li></li>
 
-	<li data-role="list-divider" data-theme="b">Quick Start</li>
-	<li><a data-ajax="false" href="TEMPLATE_DOC_PATH/reload/guides/quick-start/mosync-reload-overview/index.html">Get Started With MoSync Reload</a></li>
+	<li data-role="list-divider" TEMPLATE_THEME_MENU_DIVIDER>Quick Start</li>
+	<li TEMPLATE_THEME_MENU_ITEM><a data-ajax="false" href="TEMPLATE_DOC_PATH/reload/guides/quick-start/mosync-reload-overview/index.html">Get Started With MoSync Reload</a></li>
 </ul>

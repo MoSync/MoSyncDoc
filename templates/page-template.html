@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=1">
+
     <title>TEMPLATE_PAGE_TITLE</title>
-
-    <meta name="viewport" content="width=devicewidth,initial-scale=1.0,user-scalable=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
-    <link rel="stylesheet" href="TEMPLATE_JS_PATH/jquery.mobile-1.3.0/jquery.mobile-1.3.0.min.css" />
+    
+    <link rel="stylesheet" href="TEMPLATE_JS_PATH/themes/MoSyncDoc.min.css" />
+    <link rel="stylesheet" href="TEMPLATE_JS_PATH/jquery.mobile-1.3.1/jquery.mobile.structure-1.3.1.min.css" />
 
     <style>
     .ui-header .ui-title
@@ -49,7 +50,7 @@
     }
     </style>
 
-    <script src="TEMPLATE_JS_PATH/jquery.mobile-1.3.0/jquery.js"></script>
+    <script src="TEMPLATE_JS_PATH/jquery.mobile-1.3.1/jquery.js"></script>
 
     <script>
     // Do one-time initialisation here.
@@ -63,7 +64,7 @@
     });
     </script>
 
-    <script src="TEMPLATE_JS_PATH/jquery.mobile-1.3.0/jquery.mobile-1.3.0.min.js"></script>
+    <script src="TEMPLATE_JS_PATH/jquery.mobile-1.3.1/jquery.mobile-1.3.1.min.js"></script>
 
     <script>
     /*
@@ -113,9 +114,9 @@
 </head>
 
 <body>
-    <div data-role="page" id="page-template">
+    <div data-role="page" id="page-template" TEMPLATE_THEME_PAGE_MAIN>
         
-        <div data-role="header" data-position="fixed" data-theme="a">
+        <div data-role="header" data-position="fixed" TEMPLATE_THEME_PAGE_HEADER>
             <h1>TEMPLATE_PAGE_TITLE</h1>
              <div data-type="horizontal" data-role="controlgroup" class="ui-btn-left">
                <a href="#"
@@ -148,7 +149,7 @@
             data-position="left"
             data-display="overlay"
             data-mini="false"
-            data-theme="c">
+            TEMPLATE_THEME_MENU_PANEL>
            TEMPLATE_PANEL_MENU
         </div>
 
