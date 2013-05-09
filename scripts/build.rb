@@ -32,6 +32,10 @@ def pathTemplateJs
   pathTemplates + "js/"
 end
 
+def pathTemplateImages
+  pathTemplates + "images/"
+end
+
 def pathPageTemplate
   pathTemplates + "page-template.html"
 end
@@ -83,6 +87,10 @@ end
 # Directories in documentation web site. Not in git.
 def pathWebSite
   "../website/"
+end
+
+def pathWebSiteImages
+  pathWebSite + "images/"
 end
 
 def pathWebSiteJs
@@ -210,9 +218,7 @@ def webSiteCopyLibs
   FileUtils.cp_r(Dir[pathTemplateJs()], pathWebSite())
   
   # Copy images.
-  #FileUtils.cp(
-  #  Pathname.new("../templates/mosync_logo.jpg"),
-  #  Pathname.new("../docs/pages/mosync_logo.jpg"))
+  FileUtils.cp_r(Dir[pathTemplateImages()], pathWebSite())
 end
 
 #----------------------------------------------------#
@@ -509,6 +515,7 @@ def webSiteBuildPage params
   # Web site Pathname objects.
   webRootPath = Pathname.new(pathWebSite())
   webJsPath = Pathname.new(pathWebSiteJs())
+  webImagePath = Pathname.new(pathWebSiteImages())
 
   # Read files.
   if (pageFile != nil) then
@@ -519,9 +526,10 @@ def webSiteBuildPage params
   menuData = fileReadContent(menuPath)
   templateData = fileReadContent(templatePath)
   
-  # Relative paths used for links and js/css imports.
+  # Relative paths used for links and js/css imports and images.
   relativeDocPath = webRootPath.relative_path_from(outputPath.dirname)
   relativeJsPath = webJsPath.relative_path_from(outputPath.dirname)
+  relativeImagePath = webImagePath.relative_path_from(outputPath.dirname)
 
 =begin
   puts "outputPath:  " + outputPath.dirname.to_s
@@ -540,7 +548,8 @@ def webSiteBuildPage params
     :swatch => swatch,
     :selectedMenuItem => selectedMenuItem,
     :relativeDocPath => relativeDocPath.to_s,
-    :relativeJsPath => relativeJsPath.to_s
+    :relativeJsPath => relativeJsPath.to_s,
+    :relativeImagePath => relativeImagePath.to_s
     )
     
   # Make sure dest path exists and save page.
@@ -561,6 +570,7 @@ def webSiteBuildPageFromTemplateData(params)
   selectedMenuItem = params[:selectedMenuItem]
   relativeDocPath = params[:relativeDocPath]
   relativeJsPath = params[:relativeJsPath]
+  relativeImagePath = params[:relativeImagePath]
   
   # Substitute template placeholders.
   # Order of these statements is important since included
@@ -598,6 +608,7 @@ def webSiteBuildPageFromTemplateData(params)
   
   # Insert relative paths for urls.
   html = html.gsub("TEMPLATE_JS_PATH", relativeJsPath)
+  html = html.gsub("TEMPLATE_IMAGE_PATH", relativeImagePath)
   html = html.gsub("TEMPLATE_DOC_PATH", relativeDocPath)
   
   # Return generated HTML code.
