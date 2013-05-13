@@ -1,11 +1,6 @@
 <html>
 <head>
-<!-- <mosyncheadertags>
-<meta name="description" content="The MoSync Widget C API's Map widget makes it possible for you to add a map to your application and perform different operations on it. This widget is only available for Windows Phone 7 and iOS.This tutorial presents all the functionality of the map widget and provides a full application example." />
-<meta name="dcterms.description" content="The MoSync Widget C API's Map widget makes it possible for you to add a map to your application and perform different operations on it. This widget is only available for Windows Phone 7 and iOS.This tutorial presents all the functionality of the map widget and provides a full application example." />
-
-<title>Using the NativeUI Map Widget | MoSync Guide/Tutorial</title>
-</mosyncheadertags> -->
+<title>Using the NativeUI Map Widget</title>
 </head>
 <body>
 <h1>Using the NativeUI Map Widget</h1>
@@ -17,24 +12,24 @@
 <ul>
 <li>using the method:</li>
 </ul>
-<pre class="mosync-code-cpp">map&gt;setProperty(MAW_MAP_API_KEY_GOOGLE, google api key);</pre>
+<pre class="mosync-code-cpp">map&gt;setProperty(MAW_MAP_API_KEY_GOOGLE, “google api key”);</pre>
 <ul>
 <li>&nbsp;using the map constructor:</li>
 </ul>
 <pre class="mosync-code-cpp">Map* map = new Map("google credentials", "bing credentials");</pre>
 <h3>API key bing</h3>
-<p>The api key used to access the full features of the bing map (on windows phone platform). This property can be set by using the default widget setProperty method or by providing the key to the map constructor. The following examples will show both methods. For further details on how to obtain this key go to "http://msdn.microsoft.com/en-us/library/ff428642.aspx".</p>
+<p>The api key used to access the full features of the bing map (on windows phone platform). This property can be set by using the default widget ‘setProperty’ method or by providing the key to the map constructor. The following examples will show both methods. For further details on how to obtain this key go to "http://msdn.microsoft.com/en-us/library/ff428642.aspx".</p>
 <p>Example:</p>
 <ul>
 <li>using the method:</li>
 </ul>
-<pre class="mosync-code-cpp">map&gt;setProperty(MAW_MAP_API_KEY_BING, google api key);</pre>
+<pre class="mosync-code-cpp">map&gt;setProperty(MAW_MAP_API_KEY_BING, “google api key”);</pre>
 <ul>
 <li>&nbsp;using the map constructor:</li>
 </ul>
 <pre class="mosync-code-cpp">Map* map = new Map("google credentials", "bing credentials");</pre>
 <h3>Map type</h3>
-<p>The map type changes the way the widget looks and were providing two different map types:</p>
+<p>The map type changes the way the widget looks and we’re providing two different map types:</p>
 <ul>
 <li>Road - only the roads and borders are visible (no terrain details).</li>
 </ul>
@@ -83,7 +78,7 @@ map &gt;setMapType(MAP_TYPE_SATELLITE);</pre>
 <pre class="mosync-code-cpp">// sets the center of the map (both latitude, longitude and zoom // level)
 map-&gt;setCenter(MapLocation(32.43, 43.34, 11));</pre>
 <p>or</p>
-<pre class="mosync-code-cpp">map&gt;setProperty(MAW_MAP_CENTER_LATITUDE, 32.43);
+<pre class="mosync-code-cpp">map&gt;setProperty(MAW_MAP_CENTER_LATITUDE, “32.43”);
 </pre>
 <ul>
 <li>Center longitude - represents the map center longitude coordinate.</li>
@@ -93,7 +88,7 @@ map-&gt;setCenter(MapLocation(32.43, 43.34, 11));</pre>
 map-&gt;setCenter(MapLocation(32.43, 43.34, 11));
 </pre>
 <p>or</p>
-<pre class="mosync-code-cpp">map&gt;setProperty(MAW_MAP_CENTER_LONGITUDE, 43.34);</pre>
+<pre class="mosync-code-cpp">map&gt;setProperty(MAW_MAP_CENTER_LONGITUDE, “43.34”);</pre>
 <ul>
 <li>Center zoom level - represents the map center zoom level.</li>
 </ul>
@@ -101,7 +96,7 @@ map-&gt;setCenter(MapLocation(32.43, 43.34, 11));
 <pre class="mosync-code-cpp">// sets the center of the map (both latitude, longitude and zoom // level)
 map-&gt;setCenter(MapLocation(32.43, 43.34, 11));</pre>
 <p>or</p>
-<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_CENTER_ZOOM_LEVEL, 3);</pre>
+<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_CENTER_ZOOM_LEVEL, “3”);</pre>
 <h3>Visible area</h3>
 <p>The map visible area contains details about the current area displayed on the map. It is described by its upper left corner and lower right corner. The map can be programmatically moved to a new visible area.<br><br>Example:</p>
 <pre class="mosync-code-cpp">map-&gt;setVisibleArea(32.1234, 22.123124, 11.231123, 12.32344);</pre>
@@ -115,27 +110,27 @@ map-&gt;setVisibleArea(region);</pre>
 <li>Visible area upper left corner latitude - The latitude coordinate of the upper left corner.</li>
 </ul>
 <p>Example:</p>
-<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_VISIBLE_AREA_UPPER_LEFT_CORNER_LATITUDE,32.32423);</pre>
+<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_VISIBLE_AREA_UPPER_LEFT_CORNER_LATITUDE,”32.32423”);</pre>
 <ul>
 <li>Visible area upper left corner longitude</li>
 </ul>
 <p>The longitude coordinate of the upper left corner.<br><br>Example:</p>
-<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_VISIBLE_AREA_UPPER_LEFT_CORNER_LONGITUDE,44.3242);</pre>
+<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_VISIBLE_AREA_UPPER_LEFT_CORNER_LONGITUDE,”44.3242”);</pre>
 <ul>
 <li>Visible area lower right corner latitude</li>
 </ul>
 <p>The latitude coordinate of the lower right corner.<br><br>Example:</p>
-<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_VISIBLE_AREA_LOWER_RIGHT_CORNER_LATITUDE,12.3214);</pre>
+<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_VISIBLE_AREA_LOWER_RIGHT_CORNER_LATITUDE,”12.3214”);</pre>
 <ul>
 <li>Visible area lower right corner longitude</li>
 </ul>
 <p><br>The longitude coordinate of the lower right corner.<br><br>Example:</p>
-<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_VISIBLE_AREA_LOWER_RIGHT_CORNER_LONGITUDE,29.32345);</pre>
+<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_VISIBLE_AREA_LOWER_RIGHT_CORNER_LONGITUDE,”29.32345”);</pre>
 <ul>
 <li>Centered on visible area</li>
 </ul>
 <p>When set to true, the map gets centered on a previously set visible area.<br><br>Example:</p>
-<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_CENTERED_ON_VISIBLE_AREA,true);
+<pre class="mosync-code-cpp">map-&gt;setProperty(MAW_MAP_CENTERED_ON_VISIBLE_AREA,”true”);
 </pre>
 <h2>Map pin properties</h2>
 <p>The map accepts the adding of map pins (or annotations, on iOS). A pin is described by its coordinates (latitude and longitude) and a text.</p>

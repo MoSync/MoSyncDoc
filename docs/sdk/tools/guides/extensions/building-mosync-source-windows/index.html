@@ -1,11 +1,6 @@
 <html>
 <head>
-<!-- <mosyncheadertags>
-<meta name="description" content="These instructions describe how to build a Windows installation package for the MoSync SDK. The completed installation package is an .exe file, just like our featured releases and our nightly builds.To build the full installation package, you will need a Windows machine, a Mac OS X machine, and a Linux machine." />
-<meta name="dcterms.description" content="These instructions describe how to build a Windows installation package for the MoSync SDK. The completed installation package is an .exe file, just like our featured releases and our nightly builds.To build the full installation package, you will need a Windows machine, a Mac OS X machine, and a Linux machine." />
-<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
-<title>Building the MoSync SDK for Windows | MoSync Guide/Tutorial</title>
-</mosyncheadertags> -->
+<title>Building the MoSync SDK for Windows</title>
 </head>
 <body>
 <h1>Building the MoSync SDK for Windows</h1>
@@ -20,7 +15,7 @@
 <li>For the iPhone runtime, a Mac running Snow Leopard (OS X v. 10.6).</li>
 <li>For the Moblin runtime, a Linux computer running the i386 version of Ubuntu.</li>
 </ul>
-<p>If you dont need the iPhone and Moblin runtimes, everything can be built on the Windows machine.</p>
+<p>If you don’t need the iPhone and Moblin runtimes, everything can be built on the Windows machine.</p>
 <h2>Getting the MoSync Source Code</h2>
 <p><strong>1.</strong> Download the source tarball (<strong>.tar.bz2</strong>) of our current <strong>feature release</strong> from our website or from our open-source project repository:</p>
 <ul>
@@ -42,7 +37,7 @@ git clone https://github.com/MoSync/Eclipse.git c:\mb\Eclipse</pre>
 <h2>Installing the Dependencies</h2>
 <p><strong><em>Important!</em> </strong>Make sure you install and configure the dependencies in the order listed below. If you do not, terrible things may happen!</p>
 <h3>Visual Studio C++ 2005</h3>
-<p><strong>4.</strong> Download and install Microsoft Visual Studio 2005 and apply Service Pack 1. Make sure that you install the runtime MT (Multi Threaded) DLL.<br><br><strong>5.</strong> Add the following paths to Visual Studio:</p>
+<p><strong>4.</strong> Download and install Microsoft® Visual Studio® 2005 and apply Service Pack 1. Make sure that you install the runtime MT (Multi Threaded) DLL.<br><br><strong>5.</strong> Add the following paths to Visual Studio:</p>
 <ul>
 <li>To the end of the list at <strong>Tools </strong>&gt; <strong> Options </strong>&gt; <strong>Projects and Solutions</strong> &gt; <strong>VC ++ Directories</strong> &gt; <strong>Include Files</strong> add:</li>
 </ul>
@@ -84,7 +79,7 @@ git clone https://github.com/MoSync/Eclipse.git c:\mb\Eclipse</pre>
 <li>rubyforge</li>
 </ul>
 <h3>Java SE Development Kit (JDK) 1.6</h3>
-<p><strong>13.</strong> Download and install <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java SE Development Kit (JDK) 1.6</a>. <br><br><strong>14.</strong> Make sure the JDKs \bin directory has been added to Windows list of path environment variables, otherwise add it.</p>
+<p><strong>13.</strong> Download and install <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java SE Development Kit (JDK) 1.6</a>. <br><br><strong>14.</strong> Make sure the JDK’s \bin directory has been added to Window’s list of path environment variables, otherwise add it.</p>
 <h3>SonyEricsson J2ME SDK</h3>
 <p><strong>15.</strong> Download and install the latest version of the <a href="http://developer.sonyericsson.com/wportal/devworld/search-downloads/docstools/sdk?cc=gb&amp;lc=en">SonyEricsson SDK for the Java ME Platform</a>.<br><br> <strong>16.</strong> Download and install the <a href="http://proguard.sourceforge.net/">ProGuard 3.7 Java obfuscator</a>.<br><br><strong>17.</strong> Put &nbsp;the file <strong>proguard.jar</strong> in the <em>\OnDeviceDebug\bin</em> directory of the J2ME SDK.</p>
 <h3>Symbian Series 60 SDK</h3>
@@ -100,14 +95,14 @@ git clone https://github.com/MoSync/Eclipse.git c:\mb\Eclipse</pre>
 <pre class="mosync-code-cpp">die "EPOCROOT environment variable must be capitalised\n" if (!$found);</pre>
 <p><strong>29.</strong> Disable this line by adding a hash sign (#) in front of it.</p>
 <h3>GNU binutils</h3>
-<p><strong>30.</strong> Download and install <a href="http://gnuwin32.sourceforge.net/packages/coreutils.htm">CoreUtils for Windows</a>.<br><br><strong>31.</strong> Download and install <a href="http://gnuwin32.sourceforge.net/packages/grep.htm">Grep for Windows</a>.<br><br><strong>32.</strong> Download and install <a href="http://gnuwin32.sourceforge.net/packages/sed.htm">Sed for Windows</a>.<br><br><strong>33.</strong> Make sure the \bin directory of GNU binutils has been added to Windows list of path environment variables, otherwise add it.</p>
+<p><strong>30.</strong> Download and install <a href="http://gnuwin32.sourceforge.net/packages/coreutils.htm">CoreUtils for Windows</a>.<br><br><strong>31.</strong> Download and install <a href="http://gnuwin32.sourceforge.net/packages/grep.htm">Grep for Windows</a>.<br><br><strong>32.</strong> Download and install <a href="http://gnuwin32.sourceforge.net/packages/sed.htm">Sed for Windows</a>.<br><br><strong>33.</strong> Make sure the \bin directory of GNU binutils has been added to Window’s list of path environment variables, otherwise add it.</p>
 <h2>Building the SDK</h2>
 <p><strong>34.</strong> If required, <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-moblin-runtimes-linux/index.html">build the Moblin runtimes on Linux</a>.<br><br><strong>35.</strong> If required, <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-mosync-sdk-source-os-x/index.html">build the iPhone runtime on Mac OS X</a>.<br><br> (You do not need to build the Windows Mobile, &nbsp;Java ME, Android, and Symbian runtimes, they are automatically built by the build script).<br><br><strong>36.</strong> Locate the file run.bat.example in <em>\mb\mosync-trunk\trunk\tools\ReleasePackageBuild</em>, copy it, and name the copy <strong>run.bat</strong>.<br><br><strong>37.</strong> Replace the SDK path in <strong>run.bat</strong> with one appropriate for your system:</p>
 <pre class="mosync-code-cpp">start /B /BELOWNORMAL build_package.bat c:\SonyEricsson\JavaME_SDK_CLDC\OnDeviceDebug\ 2&gt;&amp;1 | tee log.txt</pre>
 <p><strong>38.</strong> Start run_commercial_recompiler.bat. It will set up an environment, then call your run.bat (found in the <em>\mb\mosync-trunk\tools\ReleasePackageBuild</em> folder). You can use one of the other <strong>run_*.bat</strong> files to build the package in different ways.<br><br>If all goes well, an installer package should appear in <em>\mb\MoSyncReleasePackage\</em>. <br> It will be called something like <strong>MoSyncSetup_XXX.exe</strong>.<br><br><strong>39.</strong> Done.</p>
 <p>&nbsp;</p>
 <h2>Building Runtimes for the MoSync SDK on OS X</h2>
-<p>If you want to create the Windows Mobile, &nbsp;Java ME, Android, and Symbian runtimes <em>to use with the OS X version of the MoSync SDK</em> (see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-mosync-sdk-source-os-x/index.html">building the MoSync SDK from source on OS X</a>), heres how:<br><br><strong>1.</strong> Follow the instructions above for <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-mosync-source-windows/index.html#Getting_the_MoSync_Source_Code">Getting the MoSync Source Code</a> and <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-mosync-source-windows/index.html#Installing_the_Dependencies">Installing the Dependencies</a>. &nbsp;(You do not need to get Eclipse or build the SDK.)<br><br><strong>2.</strong> Run the following command from the command line to set the target MoSync Directory:</p>
+<p>If you want to create the Windows Mobile, &nbsp;Java ME, Android, and Symbian runtimes <em>to use with the OS X version of the MoSync SDK</em> (see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-mosync-sdk-source-os-x/index.html">building the MoSync SDK from source on OS X</a>), here’s how:<br><br><strong>1.</strong> Follow the instructions above for <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-mosync-source-windows/index.html#Getting_the_MoSync_Source_Code">Getting the MoSync Source Code</a> and <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/extensions/building-mosync-source-windows/index.html#Installing_the_Dependencies">Installing the Dependencies</a>. &nbsp;(You do not need to get Eclipse or build the SDK.)<br><br><strong>2.</strong> Run the following command from the command line to set the target MoSync Directory:</p>
 <pre class="mosync-code-cpp">set MOSYNCDIR=\mb\MoSyncReleasePackage</pre>
 <p><strong>3.</strong> Go to &nbsp;the folder</p>
 <pre class="mosync-code-cpp">\mb\mosync-trunk</pre>

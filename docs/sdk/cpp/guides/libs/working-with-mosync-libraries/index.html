@@ -1,11 +1,6 @@
 <html>
 <head>
-<!-- <mosyncheadertags>
-<meta name="description" content="The MoSync code libraries and APIs provide you with thousands of pre-written functions that you can call from within your application. We have both JavaScript and C/C++ libraries and APIs. Here we show how to connect to them from your applications, and provide a brief overview of each." />
-<meta name="dcterms.description" content="The MoSync code libraries and APIs provide you with thousands of pre-written functions that you can call from within your application. We have both JavaScript and C/C++ libraries and APIs. Here we show how to connect to them from your applications, and provide a brief overview of each." />
-<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
-<title>Working with MoSync Libraries and APIs | MoSync Guide/Tutorial</title>
-</mosyncheadertags> -->
+<title>Working with MoSync Libraries and APIs</title>
 </head>
 <body>
 <h1>Working with MoSync Libraries and APIs</h1>
@@ -33,7 +28,7 @@
 <p>As well as referencing the header files in your application code, you also need to specify the actual libraries that you want to use in the project's <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/build-configurations/index.html#Build_Settings">Build Settings</a> (<strong>Project </strong>&gt; <strong>Properties </strong>&gt; <strong>MoSync Project</strong> &gt; <strong>Build Settings</strong>):</p>
 <p><img src="images/libraries2_0.png" align="none" width="607" height="719"></p>
 <p>Here we are including the <strong>mautil.lib </strong>library that contains the moblet code and the <strong>maui.lib </strong>library that contains the screen and widget code.</p>
-<p><em>Note that the </em><strong>mastd.lib</strong><em> library is always included in the build  you don't need to specify it in your list of additional libraries.</em></p>
+<p><em>Note that the </em><strong>mastd.lib</strong><em> library is always included in the build — you don't need to specify it in your list of additional libraries.</em></p>
 <p>When you build your application, MoSync's <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/architecture/toolchain/index.html">toolchain </a>links the libraries that are listed in the <strong>Additional Libraries</strong> field and <strong>mastd.lib</strong> with your code:</p>
 <p><img src="images/libraries4.png" align="none" width="641" height="468"></p>
 <h2>The Main C++ Libraries</h2>

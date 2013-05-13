@@ -1,11 +1,6 @@
 <html>
 <head>
-<!-- <mosyncheadertags>
-<meta name="description" content="In our beginners tutorial Creating Your First C/C++ Application we asked you to paste our &quot;Hello World&quot; application into the IDE. In this tutorial we are going to take a much deeper look at that code, including how we handle events like key presses using our Moblet framework." />
-<meta name="dcterms.description" content="In our beginners tutorial Creating Your First C/C++ Application we asked you to paste our &quot;Hello World&quot; application into the IDE. In this tutorial we are going to take a much deeper look at that code, including how we handle events like key presses using our Moblet framework." />
-<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
-<title>HelloWorld, Deconstructed | MoSync Guide/Tutorial</title>
-</mosyncheadertags> -->
+<title>HelloWorld, Deconstructed</title>
 </head>
 <body>
 <h1>HelloWorld, Deconstructed</h1>
@@ -58,7 +53,7 @@ extern "C" int MAMain()
 </div>
 <p>In C/C++, header files are an important way to connect together the different files of a program. It is common practice to put the generic code that you might want to use in many places in a separate file and two create a header file that contains forward definitions (declarations of classes, functions, and data types) for that generic code. Then you use an <strong>#include</strong> statement to include the header file in your other code modules. The header file acts like an interface to your generic code. That way you can reuse your generic code in many places, but only have to make updates to it in one place. For information, see <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/libs/working-with-mosync-libraries/index.html">Working with MoSync Libraries</a>.</p>
 <p>Here we are using a header file to connect our main application file with the pre-compiled library file (<strong>mautil.lib</strong>) that contains the generic code for Moblets.</p>
-<p>The "<strong>#</strong>" sign indicates that this directive is to be handled the preprocessor&nbsp; a program that will be called by the compiler as the first step of translating our source code into an executable binary file. In this case the directive instructs the preprocessor to read in the declarations in <strong>Moblet.h</strong>. We will explain what a Moblet is, and how you use it, a little later on.</p>
+<p>The "<strong>#</strong>" sign indicates that this directive is to be handled the preprocessor&nbsp;— a program that will be called by the compiler as the first step of translating our source code into an executable binary file. In this case the directive instructs the preprocessor to read in the declarations in <strong>Moblet.h</strong>. We will explain what a Moblet is, and how you use it, a little later on.</p>
 <h2>Using Namespaces</h2>
 <p>Our next statement specifies that we will be using the MAUtil namespace as the base reference for our objects:</p>
 <div>
@@ -71,7 +66,7 @@ extern "C" int MAMain()
 <pre class="mosync-code-cpp">class MyMoblet : public Moblet {</pre>
 </div>
 <p><strong>Moblet </strong>is a MoSync base class - a class which is meant to be built upon to do something useful. In the C++ world, a class is essentially a set of data and functions which manipulate that data (often referred to as instance variables and methods in other object-oriented languages).&nbsp; A class is a blueprint: in a running application the class is used to create actual objects (instances) as they are needed.</p>
-<p>Usually a class represents something concrete  although it's sometimes a little hard to understand what that thing is. In the case of Moblet it represents a simplified event handler for a mobile device.</p>
+<p>Usually a class represents something concrete — although it's sometimes a little hard to understand what that thing is. In the case of Moblet it represents a simplified event handler for a mobile device.</p>
 <p>As we will see later, <strong>Moblet </strong>takes care of the application main loop for you. All you need to do is subclass it and implement functions for the events that you want to your program to respond to (such as key presses, screen touches, and new connections). A Moblet application responds to events in a consistent way regardless of the device it runs on. That means we do not need different code for an Android device, Symbian device, a Windows Mobile device, or a phone running Java ME.</p>
 <p>To learn more about the events that Moblet can detect, and the various types of listeners you can set up, look up Moblet in the <em>MoSync API Reference Guide</em> in the IDE under <strong>Help </strong>&gt; <strong>API Reference</strong> &gt; <strong>Classes </strong>&gt; <strong>MAUtil::Moblet</strong>.</p>
 <p>Our new class, <strong>MyMoblet </strong>inherits all the chracteristics of the <strong>Moblet </strong>base class, and adds to it. What we will be adding are functions that will perform actions when events occur.</p>
@@ -118,7 +113,7 @@ extern "C" int MAMain()
 <pre class="mosync-code-cpp">    void keyPressEvent(int keyCode, int nativeCode) {</pre>
 </div>
 <p>Before the name of the method, we need to state the type of the data that the method returns. In this case, the method does not return anything ("void" = nothing).</p>
-<p>The <strong>keyPressEvent </strong>method is called whenever a key is pressed on the device's keypad. It is passed two parameters by the MoSync runtime  the runtime is that part of MoSync which interfaces with the device's operating system and which handles the syscalls from your application.</p>
+<p>The <strong>keyPressEvent </strong>method is called whenever a key is pressed on the device's keypad. It is passed two parameters by the MoSync runtime — the runtime is that part of MoSync which interfaces with the device's operating system and which handles the syscalls from your application.</p>
 <p>The first parameter is a device-independent code representing a key, a MAK code. Regardless of the device, if the 0 key on the device's keypad is pressed, the keycode will be <strong>MAK_0</strong>, and if the device has a back key it will be <strong>MAK_BACK</strong>.</p>
 <p>You can find all the MAK codes in the <em>MoSync API Reference Guide</em> in the IDE under <strong>Help </strong>&gt; <strong>API Reference</strong> &gt; <strong>File Members</strong> &gt; <strong>Defines </strong>&gt; <strong>M</strong>.</p>
 <p>The second parameter is device-specific (native) key code. That's needed because the MoSync MAK codes are not an exhaustive list of all the buttons ever made available on a mobile device, instead they are a common subset. Your phone may have a button which is specific to that model, for instance the volume keys or the back button on an Android phone. If you know what the value of those keys, you can act on them here.</p>

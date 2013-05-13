@@ -1,11 +1,6 @@
 <html>
 <head>
-<!-- <mosyncheadertags>
-<meta name="description" content="The MoSync SDK 2.6 includes an application profiler which can output performance statistics whenever you run the MoRE emulator. That makes it easy to track down performance issues and optimize your application." />
-<meta name="dcterms.description" content="The MoSync SDK 2.6 includes an application profiler which can output performance statistics whenever you run the MoRE emulator. That makes it easy to track down performance issues and optimize your application." />
-<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
-<title>Application Profiling in the MoSync Emulator | MoSync Guide/Tutorial</title>
-</mosyncheadertags> -->
+<title>Application Profiling in the MoSync Emulator</title>
 </head>
 <body>
 <h1>Application Profiling in the MoSync Emulator</h1>
@@ -17,10 +12,10 @@
 <p><br>There are two sub-tabs at the bottom of the view: <strong>Hotspots </strong>and <strong>Call Tree</strong>.</p>
 <p>The <strong>Hotspots </strong>sub-tab lets you see which functions are taking the most time:<br><img src="images/Profiler1.png" align="none" width="640" height="395"><br><br> The Call Tree sub-tab shows which functions called which and the time spent in each:<br><img src="images/Profiler2.png" align="none" width="640" height="395"><br><br>The following columns are shown:</p>
 <ul>
-<li>Function  The name of the function being profiled.</li>
-<li>[%]  The percentage of time used by the function compared to the total execution time.</li>
-<li>Self time (<strong>Hotspots </strong>only)  The time used by the function, not counting time spent in other functions called by it.</li>
-<li>Aggregate time (<strong>Call Tree</strong> only)  The time used by the function, counting time spent in functions called by it.</li>
+<li>Function – The name of the function being profiled.</li>
+<li>[%] – The percentage of time used by the function compared to the total execution time.</li>
+<li>Self time (<strong>Hotspots </strong>only) – The time used by the function, not counting time spent in other functions called by it.</li>
+<li>Aggregate time (<strong>Call Tree</strong> only) – The time used by the function, counting time spent in functions called by it.</li>
 <li>Calls - The total number of calls made while the application was running.</li>
 </ul>
 <p>Click on any of the column headings to sort the results by that column. Click again to sort them in reverse order.</p>
@@ -28,9 +23,9 @@
 <p>At the top right corner of the profiling view, there is a Quick Filter text box. Whatever you type there will be used to filter out functions. For example, to see all MoSync syscalls, type "ma". The filter is not case sensitive.</p>
 <p>As well as the Quick Filter, there are more advanced filtering options in the launch configuration dialog box. To open the launch configuration dialog box, select <strong>Run </strong>&gt; <strong>Run Configurations</strong> from the main menu, then look for <strong>Profiled MoSync Emulated App</strong> in the tree. You will see the application that you just launched there.<br><br>Highlight your application in the tree. Information about the application will be shown on the right. Select the <strong>Profiling </strong>tab. Here you will find the advanced filtering options:</p>
 <ul>
-<li>Name filter  similar to the <strong>Quick Filter</strong>; whatever is typed here is used to filter the function names. Several filters can be provided by using a space character as a separator.</li>
-<li>File filter  the contents of this text box is used to filter the functions to those implemented in certain files. For example, writing main.cpp in this text box will grey out all functions not implemented in that file. Several filters can be provided by using a space as separator.</li>
-<li>Use Regular Expressions  when checked, will allow for arbitrary regular expressions in the filter text boxes. Note: if you need spaces or backslashes in your regular expression, use backslash (\) to escape the space.</li>
+<li>Name filter – similar to the <strong>Quick Filter</strong>; whatever is typed here is used to filter the function names. Several filters can be provided by using a space character as a separator.</li>
+<li>File filter – the contents of this text box is used to filter the functions to those implemented in certain files. For example, writing main.cpp in this text box will grey out all functions not implemented in that file. Several filters can be provided by using a space as separator.</li>
+<li>Use Regular Expressions – when checked, will allow for arbitrary regular expressions in the filter text boxes. Note: if you need spaces or backslashes in your regular expression, use backslash (\) to escape the space.</li>
 </ul>
 <h3>Saving a Profiling Session to file</h3>
 <p>To be able to shared profiling data, there is functionality to save a session to file. To do this, select <strong>File </strong>&gt; <strong>Save As</strong> from the main menu and choose a file location. To open a profiling session, select <strong>File </strong>&gt; <strong>Open </strong>and choose the file to open.</p>

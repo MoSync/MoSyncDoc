@@ -1,17 +1,12 @@
 <html>
 <head>
-<!-- <mosyncheadertags>
-<meta name="description" content="You can use MoSync with Microsoft Visual Studio although, of course, much of the functionality concerning building for mobile devices will be lost this way. The gain is that you will be able to use the fully-featured debugger in Visual Studio. Here we describe how to set up Visual Studio, and how to use it to build and debug an application." />
-<meta name="dcterms.description" content="You can use MoSync with Microsoft Visual Studio although, of course, much of the functionality concerning building for mobile devices will be lost this way. The gain is that you will be able to use the fully-featured debugger in Visual Studio. Here we describe how to set up Visual Studio, and how to use it to build and debug an application." />
-<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
-<title>Using MoSync SDK with Visual Studio 2005 | MoSync Guide/Tutorial</title>
-</mosyncheadertags> -->
+<title>Using MoSync SDK with Visual Studio 2005</title>
 </head>
 <body>
 <h1>Using MoSync SDK with Visual Studio 2005</h1>
 <p>You can use MoSync with Microsoft Visual Studio although, of course, much of the functionality concerning building for mobile devices will be lost this way. The gain is that you will be able to use the fully-featured debugger in Visual Studio. Here we describe how to set up Visual Studio, and how to use it to build and debug an application.</p>
 <p><!--break--></p>
-<p>It is only possible to use <strong>Microsoft</strong><sup><strong></strong></sup><strong> Visual Studio C++ 2005 Express Edition</strong> at this time. You will also need the <strong>Microsoft<sup></sup> Windows Server 2003 SP1 Platform SDK</strong>.</p>
+<p>It is only possible to use <strong>Microsoft</strong><sup><strong>®</strong></sup><strong> Visual Studio C++ 2005 Express Edition</strong> at this time. You will also need the <strong>Microsoft<sup>®</sup> Windows Server 2003 SP1 Platform SDK</strong>.</p>
 <p>Our win32 library for Visual Studio 2005 implements the MoSync syscall APIs. This enables developers to build MoSync projects using Visual C++ and use all of Visual Studio's features, including its debugging facilities.</p>
 <p>You should be aware that Visual Studio produces a <strong>native windows application</strong>, which is fundamentally different from a real MoSync application. For starters, a different compiler is used, which has a number of implications, including a different layout of code and data. Furthermore, if you use the native Win32 libraries (including the Win32 API itself) <em>the resulting source code will not work in MoSync</em>.</p>
 <p>(Our win32 library was originally provided because MoSync lacked a proper debugger, and although the debugging experience would be inaccurate with respect to when the application is built for the MoSync architecture, it was considered better than nothing. Today, we would encourage you to use the debugger provided in the MoSync IDE. It is still not perfect, but we are working hard to improve it and are grateful for any feedback or bug reports.)</p>

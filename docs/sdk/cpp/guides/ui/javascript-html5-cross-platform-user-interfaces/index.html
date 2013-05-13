@@ -1,11 +1,6 @@
 <html>
 <head>
-<!-- <mosyncheadertags>
-<meta name="description" content="These developer guidelines provide a brief overview of what should be considered when creating HTML5 (or hybrid HTML5/C++) MoSync apps that should be used on devices with varying screen sizes." />
-<meta name="dcterms.description" content="These developer guidelines provide a brief overview of what should be considered when creating HTML5 (or hybrid HTML5/C++) MoSync apps that should be used on devices with varying screen sizes." />
-
-<title>JavaScript/HTML5 Cross-Platform User Interfaces | MoSync Guide/Tutorial</title>
-</mosyncheadertags> -->
+<title>JavaScript/HTML5 Cross-Platform User Interfaces</title>
 </head>
 <body>
 <h1>JavaScript/HTML5 Cross-Platform User Interfaces</h1>
@@ -97,7 +92,7 @@ if (mosync.isIOS)&nbsp;{
 <p>The screen density is how many pixels there are per inch (ppi): ldpi (~120 ppi), mdpi (~160 ppi), hdpi (~240 ppi) and xhdpi (~320 ppi).</p>
 <p>The screen size is the width of the device, measured in&nbsp;<em>device-independent pixels</em> (dp). This roughly corresponds to the actual size of the device; one device independent pixel is ~1/160". (For more info, see for example&nbsp;<a href="http://en.wikipedia.org/wiki/Device_independent_pixel">http://en.wikipedia.org/wiki/Device_independent_pixel</a>). The available screen sizes are small (&gt;426 dp wide), medium (&gt;470 dp wide), large (&gt;720 dp wide) and xlarge (&gt;960 dp wide) -- more or less following the Android standard but ignoring height.&nbsp;</p>
 <h2 class="p2">A few words about fonts</h2>
-<p class="p2"><span>There are just a handful of native fonts for Android, Windows Phone have more and later versions of iOS even more (see iosfonts.com for a good overview)  but more importantly, they share no fonts. <span>The at-rule @font-face can bridge this font gap. Android, iOS and Windows Phone all&nbsp;</span>support TrueType fonts; add one to the project's LocalFiles directory and refer to it in the @font-face at-rule:</span></p>
+<p class="p2"><span>There are just a handful of native fonts for Android, Windows Phone have more and later versions of iOS even more (see iosfonts.com for a good overview) – but more importantly, they share no fonts. <span>The at-rule @font-face can bridge this font gap. Android, iOS and Windows Phone all&nbsp;</span>support TrueType fonts; add one to the project's LocalFiles directory and refer to it in the @font-face at-rule:</span></p>
 <pre>@font-face {
   font-family: crayon;
   src: url('DK_Crayon_Crumble.ttf');

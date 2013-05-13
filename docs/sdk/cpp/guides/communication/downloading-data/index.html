@@ -1,15 +1,10 @@
 <html>
 <head>
-<!-- <mosyncheadertags>
-<meta name="description" content="There are a thousand reasons why you might want your application to get information from the Internet. Perhaps you want to download today’s Dilbert cartoon, or get specific data for the user, or serve adverts, or  connect to a web interface. Maybe you want to implement a new protocol, like FTP or Jabber." />
-<meta name="dcterms.description" content="There are a thousand reasons why you might want your application to get information from the Internet. Perhaps you want to download today’s Dilbert cartoon, or get specific data for the user, or serve adverts, or  connect to a web interface. Maybe you want to implement a new protocol, like FTP or Jabber." />
-<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
-<title>Downloading Data from the Internet | MoSync Guide/Tutorial</title>
-</mosyncheadertags> -->
+<title>Downloading Data from the Internet</title>
 </head>
 <body>
 <h1>Downloading Data from the Internet</h1>
-<p>There are a thousand reasons why you might want your application to get information from the Internet. Perhaps you want to download todays Dilbert cartoon, or get specific data for the user, or serve adverts, or&nbsp; connect to a web interface. Maybe you want to implement a new protocol, like FTP or Jabber. In this tutorial were going to show you how to get data over HTTP.</p>
+<p>There are a thousand reasons why you might want your application to get information from the Internet. Perhaps you want to download today’s Dilbert cartoon, or get specific data for the user, or serve adverts, or&nbsp; connect to a web interface. Maybe you want to implement a new protocol, like FTP or Jabber. In this tutorial we’re going to show you how to get data over HTTP.</p>
 <p><!--break--></p>
 <p>[toc title: Topics; maxlevel: 2]</p>
 <h2>The Connection Object Model</h2>
@@ -20,12 +15,12 @@
 <li>Using the <strong>Downloader</strong> classes</li>
 </ul>
 <h3>Using <strong>maConnect()</strong> API Method in C/C++</h3>
-<p>At the lowest level, you can use functions in the MoSync API directly. You can use the method <strong>maConnect()</strong> to open a socket to connect to any port on the Internet. You can implement protocols which arent supported in MoSync on a higher level (like HTTP and HTTPS) by formatting a URL like this:</p>
+<p>At the lowest level, you can use functions in the MoSync API directly. You can use the method <strong>maConnect()</strong> to open a socket to connect to any port on the Internet. You can implement protocols which aren’t supported in MoSync on a higher level (like HTTP and HTTPS) by formatting a URL like this:</p>
 <pre>socket://&lt;server name&gt;[:&lt;port&gt;]&lt;parameters&gt;</pre>
 <p>so you can create your own protocol support for IMAP and POP3 to make an email client, and the documentation come with the basics of an FTP client.</p>
 <p>You can use this method to connect to Bluetooth devices as well, with the format</p>
 <pre>btspp://&lt;address&gt;</pre>
-<p>We are going to concentrate on HTTP connections in this tutorial though, and although the API provides some HTTP specific methods, were going to focus on the download components in <strong>MAUtil</strong>.</p>
+<p>We are going to concentrate on HTTP connections in this tutorial though, and although the API provides some HTTP specific methods, we’re going to focus on the download components in <strong>MAUtil</strong>.</p>
 <h3>Using <strong>the MAUtil::Connection</strong> Class in C++</h3>
 <p>The second level of abstraction is with <strong>MAUtil::Connection</strong> objects. These are C++ objects and are much more suitable for use in a Moblet application.</p>
 <ul>
@@ -86,7 +81,7 @@ private:
 &nbsp;&nbsp; &nbsp;MAHandle _store;
 };
 #endif //_DOWNLOADSCREEN_H_</pre>
-<p>This code will build my screen, manage the downloads, and inform its own type of Listener (<strong>IDownloadScreenListener</strong>) when downloads are complete. (It doesnt inform the <strong>IDownloadScreenListener </strong>of anything other than successful completion, as the user interaction for a failed download can be handled by this screen.)</p>
+<p>This code will build my screen, manage the downloads, and inform its own type of Listener (<strong>IDownloadScreenListener</strong>) when downloads are complete. (It doesn’t inform the <strong>IDownloadScreenListener </strong>of anything other than successful completion, as the user interaction for a failed download can be handled by this screen.)</p>
 <h3>IDownloadListener.h</h3>
 <pre>#ifndef _IDOWNLOADSCREENLISTENER_H_
 #define _IDOWNLOADSCREENLISTENER_H_
@@ -220,7 +215,7 @@ void DownloadScreen::keyPressEvent(int keyCode)
 }
 </pre>
 <p class="MsoNormal">This download screen can be used from many different screen.&nbsp; For instance, if you've got a screen which shows a calendar where the user can drill into different days to see what their schedule is for that day.&nbsp; This screen can download a package of data from the Internet of events created for the user.&nbsp; When you want to download an update, my <strong>EventScreen </strong>calls <strong>DownloadScreen </strong>and passes it the URL it wants to download.&nbsp; This <strong> DownloadScreen </strong>handles all of the mechanics.</p>
-<p class="MsoNormal">The <strong>DownloadScreen </strong>has inside it a <strong>Downloader </strong>object, and it implements <strong>DownloadListener</strong>.&nbsp; &nbsp;It creates a <strong>Downloader </strong>when it is constructed, and deletes it when it is destroyed.&nbsp; When the <strong> DownloadScreen</strong>s download method is called, it passes the URL to the <strong> Downloader </strong>and starts downloading.</p>
+<p class="MsoNormal">The <strong>DownloadScreen </strong>has inside it a <strong>Downloader </strong>object, and it implements <strong>DownloadListener</strong>.&nbsp; &nbsp;It creates a <strong>Downloader </strong>when it is constructed, and deletes it when it is destroyed.&nbsp; When the <strong> DownloadScreen</strong>’s download method is called, it passes the URL to the <strong> Downloader </strong>and starts downloading.</p>
 <p class="MsoNormal">As the <strong>Downloader </strong>raises events to the <strong>DownloadScreen </strong>through the <strong>DownloadListener </strong>interface, the screen can keep the user informed about their download.&nbsp; When it has finished, it informs the calling screen that it has completed, so that screen can carry on. &nbsp;</p>
 <p class="MsoNormal">To use it, call it from <strong>EventsScreen.cpp</strong>.&nbsp; This is a partial listing.</p>
 <pre class="MsoNormal">#include "EventsScreen.h"

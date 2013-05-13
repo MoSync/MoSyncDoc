@@ -1,11 +1,6 @@
 <html>
 <head>
-<!-- <mosyncheadertags>
-<meta name="description" content="In this tutorial we take a look at how to control a device's cameras through the MoSync Camera C API. With the Camera C API you can discover the number of cameras a device supports, set properties like zoom and image format, embed previews in your application, and, of course, take a picture." />
-<meta name="dcterms.description" content="In this tutorial we take a look at how to control a device's cameras through the MoSync Camera C API. With the Camera C API you can discover the number of cameras a device supports, set properties like zoom and image format, embed previews in your application, and, of course, take a picture." />
-<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
-<title>The Camera C API | MoSync Guide/Tutorial</title>
-</mosyncheadertags> -->
+<title>The Camera C API</title>
 </head>
 <body>
 <h1>The Camera C API</h1>
@@ -44,7 +39,7 @@
     maCameraSetPreview(mCameraPreview);
     maWidgetAddChild( mMainLayoutWidget, mCameraPreview);
 }</pre>
-<p>6. Check the available functionality on the devices camera (zoom support, flash support, etc.) by calling <strong>maCameraGetProperty</strong>.</p>
+<p>6. Check the available functionality on the device’s camera (zoom support, flash support, etc.) by calling <strong>maCameraGetProperty</strong>.</p>
 <pre class="mosync-code-cpp">    char buffer[256];
     maCameraGetProperty(MA_CAMERA_FLASH_SUPPORTED, buffer, 256);</pre>
 <p>7. Start the camera by calling <strong>maCameraStart</strong>.<br><br>8. Change the properties as required by calling <strong>maCameraSetProperty</strong>.<br><br>9. Call <strong>maCameraSnapshot </strong>to take snapshots. Here is an example function that takes a picture snapshot and store the image data in using a place holder called <strong>mLastImage</strong>.</p>

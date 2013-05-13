@@ -1,11 +1,6 @@
 <html>
 <head>
-<!-- <mosyncheadertags>
-<meta name="description" content="Often when using images in MoSync, then the images are available to you as a developer, and you can package them with your application, as described in the tutorial 'Adding Resources to a Project'.  However, there will be many scenarios where you want to show a picture you've not been able to package.  " />
-<meta name="dcterms.description" content="Often when using images in MoSync, then the images are available to you as a developer, and you can package them with your application, as described in the tutorial 'Adding Resources to a Project'.  However, there will be many scenarios where you want to show a picture you've not been able to package.  " />
-<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
-<title>Downloading Images from the Internet | MoSync Guide/Tutorial</title>
-</mosyncheadertags> -->
+<title>Downloading Images from the Internet</title>
 </head>
 <body>
 <h1>Downloading Images from the Internet</h1>
@@ -166,7 +161,7 @@ extern "C" int MAMain()
 }
 </pre>
 <p>In this example, the <strong>DownloadListener</strong>&nbsp;is also a <strong>MAUI Screen</strong>&nbsp;class. &nbsp;When the <strong>finishedDownloading</strong>&nbsp;method is called, the <strong>MAHandle</strong>&nbsp;'data' contains a handle to the downloaded image. &nbsp;You can then display this as any other <strong>MAUI</strong>&nbsp;image, or in a game or a C application, you can use the function <strong>maDrawImage()</strong>.</p>
-<p>If you tried this with a&nbsp;<strong>Downloader&nbsp;</strong>object instead of an&nbsp;<strong>ImageDownloader</strong>, youll get an Invalid Resource Type error message when you tried to create the image.&nbsp; Instead, youd need to call:</p>
+<p>If you tried this with a&nbsp;<strong>Downloader&nbsp;</strong>object instead of an&nbsp;<strong>ImageDownloader</strong>, you’ll get an ‘Invalid Resource Type’ error message when you tried to create the image.&nbsp; Instead, you’d need to call:</p>
 <pre>maCreateImageFromData(h, source, position, imageLength);
 </pre>
 <p>to covert the resource type for you.</p>

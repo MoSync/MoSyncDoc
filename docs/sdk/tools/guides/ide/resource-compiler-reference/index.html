@@ -1,11 +1,6 @@
 <html>
 <head>
-<!-- <mosyncheadertags>
-<meta name="description" content="This manual describes how your application resources (such as image, audio, and binary files) are handled by MoSync in C/C++, describes the format and lists that can be used to organize your resource files, and the command switches for the resource compiler." />
-<meta name="dcterms.description" content="This manual describes how your application resources (such as image, audio, and binary files) are handled by MoSync in C/C++, describes the format and lists that can be used to organize your resource files, and the command switches for the resource compiler." />
-<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
-<title>Resource Compiler Reference | MoSync Guide/Tutorial</title>
-</mosyncheadertags> -->
+<title>Resource Compiler Reference</title>
 </head>
 <body>
 <h1>Resource Compiler Reference</h1>
@@ -34,35 +29,35 @@
 <li>Enums and script values</li>
 </ul>
 <p>For more information about resources and how to create them, see the programming guide <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/resource-compiler-tutorial/index.html">Compiling Resources</a>. We also have a general tutorial, <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/adding-resources-mosync-project/index.html">Adding Resources to a Project</a>, which demonstrates how to make resources available to your applications and discusses many importants aspects of resource handling.</p>
-<p>One important aspect is to be able to select what resource to load depending on which environment the app runs insuch as the platform (e.g. Android or iOS) the app is built for, or the screen size of the device that the app runs on. These are called <em>variant resources</em> (variant resources are supported in the MoSync SDK 3.0 onwards).</p>
+<p>One important aspect is to be able to select what resource to load depending on which environment the app runs in—such as the platform (e.g. “Android” or “iOS”) the app is built for, or the screen size of the device that the app runs on. These are called <em>variant resources</em> (variant resources are supported in the MoSync SDK 3.0 onwards).</p>
 <h2>The Resource Compiler command line options</h2>
 <p>The resource compiler is part of the MoSync <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/architecture/toolchain/index.html">Pipe-Tool</a>. It is automatically invoked during the build process, so there is usually nothing you need to do to use it. <br><br>You can, however, run the resource compiler from the command line, if you really need to:</p>
 <h3>For standard folders</h3>
 <p>This command line will compile the resources organized as per the default directory structure:</p>
-<p><strong>rescomp</strong> <em>platform</em> <em>outputdir directory1</em> <em>directory2</em> </p>
+<p><strong>rescomp</strong> <em>platform</em> <em>outputdir directory1</em> <em>directory2</em> …</p>
 <p>For example:</p>
 <pre class="mosync-code-cpp">rescomp Android output/resources Resources</pre>
-<p>This command compiles all resources in the Resources directory for the Android platform and creates a binary called resources in the output directory.</p>
-<p><em>Note</em>: If you build a project via the IDE, the directory is always the Resources directory located in the projects root directory.</p>
+<p>This command compiles all resources in the “Resources” directory for the Android platform and creates a binary called “resources” in the “output” directory.</p>
+<p><em>Note</em>: If you build a project via the IDE, the directory is always the “Resources” directory located in the project’s root directory.</p>
 <h3>For custom folders with LSTX XML resource lists</h3>
 <p>This command line will compile the resources organized in the default directory structure (it must end with the <strong>lstx</strong> extension):</p>
 <p><strong>rescomp</strong> <em>platform</em> <em>outputdir</em> <em>resourcefile1.lstx</em> <em>resourcefile2.lstx</em></p>
 <p><em>Note: </em>You may combine folders and .lstx files. For example:</p>
 <pre class="mosync-code-cpp">rescomp Android output/resources resources.lstx</pre>
-<p>This command compiles all resources in the resources.lstx file for the Android platform and creates a binary called resources in the output directory.</p>
+<p>This command compiles all resources in the “resources.lstx” file for the Android platform and creates a binary called “resources” in the “output” directory.</p>
 <h3>For custom folders with LST resource lists</h3>
 <p><strong>pipe-tool -R</strong> <em>outfile</em> <em>infile1</em> [<em>infile2</em> ...]</p>
 <p>For example:</p>
 <pre class="mosync-code-cpp">pipe-tool -R output/resources audio.lst images.lst other.lst</pre>
 <p>This command compiles all the resources referenced in the resource list files audio.lst, images.lst, and other.lst and concatenates them into a binary file called resources, ready for deployment to the device.</p>
 <h2>Standard Folders</h2>
-<p>The simplest way to add resources to a project is to add them to the Resource directory, located in the projects root directory. Then add the resources to the proper sub-directories of the Resource directory. For example, images should be put in the image sub-directory, and binary resources should be put in the binary sub-directory. The name of the file will be used to name the resource by upper-casing it and removing the file extension. So, for example, the image AnImage.png will get the name ANIMAGE in the generated MAHeaders.h file (and consequently, in the code that uses the image resource).</p>
+<p>The simplest way to add resources to a project is to add them to the “Resource” directory, located in the project’s root directory. Then add the resources to the proper sub-directories of the “Resource” directory. For example, images should be put in the “image” sub-directory, and binary resources should be put in the “binary” sub-directory. The name of the file will be used to name the resource by upper-casing it and removing the file extension. So, for example, the image “AnImage.png” will get the name ANIMAGE in the generated MAHeaders.h file (and consequently, in the code that uses the image resource).</p>
 <p>To create variant resources, put them in a directory structure like this:</p>
 <p><strong>/Resources/</strong><em>[type]<strong>/</strong>[variantID<strong>]/</strong>[variantValue]</em></p>
-<p>Where <em>type</em> is the type of resource to create (e.g. image), the <em>variantID</em> is the variant to select for (e.g. platform or screenSize), and the <em>variantValue</em> is the value for which the resources in the directory should apply to (e.g. the Android platform or large screenSize).</p>
-<p>If the <em>variantID</em> directory level is skipped, a default variant identifier is used. This default variant identifier depends on the type of resource. For example, screenSize is the default variant identifier for images, so there is no need to add that directory to the structure.</p>
-<p>The names of the variant resource files should match the default resource file names. So if there is an AnImage.png in the image sub-directory and another, different, AnImage.png is added to the /Resources/image/large directory, then the latter resource will be used for devices with large screen sizes.</p>
-<p>There is an inheritance mechanism, so if no AnImage.png exists in the /Resources/image/large, the one located in Resources/image will be used.</p>
+<p>Where <em>type</em> is the type of resource to create (e.g. “image”), the <em>variantID</em> is the variant to select for (e.g. “platform” or “screenSize”), and the <em>variantValue</em> is the value for which the resources in the directory should apply to (e.g. the “Android” platform or “large” screenSize).</p>
+<p>If the <em>variantID</em> directory level is skipped, a default variant identifier is used. This default variant identifier depends on the type of resource. For example, “screenSize” is the default variant identifier for “images”, so there is no need to add that directory to the structure.</p>
+<p>The names of the variant resource files should match the default resource file names. So if there is an “AnImage.png” in the “image” sub-directory and another, different, “AnImage.png” is added to the “/Resources/image/large” directory, then the latter resource will be used for devices with “large” screen sizes.</p>
+<p>There is an inheritance mechanism, so if no AnImage.png exists in the “/Resources/image/large”, the one located in “Resources/image” will be used.</p>
 <h3>Example Resources directory structure</h3>
 <p>&nbsp;</p>
 <p><img src="images/Resource-Compiler-Standard-Folder-Layout.png" align="none" width="177" height="198"></p>
@@ -72,9 +67,9 @@
 <li>If the platform is Android, the brick1.png located in platform/Android will be used as the resources represented by the BRICK1 resource identifier. The BRICK2, BRICK3, etc, identifiers will use the default images.</li>
 <li>If the image size is large (and the platform is not Android),</li>
 </ul>
-<p><em>Note</em>: Only image, audio and binary files can be added using the standard folder. To add other resource types, such as placeholders, add an .lstx file (see Custom Folders and XML lists below).</p>
+<p><em>Note</em>: Only image, audio and binary files can be added using the standard folder. To add other resource types, such as placeholders, add an .lstx file (see “Custom Folders and XML lists” below).</p>
 <h3>Standard Folder Directories</h3>
-<p>In the root resource directory (when building from within the SDK, this is always the Resources directory of a project), there may exist one or more subdirectories, named according to the type of resource located therein. These resource types are supported:</p>
+<p>In the root resource directory (when building from within the SDK, this is always the “Resources” directory of a project), there may exist one or more subdirectories, named according to the type of resource located therein. These resource types are supported:</p>
 <ul>
 <li>image, for image files</li>
 <li>audio, for audio files</li>
@@ -124,7 +119,7 @@
 &lt;/condition&gt;</pre>
 <p><em>Note</em>: If several conditions match and the conditions are placed in different files, then the behaviour is undefined.</p>
 <h4>File resource tags (image, audio, media, binary)</h4>
-<p>All tags that define a resource must have an id attribute, which will be the same used in C code.<br>The loadType attribute of a resource tag indicates whether the resource should be loaded at startup (attribute value startup) or later (attribute value unloaded). All tags that define a resource located in a file (image, audio, media, binary) must have a resource attribute with the file path, relative to the .lstx file. (The .lstx file/files may be located anywhere in the projects directory structure.)</p>
+<p>All tags that define a resource must have an id attribute, which will be the same used in C code.<br>The loadType attribute of a resource tag indicates whether the resource should be loaded at startup (attribute value “startup”) or later (attribute value “unloaded”). All tags that define a resource located in a file (image, audio, media, binary) must have a resource attribute with the file path, relative to the .lstx file. (The .lstx file/files may be located anywhere in the project’s directory structure.)</p>
 <p>Media tags have a mimeType attribute that should be set to indicate the type of the file. For a few audio file types a default mimeType will be automatically set unless specified by this tag. All files with the file extensions .mp3, .mp4 or .m4a will be assigned "audio/<span class="s1">mpeg" mimeType, and all files with the file extension .wav will be assigned the "audio/wav" mimeType.</span></p>
 <pre class="mosync-code-cpp">&lt;image id="BRICK7" resource="image/brick7.png"/&gt;
 &lt;audio id="BOOM" resource="audio/boom.mp3"/&gt;

@@ -1,20 +1,15 @@
 <html>
 <head>
-<!-- <mosyncheadertags>
-<meta name="description" content="Many people are developing Bluetooth applications in MoSync. Some of the most interesting applications involve creating a new Bluetooth service so that the user’s phone can receive incoming messages on Bluetooth and act on them. In this tutorial we take a look at using the MAUtil::Server class to provide Bluetooth services." />
-<meta name="dcterms.description" content="Many people are developing Bluetooth applications in MoSync. Some of the most interesting applications involve creating a new Bluetooth service so that the user’s phone can receive incoming messages on Bluetooth and act on them. In this tutorial we take a look at using the MAUtil::Server class to provide Bluetooth services." />
-<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
-<title>Creating a Bluetooth Server | MoSync Guide/Tutorial</title>
-</mosyncheadertags> -->
+<title>Creating a Bluetooth Server</title>
 </head>
 <body>
 <h1>Creating a Bluetooth Server</h1>
-<p>Many people are developing Bluetooth applications in MoSync. Some of the most interesting applications involve creating a new Bluetooth service so that the users phone can receive incoming messages on Bluetooth and act on them. In this tutorial we take a look at using the <strong>MAUtil::Server</strong> class to provide Bluetooth services.</p>
+<p>Many people are developing Bluetooth applications in MoSync. Some of the most interesting applications involve creating a new Bluetooth service so that the user’s phone can receive incoming messages on Bluetooth and act on them. In this tutorial we take a look at using the <strong>MAUtil::Server</strong> class to provide Bluetooth services.</p>
 <p><!--break--> </p>
 <h2>The Server Base Class</h2>
 <p>In the MoSync <strong>MAUtil </strong>library there is a class called <strong>Server</strong>. It is a base class that you can adapt to accept network connections over Bluetooth and TCP. You create a new Bluetooth service by creating a new <strong>Server</strong><strong> </strong>instance and inheriting from <strong>ServerListener</strong>. Your class becomes a wrapper around <strong>Server</strong> and can process both incoming and outgoing messages.</p>
 <p>The <strong>ServerListener</strong><strong> </strong>interface allows your service class to respond to events raised by your <strong>Server</strong><strong> </strong>instance. There are two methods that you need to implement: <strong>serverAccepted</strong><strong> </strong>and <strong>serverAcceptFailed</strong>. These methods inform your application when a new connection has been made to your server, or when an attempt to connect has failed.</p>
-<p>When you receive a new connection, the <strong>serverAccepted</strong><strong> </strong>method is called, and it is passed a pointer to a new <strong>Connection</strong> object. This is the same class as you would use for outgoing connections so all of the same methods for reading and writing data are available. The only difference is that youve got to code responses to incoming data.</p>
+<p>When you receive a new connection, the <strong>serverAccepted</strong><strong> </strong>method is called, and it is passed a pointer to a new <strong>Connection</strong> object. This is the same class as you would use for outgoing connections so all of the same methods for reading and writing data are available. The only difference is that you’ve got to code responses to incoming data.</p>
 <p>A very simple <strong>Server</strong> implementation would look like this:</p>
 <div>
 <pre class="mosync-code-cpp">#include &lt;MAUtil/Moblet.h&gt;
@@ -80,8 +75,8 @@ extern "C" int MAMain()
 <h2>Creating Servers for Bluetooth Connections</h2>
 <p>Binding to Bluetooth addresses is a little more complex. Instead of simply binding to a port you need to bind to the Bluetooth address of the device, and provide a service UUID.</p>
 <p>Each Bluetooth service has its own UUID (universally unique identifier). These are common across platforms, just as TCP ports are. If you create a brand-new service, you should generate a new UUID for it. If you are implementing an existing service (such as OBEX Push), then you should use the existing UUID. Common UUIDs have been defined in the file <strong>MAUtil/mauuid.h</strong>.</p>
-<p>When Bluetooth clients are searching for your service, they will need to know what the UUID is. If you are writing the client software as well, youll need to use the UUID to discover the service. See our tutorial on <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/bluetooth/discovering-devices-and-services-bluetooth/index.html"><strong>Discovering Devices and Services with Bluetooth</strong></a> for more information.</p>
-<p>In the MoSync SDK, Bluetooth service UUIDs are defined as being a <strong>struct </strong>of an <strong>int[4]</strong>. Bluetooth UUIDs are 32 bytes long, but large parts of the UUID are common to all Bluetooth UUIDs. If you want to create your own UUID, you would need to check that it isnt being used by any other Bluetooth service, and also ensure that its unique segment (the first <strong>int </strong>in the <strong>struct</strong>) ANDs with 0x1000 (4096). The following is a line from <strong>mauuid.h</strong>, defining the UUID for the serial port service.</p>
+<p>When Bluetooth clients are searching for your service, they will need to know what the UUID is. If you are writing the client software as well, you’ll need to use the UUID to discover the service. See our tutorial on <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/bluetooth/discovering-devices-and-services-bluetooth/index.html"><strong>Discovering Devices and Services with Bluetooth</strong></a> for more information.</p>
+<p>In the MoSync SDK, Bluetooth service UUIDs are defined as being a <strong>struct </strong>of an <strong>int[4]</strong>. Bluetooth UUIDs are 32 bytes long, but large parts of the UUID are common to all Bluetooth UUIDs. If you want to create your own UUID, you would need to check that it isn’t being used by any other Bluetooth service, and also ensure that its unique segment (the first <strong>int </strong>in the <strong>struct</strong>) ANDs with 0x1000 (4096). The following is a line from <strong>mauuid.h</strong>, defining the UUID for the serial port service.</p>
 <div>
 <pre class="mosync-code-cpp">DEFINE_BTMAUUID(SerialPort_Service_MAUUID, 0x1101);</pre>
 </div>
@@ -175,9 +170,9 @@ extern "C" int MAMain()
     return 0;
 };
 </pre>
-<p>This wont let you start accepting connections though. This is just the server binding information. To accept connections, you need to create a <strong>ConnectionListener</strong>.</p>
+<p>This won’t let you start accepting connections though. This is just the server binding information. To accept connections, you need to create a <strong>ConnectionListener</strong>.</p>
 <h2>Accepting Connections</h2>
-<p>If youve run the above examples, you will notice that neither the <strong>serverAccepted</strong> or the <strong>serverAcceptFailed</strong> methods have been called. To make the server binding work, you need to call the accept method, and pass it a <strong>ConnectionListener</strong>.</p>
+<p>If you’ve run the above examples, you will notice that neither the <strong>serverAccepted</strong> or the <strong>serverAcceptFailed</strong> methods have been called. To make the server binding work, you need to call the accept method, and pass it a <strong>ConnectionListener</strong>.</p>
 <p><strong>ConnectionListener</strong><strong> </strong>will be familiar to anyone who has developed a network client in MoSync. It responds to connection events from the Connection class. The ConnectionListener has the following methods you need to implement:</p>
 <div>
 <pre class="mosync-code-cpp"> void connectFinished(Connection* conn, int result);
@@ -225,7 +220,7 @@ extern "C" int MAMain()
 </div>
 <p>This example is just about as simple as it can be. The class inherits from <strong>ConnectionListener</strong> and provides the methods for receiving notification of data reads and writes. When one of these is called, it just writes the notification to the console.</p>
 <h2>Processing a connection</h2>
-<p>There is also a method <strong>start</strong>. This is so we can start the connection handler with a valid connection, and it can start requesting data from the stream. As an example, were going to create a server that receives data, counts the number of bytes it has received in total, and respond to the client with this value. Weve got a buffer to read into, but were not really interested in the data, just the values, so we can write the data to the console and keep track of the quantity. When data is received, were going to increase the total counter, create a text value to that amount and write it to the output stream.</p>
+<p>There is also a method <strong>start</strong>. This is so we can start the connection handler with a valid connection, and it can start requesting data from the stream. As an example, we’re going to create a server that receives data, counts the number of bytes it has received in total, and respond to the client with this value. We’ve got a buffer to read into, but we’re not really interested in the data, just the values, so we can write the data to the console and keep track of the quantity. When data is received, we’re going to increase the total counter, create a text value to that amount and write it to the output stream.</p>
 <div>
 <pre class="mosync-code-cpp">     void MyConnectionHandler::connRecvFinished(Connection* conn, int result)
      {
@@ -251,7 +246,7 @@ extern "C" int MAMain()
          }
      }</pre>
 </div>
-<p>Weve also put an error check in there to ensure that no error codes have been sent.Now weve got a connection handler that can read and write data, we can call the accept method on the Server.</p>
+<p>We’ve also put an error check in there to ensure that no error codes have been sent.Now we’ve got a connection handler that can read and write data, we can call the accept method on the Server.</p>
 <pre class="mosync-code-cpp">        {
             if(mServer.isOpen())
                 lprintfln("Already open");

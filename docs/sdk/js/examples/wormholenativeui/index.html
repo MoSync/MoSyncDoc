@@ -1,11 +1,6 @@
 <html>
 <head>
-<!-- <mosyncheadertags>
-<meta name="description" content="This simple example application demonstrates the use of HTML markup for creating multi-level native user interfaces. It also shows how to use other JavaScript modules (such as sensors) with the MoSync JavaScript NativeUI API." />
-<meta name="dcterms.description" content="This simple example application demonstrates the use of HTML markup for creating multi-level native user interfaces. It also shows how to use other JavaScript modules (such as sensors) with the MoSync JavaScript NativeUI API." />
-
-<title>Wormhole NativeUI example included with the MoSync Mobile SDK | MoSync Guide/Tutorial</title>
-</mosyncheadertags> -->
+<title>WormholeNativeUI</title>
 </head>
 <body>
 <h1>WormholeNativeUI</h1>
@@ -20,9 +15,9 @@
 <h2>Behavior</h2>
 <p>When started, this example application on Android and iOS displays three tabs:</p>
 <ul>
-<li><strong>Device</strong>  shows device information. It also includes two buttons, that cause the device to vibrate or make a beep sound.</li>
-<li><strong>Sensors </strong> shows three buttons for accessing three different sensors: Accelerometer, Location, and Compass. Pressing each one of the buttons in the second tab will start the sensor and update the data on screen.</li>
-<li><strong>Map </strong> shows another web view with google maps loaded by default.</li>
+<li><strong>Device</strong> — shows device information. It also includes two buttons, that cause the device to vibrate or make a beep sound.</li>
+<li><strong>Sensors </strong>— shows three buttons for accessing three different sensors: Accelerometer, Location, and Compass. Pressing each one of the buttons in the second tab will start the sensor and update the data on screen.</li>
+<li><strong>Map </strong>— shows another web view with google maps loaded by default.</li>
 </ul>
 <p>On Windows Phone 7 the tabs are translated into pivots.</p>
 <h2>In the code</h2>
@@ -33,9 +28,9 @@
 </ul>
 <p><strong>main.cpp</strong> is the main C/C++ application file. You do not need to modify this file: you can just use the JavaScript interface. All of the HTML5 and JavaScript-related files and libraries are located in the <em>/LocalFiles</em> directory, are included in the application when it is built in the MoSync IDE. Inside that folder you can see the following files:</p>
 <ul>
-<li><strong>index.html </strong> Main html file which will be loaded and parsed by MoSync. In includes HTML markups for generating the UI.</li>
-<li><strong>js/wormhole.js </strong> Wormhole JavaScript Library that includes all of the available API.</li>
-<li><strong>js/main.js </strong> Applications JavaScript file which provides wrappers for accessing sensors and other device features.</li>
+<li><strong>index.html </strong>— Main html file which will be loaded and parsed by MoSync. In includes HTML markups for generating the UI.</li>
+<li><strong>js/wormhole.js </strong>— Wormhole JavaScript Library that includes all of the available API.</li>
+<li><strong>js/main.js </strong>— Application’s JavaScript file which provides wrappers for accessing sensors and other device features.</li>
 </ul>
 <p>The <em>/Resources.lst</em> file has a default entry for the bundled files that should not be removed unless the user wants to remove all the HTML5 functionality.</p>
 <p>&nbsp;</p>

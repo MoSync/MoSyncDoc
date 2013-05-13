@@ -1,11 +1,6 @@
 <html>
 <head>
-<!-- <mosyncheadertags>
-<meta name="description" content="The MoSync profile database contains information about mobile platforms and devices. This helps the MoSync toolchain to build the correct package for each platform and device. The database comes in two flavors." />
-<meta name="dcterms.description" content="The MoSync profile database contains information about mobile platforms and devices. This helps the MoSync toolchain to build the correct package for each platform and device. The database comes in two flavors." />
-<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
-<title>MoSync SDK's extensive mobile platform and device database | MoSync Guide/Tutorial</title>
-</mosyncheadertags> -->
+<title>Platform and Device Database</title>
 </head>
 <body>
 <h1>Platform and Device Database</h1>
@@ -27,10 +22,10 @@
 <p>Our device profile database is stored as a hierarchical filesystem structure - one directory per device vendor, each containing per-device subdirectories. Each device directory contains a C header file with information about the device formatted as C preprocessor definitions, and a textual reference to the associated runtime.</p>
 <p>The profile header file can be used in MoSync programs to automatically modify their functionality depending on the target device: common information in the profiles include vendor and device names, screen size and API availability, for example Bluetooth or Location.</p>
 <p><img src="images/ifdefs.png" alt="if-defs sample" border="0"></p>
-<p>The Devices Profiles frame will show you either the available platforms or devices, depending on your project configuration. (This will only show when you work with a project that makes use of the device based profile database.)</p>
+<p>The ‘Devices Profiles’ frame will show you either the available platforms or devices, depending on your project configuration. (This will only show when you work with a project that makes use of the device based profile database.)</p>
 <p><img src="images/Device-Profiles-01.png" align="none" width="350" height="506"></p>
 <p><img src="images/Device-Profiles-02.png" align="none" width="325" height="488"></p>
-<p>When you are developing or testing, you will only have one profile active at any one time. &nbsp;When you are ready to build your application for distribution for app stores, then you can build for many devices at the same time.<br><br>As an alternative to change platform or device, right click on your chosen option, and select Set as Project Profile:</p>
+<p>When you are developing or testing, you will only have one profile active at any one time. &nbsp;When you are ready to build your application for distribution for app stores, then you can build for many devices at the same time.<br><br>As an alternative to change platform or device, right click on your chosen option, and select ‘Set as Project Profile’:</p>
 <p><img src="images/Device-Profile-03.png" align="none" width="318" height="272"></p>
 </body>
 </html>

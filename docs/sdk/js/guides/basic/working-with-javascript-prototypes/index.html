@@ -1,11 +1,6 @@
 <html>
 <head>
-<!-- <mosyncheadertags>
-<meta name="description" content="The object hierarchy in JavaScript enables any object (which in JavaScript is just about everything) to inherit methods and properties. The parent object from which a child inherits is called the child object's &quot;prototype&quot;." />
-<meta name="dcterms.description" content="The object hierarchy in JavaScript enables any object (which in JavaScript is just about everything) to inherit methods and properties. The parent object from which a child inherits is called the child object's &quot;prototype&quot;." />
-
-<title>Working with JavaScript Prototypes | MoSync Guide/Tutorial</title>
-</mosyncheadertags> -->
+<title>Working with JavaScript Prototypes</title>
 </head>
 <body>
 <h1>Working with JavaScript Prototypes</h1>
@@ -25,7 +20,7 @@ var myCircle = new circle();
 myCircle.diameter = 4;</pre>
 <p>In the case of both <strong>myImage</strong> and <strong>myCircle</strong>, the new property exists only for our new instance. If we were to create another <strong>Image</strong> instance (or <strong>circle</strong> instance), that new instance would not have the <strong>size</strong> (or <strong>diameter</strong>) property. And if you tried to read that property, it would return as "undefined".</p>
 <h2>Extending Instances of a Custom Object</h2>
-<p>Suppose we want <em>all</em> instances of a particular object to inherit a method or property&nbsp; for example if we wanted all images to have the <strong>size</strong> property. How do we do that? We can do it by adding the method or property to our base object's prototype. It is very easy to do this: all we need to do is insert the <strong>prototype</strong> keyword before the property:</p>
+<p>Suppose we want <em>all</em> instances of a particular object to inherit a method or property&nbsp;— for example if we wanted all images to have the <strong>size</strong> property. How do we do that? We can do it by adding the method or property to our base object's prototype. It is very easy to do this: all we need to do is insert the <strong>prototype</strong> keyword before the property:</p>
 <pre class="mosync-code-cpp">// Create a custom object and add a custom property to it
 function circle() {};
 circle.prototype.pi = 3.14;</pre>

@@ -1,15 +1,10 @@
 <html>
 <head>
-<!-- <mosyncheadertags>
-<meta name="description" content="The MAUtil::BluetoothDiscoverer class can be used to locate nearby devices and find out which Bluetooth services they support. Once you’ve discovered a device and a service you will need to write a client for that service and open a data connection to the server. That's what we will be doing in this tutorial." />
-<meta name="dcterms.description" content="The MAUtil::BluetoothDiscoverer class can be used to locate nearby devices and find out which Bluetooth services they support. Once you’ve discovered a device and a service you will need to write a client for that service and open a data connection to the server. That's what we will be doing in this tutorial." />
-<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
-<title>Creating Bluetooth Clients    | MoSync Guide/Tutorial</title>
-</mosyncheadertags> -->
+<title>Creating Bluetooth Clients   </title>
 </head>
 <body>
 <h1>Creating Bluetooth Clients   </h1>
-<p>The MAUtil::BluetoothDiscoverer class can be used to locate nearby devices and find out which Bluetooth services they support. Once youve discovered a device and a service you will need to write a client for that service and open a data connection to the server. That's what we will be doing in this tutorial.</p>
+<p>The MAUtil::BluetoothDiscoverer class can be used to locate nearby devices and find out which Bluetooth services they support. Once you’ve discovered a device and a service you will need to write a client for that service and open a data connection to the server. That's what we will be doing in this tutorial.</p>
 <p><!--break--> </p>
 <h2>Opening Connections</h2>
 <p>To create a connection to the Bluetooth device that you want to communicate with, you can use the <strong>Connection</strong> class in the <strong>MAUtil </strong>library (#include &lt;MAUtil/Connection.h&gt;). The <strong>Connection</strong> class wraps up common connection commands into one easy-to-use object.</p>
@@ -42,9 +37,9 @@ void connReadFinished(Connection* conn, int result)
 }</pre>
 </div>
 <p>To create the <strong>Connection</strong>, you need to be able to format a URL to the desired Bluetooth server correctly. This is the only real difference between connecting to a Bluetooth service and connecting to an HTTP resource on the Internet.</p>
-<p>This tutorial assumes that youve either already followed the discovery processes in our tutorial <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/bluetooth/discovering-devices-and-services-bluetooth/index.html">Discovering Devices and Services with Bluetooth</a>. That tutorial explains how to find the service you want to connect to, and introduces the classes <strong>BtDevice </strong>and <strong>BtService</strong>.</p>
+<p>This tutorial assumes that you’ve either already followed the discovery processes in our tutorial <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/bluetooth/discovering-devices-and-services-bluetooth/index.html">Discovering Devices and Services with Bluetooth</a>. That tutorial explains how to find the service you want to connect to, and introduces the classes <strong>BtDevice </strong>and <strong>BtService</strong>.</p>
 <h2>Formatting Bluetooth URLs</h2>
-<p>When you want to create a URL to connect to a Bluetooth service, you need the <strong>MABtAddr </strong>address class from <strong>BtDevice</strong><strong> </strong>and the port number&nbsp;from <strong>BtService</strong>. The example we are working through today assumes youve already got the both a <strong>BtDevice </strong>and a <strong>BtService</strong>.</p>
+<p>When you want to create a URL to connect to a Bluetooth service, you need the <strong>MABtAddr </strong>address class from <strong>BtDevice</strong><strong> </strong>and the port number&nbsp;from <strong>BtService</strong>. The example we are working through today assumes you’ve already got the both a <strong>BtDevice </strong>and a <strong>BtService</strong>.</p>
 <p>The Bluetooth URL is in the format:</p>
 <p style="padding-left: 30px;"><strong>btspp://</strong><em>&lt;device address&gt;</em><strong>:</strong><em>&lt;service port&gt;</em></p>
 <p>The device address is in an <strong>MABtAddr</strong> object in <strong>BtDevice.address</strong>. The <strong>MABtAddr</strong> is a <strong>struct </strong>that contains <strong>byte[6]</strong>. Each of these bytes needs to be converted to two-character hex value in array order.</p>
@@ -58,7 +53,7 @@ void connReadFinished(Connection* conn, int result)
 }</pre>
 </div>
 <h2>Reading and Writing to the Service</h2>
-<p>Once connected, youve got the same <strong>Connection </strong>object as you have for connecting to the Internet. You can read and write into the connection.</p>
+<p>Once connected, you’ve got the same <strong>Connection </strong>object as you have for connecting to the Internet. You can read and write into the connection.</p>
 <p>In this example, we are going to create a client which is for the Bluetooth service created for the tutorial <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/communication/creating-bluetooth-server/index.html">Creating a Bluetooth Server</a>. In that tutorial, the service simply receives a stream of bytes, counts them, and then returns a running total to the client. Our client is going to connect to that server, send a short string, and then listen for the count to be returned.</p>
 <p>To do this, we need to expand the implementation of <strong>ConnectionListener</strong> we produced earlier. The first stage is to make the connection to the correct URL. This means we need to write a short method to start the connection:</p>
 <div>
@@ -78,7 +73,7 @@ void connReadFinished(Connection* conn, int result)
  mConn.write("123456", 6);
 }</pre>
 </div>
-<p>Once the connection is open, we can write data into it. As with all <strong>Connection</strong> objects, the write is asynchronous, so dont write from local variables as they can go out of scope before the write has completed. Here, we are just writing six bytes representing the characters one to six. Once the write has finished, our <strong>connWriteFinished</strong> method will be called.</p>
+<p>Once the connection is open, we can write data into it. As with all <strong>Connection</strong> objects, the write is asynchronous, so don’t write from local variables as they can go out of scope before the write has completed. Here, we are just writing six bytes representing the characters one to six. Once the write has finished, our <strong>connWriteFinished</strong> method will be called.</p>
 <div>
 <pre class="mosync-code-cpp">void BluetoothClient::connWriteFinished(Connection* conn, int result)
 {
@@ -87,7 +82,7 @@ void connReadFinished(Connection* conn, int result)
  mConn.recv(&amp;readBuffer, 63);
 }</pre>
 </div>
-<p>We know that weve written data to the server, so now we can wait for the server to respond with the lenght of the data weve sent. There is a char[64] already declared to read the response into. When data has been received, our <strong>connRecvFinished</strong> method will be called.</p>
+<p>We know that we’ve written data to the server, so now we can wait for the server to respond with the lenght of the data we’ve sent. There is a char[64] already declared to read the response into. When data has been received, our <strong>connRecvFinished</strong> method will be called.</p>
 <div>
 <pre class="mosync-code-cpp">void BluetoothClient::connRecvFinished(Connection* conn, int result)
 {
@@ -98,7 +93,7 @@ void connReadFinished(Connection* conn, int result)
  mConn.close();
 }</pre>
 </div>
-<p>We can echo the servers response to the screen, and hopefully it tells us that weve sent six bytes. Now that weve completed our exchange, we can close the connection. Obviously, this is a simple example to demonstrate the process, but all application level protocols can be implemented in this fashion.</p>
+<p>We can echo the server’s response to the screen, and hopefully it tells us that we’ve sent six bytes. Now that we’ve completed our exchange, we can close the connection. Obviously, this is a simple example to demonstrate the process, but all application level protocols can be implemented in this fashion.</p>
 <h2>The Completed Client</h2>
 <p>There is a conversation between the client and the server, but the responses and the actions will depend on the protocol you wish to create. The complete source code follows:</p>
 <div>
