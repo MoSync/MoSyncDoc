@@ -1253,14 +1253,15 @@ def pageSearchTool stringOrRegExp
 end
 
 # One time import and patching of meta tags from Drupal pages.
+# This turned out to become quite truicky because of UTF-8
+# encoding problems. When reading binary data, you need to
+# use force_encoding to get strings in UTF-8. This is used below.
 def patchPagesWithMetaTags
   # Iterate over entries in the page table that
   # are not REDIRECT or IGNORE.
   n = 0
   docPages().each do |page|
     n = n + 1
-	#if n == 32 or n == 39 then
-	
     url = "http://www.mosync.com/" + pageOriginalFile(page)
 	if pageHasLabel?(page, SDK) then
 	  targetFile = "../docs/" + pageTargetFile(page) + "/index.html"
@@ -1275,7 +1276,6 @@ def patchPagesWithMetaTags
 	puts "TargetFile: " + targetFile
 	htmlOnline = netDownloadFile(url)
 	headerTags = helperGetHeaderTags(htmlOnline)
-	#puts "Header tags: " + headerTags
 	
 	# Read file.
 	html = fileReadContent(targetFile)
@@ -1284,14 +1284,14 @@ def patchPagesWithMetaTags
 	match = html.scan(/<title>.*?<\/title>/)
 	if match.size == 1 then
 	  # Replace title tag with meta tags.
-	  html = helperUTF8Conversion(html)
-	  html = html.gsub(/<title>.*?<\/title>/, helperUTF8Conversion(headerTags))
+	  # This is needed because we have read the file in binary format.
+	  html = html.force_encoding("UTF-8")
+	  html = html.gsub(/<title>.*?<\/title>/, headerTags)
 	  # Save target file.
 	  fileSaveContent(targetFile, html)
 	else
 	  puts "UNEXPECTED NUMBER OF TITLE TAGS: " + match.size
 	end
-	#end # if n == 32
   end
 end
 
@@ -1306,14 +1306,6 @@ def helperGetHeaderTags(html)
     metaKeywords + "\n" + 
     title + "\n" +
     "</mosyncheadertags> -->"
-end
-
-def helperUTF8Conversion(str)
-  str.encode(
-	"UTF-8",
-	:invalid => :replace,
-	:undef => :replace,
-	:replace => "")
 end
 
 def helperGetFirstMatch(text, regexp)
