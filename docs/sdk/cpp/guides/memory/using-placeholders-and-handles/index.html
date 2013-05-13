@@ -1,14 +1,19 @@
 <html>
 <head>
-<title>Using Placeholders and Handles</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="In MoSync, you can use handles to refer to data objects, such as binary data, images, audio data, text data and other resources. In this guide we take a look at placeholders — a type of handle that is used to refer to dynamically created resource im memory, and at the syscall functions that manage them." />
+<meta name="dcterms.description" content="In MoSync, you can use handles to refer to data objects, such as binary data, images, audio data, text data and other resources. In this guide we take a look at placeholders — a type of handle that is used to refer to dynamically created resource im memory, and at the syscall functions that manage them." />
+
+<title>Placeholders and Handles to Data Objects in MoSync  | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>Using Placeholders and Handles</h1>
-<p>In MoSync, you can use handles to refer to data objects, such as binary data, images, audio data, text data and other resources. In this guide we take a look at <em>placeholders</em> — a type of handle that is used to refer to dynamically created resource im memory, and at the syscall functions that manage them.</p>
+<p>In MoSync, you can use handles to refer to data objects, such as binary data, images, audio data, text data and other resources. In this guide we take a look at <em>placeholders</em>  a type of handle that is used to refer to dynamically created resource im memory, and at the syscall functions that manage them.</p>
 <p><!--break--></p>
 <p></p>
 <h2>Introduction</h2>
-<p>There are two ways of creating data objects. The first way is to define them as resources in a <a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/adding-resources-mosync-project/index.html">MoSync resource file</a>. (This is what is typically meant when we talk about "resources" — data objects that are bundled with your application.)</p>
+<p>There are two ways of creating data objects. The first way is to define them as resources in a <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/adding-resources-mosync-project/index.html">MoSync resource file</a>. (This is what is typically meant when we talk about "resources"  data objects that are bundled with your application.)</p>
 <p>The second way to create a data object is to create it dynamically in run-time. Dynamically generated data objects and data objects defined in resource files can be used in much the same way by your application.&nbsp; But there are also important differences between them, perhaps the most important being that you can use the MoSync sycall function <strong>maDestroyPlaceholder</strong> to remove placeholders (and associated data) on dynamically allocated data only.</p>
 <h2>Memory organisation</h2>
 <p>A MoSync program has two spaces of memory. The first is <em>C/C++ memory</em> and is the addressable memory that contains the C/C++ heap, stack, and static data. When you use <strong>malloc</strong> or <strong>new</strong>, you allocate data in this memory space. The C/C++ memory space has a fixed size, you set it up in the Eclipse IDE <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/build-configurations/index.html">build settings</a> (or you can alternatively specify this on the command line).</p>

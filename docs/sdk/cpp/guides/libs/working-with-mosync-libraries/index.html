@@ -1,6 +1,11 @@
 <html>
 <head>
-<title>Working with MoSync Libraries and APIs</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="The MoSync code libraries and APIs provide you with thousands of pre-written functions that you can call from within your application. We have both JavaScript and C/C++ libraries and APIs. Here we show how to connect to them from your applications, and provide a brief overview of each." />
+<meta name="dcterms.description" content="The MoSync code libraries and APIs provide you with thousands of pre-written functions that you can call from within your application. We have both JavaScript and C/C++ libraries and APIs. Here we show how to connect to them from your applications, and provide a brief overview of each." />
+<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
+<title>Working with MoSync Libraries and APIs | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>Working with MoSync Libraries and APIs</h1>
@@ -22,13 +27,13 @@
 <h2>Using the MoSync C++ Libraries</h2>
 <p>The MoSync C++ libraries contain high-level classes and functions that you can call from your C/C++ code. To be able to use these libraries you need to reference the appropriate header files in your application using <strong>#include</strong> statements:</p>
 <p><img src="images/libraries1.png" align="none" width="604" height="271"></p>
-<p>Here we are including the header file for <strong>Moblet </strong>(<a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/maui/starting-new-moblet-project/index.html">MoSync's event handling framework</a>) and some header files for MAUI. That will enable us to access to the Moblet code and the MAUI screens and widgets later in our application.</p>
+<p>Here we are including the header file for <strong>Moblet </strong>(<a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/maui/starting-new-moblet-project/index.html">MoSync's event handling framework</a>) and some header files for MAUI. That will enable us to access to the Moblet code and the MAUI screens and widgets later in our application.</p>
 <p>You can get a list of all the header files that you can include in your application by browsing the <strong>Includes </strong>folder in your project in the MoSync SDK:</p>
 <p><img src="images/libraries3.png" align="none" width="607" height="431"></p>
 <p>As well as referencing the header files in your application code, you also need to specify the actual libraries that you want to use in the project's <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/build-configurations/index.html#Build_Settings">Build Settings</a> (<strong>Project </strong>&gt; <strong>Properties </strong>&gt; <strong>MoSync Project</strong> &gt; <strong>Build Settings</strong>):</p>
 <p><img src="images/libraries2_0.png" align="none" width="607" height="719"></p>
 <p>Here we are including the <strong>mautil.lib </strong>library that contains the moblet code and the <strong>maui.lib </strong>library that contains the screen and widget code.</p>
-<p><em>Note that the </em><strong>mastd.lib</strong><em> library is always included in the build — you don't need to specify it in your list of additional libraries.</em></p>
+<p><em>Note that the </em><strong>mastd.lib</strong><em> library is always included in the build  you don't need to specify it in your list of additional libraries.</em></p>
 <p>When you build your application, MoSync's <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/architecture/toolchain/index.html">toolchain </a>links the libraries that are listed in the <strong>Additional Libraries</strong> field and <strong>mastd.lib</strong> with your code:</p>
 <p><img src="images/libraries4.png" align="none" width="641" height="468"></p>
 <h2>The Main C++ Libraries</h2>

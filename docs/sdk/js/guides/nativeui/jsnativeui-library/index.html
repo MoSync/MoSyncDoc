@@ -1,6 +1,11 @@
 <html>
 <head>
-<title>The JavaScript NativeUI API</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="Our JavaScript NativeUI API gives you direct access to native user interface widgets, like nav bars, buttons, tab screens, and list boxes, directly from HTML or JavaScript. Use it standalone, or side-by-side with the other APIs in Wormhole to extend the capabilities of your apps." />
+<meta name="dcterms.description" content="Our JavaScript NativeUI API gives you direct access to native user interface widgets, like nav bars, buttons, tab screens, and list boxes, directly from HTML or JavaScript. Use it standalone, or side-by-side with the other APIs in Wormhole to extend the capabilities of your apps." />
+
+<title>JavaScript API for native widgets on iOS, Android | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>The JavaScript NativeUI API</h1>
@@ -18,7 +23,7 @@
 <p><img src="images/JSNativeUIFirstTab.png" align="none" width="400" height="369"></p>
 <p><img src="images/JSNativeUISecondTab.png" align="none" width="400" height="368"></p>
 <h2>Adding widgets to your application</h2>
-<p>First let’s have a quick look at the example application's index file. All of the Native widgets are &lt;div&gt; tags wrapped inside a main &lt;div&gt; tag with ID “NativeUI”. Then there is a <strong>TabScreen</strong> screen widget which wraps everything else. When initiated the system loads the tag “mainScreen” to the actual screen of the phone.</p>
+<p>First lets have a quick look at the example application's index file. All of the Native widgets are &lt;div&gt; tags wrapped inside a main &lt;div&gt; tag with ID NativeUI. Then there is a <strong>TabScreen</strong> screen widget which wraps everything else. When initiated the system loads the tag mainScreen to the actual screen of the phone.</p>
 <p>There are several widget placed inside this main screen in a specific layout (to figure out what each of them does, refer to the <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/widgetTypes.md.html#Widget%20Types">NativeUI Widget Types</a> documentation). <strong></strong></p>
 <p>&nbsp;</p>
 <pre class="mosync-code-js">&lt;body&nbsp; onload="NativeUI.initUI()"&gt;
@@ -73,7 +78,7 @@
 &nbsp;&nbsp; &nbsp;&lt;/div&gt;
 &lt;/body&gt;
 </pre>
-<p>Now let’s add another Tab to our application. Insert the following code just before the closing &lt;/div&gt; tag of the <strong>TabScreen</strong>:</p>
+<p>Now lets add another Tab to our application. Insert the following code just before the closing &lt;/div&gt; tag of the <strong>TabScreen</strong>:</p>
 <pre class="mosync-code-js">&lt;div data-widgetType="Screen" 
 &nbsp;&nbsp; &nbsp;id="ThirdScreen" 
 &nbsp;&nbsp; &nbsp;data-title="New Screen" 

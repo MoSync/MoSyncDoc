@@ -1,6 +1,11 @@
 <html>
 <head>
-<title>The Capture C API</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="The MoSync Capture C API provides a set of simple C-level functions for accessing the default camera interface on the device and providing the user with a simple interface without you needing to set up a complete user interface in your application. (This API is also used under-the-hood by the Wormhole JavaScript Library's Capture API.)" />
+<meta name="dcterms.description" content="The MoSync Capture C API provides a set of simple C-level functions for accessing the default camera interface on the device and providing the user with a simple interface without you needing to set up a complete user interface in your application. (This API is also used under-the-hood by the Wormhole JavaScript Library's Capture API.)" />
+
+<title>The Capture C API | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>The Capture C API</h1>
@@ -9,20 +14,20 @@
 <p></p>
 <h2>Capture API functions</h2>
 <p>The MoSync Capture API consists of a set of low-level syscall functions:</p>
-<p><strong>maCaptureSetProperty</strong> — Sets capture properties.</p>
-<p><strong>maCaptureGetProperty</strong> — Retrieves capture properties.</p>
-<p><strong>maCaptureAction</strong> — Opens the camera application of the device, to record a video or take a photograph. The parameter given to maCaptureAction can be one of the following:</p>
+<p><strong>maCaptureSetProperty</strong>  Sets capture properties.</p>
+<p><strong>maCaptureGetProperty</strong>  Retrieves capture properties.</p>
+<p><strong>maCaptureAction</strong>  Opens the camera application of the device, to record a video or take a photograph. The parameter given to maCaptureAction can be one of the following:</p>
 <ul>
-<li>MA_CAPTURE_ACTION_RECORD_VIDEO — Starts video capture.</li>
-<li>MA_CAPTURE_ACTION_STOP_RECORDING — Stops capture (on iOS only).</li>
-<li>MA_CAPTURE_ACTION_TAKE_PICTURE — Starts image capture.</li>
+<li>MA_CAPTURE_ACTION_RECORD_VIDEO  Starts video capture.</li>
+<li>MA_CAPTURE_ACTION_STOP_RECORDING  Stops capture (on iOS only).</li>
+<li>MA_CAPTURE_ACTION_TAKE_PICTURE  Starts image capture.</li>
 </ul>
 <p>The operation is asynchronous, the result is delivered in an event of type EVENT_TYPE_CAPTURE. The content of the event is an MACaptureEventData data structure. The type field contains the type of capture event (MA_CAPTURE_EVENT_TYPE_IMAGE, MA_CAPTURE_EVENT_TYPE_VIDEO, MA_CAPTURE_EVENT_TYPE_CANCEL), and the handle field contains a handle to the capture object.</p>
 <p>Save a captured image using function maCaptureWriteImage. Access a captured video using function maCaptureGetVideoPath. Free the capture object using function maCaptureDestroyData.<br><br>Note: The image format for MA_CAPTURE_EVENT_TYPE_IMAGE is JPEG on Android and PNG on iOS.</p>
-<p><strong>maCaptureImageDataToFile</strong> — Saves a captured image to a file.</p>
-<p><strong>maCaptureGetVideoPath</strong> — Gets full path to a recorded video.</p>
-<p><strong>maCaptureGetImagePath</strong> — Gets full path to a taken picture (available on Android only).</p>
-<p><strong>maCaptureDestroyData</strong> — Destroys a image/video data object.</p>
+<p><strong>maCaptureImageDataToFile</strong>  Saves a captured image to a file.</p>
+<p><strong>maCaptureGetVideoPath</strong>  Gets full path to a recorded video.</p>
+<p><strong>maCaptureGetImagePath</strong>  Gets full path to a taken picture (available on Android only).</p>
+<p><strong>maCaptureDestroyData</strong>  Destroys a image/video data object.</p>
 <h2>Capture API properties</h2>
 <ul>
 <li>MA_CAPTURE_MAX_DURATION in seconds.</li>
@@ -33,9 +38,9 @@
 </ul>
 <h2>Capture API events</h2>
 <ul>
-<li>MA_CAPTURE_EVENT_TYPE_IMAGE — Sent after a image has been taken.</li>
-<li>MA_CAPTURE_EVENT_TYPE_VIDEO — Sent after a video has been taken.</li>
-<li>MA_CAPTURE_EVENT_TYPE_CANCEL — Sent if the user cancels taking image/video.</li>
+<li>MA_CAPTURE_EVENT_TYPE_IMAGE  Sent after a image has been taken.</li>
+<li>MA_CAPTURE_EVENT_TYPE_VIDEO  Sent after a video has been taken.</li>
+<li>MA_CAPTURE_EVENT_TYPE_CANCEL  Sent if the user cancels taking image/video.</li>
 </ul>
 <h2>Taking a picture with the Capture API</h2>
 <p>1. Launch image capture user interface:<strong></strong></p>

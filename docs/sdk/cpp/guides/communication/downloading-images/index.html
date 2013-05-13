@@ -1,0 +1,174 @@
+<html>
+<head>
+<!-- <mosyncheadertags>
+<meta name="description" content="Often when using images in MoSync, then the images are available to you as a developer, and you can package them with your application, as described in the tutorial 'Adding Resources to a Project'.  However, there will be many scenarios where you want to show a picture you've not been able to package.  " />
+<meta name="dcterms.description" content="Often when using images in MoSync, then the images are available to you as a developer, and you can package them with your application, as described in the tutorial 'Adding Resources to a Project'.  However, there will be many scenarios where you want to show a picture you've not been able to package.  " />
+<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
+<title>Downloading Images from the Internet | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
+</head>
+<body>
+<h1>Downloading Images from the Internet</h1>
+<p>Often when using images in MoSync, then the images are available to you as a developer, and you can package them with your application, as described in the tutorial '<a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/adding-resources-mosync-project/index.html">Adding Resources to a Project</a>'. &nbsp;However, there will be many scenarios where you want to show a picture you've not been able to package. &nbsp;<!--break-->This may be because there are &nbsp;too many pictures, or you are responding to user input. &nbsp;An image search of Google or Bing would be an example of this, there you cannot possibly know what the user is going to search for, nor could you package the images in advance.</p>
+<h2>The ImageDownloader</h2>
+<p>There is a class which has been specifically created to remove some of the complexities of downloading images from the Web. &nbsp;The <strong>ImageDownloader</strong>&nbsp;class is defined in <strong>MAUtil/Downloader.h</strong>, and will create an image resource for you. &nbsp;To use the <strong>ImageDownloader</strong>, you will need to create a new class which inherits from <strong>DownloadListener</strong>. &nbsp;By doing this, your program will be informed when the image has downloaded and is ready to display.</p>
+<pre class="mosync-code-cpp">/**
+ * @file DownloadImage.cpp
+ *
+ * This program downloads and displays an Image file from the Internet.
+ *
+ * Todo: You need to goto Project -&gt; Properties -&gt; Build Settings and
+ * add MAUtil.lib, MAUI.lib libraries in Additional Libraries.
+ *
+ * @author Sam Pickard, Naveed Asif
+ */
+
+#include &lt;MAUtil/Moblet.h&gt;
+#include &lt;MAUI/Screen.h&gt;
+#include &lt;MAUI/Image.h&gt;
+#include &lt;MAUtil/Downloader.h&gt;
+#include &lt;conprint.h&gt;
+
+using namespace MAUtil;
+using namespace MAUI;
+
+/*
+ * Class that downloads an image file from
+ * the Internet.
+ */
+class MyScreen :
+    public Screen,
+    DownloadListener
+{
+public:
+
+    MyScreen()
+    {
+        // Message: Starting application.
+        lprintfln("Starting application");
+
+        // A new instance of ImageDownloader is created.
+        mImageDownloader = new ImageDownloader();
+        mImageDownloader-&gt;addDownloadListener(this);
+        mImageResource = maCreatePlaceholder();
+
+        // Message: Starting download.
+        lprintfln("Starting download");
+
+        // The image shall be downloaded from the following url.
+        mImageDownloader-&gt;beginDownloading(
+            "http://shop.abc.net.au/multimediaitems/images/product_images/4/482912.png",
+            mImageResource);
+    }
+
+    /*
+     * The destructor.
+     */
+    virtual ~MyScreen()
+    {
+        delete mImageDownloader;
+        maDestroyObject(mImageResource);
+    }
+
+    /*
+     * The function is fired in case of download cancellation.
+     */
+    void downloadCancelled(Downloader* downloader)
+    {
+        lprintfln("Cancelled");
+    }
+
+    /*
+     * Method displays error code in case of error in downloading.
+     */
+    void error(Downloader* downloader, int code)
+    {
+        lprintfln("Error: %d", code);
+    }
+
+    /*
+     * On successful download completion, the image file is shown on screen.
+     */
+    void finishedDownloading(Downloader* downloader, MAHandle data)
+    {
+        lprintfln("Completed download");
+
+        // Create a new image on screen with this picture.
+        Image* myImage = new Image(0, 0, 240, 320, NULL, false, false, mImageResource);
+        this-&gt;setMain(myImage);
+        this-&gt;show();
+    }
+
+    /*
+     * Notifies download progress.
+     */
+    void notifyProgress(
+        Downloader* downloader,
+        int downloadedBytes,
+        int totalBytes)
+    {
+        lprintfln("Downloaded %d of %d bytes", downloadedBytes, totalBytes);
+    }
+
+private:
+    ImageDownloader* mImageDownloader;
+    MAHandle mImageResource;
+};
+
+/*
+ * Moblet for the image download.
+ */
+class MAUIMoblet : public Moblet
+{
+public:
+    MAUIMoblet()
+    {
+        // Create the screen.
+        mScreen = new MyScreen();
+        mScreen-&gt;show();
+    }
+
+    /*
+     * Key press events are handled here.
+     */
+    void keyPressEvent(int keyCode)
+    {
+        if(keyCode == MAK_0 || keyCode == MAK_BACK)
+        {
+            maExit(0);
+        }
+    }
+
+    void keyReleaseEvent(int keyCode)
+    {
+        // todo: handle key releases
+    }
+
+    /*
+     * The destructor.
+     */
+    virtual ~MAUIMoblet()
+    {
+        delete mScreen;
+    }
+
+private:
+    MyScreen* mScreen;
+};
+
+/**
+ * Main function that starts the program.
+ */
+extern "C" int MAMain()
+{
+    Moblet::run(new MAUIMoblet());
+    return 0;
+}
+</pre>
+<p>In this example, the <strong>DownloadListener</strong>&nbsp;is also a <strong>MAUI Screen</strong>&nbsp;class. &nbsp;When the <strong>finishedDownloading</strong>&nbsp;method is called, the <strong>MAHandle</strong>&nbsp;'data' contains a handle to the downloaded image. &nbsp;You can then display this as any other <strong>MAUI</strong>&nbsp;image, or in a game or a C application, you can use the function <strong>maDrawImage()</strong>.</p>
+<p>If you tried this with a&nbsp;<strong>Downloader&nbsp;</strong>object instead of an&nbsp;<strong>ImageDownloader</strong>, youll get an Invalid Resource Type error message when you tried to create the image.&nbsp; Instead, youd need to call:</p>
+<pre>maCreateImageFromData(h, source, position, imageLength);
+</pre>
+<p>to covert the resource type for you.</p>
+</body>
+</html>

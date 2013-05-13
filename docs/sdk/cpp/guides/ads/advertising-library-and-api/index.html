@@ -1,6 +1,11 @@
 <html>
 <head>
-<title>The Advertising Library and API</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="The MoSync Advertising C++ Library and Advertising C API make it easy for C/C++ programmer's to create advertisements and display them in mobile applications. You can get and set properties to determine if the advertisement should be visible in a certain context." />
+<meta name="dcterms.description" content="The MoSync Advertising C++ Library and Advertising C API make it easy for C/C++ programmer's to create advertisements and display them in mobile applications. You can get and set properties to determine if the advertisement should be visible in a certain context." />
+
+<title>Advertising classes and functions for mobile apps in MoSync | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>The Advertising Library and API</h1>
@@ -17,12 +22,12 @@
 <h2>The MoSync C++ Advertising Library</h2>
 <p>At the C++ level we have created a simple library contains two classes:</p>
 <ul>
-<li><strong>Banner</strong> — Provides a widget that displays advertisement to the user. When the user taps a banner, it triggers an action programmed into the advertisement. Your application is notified when an action starts or stops. This class requires our <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-nativeui-library/index.html">NativeUI Library</a>; it can only be added to a <strong>NativeUI</strong> layout object.</li>
+<li><strong>Banner</strong>  Provides a widget that displays advertisement to the user. When the user taps a banner, it triggers an action programmed into the advertisement. Your application is notified when an action starts or stops. This class requires our <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-nativeui-library/index.html">NativeUI Library</a>; it can only be added to a <strong>NativeUI</strong> layout object.</li>
 </ul>
 <ul>
-<li><strong>BannerListener</strong> —&nbsp; Provides methods for handling any changes in a <strong>Banner</strong> object. The class’s methods are called when a new advertisement is loaded, when a user interacts with an advertisement, and when errors occur.</li>
+<li><strong>BannerListener</strong> &nbsp; Provides methods for handling any changes in a <strong>Banner</strong> object. The classs methods are called when a new advertisement is loaded, when a user interacts with an advertisement, and when errors occur.</li>
 </ul>
-<p>The Advertising Library really makes developer’s life really easy: only three lines of code are needed to get a banner working inside your application:</p>
+<p>The Advertising Library really makes developers life really easy: only three lines of code are needed to get a banner working inside your application:</p>
 <pre class="mosync-code-cpp">Banner* banner = new Banner("yourPublisherID");
 banner-&gt;requestContent(true);
 aLayout-&gt;addBanner(banner);</pre>
@@ -31,22 +36,22 @@ aLayout-&gt;addBanner(banner);</pre>
 <h2>The MoSync C Advertising API</h2>
 <p>The Advertising Library makes use of the set of C functions in the Advertising API:</p>
 <ul>
-<li><strong>maAdsBannerCreate</strong>&nbsp;— Creates a new banner. (Publisher ID required for Android.)</li>
-<li><strong>maAdsBannerDestroy</strong> — Destroy a banner.</li>
-<li><strong>maAdsAddBannerToLayout</strong> — Add a banner to a layout widget (requires the MoSync NativeUI).</li>
-<li><strong>maAdsRemoveBannerFromLayout</strong> — Remove a banner from a layout widget.</li>
-<li><strong>maAdsBannerSetProperty</strong> — Set a banner property value.</li>
-<li><strong>maAdsBannerGetProperty</strong> — Get a banner property value.</li>
+<li><strong>maAdsBannerCreate</strong>&nbsp; Creates a new banner. (Publisher ID required for Android.)</li>
+<li><strong>maAdsBannerDestroy</strong>  Destroy a banner.</li>
+<li><strong>maAdsAddBannerToLayout</strong>  Add a banner to a layout widget (requires the MoSync NativeUI).</li>
+<li><strong>maAdsRemoveBannerFromLayout</strong>  Remove a banner from a layout widget.</li>
+<li><strong>maAdsBannerSetProperty</strong>  Set a banner property value.</li>
+<li><strong>maAdsBannerGetProperty</strong>  Get a banner property value.</li>
 </ul>
 <p>Ad banner properties that can be got/set include:</p>
 <ul>
-<li>MA_ADS_HEIGHT — Get height.</li>
-<li>MA_ADS_WIDTH — Get width.</li>
-<li>MA_ADS_VISIBLE — Set/get visible status. Layouts will ignore invisible banners.</li>
-<li>MA_ADS_ENABLED — Set/get enables status.</li>
-<li>MA_ADS_TEST_DEVICE — Set device to recieve test ads.</li>
-<li>MA_ADS_REQUEST_CONTENT — Set request status.</li>
-<li>MA_ADS_IS READY — Returns true if the ad is sucessfully loaded and ready to display.</li>
+<li>MA_ADS_HEIGHT  Get height.</li>
+<li>MA_ADS_WIDTH  Get width.</li>
+<li>MA_ADS_VISIBLE  Set/get visible status. Layouts will ignore invisible banners.</li>
+<li>MA_ADS_ENABLED  Set/get enables status.</li>
+<li>MA_ADS_TEST_DEVICE  Set device to recieve test ads.</li>
+<li>MA_ADS_REQUEST_CONTENT  Set request status.</li>
+<li>MA_ADS_IS READY  Returns true if the ad is sucessfully loaded and ready to display.</li>
 </ul>
 <p>For full details of the Advertising API functions and properties, see the <a href="http://www.mosync.com/files/imports/doxygen/latest/html/index.html">MoSync API Reference</a>.</p>
 <p>&nbsp;</p>

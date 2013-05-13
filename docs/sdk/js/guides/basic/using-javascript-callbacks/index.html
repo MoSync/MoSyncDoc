@@ -1,6 +1,11 @@
 <html>
 <head>
-<title>Using JavaScript Callbacks</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="Callback functions are very common in JavaScript, because JavaScript in the browser is single-threaded. Working with callbacks is an important part of your skillset as an app developer. This beginner's tutorial introduces callbacks and looks at their use within the MoSync Application Framework." />
+<meta name="dcterms.description" content="Callback functions are very common in JavaScript, because JavaScript in the browser is single-threaded. Working with callbacks is an important part of your skillset as an app developer. This beginner's tutorial introduces callbacks and looks at their use within the MoSync Application Framework." />
+
+<title>JavaScript Callbacks and Closures | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>Using JavaScript Callbacks</h1>
@@ -8,7 +13,7 @@
 <p></p>
 <h2>What is a Callback?</h2>
 <p>When a call is made to an entity that is external to your JavaScript code, like for example a server, your code cannot usually afford to wait for a reply because that reply may be several seconds in coming. Furthermore, there are likely to be other calls that need to be made without delay and you just cannot hang around waiting for something that may or may not happen.</p>
-<p>Suppose you call a function that explicitly returns a value, and that return just never happens? You code will simply hang, waiting for forever for a return value that never arrives.<br> <br>The solution to this problem is to use callbacks&nbsp;— that is to pass along with the call to the server a JavaScript function that the server should invoke whenever the result is ready.<br> <br>We make extensive use of callbacks throughout the <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/index.html">MoSync Wormhole JavaScript API</a>; a call through Wormhole to the underlying C++ code behaves in the same way as a call to a server: letting you (or requiring you) to specify a callback function when you make the call. <br><br></p>
+<p>Suppose you call a function that explicitly returns a value, and that return just never happens? You code will simply hang, waiting for forever for a return value that never arrives.<br> <br>The solution to this problem is to use callbacks&nbsp; that is to pass along with the call to the server a JavaScript function that the server should invoke whenever the result is ready.<br> <br>We make extensive use of callbacks throughout the <a href="http://www.mosync.com/files/imports/doxygen/latest/html5/index.html">MoSync Wormhole JavaScript API</a>; a call through Wormhole to the underlying C++ code behaves in the same way as a call to a server: letting you (or requiring you) to specify a callback function when you make the call. <br><br></p>
 <h2>A Simple Callback</h2>
 <p>One of the most common implementations of a callback that you are likely to encounter is found in the standard JavaScript <strong>addEventListener</strong> function which you can be attach to many different targets. This function has the general syntax:</p>
 <pre class="mosync-code-cpp">target.addEventListener(event-type, callback);
@@ -33,7 +38,7 @@ myButton1.addEventListener("Clicked", buttonCallback);
 myButton2.addEventListener("Clicked", buttonCallback);</pre>
 <p>&nbsp;</p>
 <h2>A Typical Wormhole Callback Function</h2>
-<p>In the code above we didn’t do anything useful with the notification coming from the event listener, we just popped-up an alert when the notification arrived. Let’s look at a callback function that actually does something useful with the data in the notification object.</p>
+<p>In the code above we didnt do anything useful with the notification coming from the event listener, we just popped-up an alert when the notification arrived. Lets look at a callback function that actually does something useful with the data in the notification object.</p>
 <p>In the following example, the callback function (<strong>updateAccelerometer</strong>) handles data coming from the accelerometer sensor:</p>
 <pre class="mosync-code-js">// Initialization of the Accelerometer sensor.
 var accelerometer = new SensorConnection("Accelerometer");
@@ -52,10 +57,10 @@ function updateAccelerometer(sensorData)
    console.log("Z:" + sensorData.data.z);
 }
 </pre>
-<p>The <strong>updateAccelerometer</strong> function gets a call back whenever an <strong>onsensordata</strong> event is heard by the event listener. The function processes the three acceleration vectors and sends them to the console log window.<br><br>Obviously, if the <strong>onsensordata</strong> event never occurs, the <strong>updateAccelerometer</strong> function will never get called&nbsp;— but that is something which you will need to think about and handle elsewhere in your code.</p>
+<p>The <strong>updateAccelerometer</strong> function gets a call back whenever an <strong>onsensordata</strong> event is heard by the event listener. The function processes the three acceleration vectors and sends them to the console log window.<br><br>Obviously, if the <strong>onsensordata</strong> event never occurs, the <strong>updateAccelerometer</strong> function will never get called&nbsp; but that is something which you will need to think about and handle elsewhere in your code.</p>
 <p>&nbsp;</p>
 <h2>Defining Functions with Callback Arguments</h2>
-<p>So far we have been looking at the "client" side where the call originates and the callback function is defined. Now let’s look at the other side, where the original call gets processed, and from where the callback is invoked.<br> <br>Here is a simple maths function that generates a random number between two values, <strong>min</strong> and <strong>max</strong>, and passes the result to a callback function:</p>
+<p>So far we have been looking at the "client" side where the call originates and the callback function is defined. Now lets look at the other side, where the original call gets processed, and from where the callback is invoked.<br> <br>Here is a simple maths function that generates a random number between two values, <strong>min</strong> and <strong>max</strong>, and passes the result to a callback function:</p>
 <pre class="mosync-code-cpp">function randomGenerator(min, max, callback)
 {
    var myNumber = Math.floor(Math.random() * (max - min + 1)) + min;

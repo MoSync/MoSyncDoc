@@ -1,6 +1,11 @@
 <html>
 <head>
-<title>Reading Sensors from JavaScript</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="One great feature of our Wormhole JavaScript Library is its ability to retrieve data from the device's sensors using just standard JavaScript code and HTML5 markup. In this tutorial we will show you a simple sensor-driven app that makes use of the HTML5 &lt;canvas&gt; tag." />
+<meta name="dcterms.description" content="One great feature of our Wormhole JavaScript Library is its ability to retrieve data from the device's sensors using just standard JavaScript code and HTML5 markup. In this tutorial we will show you a simple sensor-driven app that makes use of the HTML5 &lt;canvas&gt; tag." />
+
+<title>Reading Sensors from JavaScript | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>Reading Sensors from JavaScript</h1>
@@ -17,7 +22,7 @@
 <pre class="mosync-code-cpp">&lt;body onload="initialize()"&gt;
    &lt;canvas id="tutorial"&gt;&lt;/canvas&gt;
 &lt;/body&gt;</pre>
-<p>We add an <strong>onload</strong> callback in the &lt;body&gt; tag to calls our <strong>initialize()</strong> function which is responsible for setting up several standard things — like listening to the <strong>Back</strong> button on devices that have one, and waiting for the <strong>ondeviceready</strong> event. <br><br>When the device is ready we set up our application-specific things. First we get the context to our canvas and resize the canvas to be the size of the screen (as we want this app to be a full screen canvas app.)<br><br>Next we initialize the variables that will hold our target angle and current angle retrieved from the accelerometer. <br><br>We continue by setting up the accelerometer. First we create a <strong>SensorConnection</strong> object of type <strong>Accelerometer</strong>. Then we attach a callback to it that gets invoked whenever new sensor data is available (in our case this callback function is called <strong>updateAccelerometer</strong>). <br><br>Next we start the accelerometer by invoking the method <strong>startWatch</strong> of the SensorConnection object. It takes one argument: a map of properties to be set. We are only interested in specifying the rate it should deliver sensor data. This is an element with the key interval and a number which specifies the rate in milliseconds. Finally we load the images in sequence in order to make sure all images are loaded before we start to draw them.<br><br>Here is our completed HTML/JavaScript code:</p>
+<p>We add an <strong>onload</strong> callback in the &lt;body&gt; tag to calls our <strong>initialize()</strong> function which is responsible for setting up several standard things  like listening to the <strong>Back</strong> button on devices that have one, and waiting for the <strong>ondeviceready</strong> event. <br><br>When the device is ready we set up our application-specific things. First we get the context to our canvas and resize the canvas to be the size of the screen (as we want this app to be a full screen canvas app.)<br><br>Next we initialize the variables that will hold our target angle and current angle retrieved from the accelerometer. <br><br>We continue by setting up the accelerometer. First we create a <strong>SensorConnection</strong> object of type <strong>Accelerometer</strong>. Then we attach a callback to it that gets invoked whenever new sensor data is available (in our case this callback function is called <strong>updateAccelerometer</strong>). <br><br>Next we start the accelerometer by invoking the method <strong>startWatch</strong> of the SensorConnection object. It takes one argument: a map of properties to be set. We are only interested in specifying the rate it should deliver sensor data. This is an element with the key interval and a number which specifies the rate in milliseconds. Finally we load the images in sequence in order to make sure all images are loaded before we start to draw them.<br><br>Here is our completed HTML/JavaScript code:</p>
 <pre class="mosync-code-cpp">&lt;!DOCTYPE html&gt;
 &lt;!--
 * @file index.html

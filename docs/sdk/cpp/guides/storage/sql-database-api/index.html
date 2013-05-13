@@ -1,6 +1,11 @@
 <html>
 <head>
-<title>The Database C API</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="The MoSync Database API provides a set of syscall functions that enable you to create and access databases from your C/C++ code using the SQL query language. The Database API makes use of the SQLite database manager." />
+<meta name="dcterms.description" content="The MoSync Database API provides a set of syscall functions that enable you to create and access databases from your C/C++ code using the SQL query language. The Database API makes use of the SQLite database manager." />
+
+<title>Database API - a user's guide | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>The Database C API</h1>
@@ -10,16 +15,16 @@
 </blockquote><h2>Database API functions</h2>
 <p>The <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___d_b_a_p_i.html">MoSync Database API</a> consists of a set of low-level syscall functions:</p>
 <ul>
-<li><strong></strong><strong>maDBOpen</strong> — Opens a database file. The database is created if it does not exist.</li>
-<li><strong>maDBClose </strong>— Closes a database.&nbsp;</li>
-<li><strong>maDBExecSQL </strong>— Executes an SQL statement. If the statement returns a query result, a cursor handle is returned.</li>
-<li><strong>maDBExecSQLParams </strong><strong> </strong>— Executes a parameterized SQL statement.</li>
-<li><strong>maDBCursorDestroy </strong>— Deallocates a cursor returned by <strong>maDBExecSQL</strong> or <strong>maDBExecSQLParams</strong>.</li>
+<li><strong></strong><strong>maDBOpen</strong>  Opens a database file. The database is created if it does not exist.</li>
+<li><strong>maDBClose </strong> Closes a database.&nbsp;</li>
+<li><strong>maDBExecSQL </strong> Executes an SQL statement. If the statement returns a query result, a cursor handle is returned.</li>
+<li><strong>maDBExecSQLParams </strong><strong> </strong> Executes a parameterized SQL statement.</li>
+<li><strong>maDBCursorDestroy </strong> Deallocates a cursor returned by <strong>maDBExecSQL</strong> or <strong>maDBExecSQLParams</strong>.</li>
 <li><strong>maDBCursorNext </strong>Move the cursor to the next row in the result set. You must call this function before retrieving column data (the initial position of the cursor is before the first row).</li>
-<li><strong>maDBCursorGetColumnData </strong>— Get a field value in the current row as a data handle.<strong>&nbsp;</strong></li>
-<li><strong>maDBCursorGetColumnText </strong>— Get a field value in the current row as a text buffer (note that the string is NOT zero terminated).<strong>&nbsp;</strong></li>
-<li><strong>maDBCursorGetColumnInt </strong>— Get a field value in the current row as an integer.<strong>&nbsp;</strong></li>
-<li><strong>maDBCursorGetColumnDouble </strong>— Get a field value in the current row as a double.</li>
+<li><strong>maDBCursorGetColumnData </strong> Get a field value in the current row as a data handle.<strong>&nbsp;</strong></li>
+<li><strong>maDBCursorGetColumnText </strong> Get a field value in the current row as a text buffer (note that the string is NOT zero terminated).<strong>&nbsp;</strong></li>
+<li><strong>maDBCursorGetColumnInt </strong> Get a field value in the current row as an integer.<strong>&nbsp;</strong></li>
+<li><strong>maDBCursorGetColumnDouble </strong> Get a field value in the current row as a double.</li>
 </ul>
 <h2>General usage</h2>
 <p>These are the main steps you need to follow when you use the Database API:</p>

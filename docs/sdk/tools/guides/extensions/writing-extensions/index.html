@@ -1,6 +1,11 @@
 <html>
 <head>
-<title>Writing Extensions for MoSync</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="We encourage everyone to help us develop MoSync, and writing new extensions for MoSync is probably the most common thing you will want to do. In this topic we introduce you to some important core concepts that you need to understand and lead you step-by-step through creating an API extension." />
+<meta name="dcterms.description" content="We encourage everyone to help us develop MoSync, and writing new extensions for MoSync is probably the most common thing you will want to do. In this topic we introduce you to some important core concepts that you need to understand and lead you step-by-step through creating an API extension." />
+<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
+<title>Writing Extensions for MoSync | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>Writing Extensions for MoSync</h1>
@@ -21,13 +26,13 @@
 <h3>maapi.idl and Pipe-Tool</h3>
 <p>Any syscall starts its life in a file called <strong>maapi.idl</strong><span style="line-height: 21px; font-size: 14px;"><span style="line-height: 18px; font-size: 12px;">. Here all syscalls, events, and event types (among other things) are defined. To minimize the amount of code redundancy, we have created a tool called <strong>idl2</strong> which takes the <em>maapi.idl </em>file and generates several important files:</span></span></p>
 <ul>
-<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>$MOSYNCDIR/bin/asm_config.lst</em> — the file used by Pipe-Tool to recognise syscalls</span></span></li>
-<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>runtimes/java/shared/invoke_syscall_java.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">— </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">the inner part of switch case which handles different syscalls for the java runtimes</span></span></li>
-<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>runtimes/cpp/core/invoke_syscall_cpp.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">— </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">the inner part of switch case which handles different syscalls for the c++ runtimes</span></span></li>
-<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>runtimes/java/shared/generated/core_consts.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">— </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">opcodes and such for java runtimes</span></span></li>
-<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>runtimes/java/shared/generated/maapi_consts.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">— </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">constants in the <em>maapi.idl</em> file</span></span></li>
-<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>intlibs/helpers/cpp_defs.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">— </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">constants and structs in the <em>maapi.idl</em> file, for the C++ runtimes</span></span></li>
-<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>intlibs/helpers/cpp_maapi.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">— </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">all the syscall declarations for the C++ runtimes</span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>$MOSYNCDIR/bin/asm_config.lst</em>  the file used by Pipe-Tool to recognise syscalls</span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>runtimes/java/shared/invoke_syscall_java.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">the inner part of switch case which handles different syscalls for the java runtimes</span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>runtimes/cpp/core/invoke_syscall_cpp.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">the inner part of switch case which handles different syscalls for the c++ runtimes</span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>runtimes/java/shared/generated/core_consts.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">opcodes and such for java runtimes</span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>runtimes/java/shared/generated/maapi_consts.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">constants in the <em>maapi.idl</em> file</span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>intlibs/helpers/cpp_defs.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">constants and structs in the <em>maapi.idl</em> file, for the C++ runtimes</span></span></li>
+<li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"><em>intlibs/helpers/cpp_maapi.h</em> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;"> </span></span><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">all the syscall declarations for the C++ runtimes</span></span></li>
 </ul>
 <div>
 <span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">The <strong>idl2 </strong>tool also generates a set of files with the string "<em>_IX_</em>" in their filename. These are extensions that have been implemented through the <strong>maIOCtl </strong>syscall. To the MoSync GCC, a syscall is the same as just a normal function call. It is completely unaware of the concept syscall. Recognising syscalls and patching the binary code with the syscall opcode is the job of pipetool. The way it recognises the syscalls is quite simple, it looks at the generated asm_config file to see if a function call is actually a syscall or not. If it is, then its call opcode is replaced with a syscall opcode.</span></span></div>
@@ -75,7 +80,7 @@
 </div>
 <div>
 <p>In this example we will write a simple extension as an <strong>maIOCtl</strong>, we will pass a structure with 16 chars in it, and will return the same chars through an event.</p>
-<h3>Step 1 — Editing tools/idl2/maapi.idl</h3>
+<h3>Step 1  Editing tools/idl2/maapi.idl</h3>
 </div>
 <p>We need to make four changes in this file:</p>
 <ul>
@@ -237,7 +242,7 @@ struct MAEvent {
  <span style="white-space: pre;"> </span>int maSyscallTutorial(in MAString data);
 #endif //IX_TUTORIAL</pre>
 <p>where <strong>MAString </strong>is a defined as '<span style="font-family: 'courier new',courier;">typedef char* MAString'</span> at the top of the <em>maapi.idl</em> file.</p>
-<h3>Step 2 — Running the idl2 tool</h3>
+<h3>Step 2  Running the idl2 tool</h3>
 <p>Now that we've made actual changes to the syscall interface, we need to regenerate all the auto generated files that have to do with syscalls. In Visual Studio, build <em>tools/idl2</em> and run it. Your output should look like <a href="/system/files/idl2_output.txt"><strong>this</strong></a>,</p>
 <p>If you instead get this:</p>
 <pre>D:\workspace\repo-new\MoSync2.3\tools\idl2&gt;Debug\idl2.exe
@@ -279,7 +284,7 @@ static inline int maSyscallTutorial(const char* data) {
 #endif    //IX_TUTORIAL_H
 </pre>
 <p>As you see, this file is a bit different, there is an actual C function in there, this is because we wrote our new syscall/extension in the <strong>maIOCtl </strong>block. The <strong>idl2 </strong>tool knows that anything inside that block is not an actual syscall, but goes through the <strong>maIOCtl </strong>syscall. The first parameter is the <strong>maIOCtl ID</strong>, and in the previous file you can see that the preproccesor define "maIOCtl_maSyscallTutorial" is set to 247, which is quite practical and the reason that the previously discussed hash is needed to make sure that both the user libraries and the runtime agree on the same syscall interface.</p>
-<h3>Step 3 — Add your implementation in the runtimes you need</h3>
+<h3>Step 3  Add your implementation in the runtimes you need</h3>
 <p>&nbsp;</p>
 <p>By this point, we have all the parts in place to do the <strong>maIOCtl </strong>on the user side. &nbsp;Now you need to write the code on the runtime side which actually handles the <strong>IOCtl</strong>. In this document, the only runtime we will modify is MoRE, but modifying the other runtimes is similar.</p>
 <p>In the source directory, there exists a file <em>runtime/cpp/platforms/sdl/SyscallImpl.cpp</em>, this file handles all the syscalls in the SDL runtime (MoRE). In the Visual Studio project you can find it under <em>Platforms/cpp/sdl/SyscallImpl.cpp</em>. Open it, and add the include "#include &lt;helpers/CPP_IX_TUTORIAL.h&gt;", this will include the definitions that have to do with our example.</p>
@@ -306,7 +311,7 @@ static inline int maSyscallTutorial(const char* data) {
         }            </pre>
 <p>Let's go through the parts of this code. Firstly, a pointer to the argument that was passed to the <strong>maIOCtl </strong>from the user side, is fetched. The method <strong>GetValidatedMemRange </strong>takes a pointer to the user side memory and the number of bytes that the pointer points to. If the memory is valid, a pointer will be returned. Otherwise a panic will occur. &nbsp;Secondly, the event type is set and the ASCIIZ string passed by the user is copied to the event structure. Thirdly, the event is put in the event queue, from where it can be fetched by the user through the <strong>maGetEvent </strong>syscall. And lastly, we return from the <strong>maIOCtl </strong>syscall.</p>
 <p>Assuming that you have Visual Studio correctly set up and you can build MoRE, rebuild MoRE. The executable will be copied to your MoSync installation path (<em>MOSYNCDIR/bin</em>).</p>
-<h3>Step 4 — Rebuilding all the user libraries</h3>
+<h3>Step 4  Rebuilding all the user libraries</h3>
 <p>This step is very important. Any change you make to the IDL file might change the binary interface of syscalls (specfically syscall IDs).&nbsp;Because&nbsp;of this there is a hash in the generated <em>maapi.h</em> file that is verified against the runtime to make sure the user code and the runtime have been built with the same interface. So we need to remove all the old files and rebuild the libs:</p>
 <ol>
 <li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">In your MoSync installation dir (let's call it <em>MOSYNCDIR</em>), delete <em>include/*</em></span></span></li>
@@ -315,7 +320,7 @@ static inline int maSyscallTutorial(const char* data) {
 <li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">ruby workfile.rb</span></span></li>
 <li><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">ruby workfile.rb CONFIG=""</span></span></li>
 </ol>
-<h3>Step 5 — Trying it out</h3>
+<h3>Step 5  Trying it out</h3>
 <p>If you have gotten everything to work this far, there should be only one last step remaining, and that is to actually test that it works as expected. In the MoSync IDE, create a project and create in it a file called <em>main.c</em> containing the following code:</p>
 <pre>#include &lt;ma.h&gt;
 #include &lt;IX_TUTORIAL.h&gt;

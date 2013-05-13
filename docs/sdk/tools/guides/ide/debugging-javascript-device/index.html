@@ -1,6 +1,11 @@
 <html>
 <head>
-<title>Debugging JavaScript in the MoSync SDK</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="The MoSync IDE features a fully-featured debugger for JavaScript code. You can set breakpoints in your code, install and run your application package on a device, and then see the code as it executes in the MoSync IDE. To use the debugger you need to use the Debug build configuration when building your package." />
+<meta name="dcterms.description" content="The MoSync IDE features a fully-featured debugger for JavaScript code. You can set breakpoints in your code, install and run your application package on a device, and then see the code as it executes in the MoSync IDE. To use the debugger you need to use the Debug build configuration when building your package." />
+
+<title>Debugging JavaScript in the MoSync SDK | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>Debugging JavaScript in the MoSync SDK</h1>
@@ -11,16 +16,16 @@
 <h2 dir="ltr">Setting up the Debugger</h2>
 <ol>
 <li>Check that JavaScript debugging is enabled by right-clicking on your project in <strong>Project Explorer</strong> view and selecting <strong>Enable JavaScript Debugging</strong>. (This is only necessary for projects created prior to 3.2.) If no such menu item can be seen, the project is not a JavaScript project or it does not have a LocalFiles folder.</li>
-<li>Set the current <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/build-configurations/index.html">build configuration </a>to “Debug”.</li>
+<li>Set the current <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/build-configurations/index.html">build configuration </a>to Debug.</li>
 <li>Make sure that the <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/build-configurations/index.html">build setting</a> <strong>Use Debug Runtimes</strong> in <strong>Project</strong> &gt; <strong>Properties</strong> &gt; <strong>MoSync Project</strong> &gt; <strong>Build Settings</strong> &gt; <strong>Packaging</strong> is selected.</li>
 <li>Make sure that debugging is enabled; open the preferences dialog and select <strong>MoSync Tool &gt; JavaScript On-Device Debug &gt; Enable JavaScript On-Device Debug</strong>.</li>
 </ol>
 <h2 dir="ltr">Setting a Breakpoint</h2>
 <p>The JavaScript Debugger supports three types of breakpoints:</p>
 <ul>
-<li>Line breakpoints (in .js and .html files)&nbsp;— lets you stop program execution at the line number you select.</li>
-<li>Script load breakpoints — lets you stop execution when a script loads. The execution will stop before the first line of the script is executed.</li>
-<li>Suspend upon exception — when enabled, suspends the script whenever an exception is thrown in the code.</li>
+<li>Line breakpoints (in .js and .html files)&nbsp; lets you stop program execution at the line number you select.</li>
+<li>Script load breakpoints  lets you stop execution when a script loads. The execution will stop before the first line of the script is executed.</li>
+<li>Suspend upon exception  when enabled, suspends the script whenever an exception is thrown in the code.</li>
 </ul>
 <p>The debugger also supports breakpoint conditions and hit counts.</p>
 <h3 dir="ltr">Setting a Line Breakpoint</h3>
@@ -34,10 +39,10 @@
 <p>To enable suspend upon exceptions, open the <strong>Preferences</strong> dialog and select <strong>JavaScript</strong> &gt; <strong>Debug</strong> &gt; <strong>Suspend On JavaScript Exceptions</strong>. This is enabled by default.</p>
 <h3 dir="ltr">Setting Breakpoint Conditions and Hitcounts</h3>
 <p>To set conditions and hitcounts for a line breakpoint, right-click on the breakpoint marker in the line margin.</p>
-<p>For script load breakpoint you can set conditions in the “Breakpoints” view.<br><br>When set, the hitcount will stop the breakpoint to suspend execution until it has been hit the specified number of times.<br><br>If a condition is set, the breakpoint will suspend execution only if this condition is met. There is an option to suspend execution if the condition either a) evaluates to true, or b) it changed since last time the breakpoint was hit.</p>
+<p>For script load breakpoint you can set conditions in the Breakpoints view.<br><br>When set, the hitcount will stop the breakpoint to suspend execution until it has been hit the specified number of times.<br><br>If a condition is set, the breakpoint will suspend execution only if this condition is met. There is an option to suspend execution if the condition either a) evaluates to true, or b) it changed since last time the breakpoint was hit.</p>
 <p><img src="images/javascript-debugging3.png" align="none" width="630" height="535"></p>
 <h2 dir="ltr">Running the Debugger</h2>
-<p>To start the debugger, make sure that debugging is enabled as per the instructions above in “Setting up the Debugger”.</p>
+<p>To start the debugger, make sure that debugging is enabled as per the instructions above in Setting up the Debugger.</p>
 <p>Next, the device must be able to connect to the debug server. For emulators, this is usually not a problem since they run on the same computer as the debug server. For devices sharing say a Wi-Fi connection with the computer the debug server runs on should be enough. You may need to enable Wi-Fi on your device.</p>
 <p>Start the app by clicking either the <strong>Send to Device</strong> button (for on-device debugging, for more information see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/sending-to-device/index.html" title="Sending to a Device">TEMPLATE_DOC_PATH/sdk/tools/guides/ide/sending-to-device/index.html</a>):</p>
 <p><strong></strong> <img src="images/javascript-debugging4.png" align="none" width="39" height="44"></p>
@@ -54,7 +59,7 @@
 <p>Once a breakpoint is hit, you may perform these special debugger actions:</p>
 <ul>
 <li><strong>Step Into</strong> executes the next line in the program, regardless of where this line is located.</li>
-<li><strong>Step Over</strong> — If the next line to execute enters a function, the execution will suspend once that function has exited.</li>
+<li><strong>Step Over</strong>  If the next line to execute enters a function, the execution will suspend once that function has exited.</li>
 <li><strong>Step Return</strong> executes the rest of the function and returns to the caller.</li>
 <li><strong>Drop to Frame</strong> rewinds execution to a previous point in the program. To use Drop To Frame, select one of the stack frames (where the red arrow points in the image above) and press the corresponding tool icon. The execution will rewind to the start of the function being suspended.</li>
 </ul>
@@ -76,15 +81,15 @@
 </ol>
 <p>If execution is suspended, the JavaScript will be evaluated in the scope of the <em>top</em> stack frame.<br>Please note that any evaluated JavaScript expression that modifies the UI will take effect once execution starts again.</p>
 <h3 dir="ltr">Hot code replace</h3>
-<p>The JavaScript debugger offers basic ”Hot Code Replace” functionality. When a file is changed in a project, the client will refresh and reload those files. To change this default behaviour, open the <strong>Preferences</strong> dialog and select <strong>Do Nothing</strong> in the <strong>MoSync Tool</strong> &gt; <strong>JavaScript On-Device Debug</strong> &gt; <strong>When source code changes</strong> list box.</p>
+<p>The JavaScript debugger offers basic Hot Code Replace functionality. When a file is changed in a project, the client will refresh and reload those files. To change this default behaviour, open the <strong>Preferences</strong> dialog and select <strong>Do Nothing</strong> in the <strong>MoSync Tool</strong> &gt; <strong>JavaScript On-Device Debug</strong> &gt; <strong>When source code changes</strong> list box.</p>
 <p><strong>Note:</strong> for version 3.2 only HTML (.html) and JavaScript (.js) files are updated on the device/emulator. To update any other files you need to rebuild and upload the app again.<br><br>To refresh and reload even though <strong>Do Nothing</strong> is selected, select the current launch in the <strong>Debug</strong> view and press the corresponding <strong>Reload</strong> toolbar icon:</p>
 <p><img src="images/javascript-debugging11.png" align="none" width="590" height="416"></p>
 <h2 dir="ltr">Troubleshooting</h2>
 <ul>
-<li>“I cant debug at all” — Check that the device is connected to the same network as the debug server. If it is not and if you can’t connect it, you could try to debug using an emulator instead of a real device.</li>
-<li>“My program seems to hang on the device but no breakpoint has been hit in the debugger” — Sometimes the client and server gets out of sync. Try to reload the program as described in the section Hot code replace.</li>
-<li>“When I step one line, I occasionally end up in a completely different place in the code” — Due to the single-thread nature of JavaScript, the step into, step over and step return operations may have this result, but it happens only rarely. Especially timed executions triggered by the JavaScript setTimeout function suffer from this problem. We plan to fix this in future releases of the MoSync JavaScript On-Device Debugger.</li>
-<li>"I just went to grab some coffee and now I get some error dialog saying my session timed out"&nbsp;<span>— If something causes the app being debugged is sent to the background, the IDE will lose its connection and within half a minute or so it will time out.</span></li>
+<li>I cant debug at all  Check that the device is connected to the same network as the debug server. If it is not and if you cant connect it, you could try to debug using an emulator instead of a real device.</li>
+<li>My program seems to hang on the device but no breakpoint has been hit in the debugger  Sometimes the client and server gets out of sync. Try to reload the program as described in the section Hot code replace.</li>
+<li>When I step one line, I occasionally end up in a completely different place in the code  Due to the single-thread nature of JavaScript, the step into, step over and step return operations may have this result, but it happens only rarely. Especially timed executions triggered by the JavaScript setTimeout function suffer from this problem. We plan to fix this in future releases of the MoSync JavaScript On-Device Debugger.</li>
+<li>"I just went to grab some coffee and now I get some error dialog saying my session timed out"&nbsp;<span> If something causes the app being debugged is sent to the background, the IDE will lose its connection and within half a minute or so it will time out.</span></li>
 </ul>
 </body>
 </html>

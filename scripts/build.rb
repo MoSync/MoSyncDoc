@@ -233,7 +233,8 @@ def webSiteBuildDocHomePage
     :menuFile => pathPageDocMenu(),
     :templateFile => pathPageTemplate(),
     :swatch => swatchDocHome(),
-    :pageTitle => title,
+    :pageHeading => title,
+	:pageHeaderTags => fileGetHeaderTags(pathPageDocHome()),
     :selectedMenuItem => MENU_START_HOME
     )
 end
@@ -246,7 +247,8 @@ def webSiteBuildSearchPage
     :menuFile => pathPageDocMenu(),
     :templateFile => pathPageTemplate(),
     :swatch => swatchDocHome(),
-    :pageTitle => title,
+    :pageHeading => title,
+	:pageHeaderTags => "",
     :selectedMenuItem => MENU_START_SEARCH
     )
 end
@@ -264,7 +266,8 @@ def webSiteBuildSdkHomePage
     :menuFile => pathPageSdkMenu(),
     :templateFile => pathPageTemplate(),
     :swatch => swatchSdk(),
-    :pageTitle => title,
+    :pageHeading => title,
+	:pageHeaderTags => fileGetHeaderTags(pathPageSdkHome()),
     :selectedMenuItem => MENU_START_SDK
     )
 end
@@ -279,30 +282,30 @@ end
 
 # Build SDK index pages for all categories and page types.
 def webSiteBuildSdkIndexPages
-  #title = "C/C++ Coding Guides"
-  #webSiteBuildSdkIndexPage([SDK,CPP,GUIDE], "sdk/cpp/guides/", title, MENU_CPP_GUIDES)
+  title = "C/C++ Guides"
+  webSiteBuildSdkIndexPage([SDK,CPP,GUIDE], "sdk/cpp/guides/", title, MENU_CPP_GUIDES)
   
-  title = "C/C++ Tutorials"
-  webSiteBuildSdkIndexPage([SDK,CPP,TUTORIAL], "sdk/cpp/tutorials/", title, MENU_CPP_TUTORIALS)
+  #title = "C/C++ Tutorials"
+  #webSiteBuildSdkIndexPage([SDK,CPP,TUTORIAL], "sdk/cpp/guides/", title, #MENU_CPP_TUTORIALS)
   
   title = "C/C++ Examples"
   webSiteBuildSdkIndexPage([SDK,CPP,EXAMPLE], "sdk/cpp/examples/", title, MENU_CPP_EXAMPLES)
   
-  #title = "JavaScript Coding Guides"
-  #webSiteBuildSdkIndexPage([SDK,JS,GUIDE], "sdk/js/guides/", title, MENU_JS_GUIDES)
+  title = "JavaScript Guides"
+  webSiteBuildSdkIndexPage([SDK,JS,GUIDE], "sdk/js/guides/", title, MENU_JS_GUIDES)
   
-  title = "JavaScript Tutorials"
-  webSiteBuildSdkIndexPage([SDK,JS,TUTORIAL], "sdk/js/tutorials/", title, MENU_JS_TUTORIALS)
+  #title = "JavaScript Guides"
+  #webSiteBuildSdkIndexPage([SDK,JS,TUTORIAL], "sdk/js/tutorials/", title, #MENU_JS_TUTORIALS)
   
   title = "JavaScript Examples"
   webSiteBuildSdkIndexPage([SDK,JS,EXAMPLE], "sdk/js/examples/", title, MENU_JS_EXAMPLES)
   
-  #TODO: Not used Remove
+  #TODO: This could be useful
   #title = "All Examples"
   #webSiteBuildSdkIndexPage([CPP,JS,EXAMPLE], "sdk/overviews/examples/", title)
   
-  title = "SDK Tools Tutorials"
-  webSiteBuildSdkIndexPage([SDK,TOOLS,TUTORIAL], "sdk/tools/guides/", title, MENU_SDK_GUIDES)
+  title = "SDK Tools Guides"
+  webSiteBuildSdkIndexPage([SDK,TOOLS,GUIDE], "sdk/tools/guides/", title, MENU_SDK_GUIDES)
   
   title = "SDK Tools References"
   webSiteBuildSdkIndexPage([SDK,TOOLS,REFERENCE], "sdk/tools/references/", title, MENU_SDK_REFERENCES)
@@ -340,7 +343,8 @@ def webSiteBuildReloadHomePage
     :menuFile => pathPageReloadMenu(),
     :templateFile => pathPageTemplate,
     :swatch => swatchReload(),
-    :pageTitle => title,
+    :pageHeading => title,
+	:pageHeaderTags => fileGetHeaderTags(pathPageReloadHome()),
     :selectedMenuItem => MENU_START_RELOAD
     )
 end
@@ -354,8 +358,8 @@ def webSiteBuildReloadDocPages
 end
 
 def webSiteBuildReloadIndexPages
-  title = "Tutorials"
-  webSiteBuildReloadIndexPage([RELOAD,TUTORIAL], "reload/guides/", title, MENU_RELOAD_GUIDES)
+  title = "Guides"
+  webSiteBuildReloadIndexPage([RELOAD,GUIDE], "reload/guides/", title, MENU_RELOAD_GUIDES)
   
   title = "Release Notes"
   webSiteBuildReloadIndexPage([RELOAD,RELEASE_NOTE], "reload/release-notes/", title, MENU_RELOAD_RELEASE_NOTES)
@@ -397,15 +401,18 @@ def webSiteBuildDocPages(pages, menuFile, swatch)
 
     puts "Building #{pageFile} #{outputFile}"
     
+	puts "Heading: " + fileGetPageHeading(pageFile)
+	
     # Build and save page.
-    title = htmlGetPageTitle(fileReadContent(pageFile))
+	#title = htmlGetPageTitle(fileReadContent(pageFile))
     webSiteBuildPage(
       :outputFile => outputFile,
       :pageFile => pageFile,
       :menuFile => menuFile,
       :templateFile => pathPageTemplate(),
       :swatch => swatch,
-      :pageTitle => title,
+      :pageHeading => fileGetPageHeading(pageFile),
+      :pageHeaderTags => fileGetHeaderTags(pageFile),
       :selectedMenuItem => webSiteGetMenuItemTypeForPage(page)
       )
     
@@ -444,7 +451,8 @@ def webSiteBuildIndexPage(
     :menuFile => menuFile,
     :templateFile => pathPageTemplate(),
     :swatch => swatch,
-    :pageTitle => pageTitle,
+    :pageHeading => pageTitle,
+	:pageHeaderTags => "<title>" + pageTitle + "</title>",
     :selectedMenuItem => selectedMenuItem
     )
 end
@@ -504,7 +512,8 @@ def webSiteBuildPage params
   menuFile = params[:menuFile]
   templateFile = params[:templateFile]
   swatch = params[:swatch]
-  pageTitle = params[:pageTitle]
+  pageHeading = params[:pageHeading]
+  pageHeaderTags = params[:pageHeaderTags]
   selectedMenuItem = params[:selectedMenuItem]
 
   # Create Pathname objects.
@@ -541,7 +550,8 @@ def webSiteBuildPage params
 
   # Fill in template data.
   html = webSiteBuildPageFromTemplateData(
-    :pageTitle => pageTitle,
+    :pageHeading => pageHeading,
+    :pageHeaderTags => pageHeaderTags,
     :pageData => pageData,
     :menuData => menuData,
     :templateData => templateData,
@@ -562,7 +572,8 @@ end
 # Returns HTML String for page built from template.
 def webSiteBuildPageFromTemplateData(params)
   # Get parameters.
-  pageTitle = params[:pageTitle]
+  pageHeaderTags = params[:pageHeaderTags]
+  pageHeading = params[:pageHeading]
   pageData = params[:pageData]
   menuData = params[:menuData]
   templateData = params[:templateData]
@@ -577,8 +588,9 @@ def webSiteBuildPageFromTemplateData(params)
   # parts in turn contain placeholders to be replaced.
   
   # Insert content and title.
-  html = templateData.gsub("TEMPLATE_PAGE_CONTENT", pageData)
-  html = html.gsub("TEMPLATE_PAGE_TITLE", pageTitle)
+  html = templateData.gsub("TEMPLATE_HEADER_TAGS", pageHeaderTags)
+  html = html.gsub("TEMPLATE_PAGE_HEADING", pageHeading)
+  html = html.gsub("TEMPLATE_PAGE_CONTENT", pageData)
   
   # Insert menu at two places with different insets.
   html = html.gsub("TEMPLATE_PAGE_MENU", menuData)
@@ -622,27 +634,26 @@ end
 # Get the menu item template placeholder for a 
 # documentation page.
 def webSiteGetMenuItemTypeForPage(page)
-  # Document type GUIDE is not used.
-  
-  #if pageHasAllLabels?(page, [SDK,CPP,GUIDE]) then
-  #  MENU_CPP_GUIDES
-  if pageHasAllLabels?(page, [SDK,CPP,TUTORIAL]) then
-    MENU_CPP_TUTORIALS
+  # Document type TUTORIAL is not used.
+  if pageHasAllLabels?(page, [SDK,CPP,GUIDE]) then
+    MENU_CPP_GUIDES
+  #elsif pageHasAllLabels?(page, [SDK,CPP,TUTORIAL]) then
+  #  MENU_CPP_TUTORIALS
   elsif pageHasAllLabels?(page, [SDK,CPP,EXAMPLE]) then
     MENU_CPP_EXAMPLES
-  #elsif pageHasAllLabels?(page, [SDK,JS,GUIDE]) then
-  #  MENU_JS_GUIDES
-  elsif pageHasAllLabels?(page, [SDK,JS,TUTORIAL]) then
-    MENU_JS_TUTORIALS
+  elsif pageHasAllLabels?(page, [SDK,JS,GUIDE]) then
+    MENU_JS_GUIDES
+  #elsif pageHasAllLabels?(page, [SDK,JS,TUTORIAL]) then
+  # MENU_JS_TUTORIALS
   elsif pageHasAllLabels?(page, [SDK,JS,EXAMPLE]) then
     MENU_JS_EXAMPLES
-  elsif pageHasAllLabels?(page, [SDK,TOOLS,TUTORIAL]) then
+  elsif pageHasAllLabels?(page, [SDK,TOOLS,GUIDE]) then
     MENU_SDK_GUIDES
   elsif pageHasAllLabels?(page, [SDK,TOOLS,REFERENCE]) then
     MENU_SDK_REFERENCES
   elsif pageHasAllLabels?(page, [SDK,RELEASE_NOTE]) then
     MENU_SDK_RELEASE_NOTES
-  elsif pageHasAllLabels?(page, [RELOAD,TUTORIAL]) then
+  elsif pageHasAllLabels?(page, [RELOAD,GUIDE]) then
     MENU_RELOAD_GUIDES
   elsif pageHasAllLabels?(page, [RELOAD,RELEASE_NOTE]) then
     MENU_RELOAD_RELEASE_NOTES
@@ -821,6 +832,84 @@ def docDownloadImage(url, destFile)
   end
 end
 
+
+# Update links to point to new urls.
+# This is a "one shot" operation done on 
+# pages imported from Drupal.
+def htmlUpdateLinks(html)
+  #puts "Page BEFORE URL update: " + html
+  #puts " "
+  
+  # Step 1: Update urls and insert marker
+  allPages().each do |page|
+    # Replace full urls
+    html = html.gsub(
+      "http://www.mosync.com/" + pageOriginalFile(page), 
+      "/NEWDOC_UPDATED_URL_TEMPLATE_DOC_PATH/" + pageTargetFile(page) + "/index.html")
+    # Replace short urls
+	# TODO: This is unsafe for short urls like "contibutions",
+	# this caused problems that is now fixed. In the future,
+	# if using this code again, be aware of this! Added quote
+	# marks to gsub, to make it a little safer. Even better
+	# is to use full regexp that targets a-tags.
+    html = html.gsub(
+      '"' + pageOriginalFile(page) + '"', 
+      "\"NEWDOC_UPDATED_URL_TEMPLATE_DOC_PATH/" + pageTargetFile(page) + "/index.html\"")
+  end
+  
+  # Step 2: Strip off absolute urls and markers
+  html = html.gsub("http://www.mosync.com/NEWDOC_UPDATED_URL_", "")
+  html = html.gsub("/NEWDOC_UPDATED_URL_", "")
+  html = html.gsub("NEWDOC_UPDATED_URL_", "")
+  
+  # Step 3: Clean up weird urls
+  html = html.gsub("//index.html", "/index.html")
+  html = html.gsub("//index.html", "/index.html")
+  html = html.gsub("index.html/", "index.html")
+  html = html.gsub("TEMPLATE_DOC_PATH//", "TEMPLATE_DOC_PATH/")
+  
+  #puts "Page AFTER URL update: " + html
+  #puts " "
+  
+  html
+end
+
+def htmlStripTOC(html)
+  html.gsub("[toc]", "")
+end
+
+# TODO: Implement. Make a fun that insert pre tags.
+def htmlClean(html)
+  html
+end
+
+def htmlPrettify(html)
+  newLineAfterOpeningAndClosingTags = ["html", "head", "body", "div", "ul", "ol", "table"]
+  newLineAfterClosingTags = ["title", "h1", "h2", "h3", "h4", "p", "pre", "li", "tr"]
+  #start = html.index("</p>", 0)
+  (newLineAfterOpeningAndClosingTags + newLineAfterClosingTags).each do |tagName|
+    tag = "</" + tagName + ">"
+    html = html.gsub(tag, tag + "\n")
+  end
+  newLineAfterOpeningAndClosingTags.each do |tagName|
+    tag = "<" + tagName + ">"
+    html = html.gsub(tag, tag + "\n")
+  end
+  html
+end
+
+def htmlReplaceSyntaxHighlighterTags(html)
+  html = html.gsub(/{syntaxhighlighter brush: cpp.*?}/, "<pre class=\"mosync-code-cpp\">")
+  html = html.gsub(/{syntaxhighlighter brush: jscript.*?}/, "<pre class=\"mosync-code-js\">")
+  html = html.gsub(/{syntaxhighlighter brush: css.*?}/, "<pre class=\"mosync-code-css\">")
+  html = html.gsub(/{syntaxhighlighter brush: xml.*?}/, "<pre class=\"mosync-code-xml\">")
+  html = html.gsub(/{\/syntaxhighlighter}/, "</pre>")
+end
+
+def htmlReplaceTabsWithSpaces(html)
+  html.gsub("\t", "    ")
+end
+
 ######################################################
 #                   GET PAGE DATA                    #
 ######################################################
@@ -907,13 +996,17 @@ def pageGetTitleFromTargetFile(page)
   fileGetPageTitle(file)
 end
 
+######################################################
+#                  HTML PROCESSING                   #
+######################################################
+
 def htmlGetPageTitle(html)
   htmlGetTagContents(html, "title")
 end
 
-######################################################
-#                  HTML PROCESSING                   #
-######################################################
+def htmlGetPageHeading(html)
+  htmlGetTagContents(html, "h1")
+end
 
 def htmlGetPageContent(html)
   htmlGetTagContents(html, "body")
@@ -921,77 +1014,12 @@ end
 
 # Works for simple cases.
 def htmlGetTagContents(html, tagName)
-  html.split("<#{tagName}>")[1].split("</#{tagName}>")[0]
-end
-
-# TODO: Implement. Make a fun that insert pre tags.
-def htmlClean(html)
-  html
-end
-
-def htmlPrettify(html)
-  newLineAfterOpeningAndClosingTags = ["html", "head", "body", "div", "ul", "ol", "table"]
-  newLineAfterClosingTags = ["title", "h1", "h2", "h3", "h4", "p", "pre", "li", "tr"]
-  #start = html.index("</p>", 0)
-  (newLineAfterOpeningAndClosingTags + newLineAfterClosingTags).each do |tagName|
-    tag = "</" + tagName + ">"
-    html = html.gsub(tag, tag + "\n")
+  result = html.split("<#{tagName}>")
+  if result.size < 2 then
+    return ""
+  else
+    result[1].split("</#{tagName}>")[0]
   end
-  newLineAfterOpeningAndClosingTags.each do |tagName|
-    tag = "<" + tagName + ">"
-    html = html.gsub(tag, tag + "\n")
-  end
-  html
-end
-
-def htmlReplaceSyntaxHighlighterTags(html)
-  html = html.gsub(/{syntaxhighlighter brush: cpp.*?}/, "<pre class=\"mosync-code-cpp\">")
-  html = html.gsub(/{syntaxhighlighter brush: jscript.*?}/, "<pre class=\"mosync-code-js\">")
-  html = html.gsub(/{syntaxhighlighter brush: css.*?}/, "<pre class=\"mosync-code-css\">")
-  html = html.gsub(/{syntaxhighlighter brush: xml.*?}/, "<pre class=\"mosync-code-xml\">")
-  html = html.gsub(/{\/syntaxhighlighter}/, "</pre>")
-end
-
-def htmlReplaceTabsWithSpaces(html)
-  html.gsub("\t", "    ")
-end
-
-# Update links to point to new urls.
-def htmlUpdateLinks(html)
-  #puts "Page BEFORE URL update: " + html
-  #puts " "
-  
-  # Step 1: Update urls and insert marker
-  allPages().each do |page|
-    # Replace full urls
-    html = html.gsub(
-      "http://www.mosync.com/" + pageOriginalFile(page), 
-      "/NEWDOC_UPDATED_URL_TEMPLATE_DOC_PATH/" + pageTargetFile(page) + "/index.html")
-    # Replace short urls
-    html = html.gsub(
-      pageOriginalFile(page), 
-      "NEWDOC_UPDATED_URL_TEMPLATE_DOC_PATH/" + pageTargetFile(page) + "/index.html")
-  end
-  
-  # Step 2: Strip off absolute urls and markers
-  html = html.gsub("http://www.mosync.com/NEWDOC_UPDATED_URL_", "")
-  html = html.gsub("/NEWDOC_UPDATED_URL_", "")
-  html = html.gsub("NEWDOC_UPDATED_URL_", "")
-  
-  # Step 3: Clean up weird urls
-  html = html.gsub("//index.html", "/index.html")
-  html = html.gsub("//index.html", "/index.html")
-  html = html.gsub("index.html/", "index.html")
-  html = html.gsub("TEMPLATE_DOC_PATH//", "TEMPLATE_DOC_PATH/")
-  
-  #puts "Page AFTER URL update: " + html
-  #puts " "
-  
-  html
-end
-
-def htmlStripTOC(html)
-  html.gsub("[toc]", "")
 end
 
 ######################################################
@@ -1020,6 +1048,20 @@ end
 def fileGetPageTitle(filePath)
   html = fileReadContent(filePath)
   htmlGetPageTitle(html)
+end
+
+def fileGetPageHeading(filePath)
+  html = fileReadContent(filePath)
+  htmlGetPageHeading(html)
+end
+
+# Get the custom header tags from a file.
+# This is meta data enclosed in HTML-comments,
+# and it is inserted into the head-element of
+# the final web page.
+def fileGetHeaderTags(filePath)
+  html = fileReadContent(filePath)
+  htmlGetTagContents(html, "mosync-header-section")
 end
 
 ######################################################
@@ -1091,7 +1133,7 @@ def not_used_updatePathSymbols
 end
 
 ######################################################
-#                   ANALYSIS TOOLS                   #
+#             ANALYSIS AND UPDATE TOOLS              #
 ######################################################
 
 def listExportedPagesNotInDocs
@@ -1138,6 +1180,162 @@ VALUES (NULL,'ORIGINAL_PATH','TARGET_PATH',NULL,NULL,'301',NOW(),'');"
   puts sql
 end
 
+def renameTutorialPaths
+  puts "Renaming tutorial path names"
+
+  n = 0
+  b = lambda do |filePath|
+    n = n + 1
+    #puts "Updating File " + n.to_s + ": " + filePath.to_s
+    
+    # Replace tutorial paths in file.
+    htmlOrig = fileReadContent(filePath)
+    html = htmlOrig.gsub("sdk/cpp/tutorials", "sdk/cpp/guides")
+    html = html.gsub("sdk/js/tutorials", "sdk/js/guides")
+
+    # Write the updated file.
+	if (htmlOrig != html) then
+	  #puts "  ---> Updated!"
+	  puts filePath.to_s
+      fileSaveContent(filePath, html)
+	end
+  end
+  
+  # Update all files.
+  Pathname.glob(pathDocsSdk + "**/*.html").each &b
+  #Pathname.glob(pathDocsReload + "**/*.html").each &b
+end
+
+def pagesReferingToMoSyncCom
+  puts "Pages that refer to mosync.com"
+
+  n = 0
+  hits = []
+  b = lambda do |filePath|
+    n = n + 1
+    html = fileReadContent(filePath)
+	match = html.scan(/.{11}mosync\.com.*?>/)
+    #if not match.empty? then 
+	#  puts filePath.to_s + " " + match[0].to_s
+	#end 
+	hits += match.collect do |m|  
+	  m.to_s
+	end
+  end
+  
+  # Update all files.
+  Pathname.glob(pathDocsSdk + "**/*.html").each &b
+  Pathname.glob(pathDocsReload + "**/*.html").each &b
+  
+  puts hits.sort.uniq
+end
+
+
+def pageSearchTool stringOrRegExp
+  puts "Pages that contain: " + stringOrRegExp.to_s
+
+  n = 0
+  hits = []
+  b = lambda do |filePath|
+    n = n + 1
+    html = fileReadContent(filePath)
+	match = html.scan(stringOrRegExp)
+	hits += match.collect do |m|  
+	  filePath.to_s
+	end
+  end
+  
+  # Update all files.
+  Pathname.glob(pathDocsSdk + "**/*.html").each &b
+  Pathname.glob(pathDocsReload + "**/*.html").each &b
+  
+  puts hits.sort
+end
+
+# One time import and patching of meta tags from Drupal pages.
+def patchPagesWithMetaTags
+  # Iterate over entries in the page table that
+  # are not REDIRECT or IGNORE.
+  n = 0
+  docPages().each do |page|
+    n = n + 1
+	#if n == 32 or n == 39 then
+	
+    url = "http://www.mosync.com/" + pageOriginalFile(page)
+	if pageHasLabel?(page, SDK) then
+	  targetFile = "../docs/" + pageTargetFile(page) + "/index.html"
+	elsif pageHasLabel?(page, RELOAD) then
+	  targetFile = "../../ReloadDoc/docs/" + pageTargetFile(page) + "/index.html"
+	else
+	  puts "ERROR File has no category: " + pageTargetFile(page)
+	end
+	
+	# Get meta tags.
+	puts "Downloading " + n.to_s + ": " + url
+	puts "TargetFile: " + targetFile
+	htmlOnline = netDownloadFile(url)
+	headerTags = helperGetHeaderTags(htmlOnline)
+	#puts "Header tags: " + headerTags
+	
+	# Read file.
+	html = fileReadContent(targetFile)
+	
+	# Patch page.
+	match = html.scan(/<title>.*?<\/title>/)
+	if match.size == 1 then
+	  # Replace title tag with meta tags.
+	  html = helperUTF8Conversion(html)
+	  html = html.gsub(/<title>.*?<\/title>/, helperUTF8Conversion(headerTags))
+	  # Save target file.
+	  fileSaveContent(targetFile, html)
+	else
+	  puts "UNEXPECTED NUMBER OF TITLE TAGS: " + match.size
+	end
+	#end # if n == 32
+  end
+end
+
+def helperGetHeaderTags(html)
+  metaDescription = helperGetFirstMatch(html, /<meta name="description".*?>/)
+  metaDescription2 = helperGetFirstMatch(html, /<meta name="dcterms\.description".*?>/)
+  metaKeywords = helperGetFirstMatch(html, /<meta name="keywords".*?>/)
+  title = helperGetFirstMatch(html, /<title>.*?<\/title>/)
+  "<!-- <mosyncheadertags>\n" + 
+    metaDescription + "\n" + 
+    metaDescription2 + "\n" + 
+    metaKeywords + "\n" + 
+    title + "\n" +
+    "</mosyncheadertags> -->"
+end
+
+def helperUTF8Conversion(str)
+  str.encode(
+	"UTF-8",
+	:invalid => :replace,
+	:undef => :replace,
+	:replace => "")
+end
+
+def helperGetFirstMatch(text, regexp)
+  match = text.scan(regexp)
+  if (match.size > 0) then
+    match[0].to_s
+  else
+    ""
+  end
+end
+
+def netDownloadFile(url)
+  begin
+    open(url) do |f|
+      return f.read
+    end
+  rescue
+    puts "*** CANNOT DOWNLOAD PAGE: " + url.to_s + " ***"
+    return ""
+  end
+end
+
 ######################################################
 #                 UTILITY FUNCTIONS                  #
 ######################################################
@@ -1177,13 +1375,21 @@ elsif (ARGV.include? "cleandoc")
 elsif (ARGV.include? "buildweb")
   webSiteBuild
 elsif (ARGV.include? "cleanweb")
-  #webSiteClean
+  webSiteClean
 elsif (ARGV.include? "listexports")
   #listExportedPagesNotInDocs
 elsif (ARGV.include? "listtargets")
   #listTargetFileNames
 elsif (ARGV.include? "redirects")
   generateRedirectSQL
+elsif (ARGV.include? "renametutorialpaths")
+  #renameTutorialPaths
+elsif (ARGV.include? "findmosynccom")
+  pagesReferingToMoSyncCom
+elsif (ARGV.include? "patchmeta")
+  patchPagesWithMetaTags
+elsif (ARGV.include? "search")
+  pageSearchTool ARGV[1]
 else
   puts "Options:"
   #puts "  html2md"
@@ -1195,5 +1401,5 @@ else
   #puts "  cleandoc (cleans documentation folder)"
   puts "  buildweb (builds website)"
   puts "  redirects (generete SQL for Drupal redirects)"
-  #puts "  cleanweb (cleans website folder)"
+  puts "  cleanweb (cleans website folder)"
 end

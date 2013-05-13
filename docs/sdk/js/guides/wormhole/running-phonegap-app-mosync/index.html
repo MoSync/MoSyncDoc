@@ -1,6 +1,11 @@
 <html>
 <head>
-<title>Running PhoneGap Mobile Apps in MoSync</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="PhoneGap-compatible functions in our Wormhole JavaScript Library make it possible to run most existing PhoneGap apps in the MoSync SDK with little or no need for change. And it's easy to add functionality to your app (like Native UI) not available out-of-the-box with PhoneGap." />
+<meta name="dcterms.description" content="PhoneGap-compatible functions in our Wormhole JavaScript Library make it possible to run most existing PhoneGap apps in the MoSync SDK with little or no need for change. And it's easy to add functionality to your app (like Native UI) not available out-of-the-box with PhoneGap." />
+
+<title>PhoneGap applications are easy to move to the MoSync Mobile SDK! | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>Running PhoneGap Mobile Apps in MoSync</h1>
@@ -10,8 +15,8 @@
 <p>For list of the currently supported functions, see our <a href="http://www.mosync.com/documentation/manualpages/featureplatform-matrix">Feature/Platform Support</a> page.</p>
 <h2>Importing a PhoneGap app</h2>
 <p>We will use one of the examples from <a href="http://phonegap.com/" target="_blank">PhoneGap website</a> for this exercise. If you want to try MoSync with your own application, simply follow the same steps.</p>
-<p>(<em><strong>Note:</strong></em>&nbsp; We assume that you have a basic understanding of how to use the MoSync SDK to create HTML5 and JavaScript projects. If not, check out our guides <a href="TEMPLATE_DOC_PATH/sdk/js/tutorials/quick-start/getting-started-html5-and-javascript/index.html">Getting Started with HTML5 and JavaScript</a> and <a href="TEMPLATE_DOC_PATH/sdk/js/tutorials/quick-start/how-create-html5-project-mosync/index.html">Developing Apps in HTML5/JavaScript</a>). <br><br><strong>1.</strong> Start by creating a new&nbsp;<a href="TEMPLATE_DOC_PATH/sdk/js/tutorials/quick-start/getting-started-html5-and-javascript/index.html">HTML5/JS Web UI</a> project in MoSync.<br><br><strong>2.</strong> Next, replace the default <strong>index.html</strong> file with your PhonGap application’s <strong>index.html</strong> file. If you do not have a PhoneGap application handy, you can copy one from their website, for example the full example for&nbsp; <a href="http://docs.phonegap.com/en/1.2.0/phonegap_accelerometer_accelerometer.md.html#accelerometer.watchAcceleration"><strong>accelerometer.watchAcceleration</strong></a> at their website.</p>
-<p><strong>3.</strong> Find the line containing the “phonegap.js” reference and replace it with the reference with “js/wormhole.js”. Your library import line should change from:</p>
+<p>(<em><strong>Note:</strong></em>&nbsp; We assume that you have a basic understanding of how to use the MoSync SDK to create HTML5 and JavaScript projects. If not, check out our guides <a href="TEMPLATE_DOC_PATH/sdk/js/guides/quick-start/getting-started-html5-and-javascript/index.html">Getting Started with HTML5 and JavaScript</a> and <a href="TEMPLATE_DOC_PATH/sdk/js/guides/quick-start/how-create-html5-project-mosync/index.html">Developing Apps in HTML5/JavaScript</a>). <br><br><strong>1.</strong> Start by creating a new&nbsp;<a href="TEMPLATE_DOC_PATH/sdk/js/guides/quick-start/getting-started-html5-and-javascript/index.html">HTML5/JS Web UI</a> project in MoSync.<br><br><strong>2.</strong> Next, replace the default <strong>index.html</strong> file with your PhonGap applications <strong>index.html</strong> file. If you do not have a PhoneGap application handy, you can copy one from their website, for example the full example for&nbsp; <a href="http://docs.phonegap.com/en/1.2.0/phonegap_accelerometer_accelerometer.md.html#accelerometer.watchAcceleration"><strong>accelerometer.watchAcceleration</strong></a> at their website.</p>
+<p><strong>3.</strong> Find the line containing the phonegap.js reference and replace it with the reference with js/wormhole.js. Your library import line should change from:</p>
 <pre class="mosync-code-cpp">&lt;script type="text/javascript" charset="utf-8" src="phonegap.js"&gt;&lt;/script&gt;</pre>
 <p>to:</p>
 <pre class="mosync-code-cpp">&lt;script type="text/javascript" charset="utf-8" src="js/wormhole.js"&gt;&lt;/script&gt;</pre>

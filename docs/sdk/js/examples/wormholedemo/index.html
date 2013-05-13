@@ -1,6 +1,11 @@
 <html>
 <head>
-<title>WormholeDemo</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="This example application demonstrates the MoSync Wormhole JavaScript Library, in particular its support for native UI, sensors, capture, and file storage." />
+<meta name="dcterms.description" content="This example application demonstrates the MoSync Wormhole JavaScript Library, in particular its support for native UI, sensors, capture, and file storage." />
+
+<title>WormholeDemo | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>WormholeDemo</h1>
@@ -14,10 +19,10 @@
 <p>When started the main screen of the application provides access to the following screens:</p>
 <ul>
 <li><strong>View Device Information</strong>: Displays information about the device (platform, version and device name)</li>
-<li><strong>PhoneGap Sensors</strong>: Allows you to use the device’s sensors exposed through the PhoneGap-compliant Wormhole API functions (Accelerometer,GeoLocation, Compass). Some devices might not support all sensors.</li>
-<li><strong>W3C Sensors</strong>: Allows you to use the device’s sensors exposed through the Wormhole Sensor API (Accelerometer, Magnetic Field, Orientation, Proximity, Gyroscope). Some devices might not support all sensors.</li>
+<li><strong>PhoneGap Sensors</strong>: Allows you to use the devices sensors exposed through the PhoneGap-compliant Wormhole API functions (Accelerometer,GeoLocation, Compass). Some devices might not support all sensors.</li>
+<li><strong>W3C Sensors</strong>: Allows you to use the devices sensors exposed through the Wormhole Sensor API (Accelerometer, Magnetic Field, Orientation, Proximity, Gyroscope). Some devices might not support all sensors.</li>
 <li><strong>Capture</strong>: Lets you capture and display videos and pictures using PhoneGap-compliant Capture API. For video playback, the HTML5 &lt;Video&gt; tag is used, which might not be supported in all devices.</li>
-<li><strong>File storage</strong>: This panel presents you with a list of files in a local folder. You can add more files to this folder by tapping the “+” button on the top right. &nbsp;Tapping a file will open a new panel which allows you to rename, edit it’s contents, or delete it.&nbsp;<span>After changing the contents of an edit box in the file editing panel, you must explicitly tell the application to update the file by tapping the “Rename” or “Save” buttons</span></li>
+<li><strong>File storage</strong>: This panel presents you with a list of files in a local folder. You can add more files to this folder by tapping the + button on the top right. &nbsp;Tapping a file will open a new panel which allows you to rename, edit its contents, or delete it.&nbsp;<span>After changing the contents of an edit box in the file editing panel, you must explicitly tell the application to update the file by tapping the Rename or Save buttons</span></li>
 <li><strong>Phonegap Compatible Notifications</strong>: Presents two ways to provide feedback to the user: a short beep, or a vibration.</li>
 </ul>
 <h2>In the code</h2>
@@ -25,7 +30,7 @@
 <ul>
 <li><strong>main.cpp</strong>: The only file which contains C++ code. It initializes and passes messages to the Wormhole libraries (Phonegap etc).</li>
 <li><strong>LocalFiles/index.html</strong>: The interface specification file used by the application. Contains information about the layout of all panels, as well as some initialization code.</li>
-<li><strong>LocalFiles/main.js</strong>: Contains most of the implementation of the application’s functions.</li>
+<li><strong>LocalFiles/main.js</strong>: Contains most of the implementation of the applications functions.</li>
 <li><strong>LocalFiles/phonegapSensors.h</strong>: Contains the function implementations of the PhoneGap Sensors panel.</li>
 <li><strong>LocalFiles/w3csensors.js</strong>: Contains the function implementations of the W3C Sensor panel.</li>
 <li><strong>LocalFiles/filemanager.js</strong>: Contains the function implementations of the File Storage panel.</li>

@@ -1,6 +1,11 @@
 <html>
 <head>
-<title>The Facebook C++ Library</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="The MoSync Facebook C++ Library implements most of the Facebook Graph C API. Here we describe how to connect to Facebook through the Facebook library, retrieve information about them, post links, vidoes and other object types, create new albums, and a whole host of other cool operations." />
+<meta name="dcterms.description" content="The MoSync Facebook C++ Library implements most of the Facebook Graph C API. Here we describe how to connect to Facebook through the Facebook library, retrieve information about them, post links, vidoes and other object types, create new albums, and a whole host of other cool operations." />
+<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
+<title>The Facebook C++ Library | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>The Facebook C++ Library</h1>
@@ -9,7 +14,7 @@
 <h3>Introduction</h3>
 <p>Facebook is a modeled as a social graph. Its official API, the <a href="http://developers.facebook.com/docs/reference/api/">Facebook Graph API</a>, represents the objects in the graph (people, photos, albums, events...) and the connections between them (friend relationships, photo tags...).<br>&nbsp;<br>Every object in the social graph has a unique ID. You can fetch any object from Facebook if you know the ID. Alternatively, people with usernames can be accessed using their username as an ID. There is also a special identifier "me" which refers to the current user.<br>&nbsp;<br>You can retrieve the public information about a user (first name, last name, profile picture) by using the ID or the username. To get additional information about a user, you must first get their permission for which you need to get an access token. After you obtain the access token, you can perform authorized requests and publish on behalf of that user.<br>&nbsp;<br>The MoSync Facebook Library defines a <strong>FacebookManager </strong>class that provides the interface between the Facebook platform and your own application. Use this class if you want to retrieve data, publish on Facebook, or retrieve an <strong>access token</strong> for your application.</p>
 <h3>Authentication and access tokens</h3>
-<p>Authentication involves retrieving the access token and asking for extended permissions. For the official Facebook documentation on the authorization flow see: <a href="http://developers.facebook.com/docs/authentication/">http://developers.facebook.com/docs/authentication/</a>.<br>&nbsp;<br>Retrieving a user access token allows your application to access a user’s basic information (that is information that is available publicly or by default on Facebook). If your application needs more than this basic information, you must request specific permissions from the user.<br>&nbsp;<br>To get the access token from Facebook you must first redirect the user to the Facebook <a href="http://developers.facebook.com/docs/reference/dialogs/oauth">OAuth Dialog</a>. With the MoSync Facebook Library this is very easy:</p>
+<p>Authentication involves retrieving the access token and asking for extended permissions. For the official Facebook documentation on the authorization flow see: <a href="http://developers.facebook.com/docs/authentication/">http://developers.facebook.com/docs/authentication/</a>.<br>&nbsp;<br>Retrieving a user access token allows your application to access a users basic information (that is information that is available publicly or by default on Facebook). If your application needs more than this basic information, you must request specific permissions from the user.<br>&nbsp;<br>To get the access token from Facebook you must first redirect the user to the Facebook <a href="http://developers.facebook.com/docs/reference/dialogs/oauth">OAuth Dialog</a>. With the MoSync Facebook Library this is very easy:</p>
 <pre class="mosync-code-cpp">String appID = "13234625675"; //the application id
 mFacebookManager = new FacebookManager( app_ID );
 String oAuthUrl = mFacebookManager-&gt;getOAuthUrl();
@@ -22,10 +27,10 @@ mLoginScreen-&gt;show(); //displays the login screen</pre>
 <p>You must request specific permissions from the user if your app needs more information than the user has made available to everyone on Facebook. To do this, pass the <strong>FacebookManager </strong>the permissions you need.</p>
 <p><strong><em>Note</em></strong>: If your application also needs permissions, you must pass those permissions to <strong>FacebookManager</strong> when it is first created.<br>&nbsp;<br>In the MoSync Facebook Library we specialize the <strong>GetPermissionsFor </strong>template class for each Facebook object type. It is used to fill a <strong>Set </strong>object with the permissions that are needed to make connections to a Facebook object or to publish an object.</p>
 <pre class="mosync-code-cpp">MAUtil::Set&lt;MAUtil::String&gt; permissions;</pre>
-<p>To get the permissions needed to retrieve a Note object for the current user or current user’s friend (also for the connections of Note objects) we use:</p>
+<p>To get the permissions needed to retrieve a Note object for the current user or current users friend (also for the connections of Note objects) we use:</p>
 <pre class="mosync-code-cpp">// "user_notes" "friends_notes"
 GetPermissionsFor&lt;Note&gt;::retrievingData(permissions); </pre>
-<p>To get the permissions needed to publish a note on behalf of the user or user’s friend we use:</p>
+<p>To get the permissions needed to publish a note on behalf of the user or users friend we use:</p>
 <pre class="mosync-code-cpp">//"create_note", "publish_stream"
 GetPermissionsFor&lt;Note&gt;::publishingData(permissions); </pre>
 <p>To get all the permissions available, so that we can make any request (retrieve data, connections, and publish), we use:</p>
@@ -34,7 +39,7 @@ GetPermissionsFor&lt;Note&gt;::allPosibleRequests(permissions); </pre>
 <p>You can also just get the permissions needed to retrieve a field from a user object (for example, a biography), or for a connection, as we show in the example below:</p>
 <pre class="mosync-code-cpp">MAUtil::Set&lt;MAUtil::String&gt; permissions;
  
-permissions.insert("offline_access"); //ask for a access_token that doesn’t expire
+permissions.insert("offline_access"); //ask for a access_token that doesnt expire
 GetPermissionsFor&lt;User&gt;::Retrieve::onlyConnections(permissions);
 GetPermissionsFor&lt;User&gt;::publishingData(permissions);
 GetPermissionsFor&lt;Album&gt;::allPosibleRequests(permissions);
@@ -101,7 +106,7 @@ mFacebookManager-&gt;requestObject&lt;Album&gt;(99394368305); </pre>
 <p>We use FacebookManager to retrieve connections for an object. To make a connection request we need to know the ID of the object. If the Facebook object is the current user, we can use me instead of an ID. We also need to inherit from <strong>ConnectionsManagerListener </strong>and register with the FacebookManager as a listener.<br>&nbsp;<br>To see what connections are available for an object we use the Connections template class found in <em>/GetConnections/Connections.h</em>. The template is specialized for every Facebook object type defined by the library.<br>&nbsp;<br>To see what connections are available for an album, we use the <strong>Connections&lt;Album&gt;</strong> class. <strong>Connections&lt;Album&gt; </strong> has four static functions that correspond to the four connections an Album can have: likes, photos, comments, picture. Each returns a string representing the keyword for that connection. For example, <strong>Connections&lt;Album&gt;::likes()</strong> returns "likes".<br>&nbsp;<br>The <strong>Connections&lt;Checkin&gt;</strong> class defines two functions that return the keywords for the two connections that a Checkin has (likes and comments), so to ask for all the connections a Checkin we use:</p>
 <pre class="mosync-code-cpp">mFacebookManager-&gt;requestConnection( ckeckin_id, Connections&lt;Checkin&gt;::likes() );
 mFacebookManager-&gt;requestConnection( checkin_id, Connections&lt;Checkin&gt;::comments() );</pre>
-<p>To request the albums, feed, and notes connections for the current user, and also request the comments connections for one of the user’s albums we use:</p>
+<p>To request the albums, feed, and notes connections for the current user, and also request the comments connections for one of the users albums we use:</p>
 <pre class="mosync-code-cpp">class MyApplication : public ConnectionsManagerListener
 {
 public:
@@ -155,7 +160,7 @@ void MyApplication::received(  const Vector&lt;Album&gt; &amp;albums, const Stri
     Album firstAlbum = albums[0];
     mFacebookManager-&gt;requestConnection( Connections&lt;User&gt;::comments(), firstAlbum.getId() );
 }</pre>
-<p>We can request only the fields you want from an object. For example, if we just want to retrieve the name and ID of all of the user’s albums we do not want any other fields. To do this we call the overload function <strong>requestConnection </strong>and pass it a vector with jus the fields we want:</p>
+<p>We can request only the fields you want from an object. For example, if we just want to retrieve the name and ID of all of the users albums we do not want any other fields. To do this we call the overload function <strong>requestConnection </strong>and pass it a vector with jus the fields we want:</p>
 <pre class="mosync-code-cpp">Vector&lt;String&gt; fields;
 fields.add("id");
 fields.add("name");
@@ -234,7 +239,7 @@ UnixTimeStamp startTime(Date("2012", "12", "6"), Time("8","15","30"));
 //event ends in 06/12/2012 at 11:20:00
 UnixTimeStamp endTime(Date("2012", "12", "6"), Time("11", "20","00"));
 
-//the event’s description
+//the events description
 String eventDescription = " MoSync annual Christmas party";
 
 //the event takes place in Stockholm
@@ -246,7 +251,7 @@ startTime,
 endTime,   
 eventDescription,
 eventLocation);</pre>
-<p>To add a Post on the user’s wall (or on one of the user's friends walls) we call addPostOnWall:</p>
+<p>To add a Post on the users wall (or on one of the user's friends walls) we call addPostOnWall:</p>
 <pre class="mosync-code-cpp">void addPostOnWall(  
     const MAUtil::String &amp;ID,                       //mandatory
     const MAUtil::String &amp;message,                  //mandatory

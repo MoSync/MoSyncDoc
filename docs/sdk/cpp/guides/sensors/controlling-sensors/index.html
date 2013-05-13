@@ -1,6 +1,11 @@
 <html>
 <head>
-<title>Sensor Control in C/C++</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="Modern smartphones have a variety of in-built sensors to detect, for example, movement, orientation, rotation, proximity, and magnetic fields. This tutorial explains how to start and stop sensors, and to receive sensor data in your application through the MoSync Sensor API." />
+<meta name="dcterms.description" content="Modern smartphones have a variety of in-built sensors to detect, for example, movement, orientation, rotation, proximity, and magnetic fields. This tutorial explains how to start and stop sensors, and to receive sensor data in your application through the MoSync Sensor API." />
+<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
+<title>Control sensors, accelerometer, gyroscope, magnetometer, proximity, magnetic field and orientation sensors  | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>Sensor Control in C/C++</h1>
@@ -8,7 +13,7 @@
 <p><!--break--></p>
 <p>Only the MoSync runtimes for Android and iPhone have sensor support at the moment, and sensor simulation is not yet available in the MoSync Emulator.<br><br>Not all devices have hardware sensors. Before you run the application on the device, check which sensors it has using our <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/sensortest/index.html">SensorTest</a> application.</p>
 <h2>Accelerometer</h2>
-<p>An accelerometer is a sensor that measures the acceleration forces. On most modern mobile devices there is a 3-way axis device that determines the phone’s physical position. By measuring the static acceleration due to gravity you can find the angle at which device is tilted and by measuring the dynamic acceleration due to movement you can analyze the direction in which the device is moving. <br><br>This sensor is available for both the Android and iPhone runtimes.</p>
+<p>An accelerometer is a sensor that measures the acceleration forces. On most modern mobile devices there is a 3-way axis device that determines the phones physical position. By measuring the static acceleration due to gravity you can find the angle at which device is tilted and by measuring the dynamic acceleration due to movement you can analyze the direction in which the device is moving. <br><br>This sensor is available for both the Android and iPhone runtimes.</p>
 <h3>Starting the Accelerometer</h3>
 <p>To start the accelerometer, call the MoSync Sensor API function <strong>maSensorStart(sensor, interval)</strong>. The first parameter should be &nbsp;SENSOR_TYPE_ACCELEROMETER. The second parameter should be the desired update interval in milliseconds. Note that each device has a minimum value for this interval and setting a smaller value could stop the sensor. <br><br>The <strong>maSensorStart </strong>function returns SENSOR_ERROR_NONE if the sensor is started successfully, or a SENSOR_ERROR_* in case of error.</p>
 <h3>Receiving Event Data</h3>
@@ -42,10 +47,10 @@ extern "C" int MAMain()
         // listen for events
         while(maGetEvent(&amp;event))
         {
-            // check if it’s a sensor type event
+            // check if its a sensor type event
             if(EVENT_TYPE_SENSOR == event.type)
             {
-                // check if it’s a accelerometer sensor type event
+                // check if its a accelerometer sensor type event
                 if (SENSOR_TYPE_ACCELEROMETER == event.sensor.type)
                 {
                     char buffer[50];
@@ -101,10 +106,10 @@ extern "C" int MAMain()
         // listen for events
         while(maGetEvent(&amp;event))
         {
-            // check if it’s a sensor type event
+            // check if its a sensor type event
             if(EVENT_TYPE_SENSOR == event.type)
             {
-                // check if it’s a gyroscope sensor type event
+                // check if its a gyroscope sensor type event
                 if (SENSOR_TYPE_GYROSCOPE == event.sensor.type)
                 {
                     char buffer[50];
@@ -194,7 +199,7 @@ extern "C" int MAMain()
 <li>type - SENSOR_TYPE_PROXIMITY.</li>
 <li>values[0] - SENSOR_PROXIMITY_VALUE_NEAR or SENSOR_PROXIMITY_VALUE_FAR</li>
 </ul>
-<p><strong><em>Note</em></strong>: the device’s OS establishes the meaning of “near” and “far”.</p>
+<p><strong><em>Note</em></strong>: the devices OS establishes the meaning of near and far.</p>
 <h3>Stopping the Proximity Sensor</h3>
 <p>To stop the proximity sensor, call <strong>maSensorStop(sensor)</strong> with SENSOR_TYPE_PROXIMITY as parameter. <br><br>The function returns SENSOR_ERROR_NONE if the sensor stopped successfully, or SENSOR_ERROR_* in case of error.</p>
 <h3>Example</h3>
@@ -239,7 +244,7 @@ extern "C" int MAMain()
     }
 };</pre>
 <h2>Orientation Sensor</h2>
-<p>The device’s operating system uses the accelerometer to determine the current orientation of the device and can therefore behave as an orientation sensor.<br><br>This sensor is available for Android and iPhone runtimes.</p>
+<p>The devices operating system uses the accelerometer to determine the current orientation of the device and can therefore behave as an orientation sensor.<br><br>This sensor is available for Android and iPhone runtimes.</p>
 <h3>Starting the Orientation Sensor</h3>
 <p>To start the orientation sensor, call maSensorStart(sensor, interval). The first parameter should be &nbsp;SENSOR_TYPE_ORIENTATION. As the orientation sensor does not require an update interval, the second parameter can be any random number. <br><br>The function returns SENSOR_ERROR_NONE if the sensor started successfully, or a SENSOR_ERROR_* in case of error.</p>
 <h3>Receiving Event Data</h3>

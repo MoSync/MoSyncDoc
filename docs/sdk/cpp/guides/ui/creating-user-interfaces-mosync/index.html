@@ -1,6 +1,11 @@
 <html>
 <head>
-<title>Creating User Interfaces With MoSync</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="MoSync provides multiple solutions for cross-platform user interface development, including the NativeUI libraries in JavaScript and C++, the MAUI platform-independent C++ library, and the low-level Widget C API. This guide helps you decide which ones you need to use in building your app." />
+<meta name="dcterms.description" content="MoSync provides multiple solutions for cross-platform user interface development, including the NativeUI libraries in JavaScript and C++, the MAUI platform-independent C++ library, and the low-level Widget C API. This guide helps you decide which ones you need to use in building your app." />
+<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
+<title>UI methods and functions in MoSync libraries | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>Creating User Interfaces With MoSync</h1>
@@ -24,7 +29,7 @@
 <li>Not available on all platforms</li>
 </ul>
 </td></tr>
-<tr><td style="background-color: #ead1dc;">MAUI C++ Library</td><td style="background-color: #ead1dc;"><p>Our C++ Library for older devices.<br><a href="http://www.mosync.com/files/imports/doxygen/latest/html/namespace_m_a_u_i.html">Library </a>| <a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/maui/introduction-maui/index.html">Tutorial</a> | <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/mauiex/index.html">Example App</a></p>
+<tr><td style="background-color: #ead1dc;">MAUI C++ Library</td><td style="background-color: #ead1dc;"><p>Our C++ Library for older devices.<br><a href="http://www.mosync.com/files/imports/doxygen/latest/html/namespace_m_a_u_i.html">Library </a>| <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/maui/introduction-maui/index.html">Tutorial</a> | <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/mauiex/index.html">Example App</a></p>
 </td><td style="background-color: #ead1dc;"><ul>
 <li>Moderately easy to implement</li>
 <li>Looks the same on all platforms</li>
@@ -54,29 +59,29 @@
 <h2>Vanilla HTML/HTML5</h2>
 <p>To create HTML/CSS-based user interfaces you do not need to use special calls. Any standard HTML/CCS file would work in MoSync. There are also several JavaScript UI frameworks designed specifically for mobile websites (e.g. <a href="http://zeptojs.com/">Zepto.js</a>, <a href="http://jqtouch.com/">jQTouch</a>,&nbsp;<a href="http://jquerymobile.com/">JQuery mobile</a>, and <a href="http://www.sencha.com/products/touch/">Sencha Touch</a>) in your MoSync apps.</p>
 <h2>Wormhole NativeUI JavaScript API</h2>
-<p>On platforms that support NativeUI (Android, iOS, Windows Phone) you can develop the user interface in HTML/CSS and access device functionality from JavaScript using the <a href="TEMPLATE_DOC_PATH/sdk/js/guides/wormhole/html5-javascript-wormhole/index.html">Wormhole Library</a>. Check out our documentation for&nbsp;<a href="TEMPLATE_DOC_PATH/sdk/js/tutorials/quick-start/how-create-html5-project-mosync/index.html">creating HTML based projects in MoSync</a> to learn more.</p>
+<p>On platforms that support NativeUI (Android, iOS, Windows Phone) you can develop the user interface in HTML/CSS and access device functionality from JavaScript using the <a href="TEMPLATE_DOC_PATH/sdk/js/guides/wormhole/html5-javascript-wormhole/index.html">Wormhole Library</a>. Check out our documentation for&nbsp;<a href="TEMPLATE_DOC_PATH/sdk/js/guides/quick-start/how-create-html5-project-mosync/index.html">creating HTML based projects in MoSync</a> to learn more.</p>
 <p>You can even create NativeUI widgets from you JavaScript code, or use declarative markup to define the entire UI in HTML (and hide the web view that contains the HTML). Check out the <a href="TEMPLATE_DOC_PATH/sdk/js/guides/nativeui/jsnativeui-library/index.html">JavaScript Native UI guide</a> for more information.</p>
 <h2>Widget C API</h2>
-<p>The MoSync <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___widget_a_p_i.html">Widget C API</a> is a C-based API that uses the device’s native widgets, allowing you to create apps that are identical to the ones you create with the platform’s own SDK. It also brings you the power to integrate a web browser and utilize OpenGL in your applications. The NativeUI Widget API is primarily aimed at leading-edge platforms and currently supports Android, iOS (iPhone, iPad, iTouch), and Windows Phone.<br><br>Using the Widget API gives distinct advantages when you need:</p>
+<p>The MoSync <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___widget_a_p_i.html">Widget C API</a> is a C-based API that uses the devices native widgets, allowing you to create apps that are identical to the ones you create with the platforms own SDK. It also brings you the power to integrate a web browser and utilize OpenGL in your applications. The NativeUI Widget API is primarily aimed at leading-edge platforms and currently supports Android, iOS (iPhone, iPad, iTouch), and Windows Phone.<br><br>Using the Widget API gives distinct advantages when you need:</p>
 <ul>
 <li>Your application to look and feel like other applications on the platform.</li>
 <li>Users to intuitively understand how the app is controlled and behaves.</li>
-<li>The high-performance gained from Widget API’s tight integration with the OS.</li>
+<li>The high-performance gained from Widget APIs tight integration with the OS.</li>
 <li>To embed OpenGL or a web browser in your application.</li>
 </ul>
-<p>Note that Widget API doesn’t work on MoRE, the MoSync emulator, so you must test and develop your application using the Android emulator, iPhone simulator, the Windows Phone emulator, or use a real device.</p>
+<p>Note that Widget API doesnt work on MoRE, the MoSync emulator, so you must test and develop your application using the Android emulator, iPhone simulator, the Windows Phone emulator, or use a real device.</p>
 <h2>NativeUI C++ Library</h2>
 <p>The <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-nativeui-library/index.html">NativeUI Library</a> is a high-level C++ wrapper for the C-based Widget API. The <strong> Widget </strong>base class contains basic functionality and provides methods for managing widgets, like <strong> addChild</strong>, <strong>insertChild</strong>, and <strong>removeChild</strong>, and methods for manipulating widgets like <strong>setHeight</strong>, <strong>setVisible</strong>, and <strong>fillSpaceVertically</strong>.</p>
 <p>The NativeUI Library includes a widget manager that handles widget events. This makes it easy to respond to widget events, you can select to receive specific events by setting listeners on widget objects.</p>
 <h2>MAUI</h2>
 <p><a href="http://www.mosync.com/files/imports/doxygen/latest/html/namespace_m_a_u_i.html">MAUI</a> uses custom non-native screens and widgets, enabling you to create application user interfaces that look exactly the same across all platforms. It runs not only on Android and iOS, but also on Windows Mobile, JavaME, Symbian, Moblin, MoRE ( the MoSync emulator ) and all the other platforms MoSync supports.</p>
 <h2>NativeUI Library, Widget API, and MAUI Together</h2>
-<p>The Widget API and MAUI are similar to the user interface APIs that you will find in proprietary SDKs. The user interface is structured as a hierarchy of components consisting of containers called screens, and controls called widgets. Different widgets have different functions and properties which can be set in order to customize their appearance or behaviour. Special types of widgets called “layouts” give you control over the positioning of other widgets on the screen. As the user interacts with the widgets, events are sent from the framework library to the application code.<br><br>You can use the HTML/CSS user interfaces, the Widget API and/or the NativeUI Library, and MAUI together in the same application, switching between Widget screens and MAUI screens as needed, giving you absolute control over the user interface.</p>
+<p>The Widget API and MAUI are similar to the user interface APIs that you will find in proprietary SDKs. The user interface is structured as a hierarchy of components consisting of containers called screens, and controls called widgets. Different widgets have different functions and properties which can be set in order to customize their appearance or behaviour. Special types of widgets called layouts give you control over the positioning of other widgets on the screen. As the user interacts with the widgets, events are sent from the framework library to the application code.<br><br>You can use the HTML/CSS user interfaces, the Widget API and/or the NativeUI Library, and MAUI together in the same application, switching between Widget screens and MAUI screens as needed, giving you absolute control over the user interface.</p>
 <h2>Example Applications</h2>
 <p>We provide example applications the different UI libraries in the <em>examples</em> folder in the download package. In particular, check out <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/hellonativeui/index.html">HelloNativeUI</a>, <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/nativeuidemo/index.html">NativeUIDemo</a>, <a href="TEMPLATE_DOC_PATH/sdk/js/examples/wormholedemo/index.html">WormholeDemo</a>, <a href="TEMPLATE_DOC_PATH/sdk/js/examples/wormholenativeui/index.html">WormholeNativeUI</a>, and <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/hellomaui/index.html">HelloMAUI</a>. (Read our guide called<a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html"> Importing the Examples</a> to understand how to load and view the examples.)</p>
 <h2>Tutorials</h2>
-<p>The step-by-step tutorial <a href="TEMPLATE_DOC_PATH/sdk/js/tutorials/quick-start/getting-started-html5-and-javascript/index.html">Getting Started with HTML5 and JavaScript</a> will take you through the process of getting started with creating and app with a HTML/CSS user interface.</p>
-<p>In the guide <a href="TEMPLATE_DOC_PATH/sdk/js/tutorials/quick-start/how-create-html5-project-mosync/index.html">Developing Apps in HTML5 and JavaScript</a>, there are some pointer to how to create UIs in HTML5.</p>
-<p>Our <a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/maui/introduction-maui/index.html">Introduction to MAUI</a> tutorial covers a lot of the basics you need to get started both with MAUI and user interfaces in general.</p>
+<p>The step-by-step tutorial <a href="TEMPLATE_DOC_PATH/sdk/js/guides/quick-start/getting-started-html5-and-javascript/index.html">Getting Started with HTML5 and JavaScript</a> will take you through the process of getting started with creating and app with a HTML/CSS user interface.</p>
+<p>In the guide <a href="TEMPLATE_DOC_PATH/sdk/js/guides/quick-start/how-create-html5-project-mosync/index.html">Developing Apps in HTML5 and JavaScript</a>, there are some pointer to how to create UIs in HTML5.</p>
+<p>Our <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/maui/introduction-maui/index.html">Introduction to MAUI</a> tutorial covers a lot of the basics you need to get started both with MAUI and user interfaces in general.</p>
 </body>
 </html>

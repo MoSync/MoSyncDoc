@@ -1,6 +1,11 @@
 <html>
 <head>
-<title>The Notification Library and API</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="Update: From MoSync 3.2.1 local notifications can be triggered on Android devices regardless of the running state of the application." />
+<meta name="dcterms.description" content="Update: From MoSync 3.2.1 local notifications can be triggered on Android devices regardless of the running state of the application." />
+
+<title>Push and Local Notification Support in MoSync Mobile SDK | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>The Notification Library and API</h1>
@@ -12,7 +17,7 @@
 <h2>Platform differences</h2>
 <p>Taking into account that both Android and iOS handle notifications differently, there are some platform-specific usage requirements when handling notifications:</p>
 <ul>
-<li>On iOS push notifications are handled by Apple Push Service, and on Android by Google C2DM Service, so the registration process is slightly different. On Android there is a Google account requirement in the registration process via <strong>registerPushNotification</strong> function: the <strong>accountID</strong> param. Is the ID of the account authorized to send messages to the application — typically the email address of an account set up by the application's developer.</li>
+<li>On iOS push notifications are handled by Apple Push Service, and on Android by Google C2DM Service, so the registration process is slightly different. On Android there is a Google account requirement in the registration process via <strong>registerPushNotification</strong> function: the <strong>accountID</strong> param. Is the ID of the account authorized to send messages to the application  typically the email address of an account set up by the application's developer.</li>
 </ul>
 <ul>
 <li>Display flags are available on Android using the<span style="font-family: Arial; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline;"> setDisplayFlag</span><span style="font-size: small; font-family: Arial; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline;"> </span> function, which may enable the notification to be shown even if the application is in foreground.<br><br></li>
@@ -34,28 +39,28 @@
 <h3>Local notification classes and methods</h3>
 <p>Local notifications are encapsulated in objects of class type <strong>LocalNotification</strong>. The main methods on this class include:</p>
 <ul>
-<li><strong>LocalNotification()</strong> — the constructor, the minimum required to create a local notification object.</li>
-<li><strong>setFireDate</strong> — Set the date and time when the system should deliver the notification. &nbsp;If this property is not explicitly set, then the local notification will be fired automatically.</li>
-<li><strong>setBadgeNumber</strong> — Set the number displayed on the application's icon badge.</li>
-<li><strong>setContentBody</strong> — Set the message displayed in the notification alert.</li>
-<li><strong>setContentTitle</strong> — Set the title that goes in the expanded entry of the notification.</li>
-<li><strong>setTickerText</strong> — Set the text that flows by in the status bar when the notification first activates.</li>
-<li><strong>setFlag</strong> — Set the NotificationFlag applied to the local notification.</li>
-<li><strong>setDisplayFlag</strong> — Set the <strong>NotificationDisplayFlag</strong> applied to the local notification. Note that regardless of this setting, the <strong>didReceiveLocalNotification</strong> callback will be made for each incoming notification.</li>
-<li><strong>setAlertAction</strong> — Set the title of the action button or slider.</li>
-<li><strong>setPlaySound</strong> — Enable/disable the sound played when an alert is displayed.</li>
-<li><strong>setSound</strong> — Set the sound to play when an alert is displayed. Could be ignored if using <strong>setPlaySound(false)</strong>.</li>
-<li><strong>setVibrate</strong> — Enable/disable the the default vibration when an alert is displayed. By default, the vibration is disabled. &nbsp;— If set to true, it will use the default notification vibrate. This will&nbsp; ignore any given vibrate. Using phone vibration requires the VIBRATE permission.</li>
-<li><strong>setVibrateDuration</strong> — Set the vibration duration when an alert is displayed. This setting is ignored if <strong>setVibrate</strong> is disabled.</li>
-<li><strong>setFlashLights</strong> — Enable/Disable the default notification LED lights.</li>
-<li><strong>setFlashLightsPattern</strong> — Define your own color and pattern for the lights.</li>
+<li><strong>LocalNotification()</strong>  the constructor, the minimum required to create a local notification object.</li>
+<li><strong>setFireDate</strong>  Set the date and time when the system should deliver the notification. &nbsp;If this property is not explicitly set, then the local notification will be fired automatically.</li>
+<li><strong>setBadgeNumber</strong>  Set the number displayed on the application's icon badge.</li>
+<li><strong>setContentBody</strong>  Set the message displayed in the notification alert.</li>
+<li><strong>setContentTitle</strong>  Set the title that goes in the expanded entry of the notification.</li>
+<li><strong>setTickerText</strong>  Set the text that flows by in the status bar when the notification first activates.</li>
+<li><strong>setFlag</strong>  Set the NotificationFlag applied to the local notification.</li>
+<li><strong>setDisplayFlag</strong>  Set the <strong>NotificationDisplayFlag</strong> applied to the local notification. Note that regardless of this setting, the <strong>didReceiveLocalNotification</strong> callback will be made for each incoming notification.</li>
+<li><strong>setAlertAction</strong>  Set the title of the action button or slider.</li>
+<li><strong>setPlaySound</strong>  Enable/disable the sound played when an alert is displayed.</li>
+<li><strong>setSound</strong>  Set the sound to play when an alert is displayed. Could be ignored if using <strong>setPlaySound(false)</strong>.</li>
+<li><strong>setVibrate</strong>  Enable/disable the the default vibration when an alert is displayed. By default, the vibration is disabled. &nbsp; If set to true, it will use the default notification vibrate. This will&nbsp; ignore any given vibrate. Using phone vibration requires the VIBRATE permission.</li>
+<li><strong>setVibrateDuration</strong>  Set the vibration duration when an alert is displayed. This setting is ignored if <strong>setVibrate</strong> is disabled.</li>
+<li><strong>setFlashLights</strong>  Enable/Disable the default notification LED lights.</li>
+<li><strong>setFlashLightsPattern</strong>  Define your own color and pattern for the lights.</li>
 </ul>
 <p>An application can add a local notification event listener by calling <strong>NotificationManager::addLocalNotificationListener</strong>.</p>
 <p>The <strong>LocalNotificationListener</strong> class contains the virtual method:</p>
 <ul>
 <li><strong>didReceiveLocalNotification</strong></li>
 </ul>
-<p>The event listener can also be removed by calling <strong>NotificationManager::removeLocalNotificationListener</strong>.<br><br>An application can add a listener for push notifications by calling <strong>NotificationManager::addPushNotificationListener</strong> and of course, by implementing the listener’s methods.</p>
+<p>The event listener can also be removed by calling <strong>NotificationManager::removeLocalNotificationListener</strong>.<br><br>An application can add a listener for push notifications by calling <strong>NotificationManager::addPushNotificationListener</strong> and of course, by implementing the listeners methods.</p>
 <p>The <strong>PushNotificationListener</strong> class contains the following virtual methods:</p>
 <ul>
 <li><strong>didReceivePushNotification</strong></li>
@@ -66,60 +71,60 @@
 <h3><br>Push notification classes and methods</h3>
 <p><br><strong>PushNotification</strong> class objects should not be created by the user. Push notifications can only be received in the <strong>didReceivePushNotification</strong> callback.<br> <br><strong>PushNotification</strong> methods used for accessing the content of a received push notification include:</p>
 <ul>
-<li><strong>containsMessage </strong> — Checks if the push notification contains alert message.</li>
-<li><strong>getMessage </strong> — Get the alert message.</li>
-<li><strong>containsSoundFileName </strong> — Check if the push notification contains sound file name.</li>
-<li><strong>getSoundFileName </strong> — Get the sound file name.</li>
-<li><strong>containsIconBadgeNumber </strong> — Check if the push notification contains icon badge number.</li>
-<li><strong>getIconBadgeNumber </strong> — Get the application icon badge number.</li>
+<li><strong>containsMessage </strong>  Checks if the push notification contains alert message.</li>
+<li><strong>getMessage </strong>  Get the alert message.</li>
+<li><strong>containsSoundFileName </strong>  Check if the push notification contains sound file name.</li>
+<li><strong>getSoundFileName </strong>  Get the sound file name.</li>
+<li><strong>containsIconBadgeNumber </strong>  Check if the push notification contains icon badge number.</li>
+<li><strong>getIconBadgeNumber </strong>  Get the application icon badge number.</li>
 </ul>
 <h3>Communications with the Notification API</h3>
 <p>The Notification API is handled through the singleton class <strong>NotificationManager</strong> via the functions:</p>
 <ul>
-<li><strong>scheduleLocalNotification </strong>— Schedules a local notification for delivery at its encapsulated date and time. By default, the notifications are displayed to the user only if the application is in background. But on Android you can configure this by calling <strong>setDisplayFlag</strong>.</li>
-<li><strong>unscheduleLocalNotification </strong>— Cancels the delivery of the specified scheduled local notification.</li>
-<li><strong>addLocalNotificationListener </strong>— Add an event listener for local notifications.</li>
-<li><strong>removeLocalNotificationListener </strong>— Remove the event listener for local notifications.</li>
-<li><strong>registerPushNotification </strong>— Registers the current application for receiving push notifications.</li>
-<li><strong>unregisterPushNotification </strong>— Unregister application for push notifications.</li>
-<li><strong>addPushNotificationListener </strong>— Add listener for push notifications received by this application.</li>
-<li><strong>removePushNotificationListener </strong>— Remove listener for push notifications received by this application.</li>
-<li><strong>setApplicationIconBadgeNumber </strong>— Set the number currently set as the badge of the application icon.</li>
-<li><strong>setPushNotificationsDisplayFlag </strong>— Set the display flags applied to the incoming push notifications. Note that regardless of this setting, the <strong>didReceivePushNotification</strong> callback will be made for each incoming notification.</li>
-<li><strong>setPushNotificationsTitle </strong>— Set the &nbsp;message title in the notification area for incoming push notifications.</li>
-<li><strong>setPushNotificationsTickerText </strong>— Set the ticker text in the notification status bar for incoming push notifications.</li>
+<li><strong>scheduleLocalNotification </strong> Schedules a local notification for delivery at its encapsulated date and time. By default, the notifications are displayed to the user only if the application is in background. But on Android you can configure this by calling <strong>setDisplayFlag</strong>.</li>
+<li><strong>unscheduleLocalNotification </strong> Cancels the delivery of the specified scheduled local notification.</li>
+<li><strong>addLocalNotificationListener </strong> Add an event listener for local notifications.</li>
+<li><strong>removeLocalNotificationListener </strong> Remove the event listener for local notifications.</li>
+<li><strong>registerPushNotification </strong> Registers the current application for receiving push notifications.</li>
+<li><strong>unregisterPushNotification </strong> Unregister application for push notifications.</li>
+<li><strong>addPushNotificationListener </strong> Add listener for push notifications received by this application.</li>
+<li><strong>removePushNotificationListener </strong> Remove listener for push notifications received by this application.</li>
+<li><strong>setApplicationIconBadgeNumber </strong> Set the number currently set as the badge of the application icon.</li>
+<li><strong>setPushNotificationsDisplayFlag </strong> Set the display flags applied to the incoming push notifications. Note that regardless of this setting, the <strong>didReceivePushNotification</strong> callback will be made for each incoming notification.</li>
+<li><strong>setPushNotificationsTitle </strong> Set the &nbsp;message title in the notification area for incoming push notifications.</li>
+<li><strong>setPushNotificationsTickerText </strong> Set the ticker text in the notification status bar for incoming push notifications.</li>
 </ul>
 <p>More information on each of these functions can be found in the <a href="http://www.mosync.com/files/imports/doxygen/latest/html/index.html">MoSync C/C++ API Reference</a>.</p>
 <h2>Notification Syscalls API</h2>
 <h3>Local notification syscalls</h3>
 <ul>
-<li><strong>maNotificationLocalCreate&nbsp;</strong> — Creates a new local notification object. If FIRE_DATE is not set, the default current time is applied.</li>
-<li><strong>maNotificationLocalSetProperty</strong> — Sets a local notification property.</li>
-<li><strong>maNotificationLocalDestroy</strong> — Destroys a local notification object, and clears it from the notifications list.</li>
-<li><strong>maNotificationLocalGetProperty</strong> — Retrieves a specified property from the given notification object.</li>
-<li><strong>maNotificationLocalSchedule</strong> — Schedules a local notification for delivery at its encapsulated date and time.</li>
-<li><strong>maNotificationLocalUnschedule</strong> — Cancels the delivery of the specified scheduled local notification. Calling this method dismisses the notification if &nbsp;it is currently displaying an alert.</li>
+<li><strong>maNotificationLocalCreate&nbsp;</strong>  Creates a new local notification object. If FIRE_DATE is not set, the default current time is applied.</li>
+<li><strong>maNotificationLocalSetProperty</strong>  Sets a local notification property.</li>
+<li><strong>maNotificationLocalDestroy</strong>  Destroys a local notification object, and clears it from the notifications list.</li>
+<li><strong>maNotificationLocalGetProperty</strong>  Retrieves a specified property from the given notification object.</li>
+<li><strong>maNotificationLocalSchedule</strong>  Schedules a local notification for delivery at its encapsulated date and time.</li>
+<li><strong>maNotificationLocalUnschedule</strong>  Cancels the delivery of the specified scheduled local notification. Calling this method dismisses the notification if &nbsp;it is currently displaying an alert.</li>
 </ul>
 <p>(Note: you have to set the FIRE property and then register the notification. If the fire value is not set the local notification is displayed immediately when <strong>maNotificationLocalRegister</strong> is called.)</p>
 <h3>Push notification syscalls</h3>
 <ul>
-<li><strong>maNotificationPushRegister</strong> — Registers the current application for receiving push notifications. The application will receive an EVENT_TYPE_PUSH_NOTIFICATION_REGISTER after the registration is handled and the user may call <strong>maNotificationPushGetRegistration</strong> to get the results.</li>
-<li><strong>maNotificationPushGetRegistration</strong> — Retrieves &nbsp;the latest registration response in a string: the registrationID if the registration was successfull, or the error messsage otherwise.</li>
-<li><strong>maNotificationPushUnregister</strong> — Unregisters an application for push notifications. Unregistration is also accomplished by un-installing the application. The&nbsp;EVENT_TYPE_PUSH_NOTIFICATION_UNREGISTER will be received on Android if it was successful.</li>
-<li><strong>maNotificationPushGetData</strong> — Fills the pushNotificationData struct with the values for a given push notification.</li>
-<li><strong>maNotificationSetIconBadge</strong> — Set the number currently set as the badge of the application icon in Springboard. Platform: iOS only. Set it to 0 to hide the badge number.</li>
-<li><strong>maNotificationGetIconBadge</strong> — Get the number currently set as the badge of the application icon. Platform: iOS only.&nbsp;&nbsp;</li>
-<li><strong>maNotificationPushSetTickerText</strong> — Set the ticker text in the notification status bar for incoming push notifications. This call does not alter already received notifications. Ticker text: is the text that flows by in the status bar when the notification first activates. Platform: Android only.</li>
-<li><strong>maNotificationPushSetMessageTitle</strong> — Set the &nbsp;message title in the notification area for incoming push notifications. This call does not alter already received notifications. Platform: Android only.</li>
-<li><strong>maNotificationPushSetDisplayFlag</strong> — Set the notification display flags applied to the incoming push notifications.</li>
-<li><strong>maNotificationPushDestroy</strong> — Destroy a push notification object.</li>
+<li><strong>maNotificationPushRegister</strong>  Registers the current application for receiving push notifications. The application will receive an EVENT_TYPE_PUSH_NOTIFICATION_REGISTER after the registration is handled and the user may call <strong>maNotificationPushGetRegistration</strong> to get the results.</li>
+<li><strong>maNotificationPushGetRegistration</strong>  Retrieves &nbsp;the latest registration response in a string: the registrationID if the registration was successfull, or the error messsage otherwise.</li>
+<li><strong>maNotificationPushUnregister</strong>  Unregisters an application for push notifications. Unregistration is also accomplished by un-installing the application. The&nbsp;EVENT_TYPE_PUSH_NOTIFICATION_UNREGISTER will be received on Android if it was successful.</li>
+<li><strong>maNotificationPushGetData</strong>  Fills the pushNotificationData struct with the values for a given push notification.</li>
+<li><strong>maNotificationSetIconBadge</strong>  Set the number currently set as the badge of the application icon in Springboard. Platform: iOS only. Set it to 0 to hide the badge number.</li>
+<li><strong>maNotificationGetIconBadge</strong>  Get the number currently set as the badge of the application icon. Platform: iOS only.&nbsp;&nbsp;</li>
+<li><strong>maNotificationPushSetTickerText</strong>  Set the ticker text in the notification status bar for incoming push notifications. This call does not alter already received notifications. Ticker text: is the text that flows by in the status bar when the notification first activates. Platform: Android only.</li>
+<li><strong>maNotificationPushSetMessageTitle</strong>  Set the &nbsp;message title in the notification area for incoming push notifications. This call does not alter already received notifications. Platform: Android only.</li>
+<li><strong>maNotificationPushSetDisplayFlag</strong>  Set the notification display flags applied to the incoming push notifications.</li>
+<li><strong>maNotificationPushDestroy</strong>  Destroy a push notification object.</li>
 </ul>
 <h3><br>Notification Events</h3>
 <ul>
-<li>EVENT_TYPE_LOCAL_NOTIFICATION — Sent when the application receives a local notification.</li>
-<li>EVENT_TYPE_PUSH_NOTIFICATION_REGISTRATION — Sent when the application receives a registration result. The application tries to register to Apple Push Service, or Google C2DM Service, and the received result ( either success, either fail) is sending this event. After this event is received, get the result of the registration request by calling maNotificationPushGetRegistration.</li>
-<li>EVENT_TYPE_PUSH_NOTIFICATION_UNREGISTRATION — Sent when the application receives an unregistration result. The application unregistered from Google C2DM Service, and will not receive anymore push messages. Platform: Android only.</li>
-<li>EVENT_TYPE_PUSH_NOTIFICATION — Sent when the application receives a push notification.</li>
+<li>EVENT_TYPE_LOCAL_NOTIFICATION  Sent when the application receives a local notification.</li>
+<li>EVENT_TYPE_PUSH_NOTIFICATION_REGISTRATION  Sent when the application receives a registration result. The application tries to register to Apple Push Service, or Google C2DM Service, and the received result ( either success, either fail) is sending this event. After this event is received, get the result of the registration request by calling maNotificationPushGetRegistration.</li>
+<li>EVENT_TYPE_PUSH_NOTIFICATION_UNREGISTRATION  Sent when the application receives an unregistration result. The application unregistered from Google C2DM Service, and will not receive anymore push messages. Platform: Android only.</li>
+<li>EVENT_TYPE_PUSH_NOTIFICATION  Sent when the application receives a push notification.</li>
 </ul>
 <p>&nbsp;</p>
 <h2>Creating and firing off local notifications</h2>
@@ -177,7 +182,7 @@ else
 </pre>
 <p>Finally, you can schedule for delivery the notification:</p>
 <pre class="mosync-code-cpp">NotificationManager::getInstance()-&gt;scheduleLocalNotification(notification);</pre>
-<p>Now let’s implement listener’s methods:</p>
+<p>Now lets implement listeners methods:</p>
 <pre class="mosync-code-cpp">virtual void didReceiveLocalNotification(LocalNotification&amp; localNotification)
 {
     maMessageBox("New local notification with the message", localNotification.getContentBody().c_str());

@@ -1,0 +1,222 @@
+<html>
+<head>
+<!-- <mosyncheadertags>
+<meta name="description" content="There are obvious occasions when you want do download data from the Internet for your games or application.  There are even obvious occasions when you want to download images and sounds using the ImageDownloader and AudioDownloader.  What might appear less obvious is the use of a Custom Downloader." />
+<meta name="dcterms.description" content="There are obvious occasions when you want do download data from the Internet for your games or application.  There are even obvious occasions when you want to download images and sounds using the ImageDownloader and AudioDownloader.  What might appear less obvious is the use of a Custom Downloader." />
+
+<title>Custom Downloaders | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
+</head>
+<body>
+<h1>Custom Downloaders</h1>
+<p>There are obvious occasions when you want do download data from the Internet for your games or application. &nbsp;There are even obvious occasions when you want to download images and sounds using the <strong>ImageDownloader</strong>&nbsp;and <strong>AudioDownloader.</strong>&nbsp;&nbsp;What might appear less obvious is the use of a <strong>Custom Downloader</strong>.</p>
+<p><!--break--> </p>
+<h2>Custom Downloaders</h2>
+<p><strong>Custom Downloaders</strong>&nbsp;are more useful than you might think.&nbsp; These are classes where you have implemented&nbsp;<strong>ConnectionListener</strong>, but got it to do something with the data before consuming it.</p>
+<p>A great, if lengthy, example is the mapping component below.&nbsp; This is a custom widget (not part of the MoSync MAP SDK) to make scrollable, zoomable maps using the CloudMade map tiles.&nbsp; Initially, this used an&nbsp;<strong>ImageDownloader&nbsp;</strong>to get each and every tile separately from CloudMade.&nbsp; This was very slow, not because the data connection was slow, but because the HTTP latency was so great. &nbsp;It needed to negotiate a connection to the server 36 times to build a screen.</p>
+<p>Instead, this connects to a small web application which will take requests for an indefinite number of tiles at once.&nbsp; It will go and get those tiles from CloudMade, cache them in memory for quick retrieval later, and return them to me in a single download. &nbsp;The application can then rip the tiles out of the stream and pass them to the map for display.</p>
+<p>This has been implemented as a <strong>CustomDownloader</strong>. &nbsp;It allows for additional logic to be wrapped in the download mechanism, so other classes do not need knowledge of the connection to get the correct data.</p>
+<h3>MapTileDownloader.h</h3>
+<pre>#ifndef _MAPTILEDOWNLOADER_H_
+#define _MAPTILEDOWNLOADER_H_
+#include &lt;MAUtil/Connection.h&gt;
+#include "MapTileDownloadListener.h"
+using namespace MAUtil;
+using namespace DatiloMapping;
+namespace DatiloMapping
+{
+    class MapTileDownloader : public ConnectionListener
+    {
+    public:
+        MapTileDownloader();
+        virtual ~MapTileDownloader();
+        void startDownloading(const char* url);
+        void cancelDownloading();
+        void removeListener(MapTileDownloadListener* listener);
+        void addDownloadListener(MapTileDownloadListener* listener);
+        void connectFinished(Connection* conn, int result);
+        void connRecvFinished(Connection* conn, int result);
+        void connReadFinished(Connection* conn, int result);
+        void connWriteFinished(Connection* conn, int result);
+        bool isDownloading();
+    private:
+        Vector&lt;MapTileDownloadListener*&gt; downloadListeners;
+        Connection* mapConn;
+        bool activeDownload;
+        void throwTile();
+        void processDownload();
+        void iterateTiles(int next);
+        void readKeyLength();
+        void readKey();
+        void readImageLength();
+        void readImage();
+        int dlStage;
+        ushort tileCount;
+        int keyLength;
+        int downloadedBytes;
+        int nextTile;
+        bool fetchComplete;
+        bool connectionOpen;
+        int tileSize;
+        byte kl; //key length
+        char* keyBuffer;
+        MAHandle h;
+    };
+};
+#endif //_MAPTILEDOWNLOADER_H_
+</pre>
+<p>&nbsp;</p>
+<h3>MapTileDownloader.cpp</h3>
+<pre>#include  "MapTileDownloader.h"
+#include &lt;conprint.h&gt;
+#include &lt;madmath.h&gt;
+MapTileDownloader::MapTileDownloader()
+{
+    h = maCreatePlaceholder();
+    keyBuffer = new char[10];
+    mapConn = new Connection(this);
+    activeDownload = false;
+}
+MapTileDownloader::~MapTileDownloader()
+{
+    maDestroyObject(h);
+    delete mapConn;
+    delete [] keyBuffer;
+}
+//Start a download
+void MapTileDownloader::startDownloading(const char* url)
+{
+    if(mapConn-&gt;isOpen())
+    mapConn-&gt;close();
+    activeDownload = true;
+    int res = mapConn-&gt;connect(url);
+    if(res &lt; 0)
+    return;
+}
+void MapTileDownloader::processDownload()
+{
+    dlStage = 0;
+    nextTile = 0;
+    fetchComplete = false;
+    mapConn-&gt;read(&amp;tileCount, 2); //Read exactly two bytes
+}
+void MapTileDownloader::iterateTiles(int next)
+{
+    nextTile = next;
+    //Read through each tile
+    if(nextTile &lt; tileCount)
+    {
+        //Reset the buffers
+        memset(keyBuffer, 0, 10);
+        readKeyLength();
+    }
+    else
+    {
+        mapConn-&gt;close();
+        activeDownload = false;
+        Vector_each(class MapTileDownloadListener*, itr, downloadListeners)
+        {
+            (*itr)-&gt;complete();
+        }
+    }
+}
+void MapTileDownloader::readKeyLength()
+{
+    dlStage = 1;
+    mapConn-&gt;read(&amp;kl, 1); //Read exactly one byte
+}
+void MapTileDownloader::readKey()
+{
+    dlStage = 2;
+    mapConn-&gt;read(keyBuffer, kl);
+}
+void MapTileDownloader::readImageLength()
+{
+    dlStage = 3;
+    mapConn-&gt;read(&amp;tileSize, 4);
+}
+void MapTileDownloader::readImage()
+{
+    dlStage = 4;
+    //Remove any existing obejct
+    maDestroyObject(h);
+    maCreateData(h, tileSize);
+    mapConn-&gt;readToData(h, 0, tileSize);
+}
+//Returns a tile to the listener
+void MapTileDownloader::throwTile()
+{
+    Vector_each(class MapTileDownloadListener*, itr, downloadListeners)
+    {
+        (*itr)-&gt;finishedDownloading(keyBuffer, h, tileSize);
+    }
+    maDestroyObject(h);
+    //Get the next tile
+    iterateTiles((nextTile + 1) % 36);
+}
+//Handle add/remove of listeners
+void MapTileDownloader::removeListener(MapTileDownloadListener* listener)
+{
+    Vector_each(class MapTileDownloadListener*, itr, downloadListeners)
+    {
+        if((*itr) == listener)
+        {
+            downloadListeners.remove(itr);
+            break;
+        }
+    }
+}
+void MapTileDownloader::addDownloadListener(MapTileDownloadListener* listener)
+{
+    downloadListeners.add(listener);
+}
+//ConnectionListener events
+void MapTileDownloader::connectFinished(Connection* conn, int result)
+{
+    processDownload();
+}
+void MapTileDownloader::connRecvFinished(Connection* conn, int result)
+{
+}
+void MapTileDownloader::connReadFinished(Connection* conn, int result)
+{
+    fetchComplete = true;
+    switch(dlStage)
+    {
+    case 0:
+        iterateTiles(0);
+        break;
+    case 1:
+        readKey();
+        break;
+    case 2:
+        readImageLength();
+        break;
+    case 3:
+        readImage();
+        break;
+    case 4:
+        throwTile();
+        break;
+    }
+}
+void MapTileDownloader::connWriteFinished(Connection* conn, int result)
+{
+}
+void MapTileDownloader::cancelDownloading()
+{
+    if(mapConn-&gt;isOpen())
+    {
+        mapConn-&gt;close();
+    }
+    activeDownload = false;
+}
+bool MapTileDownloader::isDownloading()
+{
+    return activeDownload;
+}
+</pre>
+<p>&nbsp;</p>
+<p>This gets a stream of tiles.&nbsp; It reads the first two bytes of the stream to get the number of tiles in the stream, and then for each tile it reads the key so the map will know where this image goes.&nbsp; It then reads the length of the image, and then the image data itself.&nbsp; As it gets each tile, it throws it to a listener which can pass it to the map, so it is drawing tiles as they come down.&nbsp; By implementing a custom listener like this, you will get a speed improvement of ten-fold!</p>
+</body>
+</html>

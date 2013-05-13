@@ -1,6 +1,11 @@
 <html>
 <head>
-<title>Using the ListView Widget</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="The MoSync C API's ListView widget provides much flexibility in displaying information lists in your app. The widget can display both alphabetical and segmented lists, and can have sections to group items. This tutorial takes a deeper look at this important widget." />
+<meta name="dcterms.description" content="The MoSync C API's ListView widget provides much flexibility in displaying information lists in your app. The widget can display both alphabetical and segmented lists, and can have sections to group items. This tutorial takes a deeper look at this important widget." />
+
+<title>Using the ListView Widget | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>Using the ListView Widget</h1>
@@ -17,7 +22,7 @@
 <pre class="mosync-code-js">ListView* listView = new ListView();
 layout-&gt;addChild(listView);</pre>
 <h3>Alphabetical</h3>
-<p>This <strong>ListView</strong> widget type allows information to be displayed in alphabetical order.<br><br>On iOS, an index bar appears on the right side of the list, showing labels such as ‘a’ through ‘z’. <br><br>On Windows Phone 7, the alphabetical list is similar to the segmented one: the right-side index bar is missing and the letter jump is made by clicking on the section header. A new screen is presented (see screenshot for WP7, below), containing all the available sections from which the user can chose.<br><br>On Android, the alphabetical list enables the fast ‘scroll thumb’ that can be dragged to quickly scroll through the list. There is a native constraint: there need to be at least 35 items in the list for the fast ‘scroll thumb’ to be shown. The best example of this implementation is the standard 'Contacts' application.</p>
+<p>This <strong>ListView</strong> widget type allows information to be displayed in alphabetical order.<br><br>On iOS, an index bar appears on the right side of the list, showing labels such as a through z. <br><br>On Windows Phone 7, the alphabetical list is similar to the segmented one: the right-side index bar is missing and the letter jump is made by clicking on the section header. A new screen is presented (see screenshot for WP7, below), containing all the available sections from which the user can chose.<br><br>On Android, the alphabetical list enables the fast scroll thumb that can be dragged to quickly scroll through the list. There is a native constraint: there need to be at least 35 items in the list for the fast scroll thumb to be shown. The best example of this implementation is the standard 'Contacts' application.</p>
 <table class="doclayout" border="0"><tbody><tr><td><img src="images/10534" alt="nid%3D10534%7Ctitle%3D%7Cdesc%3D%7Clink%3Dnone" title="" align="none" height="341" width="205"></td><td><p><img src="images/10535" alt="nid%3D10535%7Ctitle%3D%7Cdesc%3D%7Clink%3Dnone" title="" align="none" height="336" width="221"></p>
 </td></tr>
 <tr><td><em>Alphabetical contacts list on Android</em></td><td><em>Fast thumb scroll on Android</em></td></tr>
@@ -45,13 +50,13 @@ layout-&gt;addChild(listView);</pre>
 </blockquote><p>Here, for example you can see an segmented section on iOS:</p>
 <p><img src="images/ListView-widget-segmented-secton-on-ios.png" align="none" width="220" height="146"><br>And here you can see an alphabetical section containing two items:<br><br><img src="images/ListView-widget-alphabetical-secton-on-ios.png" align="none" width="220" height="76"></p>
 <h3>Title</h3>
-<p>On iOS, the section title appears on the right side of the list, while on Android it appears on the fast scroll thumb. Usually this is a single <strong>char</strong> value, for example any value from ‘a’ through ‘z’. In the alphabetical list example above, you can see “A”, “B”, “C”, “D” letters on the right side of the section.<br><br>On Windows Phone 7, the section title is available only inside the jump list screen (available when the user clicks on a section header).<br><br>On Android, the section title is available on the fast ‘scroll thumb’. It is advised to use only one character, because the control that displays the alphabetic index is not resized based on its contents.</p>
+<p>On iOS, the section title appears on the right side of the list, while on Android it appears on the fast scroll thumb. Usually this is a single <strong>char</strong> value, for example any value from a through z. In the alphabetical list example above, you can see A, B, C, D letters on the right side of the section.<br><br>On Windows Phone 7, the section title is available only inside the jump list screen (available when the user clicks on a section header).<br><br>On Android, the section title is available on the fast scroll thumb. It is advised to use only one character, because the control that displays the alphabetic index is not resized based on its contents.</p>
 <blockquote><p>Note: The property is available only if list type is LIST_VIEW_TYPE_ALPHABETICAL.</p>
 </blockquote><h3>Header text</h3>
-<p>The header text is the text displayed on top of the section. For example, the “Header text” in the segmented example above, or the “B” letter on top of the horizontal grey area for the alphabetical one.<br><br>On iOS, the font and position of the header text are set by the system, while on Android and Windows Phone 7 they can be set through the section’s methods <strong>setHeaderFont()</strong>, <strong>setHeaderFontSize()</strong>, <strong>setHeaderFontColor()</strong>, <strong>setHeaderTextVerticalAlignment()</strong>, <strong>setHeaderTextHorizontalAlignment()</strong>.</p>
+<p>The header text is the text displayed on top of the section. For example, the Header text in the segmented example above, or the B letter on top of the horizontal grey area for the alphabetical one.<br><br>On iOS, the font and position of the header text are set by the system, while on Android and Windows Phone 7 they can be set through the sections methods <strong>setHeaderFont()</strong>, <strong>setHeaderFontSize()</strong>, <strong>setHeaderFontColor()</strong>, <strong>setHeaderTextVerticalAlignment()</strong>, <strong>setHeaderTextHorizontalAlignment()</strong>.</p>
 <blockquote><p>Note: The header text property is available only if list type is LIST_VIEW_TYPE_ALPHABETICAL or LIST_VIEW_TYPE_SEGMENTED.</p>
 </blockquote><h3>Footer text</h3>
-<p>This is the text displayed on below the section. For example “Footer text” in the segmented list example above.<br><br>On iOS its font and position are set by the system, while on Android and Windows Phone 7 they can be set through section’s methods <strong>setFooterFont()</strong>, <strong>setFooterFontSize()</strong>, <strong>setFooterFontColor()</strong>, <strong>setFooterTextVerticalAlignment()</strong>, <strong>setFooterTextHorizontalAlignment()</strong>.</p>
+<p>This is the text displayed on below the section. For example Footer text in the segmented list example above.<br><br>On iOS its font and position are set by the system, while on Android and Windows Phone 7 they can be set through sections methods <strong>setFooterFont()</strong>, <strong>setFooterFontSize()</strong>, <strong>setFooterFontColor()</strong>, <strong>setFooterTextVerticalAlignment()</strong>, <strong>setFooterTextHorizontalAlignment()</strong>.</p>
 <blockquote><p>Note: The property is available only if list type is LIST_VIEW_TYPE_ALPHABETICAL or LIST_VIEW_TYPE_SEGMENTED.</p>
 </blockquote><h2>ListViewItem Properties</h2>
 <p><em>MoSync SDK 3.2 onwards</em></p>
