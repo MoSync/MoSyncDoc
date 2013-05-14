@@ -226,14 +226,13 @@ end
 #----------------------------------------------------#
 
 def webSiteBuildDocHomePage
-  title = "MoSync Documentation"
   webSiteBuildPage(
     :outputFile => pathWebSite() + "index.html",
     :pageFile => pathPageDocHome(),
     :menuFile => pathPageDocMenu(),
     :templateFile => pathPageTemplate(),
     :swatch => swatchDocHome(),
-    :pageHeading => title,
+    :pageHeading => fileGetPageTitle(pathPageDocHome()),
 	:pageHeaderTags => fileGetHeaderTags(pathPageDocHome()),
     :selectedMenuItem => MENU_START_HOME
     )
@@ -248,7 +247,7 @@ def webSiteBuildSearchPage
     :templateFile => pathPageTemplate(),
     :swatch => swatchDocHome(),
     :pageHeading => title,
-	:pageHeaderTags => "",
+	:pageHeaderTags => "", # TODO: Add headertags.
     :selectedMenuItem => MENU_START_SEARCH
     )
 end
@@ -259,14 +258,13 @@ end
 
 # Build the SDK home page.
 def webSiteBuildSdkHomePage
-  title = "MoSync SDK"
   webSiteBuildPage(
     :outputFile => pathWebSiteSdk() + "index.html",
     :pageFile => pathPageSdkHome(),
     :menuFile => pathPageSdkMenu(),
     :templateFile => pathPageTemplate(),
     :swatch => swatchSdk(),
-    :pageHeading => title,
+    :pageHeading => fileGetPageTitle(pathPageSdkHome()),
 	:pageHeaderTags => fileGetHeaderTags(pathPageSdkHome()),
     :selectedMenuItem => MENU_START_SDK
     )
@@ -336,14 +334,13 @@ end
 
 # Build the Reload home page.
 def webSiteBuildReloadHomePage
-  title = "MoSync Reload"
   webSiteBuildPage(
     :outputFile => pathWebSiteReload() + "index.html",
     :pageFile => pathPageReloadHome(),
     :menuFile => pathPageReloadMenu(),
     :templateFile => pathPageTemplate,
     :swatch => swatchReload(),
-    :pageHeading => title,
+    :pageHeading => fileGetPageTitle(pathPageReloadHome()),
 	:pageHeaderTags => fileGetHeaderTags(pathPageReloadHome()),
     :selectedMenuItem => MENU_START_RELOAD
     )
@@ -358,10 +355,10 @@ def webSiteBuildReloadDocPages
 end
 
 def webSiteBuildReloadIndexPages
-  title = "Guides"
+  title = "Reload Guides"
   webSiteBuildReloadIndexPage([RELOAD,GUIDE], "reload/guides/", title, MENU_RELOAD_GUIDES)
   
-  title = "Release Notes"
+  title = "Reload Release Notes"
   webSiteBuildReloadIndexPage([RELOAD,RELEASE_NOTE], "reload/release-notes/", title, MENU_RELOAD_RELEASE_NOTES)
 end
 
@@ -411,7 +408,7 @@ def webSiteBuildDocPages(pages, menuFile, swatch)
       :menuFile => menuFile,
       :templateFile => pathPageTemplate(),
       :swatch => swatch,
-      :pageHeading => fileGetPageHeading(pageFile),
+      :pageHeading => pageGetHeadingFromDocumentationType(page),
       :pageHeaderTags => fileGetHeaderTags(pageFile),
       :selectedMenuItem => webSiteGetMenuItemTypeForPage(page)
       )
@@ -993,7 +990,37 @@ end
 def pageGetTitleFromTargetFile(page)
   dir = Pathname.new(pathDocs())
   file = dir + pageTargetFile(page) + "index.html"
-  fileGetPageTitle(file)
+  fileGetPageHeading(file)
+end
+
+# TODO: Fix titles, so that they are in variables,
+# perferably in structure.rb? Title strings 
+# are now duplicated.
+def pageGetHeadingFromDocumentationType(page)
+  if pageHasAllLabels?(page, [SDK,RELEASE_NOTE]) then
+    "SDK Release Notes"
+  elsif pageHasAllLabels?(page, [RELOAD,RELEASE_NOTE]) then
+    "Reload Release Notes"
+  elsif pageHasAllLabels?(page, [CPP,GUIDE]) then
+    "C/C++ Guides"
+  elsif pageHasAllLabels?(page, [CPP,EXAMPLE]) then
+    "C/C++ Examples"
+  elsif pageHasAllLabels?(page, [JS,GUIDE]) then
+    "JavaScript Guides"
+  elsif pageHasAllLabels?(page, [JS,EXAMPLE]) then
+    "JavaScript Examples"
+  elsif pageHasAllLabels?(page, [SDK,TOOLS,GUIDE]) then
+    "SDK Tools Guides"
+  elsif pageHasAllLabels?(page, [SDK,REFERENCE]) then
+    "SDK Tools References"
+  elsif pageHasAllLabels?(page, [RELOAD,GUIDE]) then
+    "Reload Guides"
+  elsif pageHasAllLabels?(page, [RELOAD,TOOLS]) then
+    "Reload Tools"
+  else
+    puts "@@@@@@@ UNDEFINED TITLE @@@@@@@"
+    "UNDEFINED TITLE"
+  end
 end
 
 ######################################################
@@ -1038,7 +1065,7 @@ def fileCleanPath(pathName)
 end
 
 def fileReadContent(filePath)
-  File.open(filePath, "rb") { |f| f.read }
+  File.open(filePath, "rb") { |f| f.read.force_encoding("UTF-8") }
 end
 
 def fileSaveContent(destFile, content)
@@ -1061,7 +1088,7 @@ end
 # the final web page.
 def fileGetHeaderTags(filePath)
   html = fileReadContent(filePath)
-  htmlGetTagContents(html, "mosync-header-section")
+  htmlGetTagContents(html, "mosyncheadertags")
 end
 
 ######################################################
@@ -1231,7 +1258,7 @@ def pagesReferingToMoSyncCom
 end
 
 
-def pageSearchTool stringOrRegExp
+def pageSearchTool(stringOrRegExp)
   puts "Pages that contain: " + stringOrRegExp.to_s
 
   n = 0

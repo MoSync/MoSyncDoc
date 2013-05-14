@@ -133,7 +133,7 @@ $pages = [
 ["documentation/manualpages/stopwatch","",[IGNORE]],
 ["documentation/tutorials/starting-mosync-development-java-and-c-developers","",[IGNORE]],
 
-# New documentation pages.
+# New documentation pages from Drupal export.
 ["blog/2010/03/creating-xml-documents","sdk/cpp/guides/xml/creating-xml-documents",[SDK,CPP,GUIDE,XML]],
 ["blog/2010/03/working-json-data","sdk/cpp/guides/json/working-with-json-data", [SDK,CPP,GUIDE,JSON]],
 ["blog/2010/05/serial-data-access","sdk/cpp/guides/storage/serial-data-access",[SDK,CPP,GUIDE,STORAGE]],
@@ -193,7 +193,7 @@ $pages = [
 ["documentation/manualpages/building-mosync-sdk-source-os-x","sdk/tools/guides/extensions/building-mosync-sdk-source-os-x",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/building-mosync-source-linux","sdk/tools/guides/extensions/building-mosync-source-linux",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/building-mosync-source-windows","sdk/tools/guides/extensions/building-mosync-source-windows",[SDK,TOOLS,GUIDE,EXTENSIONS]],
-["documentation/manualpages/building-photo-gallery","sdk/js/examples/photogallery-explained",[SDK,JS,EXAMPLE,GUIDE,CAMERA,COMMUNICATION]],
+["documentation/manualpages/building-photo-gallery","sdk/js/examples/photogallery-explained",[SDK,JS,EXAMPLE,CAMERA,COMMUNICATION,HYBRID]],
 ["documentation/manualpages/camerademo","sdk/cpp/examples/camerademo",[SDK,CPP,EXAMPLE,CAMERA,NATIVEUI]],
 ["documentation/manualpages/coding-conventions","sdk/tools/guides/extensions/coding-conventions",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/controlling-cameras","sdk/cpp/guides/camera/controlling-cameras",[SDK,CPP,GUIDE,CAMERA]],
@@ -202,7 +202,7 @@ $pages = [
 ["documentation/manualpages/creating-user-interfaces-mosync","sdk/cpp/guides/ui/creating-user-interfaces-mosync",[SDK,CPP,GUIDE,NATIVEUI,WEBUI,MAUI]],
 ["documentation/manualpages/c-standard-template-library-stl","sdk/cpp/guides/libs/c-standard-template-library-stl",[SDK,CPP,GUIDE,LIBS]],
 ["documentation/manualpages/databasetest","sdk/cpp/examples/databasetest",[SDK,CPP,EXAMPLE,DATABASE]],
-["documentation/manualpages/debugging-javascript-device","sdk/tools/guides/ide/debugging-javascript-device",[SDK,TOOLS,GUIDE,JS,IDE,DEBUGGING]],
+["documentation/manualpages/debugging-javascript-device","sdk/tools/guides/ide/debugging-javascript-device",[SDK,TOOLS,GUIDE,IDE,DEBUGGING]],
 ["documentation/manualpages/debugging-javascript-ios-mosync-reload","reload/guides/debugging/debugging-javascript-ios-mosync-reload",[RELOAD,GUIDE,DEBUGGING]],
 ["documentation/manualpages/debugging-javascript-rlog","reload/guides/debugging/debugging-javascript-rlog",[RELOAD,GUIDE,DEBUGGING]],
 ["documentation/manualpages/developing-android-applications","sdk/tools/guides/ide/developing-android-applications",[SDK,TOOLS,GUIDE,IDE]],
@@ -275,7 +275,7 @@ $pages = [
 ["documentation/manualpages/setting-application-permissions","sdk/tools/guides/ide/setting-application-permissions",[SDK,TOOLS,GUIDE,IDE]],
 ["documentation/manualpages/soap","sdk/cpp/examples/soap",[SDK,CPP,EXAMPLE,COMMUNICATION]],
 ["documentation/manualpages/sql-database-api","sdk/cpp/guides/storage/sql-database-api",[SDK,CPP,GUIDE,STORAGE]],
-["documentation/manualpages/symbian-packaging-parameters","sdk/tools/guides/ide/symbian-packaging-parameters",[SDK,TOOLS,IDE,SYMBIAN]],
+["documentation/manualpages/symbian-packaging-parameters","sdk/tools/guides/ide/symbian-packaging-parameters",[SDK,TOOLS,GUIDE,IDE,SYMBIAN]],
 ["documentation/manualpages/testify-test-framework","sdk/cpp/guides/testing/testify-test-framework",[SDK,CPP,GUIDE,TESTING]],
 ["documentation/manualpages/toolchain","sdk/tools/guides/architecture/toolchain",[SDK,TOOLS,GUIDE,ARCHITECTURE]],
 ["documentation/manualpages/update-wormhole","sdk/js/guides/wormhole/update-wormhole",[SDK,JS,GUIDE,WORMHOLE]],
@@ -335,4 +335,7 @@ $pages = [
 ["documentation/tutorials/starting-new-moblet-project","sdk/cpp/guides/maui/starting-new-moblet-project",[SDK,CPP,GUIDE,MAUI]],
 ["documentation/tutorials/using-layouts","sdk/cpp/guides/maui/using-layouts",[SDK,CPP,GUIDE,MAUI]],
 ["widepage/feature-platform-support", "sdk/tools/references/feature-platform-support",[SDK,TOOLS,REFERENCE,LIBS]],
+
+# New documentation pages not in Drupal export.
+["","reload/guides/quick-start/mosync-reload-vs-sdk",[RELOAD,GUIDE,QUICK_START]],
 ]
