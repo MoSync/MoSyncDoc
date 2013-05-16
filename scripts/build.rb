@@ -171,40 +171,70 @@ end
 #             Build Website Entry Point              #
 #----------------------------------------------------#
 
-def webSiteBuild
-  webSiteCopyDocsForBuild
+# You can specify to build only SDK or Reload
+# by supplying and array with what to build.
+# Build SDK:    webSiteBuild ["sdk"]
+# Build Reload: webSiteBuild ["reload"]
+# Build all:    webSiteBuild
+def webSiteBuild what=[]
+  if what == [] then
+    what = ["sdk","reload"]
+  end
+
+  webSiteCleanDocsForBuild
+  if what.include?("sdk") then
+    webSiteCopySdkDocsForBuild
+  end
+  if what.include?("reload") then
+    webSiteCopyReloadDocsForBuild
+  end
+
   webSiteConvertMarkdownToHtml
   webSiteClean
   webSiteCopyLibs
   webSiteBuildDocHomePage
   webSiteBuildSearchPage
-  webSiteBuildSdkHomePage
-  webSiteBuildSdkDocPages
-  webSiteBuildSdkIndexPages
-  webSiteBuildReloadHomePage
-  webSiteBuildReloadDocPages
-  webSiteBuildReloadIndexPages
+
+  if what.include?("sdk") then
+    webSiteBuildSdkHomePage
+    webSiteBuildSdkDocPages
+    webSiteBuildSdkIndexPages
+  end
+
+  if what.include?("reload") then
+    webSiteBuildReloadHomePage
+    webSiteBuildReloadDocPages
+    webSiteBuildReloadIndexPages
+  end
 end
+
 
 #----------------------------------------------------#
 #               Copying Website Files                #
 #----------------------------------------------------#
 
 # Copy documentation files to a temporary documentation
-# directory, containig both SDK and Reload doc files.
-def webSiteCopyDocsForBuild
+# directory, containing both SDK and Reload doc files.
+
+def webSiteCleanDocsForBuild
   puts "Cleaning docs temp directory"
   # Clean target directory.
   fileCleanPath(Pathname.new(pathDocs()))
-  
+end
+
+def webSiteCopySdkDocsForBuild
   puts "Copying SDK doc files"
   # Copy SDK files.
   FileUtils.cp_r(Dir[pathDocsSdk()], pathDocs())
-  
+end
+
+def webSiteCopyReloadDocsForBuild
   puts "Copying Reload doc files"
   # Copy Reload files.
   FileUtils.cp_r(Dir[pathDocsReload()], pathDocs())
 end
+
+# Clean website output folder.
 
 def webSiteClean
   puts "Cleaning website directory"
@@ -212,6 +242,8 @@ def webSiteClean
   fileCleanPath(Pathname.new(pathWebSite()))
   fileCleanPath(Pathname.new(pathWebSiteJs()))
 end
+
+# Copy templates and JavaScript libs to website folder.
 
 def webSiteCopyLibs
   # Copy JavaScript libs.
@@ -398,13 +430,13 @@ def webSiteBuildDocPages(pages, menuFile, swatch)
 
     puts "Building #{pageFile} #{outputFile}"
     
-	puts "Heading: " + fileGetPageHeading(pageFile)
+    #puts "Heading: " + fileGetPageHeading(pageFile)
 	
     # Build and save page.
-	#title = htmlGetPageTitle(fileReadContent(pageFile))
+    pageHtml = htmlGetPageContent(fileReadContent(pageFile))
     webSiteBuildPage(
       :outputFile => outputFile,
-      :pageFile => pageFile,
+      :pageHtml => pageHtml,
       :menuFile => menuFile,
       :templateFile => pathPageTemplate(),
       :swatch => swatch,
@@ -1377,8 +1409,8 @@ end
 if (ARGV.include? "html2md")
   #convertHtmlToMarkdown
 elsif (ARGV.include? "md2html")
-  #webSiteCopyDocsForBuild
-  #webSiteConvertMarkdownToHtml
+  webSiteCopyDocsForBuild
+  webSiteConvertMarkdownToHtml
 elsif (ARGV.include? "cleanmd")
   #cleanmd
 elsif (ARGV.include? "importall")
@@ -1391,8 +1423,12 @@ elsif (ARGV.include? "updateimagetags")
   #docUpdateImageTags
 elsif (ARGV.include? "cleandoc")
   #docClean
-elsif (ARGV.include? "buildweb")
+elsif (ARGV.include? "buildall")
   webSiteBuild
+elsif (ARGV.include? "buildsdk")
+  webSiteBuild ["sdk"]
+elsif (ARGV.include? "buildreload")
+  webSiteBuild ["reload"]
 elsif (ARGV.include? "cleanweb")
   webSiteClean
 elsif (ARGV.include? "listexports")
@@ -1418,7 +1454,9 @@ else
   #puts "  downloadimages (download images)"
   #puts "  updateimagetags (update img urls)"
   #puts "  cleandoc (cleans documentation folder)"
-  puts "  buildweb (builds website)"
-  puts "  redirects (generete SQL for Drupal redirects)"
-  puts "  cleanweb (cleans website folder)"
+  puts "  buildall (builds SDK/Reload website)"
+  puts "  buildsdk (builds SDK website)"
+  puts "  buildreload (builds Reload website)"
+  #puts "  redirects (generete SQL for Drupal redirects)"
+  #puts "  cleanweb (cleans website output folder)"
 end

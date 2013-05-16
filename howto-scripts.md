@@ -37,9 +37,16 @@ To build the website, first to to the MoSyncDoc/scripts directory:
     
 Then run the build script:
 
-    ruby build.rb buildweb
+    ruby build.rb buildall
     
 This will output website files to MoSyncDoc/website that you can open in a web browser to preview what the documentation looks like.
+
+To build only documentation for SDK or Reload use:
+
+    ruby build.rb buildsdk
+    ruby build.rb buildreload
+    
+Note that if you build all documentation, it is important that both MoSyncDoc and ReloadDoc repos are up-to-date, because structure.rb contain references to Reload pages, and if they do not exist, you will get a build error (this is one reason for that it can be useful to build only the SDk docs).
 
 ## Updating structure.rb
 The script structure.rb contains a list of all documentation pages, stored as a Ruby array, referenced by the global variable $pages.
@@ -68,8 +75,7 @@ When putting in a new documentation page, just put an empty string as the first 
 
 Note that the path of the documentation file does NOT include "index.html", and that the path does NOT contain slashes at the beginning or end.
 
-The list of tags should always include one of SKD or RELOAD, and the document type (GUIDE, TUTORIAL, EXAMPLE, REFERENCE, RELEASE_NOTE), and at least one topic tag.
+The list of tags should always include one of SKD or RELOAD, and the document type (GUIDE, EXAMPLE, REFERENCE, RELEASE_NOTE), and at least one topic tag.
 
 It is good to keep the number of topic tags down (preferably use just one), because documentation structure becomes cleaner this way. 
 
-For a GUIDE it is preferable to have one topic tag. But a TUTORIAL may have multiple tags, since tutorials may cover a broader range of topics. An EXAMPLE many also have several topic tags. But it is good be restrictive with using multiple topics for a page.
