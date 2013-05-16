@@ -197,6 +197,7 @@ $pages = [
 ["documentation/manualpages/camerademo","sdk/cpp/examples/camerademo",[SDK,CPP,EXAMPLE,CAMERA,NATIVEUI]],
 ["documentation/manualpages/coding-conventions","sdk/tools/guides/extensions/coding-conventions",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/controlling-cameras","sdk/cpp/guides/camera/controlling-cameras",[SDK,CPP,GUIDE,CAMERA]],
+["","sdk/cpp/guides/camera/native-camera-api",[SDK,CPP,GUIDE,CAMERA]],
 ["documentation/manualpages/controlling-sensors","sdk/cpp/guides/sensors/controlling-sensors",[SDK,CPP,GUIDE,SENSORS]],
 ["documentation/manualpages/creating-new-workspace","sdk/tools/guides/ide/creating-new-workspace",[SDK,TOOLS,GUIDE,IDE]],
 ["documentation/manualpages/creating-user-interfaces-mosync","sdk/cpp/guides/ui/creating-user-interfaces-mosync",[SDK,CPP,GUIDE,NATIVEUI,WEBUI,MAUI]],
