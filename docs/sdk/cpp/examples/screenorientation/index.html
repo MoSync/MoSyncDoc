@@ -15,9 +15,9 @@
 <p>&nbsp;</p>
 <p>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
 <h2>Behaviour</h2>
-<p>When the application runs, the screen initially displays the message "Started". Turn the device. The screen will repaint showing the new orientation and dimensions.</p>
+<p>The application draws the screen size and orientation. Turn the device. The screen will repaint showing the new values.</p>
 <p>Examine the source code of the application to learn how the program works.</p>
-<p>Note the use of the <strong>maScreenSetOrientation</strong> syscall to set the screen orientation mode. For platforms that support it (for example, Android), this sycall enables you to lock the orientation mode to just portrait or landscape mode, or to enable switching between them (dynamic mode).</p>
+<p>Note the use of the <strong>maScreenSetSupportedOrientations</strong> syscall to set the screen orientation mode. For platforms that support it, this sycall enables you to lock the orientation mode to just portrait or landscape mode, or to enable switching between them (dynamic mode).</p>
 <h2>Key Presses</h2>
 <ul>
 <li>Any key - exits the program.</li>
