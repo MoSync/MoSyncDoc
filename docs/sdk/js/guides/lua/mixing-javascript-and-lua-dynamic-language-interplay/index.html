@@ -1,0 +1,53 @@
+<html>
+<head>
+<!-- <mosyncheadertags>
+<meta name="description" content="MobileLua is a port of the Lua programming language to MoSync. MobileLua provides access to the MoSync syscalls API, and also has high-level libraries for tasks like networking, file access, and native UI widgets." />
+<meta name="dcterms.description" content="MobileLua is a port of the Lua programming language to MoSync. MobileLua provides access to the MoSync syscalls API, and also has high-level libraries for tasks like networking, file access, and native UI widgets." />
+
+<title>Build an app with JavaScript and Lua - Dynamic language interplay | MoSync Blog Entry</title>
+</mosyncheadertags> -->
+</head>
+<body>
+<h1>Build an app with JavaScript and Lua - Dynamic language interplay</h1>
+<p><strong><a href="https://github.com/divineprog/mobilelua">MobileLua</a></strong> is a port of the <strong><a href="http://www.lua.org/">Lua</a></strong> programming language to MoSync. MobileLua provides access to the MoSync syscalls API, and also has high-level libraries for tasks like networking, file access, and native UI widgets. You can do almost everything in Lua you can do in C, and you can build fully featured stand-alone apps, indistinguishable from a MoSync C/C++ app.</p>
+<p><strong>Note:</strong> This blog post has been updated March 1, 2012, to reflect the latest version of <a href="https://github.com/divineprog/mobilelua">MobileLua for MoSync 3.0</a> available on GitHub.</p>
+<h2>Using a WebView in Lua</h2>
+<p>Since MobileLua supports native UI and WebView widgets, this opens up for using Lua with HTML5/JavaScript, including sending messages between JavaScript and Lua, just as with JavaScript and C++. Lua is then used as the host language for the WebView containing HTML and JavaScript, as shown in this diagram:</p>
+<p><img src="images/JavaScriptLuaInterplay.png" align="none" width="300" height="159"></p>
+<h2>Calling Lua from JavaScript</h2>
+<p>Now it is time to put on our <strong><a href="http://nerdwisdom.com/tag/hal-abelson/">wizard hat</a></strong>. Lua, like JavaScript, is a dynamic language, which means that we can evaluate code on-the-fly. This makes it possible to evaluate Lua from JavaScript by sending messages with Lua scripts to the underlying Lua application hosting the WebView.</p>
+<p>Here is a video that demonstrates the JavaScript/Lua bridge:</p>
+<p><iframe src="http://www.youtube.com/embed/S87XDyZmC3g" frameborder="0" height="315" width="560"></iframe></p>
+<p>(<a href="http://www.youtube.com/watch?v=S87XDyZmC3g">Click here</a> if you cannot see the embedded video.)</p>
+<p>On the current platforms where MoSync supports the WebView widget (Android, iOS, Windows Phone), we can send a message from JavaScript to C (and thus also to Lua) by using the mosynd.bridge.sendRaw JavaScript function.<br><br>This opens up for the possibility to evaluate Lua code from JavaScript. In this example the Lua function "OnTouch()" is called from JavaScript:</p>
+<pre class="mosync-code-js">mosync.bridge.sendRaw("OnTouch()")</pre>
+<p>If we, for example, want the device to vibrate, we can call the maVibrate syscall directly from JavaScript:</p>
+<pre class="mosync-code-js">mosync.bridge.sendRaw("maVibrate(500)")</pre>
+<p>Unlike the C++ communication bridge, we don't have to parse and handle each message explicitly. We can just call any Lua script. The entire Lua language and all the MoSync syscalls are suddenly available to mobile developers using JavaScript (thanks to the wizard hat!).<br><br>Next we will examine a very simple program implemented in Lua and JavaScript. Here is a screenshot of the app:<br><br><img src="images/LuaWebView.png" align="none" width="250" height="417"><br><br>When the "Touch Me!" button is touched, the device vibrates.<br><br>Here is an HTML code snippet that makes the device vibrate on a touch start event:</p>
+<pre class="mosync-code-js">&lt;div id="TouchArea" ontouchstart="EvalLua('maVibrate(500)')"&gt;Touch Me!&lt;/div&gt;</pre>
+<p>The function EvalLua looks like this (escape is there in case you should use non-ascii characters):</p>
+<pre class="mosync-code-js">function EvalLua(script)
+{
+  mosync.bridge.sendRaw(escape(script))
+}</pre>
+<p>And here is the code that creates a Screen with a WebView widget set up for communication between JavaScript and Lua:</p>
+<pre class="mosync-code-js">function CreateUI()
+  Screen = NativeUI:CreateWidget
+  {
+    type = "Screen"
+  }
+
+  WebView = NativeUI:CreateWebView
+  {
+    parent = Screen,
+    enableZoom = "true"
+  }
+end</pre>
+<p>The full source code is available here: <strong><a href="https://github.com/divineprog/mobilelua/blob/master/projects/LuaLive/Editor/examples/LuaWebView.lua">LuaWebView.lua</a></strong><br><br>One nice thing with Lua is that it supports multi-line strings. This makes it very easy to embed HTML and JavaScript right in the Lua source code (yes, this can be messy if abused ;) )</p>
+<h2>Calling JavaScript from Lua</h2>
+<p>LuaCountDown is an example program that shows how to build an app that implements the program logic in Lua. The source code is available here: <a href="https://github.com/divineprog/mobilelua/blob/master/projects/examples/LuaCountDown/LuaCountDown.lua"><strong>LuaCountDown.lua</strong></a> (don't use global variables at home ;) )<br><br>For this example, the logic could have been implemented in JavaScript as well, but the program is a nice demonstration of how Lua and JavaScript can interplay in an app.<br><br>Here is a screenshot of the app, it displays a new count-down item whenever the "Touch Me!" button is touched:<br><br><img src="images/LuaCountDown.png" align="none" width="250" height="417"><br><br>And here you can download the app for Android: <strong><a href="https://github.com/divineprog/mobilelua/LuaCountDown.apk/qr_code">LuaCountDown.apk</a></strong></p>
+<h2>Conclusion</h2>
+<p>Lua is a fun language to use, and has many of similarities to JavaScript. It is a clean and minimalistic language, and is by some considered to be like JavaScript without the bad parts. ;)<br><br>MobileLua is an open-source project, and is implemented completely in MoSync C/C++ (contains no platform specific native code). It runs on all platforms supported by MoSync. Native UI features like the WebView widget are not available on all platforms, but MobileLua is not depending on native UI, it can use MoSync syscalls to render directly to the screen surface.<br><br>The MobileLua project shows the power of the MoSync C/C++ platform - it is possible to run a dynamic language on top of MoSync with good performance. Given the popularity of Lua with games and the <a href="http://www.mosync.com/content/indie-license-registration"><strong>MoSync indie licence for mobile developers</strong></a>, MobileLua is worth checking out for both game developers and mobile app developers.<br><br>Lua offers great flexibility. You can implement the whole app in Lua without writing any C/C++ code at all. Or you can implement parts of the app in C/C++, and make your own bindings from Lua to C/C++, or use Lua as an embedded scripting engine for your app.</p>
+<p>For HTML5 applications, mobile Lua offers a nice interplay with JavaScript, making it easy to access MoSync platform services from JavaScript. Visit the <a href="https://github.com/divineprog/mobilelua/wiki"><strong>MobileLua wiki</strong></a> to get started, and participate in the <a href="http://www.mosync.com/forum/591"><strong>MoSync forum for Lua</strong></a>. Mobile developers can finally build an app and access the wonderful world of dynamic languages!<br><br><br></p>
+</body>
+</html>

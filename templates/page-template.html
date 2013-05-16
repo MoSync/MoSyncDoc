@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>TEMPLATE_PAGE_TITLE</title>
-
-    <meta name="viewport" content="width=devicewidth,initial-scale=1.0,user-scalable=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
-    <link rel="stylesheet" href="TEMPLATE_JS_PATH/jquery.mobile-1.3.0/jquery.mobile-1.3.0.min.css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=1">
+    <meta name="copyright" content="MoSync AB | © 2004-2013 All Rights Reserved" />
+    <meta name="revisit-after" content="1 day" />
+    
+    TEMPLATE_HEADER_TAGS
+    
+    <link rel="shortcut icon" href="TEMPLATE_DOC_PATH/images/mosync_favicon.ico" type="image/x-icon" />
+    
+    <link rel="stylesheet" href="TEMPLATE_JS_PATH/themes/MoSyncDoc.min.css" />
+    <link rel="stylesheet" href="TEMPLATE_JS_PATH/jquery.mobile-1.3.1/jquery.mobile.structure-1.3.1.min.css" />
 
     <style>
     .ui-header .ui-title
@@ -47,9 +52,13 @@
         width: 100%;
       }
     }
+    
+    .ui-btn-inner { 
+      white-space: normal !important; 
+    }
     </style>
 
-    <script src="TEMPLATE_JS_PATH/jquery.mobile-1.3.0/jquery.js"></script>
+    <script src="TEMPLATE_JS_PATH/jquery.mobile-1.3.1/jquery.js"></script>
 
     <script>
     // Do one-time initialisation here.
@@ -63,7 +72,7 @@
     });
     </script>
 
-    <script src="TEMPLATE_JS_PATH/jquery.mobile-1.3.0/jquery.mobile-1.3.0.min.js"></script>
+    <script src="TEMPLATE_JS_PATH/jquery.mobile-1.3.1/jquery.mobile-1.3.1.min.js"></script>
 
     <script>
     /*
@@ -98,25 +107,25 @@
         $("#page-container").load(path);
     }
 
-	function performSearch(event)
-	{
-		if (event.which == 13)
-		{
-			var searchString = encodeURIComponent($(event.target).val());
-			console.log("search string: " + searchString);
-			window.location =
-				"http://www.mosync.com/content/search-mosync?as_q=" +
-				searchString;
-		}
-	}
+    function performSearch(event)
+    {
+        if (event.which == 13)
+        {
+            var searchString = encodeURIComponent($(event.target).val());
+            console.log("search string: " + searchString);
+            window.location =
+                "http://www.mosync.com/content/search-mosync?as_q=" +
+                searchString;
+        }
+    }
 </script>
 </head>
 
 <body>
-    <div data-role="page" id="page-template">
+    <div data-role="page" id="page-template" TEMPLATE_THEME_PAGE_MAIN>
         
-        <div data-role="header" data-position="fixed" data-theme="a">
-            <h1>TEMPLATE_PAGE_TITLE</h1>
+        <div data-role="header" data-position="fixed" TEMPLATE_THEME_PAGE_HEADER>
+            <h1>TEMPLATE_PAGE_HEADING</h1>
              <div data-type="horizontal" data-role="controlgroup" class="ui-btn-left">
                <a href="#"
                  data-rel="back"
@@ -127,8 +136,8 @@
                  data-role="button"
                  data-icon="bars">Menu</a>
             </div>
-            <a data-ajax="false"
-                href="TEMPLATE_DOC_PATH/index.html"
+            <a rel="external"
+                href="http://www.mosync.com"
                 class="ui-btn-right"
                 data-icon="home">Home</a>
         </div>
@@ -148,7 +157,7 @@
             data-position="left"
             data-display="overlay"
             data-mini="false"
-            data-theme="c">
+            TEMPLATE_THEME_MENU_PANEL>
            TEMPLATE_PANEL_MENU
         </div>
 

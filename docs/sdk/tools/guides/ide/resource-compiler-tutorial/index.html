@@ -1,14 +1,19 @@
 <html>
 <head>
-<title>Resource Compilation</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="Various different types of resources (such as image, audio, and binary files) can be included in your application. Here we discuss how you make MoSync aware of them and ensure type safety. We also give a brief overview of how MoSync compiles resources during the build process." />
+<meta name="dcterms.description" content="Various different types of resources (such as image, audio, and binary files) can be included in your application. Here we discuss how you make MoSync aware of them and ensure type safety. We also give a brief overview of how MoSync compiles resources during the build process." />
+<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
+<title>Resource Compilation | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>Resource Compilation</h1>
 <p>Various different types of resources (such as image, audio, and binary files) can be included in your application. Here we discuss how you make MoSync aware of them and ensure type safety. We also give a brief overview of how MoSync compiles resources during the build process.<!--break--></p>
 <p></p>
-<p>For detailed information about resource compilation, the resource compiler, and resource list files and commands, see the <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/resource-compiler-reference/index.html">Resource Compiler Reference</a> guide. We also have a general tutorial that looks at various aspects of resource handling and provides oodles of good advice: <a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/adding-resources-mosync-project/index.html">Adding Resources to a Project</a>.</p>
+<p>For detailed information about resource compilation, the resource compiler, and resource list files and commands, see the <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/resource-compiler-reference/index.html">Resource Compiler Reference</a> guide. We also have a general tutorial that looks at various aspects of resource handling and provides oodles of good advice: <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/adding-resources-mosync-project/index.html">Adding Resources to a Project</a>.</p>
 <h3>A note on HTML5 resources</h3>
-<p>The MoSync Resource Compiler provides a way to manage applications resources for <em><strong>C/C++ applications</strong>.</em> If you are working in <strong>HTML5/JavaScript</strong>, those resources should be handled in the normal HTML way: store them in the <em>/LocalFiles</em> folder, load them using e.g. &lt;img&gt; tags, use conditions to call the appropriate resource file, and so on. See <a href="TEMPLATE_DOC_PATH/sdk/js/tutorials/quick-start/how-create-html5-project-mosync/index.html">Developing Apps in HTML5 and JavaScript</a>.</p>
+<p>The MoSync Resource Compiler provides a way to manage applications resources for <em><strong>C/C++ applications</strong>.</em> If you are working in <strong>HTML5/JavaScript</strong>, those resources should be handled in the normal HTML way: store them in the <em>/LocalFiles</em> folder, load them using e.g. &lt;img&gt; tags, use conditions to call the appropriate resource file, and so on. See <a href="TEMPLATE_DOC_PATH/sdk/js/guides/quick-start/how-create-html5-project-mosync/index.html">Developing Apps in HTML5 and JavaScript</a>.</p>
 <h2>Resources handling alternatives</h2>
 <p>MoSync handles resources at three levels:</p>
 <ul>
@@ -16,7 +21,7 @@
 <li><strong>Custom folders and LSTX lists</strong>. Create your own folder structure and specify it with arbitrarily complex conditions. (Note: you must use this format to include resources that are not stored in files (for example, placeholders and tilemaps.)</li>
 <li><strong>Custom folders and LST lists</strong>. The old way of doing it in MoSync 2.7 still works.</li>
 </ul>
-<p>For detailed information about resource compilation, the resource compiler, and resource list files and commands, see the<a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/resource-compiler-reference/index.html"> Resource Compiler Reference</a>. We also have a general tutorial that looks at various aspects of resource handling and provides good advice:<a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/adding-resources-mosync-project/index.html"> Adding Resources to a Project</a>.</p>
+<p>For detailed information about resource compilation, the resource compiler, and resource list files and commands, see the<a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/resource-compiler-reference/index.html"> Resource Compiler Reference</a>. We also have a general tutorial that looks at various aspects of resource handling and provides good advice:<a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/adding-resources-mosync-project/index.html"> Adding Resources to a Project</a>.</p>
 <h2>Handling image resources</h2>
 <p>Image resources should be used for loading images from standard image formats. At application start the resource loader will automatically decode images and make them ready to use with the image related syscalls.</p>
 <p>Different phones support different image formats and sizes. MoSync 3.0 and above solves this by making it possible to customize what resources to bundle with a specific device or a group of devices in a project.</p>

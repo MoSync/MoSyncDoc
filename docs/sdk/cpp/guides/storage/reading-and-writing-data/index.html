@@ -1,0 +1,172 @@
+<html>
+<head>
+<!-- <mosyncheadertags>
+<meta name="description" content="There are several ways to save or read data from a mobile device. Reading and writing to the Internet can be done with Connection classes, but can be labourious without specific helper classes. The simplest way of saving your data is with a MoSync store. This tutorial looks at creating stores, writing to them and reading them." />
+<meta name="dcterms.description" content="There are several ways to save or read data from a mobile device. Reading and writing to the Internet can be done with Connection classes, but can be labourious without specific helper classes. The simplest way of saving your data is with a MoSync store. This tutorial looks at creating stores, writing to them and reading them." />
+<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
+<title>Using Data Stores | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
+</head>
+<body>
+<h1>Using Data Stores</h1>
+<p>There are several ways to save or read data from a mobile device. Reading and writing to the Internet can be done with&nbsp;<strong>Connection&nbsp;</strong>classes, but can be labourious without specific helper classes. The simplest way of saving your data is with a MoSync&nbsp;<strong>store</strong>. This tutorial looks at creating stores, writing to them and reading them.</p>
+<p><!--break--> </p>
+<h2>Creating Stores</h2>
+<p>The simplest way of saving your data is with a MoSync&nbsp;<strong>store</strong>. Stores are saved on the device, and are supported on all MoSync-supported platforms. A store is a single file that can easily be&nbsp; read from and written to. On Symbian S60 platforms, stores can be shared between different applications; on other platforms stores are private and separate.</p>
+<p>To create a store, use the function&nbsp;<strong>maOpenStore()</strong>. This function takes two parameters, a const char* with the name of the store, and an int representing the options for the store. At the moment, there is only one option, you can choose to use it or not. This is defined as&nbsp;<strong>MAS_CREATE_IF_NECESSARY</strong>&nbsp;and it will create a new store if it doesn't exist.&nbsp;<br><br>The function&nbsp;<strong>maOpenStore()</strong>&nbsp;returns an&nbsp;<strong>MAHandle</strong>, a reference to the store that you can use with other functions.</p>
+<pre class="mosync-code-cpp">MAHandle myStore = maOpenStore("MyStore", MAS_CREATE_IF_NECESSARY);</pre>
+<p>If the store doesn't exist on the phone, it will be created and an&nbsp;<strong>MAHandle&nbsp;</strong>will be returned. If it does exist, it will just return the handle.&nbsp;<br><br>If the file cannot be created (for example, if there is no room on the device or there is a fault on the device) the value returned will match one of the&nbsp;<strong>STERR&nbsp;</strong>error values.<br><br>When you run your application in the MoRE emulator, you'll find that the stores are created in a folder called&nbsp;<em>/stores</em>&nbsp;in your output folder. Stores cannot currently be deployed with your application, and they have to be created at runtime.</p>
+<h2>Checking that a Store Exists</h2>
+<p>If you want to find out whether or not a store exists, call&nbsp;<strong>maOpenStore()&nbsp;</strong>with the flags set to 0. The value&nbsp;<strong>STERR_NONEXISTENT</strong>&nbsp;is returned if the store doesn't already exist.</p>
+<pre class="mosync-code-cpp">MAHandle testStore = maOpenStore("MyStore", 0);
+
+if(myStore == STERR_NONEXISTENT)
+{
+    // Store doesn't exist.
+} 
+else
+{
+     // Store does exist, and testStore is a valid handle to it.
+}</pre>
+<h2>Writing to Stores</h2>
+<p>Stores don't have a sophisticated system for accessing and writing. They simply provide a method for saving application data to the device. Each time a store is written, it is overwritten. You cannot append to existing stores or edit the store directly. A store is written to from a data resource. This isn't resizable, but you can edit the contents, and you can write variables into it and read their values out again.&nbsp;<br><br>You can create new data resources at runtime, but you need to define an&nbsp;<strong>MAHandle&nbsp;</strong>for it first. You also need to know how much data you need to store. To create a new data resource, you use the command&nbsp;<strong>maCreateData()</strong>. This returns either&nbsp;<strong>RES_OK</strong>&nbsp;if there is enough memory to create it or&nbsp;<strong>RES_OUT_OF_MEMORY</strong>&nbsp;if not. You need to pass the&nbsp;<strong>MAHandle&nbsp;</strong>to it as a parameter, along with the size. You can create a new, empty&nbsp;<strong>MAHandle&nbsp;</strong>with the function&nbsp;<strong>maCreatePlaceholder()</strong>.</p>
+<pre class="mosync-code-cpp">String password = "p45sw0rd";
+MAHandle myData = maCreatePlaceholder();
+if(maCreateData(myData, password.length()) == RES_OK)
+{
+}</pre>
+<p>You can now write data using the method&nbsp;<strong>maWriteData()</strong>.</p>
+<pre class="mosync-code-cpp">String password = "p45sw0rd";
+MAHandle myData = maCreatePlaceholder();
+if(maCreateData(myData, password.length()) == RES_OK)
+{
+    maWriteData(myData, password.c_str(), 0, password.length();
+}</pre>
+<p>The&nbsp;<strong>maWriteData()&nbsp;</strong>function needs the&nbsp;<strong>MAHandle&nbsp;</strong>of the data resource, a pointer to the object you want to write, the offset from the beginning of the data resource and the length of the data you wish to write. This means that you can write the variable to where ever you want in the data resource. If you are writing several pieces of data, you'll either need to keep track of their relative positions in the data, or user&nbsp;<strong>DataHandler</strong>&nbsp;as described below to do it for you.<br><br>To write the data resource to the store, you use the method&nbsp;<strong>maWriteStore()</strong>. This takes the&nbsp;<strong>MAHandle&nbsp;</strong>of the store, and the&nbsp;<strong>MAHandle&nbsp;</strong>of the data.&nbsp;</p>
+<pre class="mosync-code-cpp">int result = maWriteStore(myStore, myData);</pre>
+<p>Anything which was in the store previously is overwritten. If&nbsp;<strong>maWriteStore()&nbsp;</strong>returns &gt; 0, then it has been written correctly. Other values should map to&nbsp;<strong>STERR</strong>. The one to watch out for here is&nbsp;<strong>STERR_FULL</strong>&nbsp;which means that there is no more storage left.</p>
+<pre class="mosync-code-cpp">int result = maWriteStore(myStore, myData);
+
+switch(result)
+{
+    case &gt; 0:
+        // Everything is fine, and the data is saved.
+        break;    
+    case STERR_FULL:
+
+        // Failed, not enough space to save the data.
+        break;
+    case STERR_NONEXISTENT:
+
+        // Failed, the store doesn't exist!
+        break;
+    case STERR_GENERIC:
+
+        // Unknown error, possibly a device fault.
+        break;
+}</pre>
+<h2>A Note on Store Security</h2>
+<p>As a word of warning, although our example shows a password being written to a store you should be aware that this data is not completely private. Different systems provide different security measures. On a J2ME device, such data is fairly safe. A hacker would have to know a lot about the data to be able to access it. On S60 devices however, the user can freely browse the stores you've written using their file manager. Plain text stores can be opened up and read, and images you've written to the store can be displayed. If there is any sensitivity to the data you are writing, then it is strongly suggested that you encrypt it before you write it to the store.</p>
+<h2>Closing a Store</h2>
+<p>When you've finished writing, you also need to close the store. This is done with the function&nbsp;<strong>maCloseStore()</strong>.</p>
+<pre class="mosync-code-cpp">maCloseStore(myStore, 0);</pre>
+<p>The second parameter (0 in this example), indicates whether or not the store should be deleted when you close it. If it is 0, you want to keep it; if you provide any other int value the store will be deleted. This is how stores are deleted, there is no other explicit function to delete stores.&nbsp;</p>
+<pre class="mosync-code-cpp">void deleteStore(const char* storeName)
+{
+    MAHandle store = maOpenStore(storeName, 0);
+    if(store != STERR_NONEXISTENT)
+    {
+        // Delete the store.
+        maCloseStore(store, 1); 
+    }
+}
+</pre>
+<h2>Reading from Stores</h2>
+<p>Just as you write to stores from data resources, you read from them in the same way. The function&nbsp;<strong>maReadStore()</strong>&nbsp;copies the data in a store to a data resource, indicated by an&nbsp;<strong>MAHandle.</strong></p>
+<pre class="mosync-code-cpp">MAHandle myData = maCreatePlaceholder();
+MAHandle myStore = maOpenStore("MyStore", 0);
+if(myStore != STERR_NONEXISTENT)
+{
+    // The store exists, so we can read from it.
+    int result = maReadStore(myStore, myData);
+    if(result == RES_OUT_OF_MEMORY)
+    {
+        // This store is too large to read into memory - error
+    }
+}
+</pre>
+<p><span style="font-size: small;"><span style="font-size: 12px; line-height: 18px;">Once the store has been read into the data resource, the values can be read out of it. Of course you need to know how much data to read: you can get the size of the data resource with the function&nbsp;<strong>maGetDataSize()</strong>, and then read the data using the method&nbsp;<strong>maReadData().</strong><br></span></span></p>
+<pre class="mosync-code-cpp">char password[maGetDataSize(myData)]; 
+maReadData(myData, &amp;password, 0, maGetDataSize(myData));</pre>
+<p>To use&nbsp;<strong>maReadData</strong>, you need to know how many bytes to read from the data resource. In the example above, the password is the only data being stored, so we can easily read out all of the data.&nbsp;<br><br>If the store contains both a username and a password, then it has to be a bit more sophisticated. You are probably not using fixed lengths for strings, so you need to store some extra data about how long each string is. If you put a byte containing the length of the string (or an int if it is a lot) before the actual string data, then you can read it back more easily. These are called&nbsp;<strong>Pascal strings</strong>&nbsp;or P-Strings, and you can also use them in MoSync resource files. To read out a P-string, you need to read the first byte.</p>
+<pre class="mosync-code-cpp">// Read a p-string.
+byte len = 0;
+
+// You now need to track your position in the data.
+int position = 0; 
+
+// Read the length.
+maReadData(myData, &amp;len, position, 1);// Read 1 byte from position
+
+// Move onto the next byte.
+position++;
+
+// Read the string.
+char password[len + 1];  //String may not be null-terminated.
+maReadData(myData, &amp;password, position, len);
+
+// Add a null-terminator.
+password[len+1] = '/0';
+
+// Move the position on, so we're ready for the next read.
+position += len;</pre>
+<p>So, if you are reading more than one item out of the data, then you need to keep track of your place in the data.</p>
+<p>Once you've finished with the data, you can release it from memory.</p>
+<pre class="mosync-code-cpp">maDestroyObject(myData);</pre>
+<p>This deletes the data resource from memory, but does not destroy the store.</p>
+<h2>Using DataHandler</h2>
+<p>If you want to write several different values to the data resource, and then to the store, then there is a utility called&nbsp;<strong>DataHandler</strong>. This can help you write several values to the resource by tracking the offsets for you. You need to include the header file&nbsp;<strong>MAUtil/DataHandler.h</strong></p>
+<pre class="mosync-code-cpp">#include "MAUtil/DataHandler.h"
+using namespace MAUtil;
+
+...
+
+String username = "m0sync";
+String password = "p45sw0rd";
+
+// Save the values to a data resource.
+MAHandle myData = maCreatePlaceholder();
+
+// The size of the data we need, including four bytes for 
+// the length of each string.
+int size = username.length() + 4 + password.length() + 4; 
+
+if(maCreateData(myData, size) == RES_OK)
+{
+    DataHandler* handler = new DataHandler(myData);
+
+    int usernameLength =  username.length();
+    handler-&gt;write(&amp;usernameLength, 4);
+    handler-&gt;write(username.c_str(), usernameLength);
+
+    int passwordLength = password.length();  
+    handler-&gt;write(&amp;passwordLength, 4);
+    handler-&gt;write(password.c_str(), passwordLength);
+}
+
+int result = maWriteStore(myStore, myData);
+
+if(result &gt; 0)
+{
+    // Written successfully.
+    maCloseStore(myStore, 0);
+}
+else
+{
+    // Failed, delete the store.
+    maCloseStore(myStore, 1);
+}
+</pre>
+<p>As you can see from the above example, the&nbsp;<strong>DataHandler</strong>&nbsp;class takes away some of the complexity of reading and writing to stores, treating them more like a Java&nbsp;<strong>StreamReader&nbsp;</strong>or&nbsp;<strong>StreamWriter</strong>&nbsp;class. &nbsp;Unlike the example above where we were reading data out of the resource and having to keep track of the position, the&nbsp;<strong>DataHandler</strong>&nbsp;will manage it for us, and allow serial access.</p>
+</body>
+</html>

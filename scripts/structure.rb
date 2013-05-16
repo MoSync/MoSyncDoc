@@ -1,6 +1,9 @@
 # Page table contains mappings from old to new pages
 # and labels for each page.
 
+# Check new camera doc at:
+# mvasiliniuc
+
 # Special labels
 # Do not create the target page. Used for redirect from old site.
 REDIRECT="REDIRECT"
@@ -8,11 +11,10 @@ REDIRECT="REDIRECT"
 IGNORE="IGNORE"
 
 # Home path of new website (used for redirect).
-# TODO: Update this.
-HOME_PATH = "HOME_PATH"
+HOME_PATH = ""
 
 # Main documentation categories (main subjects)
-COMPANY="Company Info"
+#COMPANY="Company Info"
 CPP="C/C++"
 JS="JavaScript"
 RELOAD="MoSync Reload"
@@ -20,8 +22,8 @@ SDK="MoSync SDK"
 
 # Document types
 EXAMPLE="EXAMPLE"
-GUIDE="GUIDE" # Coding Guide
-TUTORIAL="TUTORIAL"
+GUIDE="GUIDE"
+#TUTORIAL="TUTORIAL"
 REFERENCE="REFERENCE"
 RELEASE_NOTE="RELEASE_NOTE"
 
@@ -62,7 +64,7 @@ PRODUCTS="Products"
 PURCHASES="Purchases"
 QUICK_START="Quick Start"
 RESOURCES="Resource Management"
-ROADMAP="Roadmap"
+#ROADMAP="Roadmap"
 SENSORS="Sensors"
 SOUND="Sound"
 STORAGE="Storage"
@@ -75,13 +77,12 @@ XML="XML"
 
 $pages = [
 #[oldfile,newfile,[tag-1,tag-2,tag-n]]
-["blog/2010/03/creating-xml-documents","sdk/cpp/tutorials/xml/creating-xml-documents",[SDK,CPP,TUTORIAL,XML]],
-["blog/2010/03/working-json-data","sdk/cpp/tutorials/json/working-with-json-data", [SDK,CPP,TUTORIAL,JSON]],
-["blog/2010/05/serial-data-access","sdk/cpp/tutorials/storage/serial-data-access",[SDK,CPP,TUTORIAL,STORAGE]],
-["blog/2013/01/how-extend-javascript-custom-c-code-opening-google-maps-hybrid-app","sdk/js/tutorials/ui/extend-javascript-with-custom-cpp-code",[SDK,JS,TUTORIAL,WEBUI,HYBRID]],
-["content/3dlines","sdk/cpp/examples/3dlines",[SDK,CPP,EXAMPLE,GRAPHICS]],
+
+# Explicit redirects (these are links that do not have
+# a new documentaion page, e.g. Drupal Book pages).
+["documentation",HOME_PATH,[REDIRECT]],
+["developer",HOME_PATH,[REDIRECT]],
 ["content/advertising-banner-ads",HOME_PATH,[REDIRECT]],
-["content/advgraphics","sdk/cpp/examples/advgraphics",[SDK,CPP,EXAMPLE,GRAPHICS]],
 ["content/api-reference-manuals",HOME_PATH,[REDIRECT]],
 ["content/audio-sound-music-0",HOME_PATH,[REDIRECT]],
 ["content/beginners-guide",HOME_PATH,[REDIRECT]],
@@ -89,58 +90,85 @@ $pages = [
 ["content/c-libraries-and-c-apis",HOME_PATH,[REDIRECT]],
 ["content/collections-containers-0",HOME_PATH,[REDIRECT]],
 ["content/communications-http-bluetooth",HOME_PATH,[REDIRECT]],
-["content/connections","sdk/cpp/examples/connections",[SDK,CPP,EXAMPLE,COMMUNICATION]],
-["content/creating-html5javascript-apps","sdk/js/tutorials/quick-start/getting-started-html5-and-javascript",[REDIRECT]],
+["content/creating-html5javascript-apps","sdk/js/guides/quick-start/getting-started-html5-and-javascript",[REDIRECT]],
 ["content/databases-stores-files-storage",HOME_PATH,[REDIRECT]],
-["content/debugging","sdk/cpp/examples/debugging",[SDK,CPP,EXAMPLE,DEBUGGING]],
 ["content/debugging-testing-performance",HOME_PATH,[REDIRECT]],
 ["content/demo-examples",HOME_PATH,[REDIRECT]],
-["content/developing-application-using-maui","sdk/cpp/guides/maui/gui-based-applications-with-maui",[SDK,CPP,GUIDE,MAUI]],
-["content/developing-classic-procedural-applications","sdk/cpp/tutorials/basic/classic-procedural-applications",[SDK,CPP,TUTORIAL,BASIC]],
-["content/developing-event-driven-object-oriented-applications","sdk/cpp/tutorials/basic/event-driven-object-oriented-applications",[SDK,CPP,TUTORIAL,BASIC]],
-["content/development-models","sdk/cpp/tutorials/basic/development-models",[SDK,CPP,TUTORIAL,BASIC]],
 ["content/events-keys-touch-moblets",HOME_PATH,[REDIRECT]],
-["content/example-application-descriptions",HOME_PATH,[REDIRECT]],
-["content/extending-html5-apps-lua","sdk/js/tutorials/lua/extending-html5-apps-lua",[SDK,JS,TUTORIAL,LUA]],
+["content/example-application-descriptions","sdk",[REDIRECT]],
+# Already redirected: ["content/example-applications","sdk",[REDIRECT]],
+# Already redirected: http://www.mosync.com/content/code-examples
 ["content/facebook-wikipedia-twitter",HOME_PATH,[REDIRECT]],
 ["content/fonts",HOME_PATH,[REDIRECT]],
-["content/fun-things-do-lovesms-example-application","sdk/js/tutorials/ui/fun-things-do-lovesms-example-application",[SDK,JS,TUTORIAL,WEBUI]],
 ["content/graphics-drawing-opengl-es",HOME_PATH,[REDIRECT]],
+["content/location-gps-maps-0",HOME_PATH,[REDIRECT]],
+["content/memory-heap-stack-0",HOME_PATH,[REDIRECT]],
+["content/notifications-1",HOME_PATH,[REDIRECT]],
+["content/pim-contacts",HOME_PATH,[REDIRECT]],
+["content/platforms-devices-profiles",HOME_PATH,[REDIRECT]],
+["content/programming-mosync",HOME_PATH,[REDIRECT]],
+["content/resources-binaries-placeholders-0",HOME_PATH,[REDIRECT]],
+["content/sensors-orientation-nfc",HOME_PATH,[REDIRECT]],
+["content/programming-mosync","sdk",[REDIRECT]],
+["content/user-interfaces-nativeui-maui-0",HOME_PATH,[REDIRECT]],
+["content/using-mosync-ide-2","sdk",[REDIRECT]],
+["content/whats-new-release-notes",HOME_PATH,[REDIRECT]],
+["content/xml-soap-json",HOME_PATH,[REDIRECT]],
+["documentation/architecture",HOME_PATH,[REDIRECT]],
+["documentation/billing-app-purchases",HOME_PATH,[REDIRECT]],
+["documentation/manualpages/installing-mosync-reload","reload/guides/quick-start/mosync-reload-quick-start",[REDIRECT]],
+["documentation/mosync-architecture",HOME_PATH,[REDIRECT]],
+["documentation/using-mosync-ide","sdk",[REDIRECT]],
+["documentation/wormhole-guides-tutorials-examples",HOME_PATH,[REDIRECT]],
+
+# Urls not handled (for example, these are pages not published).
+["documentation/manualpages/documentation-latest-nightly-builds","",[IGNORE]],
+["documentation/manualpages/essential-guide-developing-apps-html5javascript","",[IGNORE]],
+["documentation/manualpages/featureplatform-matrix-old","",[IGNORE]],["documentation/manualpages/forum-posters","",[IGNORE]],
+["documentation/manualpages/gpsareacalculator","",[IGNORE]],
+["content/screencasts","screencasts",[IGNORE]],
+["documentation/manualpages/javascripthtml5-cross-platform-user-interfaces","",[IGNORE]],
+["documentation/manualpages/mosync-user-forum","",[IGNORE]],
+["documentation/manualpages/new-doxygen-front-cover-do-not-delete-or-publish","",[IGNORE]],
+["documentation/manualpages/stopwatch","",[IGNORE]],
+["documentation/tutorials/starting-mosync-development-java-and-c-developers","",[IGNORE]],
+
+# New documentation pages from Drupal export.
+["blog/2010/03/creating-xml-documents","sdk/cpp/guides/xml/creating-xml-documents",[SDK,CPP,GUIDE,XML]],
+["blog/2010/03/working-json-data","sdk/cpp/guides/json/working-with-json-data", [SDK,CPP,GUIDE,JSON]],
+["blog/2010/05/serial-data-access","sdk/cpp/guides/storage/serial-data-access",[SDK,CPP,GUIDE,STORAGE]],
+["blog/2013/01/how-extend-javascript-custom-c-code-opening-google-maps-hybrid-app","sdk/js/guides/ui/extend-javascript-with-custom-cpp-code",[SDK,JS,GUIDE,WEBUI,HYBRID]],
+["content/3dlines","sdk/cpp/examples/3dlines",[SDK,CPP,EXAMPLE,GRAPHICS]],
+["content/advgraphics","sdk/cpp/examples/advgraphics",[SDK,CPP,EXAMPLE,GRAPHICS]],
+["content/connections","sdk/cpp/examples/connections",[SDK,CPP,EXAMPLE,COMMUNICATION]],
+["content/debugging","sdk/cpp/examples/debugging",[SDK,CPP,EXAMPLE,DEBUGGING]],
+["content/developing-application-using-maui","sdk/cpp/guides/maui/gui-based-applications-with-maui",[SDK,CPP,GUIDE,MAUI]],
+["content/developing-classic-procedural-applications","sdk/cpp/guides/basic/classic-procedural-applications",[SDK,CPP,GUIDE,BASIC]],
+["content/developing-event-driven-object-oriented-applications","sdk/cpp/guides/basic/event-driven-object-oriented-applications",[SDK,CPP,GUIDE,BASIC]],
+["content/development-models","sdk/cpp/guides/basic/development-models",[SDK,CPP,GUIDE,BASIC]],
+["content/extending-html5-apps-lua","sdk/js/guides/lua/extending-html5-apps-lua",[SDK,JS,GUIDE,LUA]],
+["content/fun-things-do-lovesms-example-application","sdk/js/guides/ui/fun-things-do-lovesms-example-application",[SDK,JS,GUIDE,WEBUI]],
 ["content/hellomoblet","sdk/cpp/examples/hellomoblet",[SDK,CPP,EXAMPLE,BASIC]],
 ["content/html5-javascript-wormhole","sdk/js/guides/wormhole/html5-javascript-wormhole",[SDK,JS,GUIDE,WORMHOLE,LIBS]],
 ["content/location-gps","sdk/cpp/examples/location-gps",[SDK,CPP,EXAMPLE,LOCATION]],
-["content/location-gps-maps-0",HOME_PATH,[REDIRECT]],
 ["content/mastx","sdk/cpp/examples/mastx",[SDK,CPP,EXAMPLE,MEMORY]],
-["content/memory-heap-stack-0",HOME_PATH,[REDIRECT]],
-["content/mixing-javascript-and-lua-dynamic-language-interplay","sdk/js/tutorials/lua/mixing-javascript-and-lua-dynamic-language-interplay",[SDK,JS,TUTORIAL,LUA]],
+["content/mixing-javascript-and-lua-dynamic-language-interplay","sdk/js/guides/lua/mixing-javascript-and-lua-dynamic-language-interplay",[SDK,JS,GUIDE,LUA]],
 ["content/mosketch-0","sdk/cpp/examples/mosketch",[SDK,CPP,EXAMPLE,GRAPHICS]],
 ["content/mosound","sdk/cpp/examples/mosound",[SDK,CPP,EXAMPLE,SOUND]],
 ["content/motooth","sdk/cpp/examples/motooth",[SDK,CPP,EXAMPLE,BLUETOOTH]],
 ["content/motris-0","sdk/cpp/examples/motris",[SDK,CPP,EXAMPLE,GRAPHICS]],
-["content/notifications-1",HOME_PATH,[REDIRECT]],
+["content/mosync-panics-reference","sdk/tools/references/mosync-panics-reference",[SDK,TOOLS,REFERENCE,TESTING]],
 ["content/otaload","sdk/cpp/examples/otaload",[SDK,CPP,EXAMPLE,COMMUNICATION]],
-["content/pim-contacts",HOME_PATH,[REDIRECT]],
-["content/platforms-devices-profiles",HOME_PATH,[REDIRECT]],
-["content/programming-mosync",HOME_PATH,[REDIRECT]],
-["content/rendering-particles-mixing-html5-and-native-ui-opengl-using-mosync","sdk/js/tutorials/graphics/rendering-particles-mixing-html5-and-native-ui-opengl-using-mosync",[SDK,JS,TUTORIAL,GRAPHICS]],
-["content/resources-binaries-placeholders-0",HOME_PATH,[REDIRECT]],
-["content/screencasts","screencasts",[REDIRECT]],
-["content/sensors-orientation-nfc",HOME_PATH,[REDIRECT]],
+["content/rendering-particles-mixing-html5-and-native-ui-opengl-using-mosync","sdk/js/guides/graphics/rendering-particles-mixing-html5-and-native-ui-opengl-using-mosync",[SDK,JS,GUIDE,GRAPHICS]],
 ["content/simple","sdk/cpp/examples/simple",[SDK,CPP,EXAMPLE,EVENTS]],
 ["content/standard-cc-libraries-0","sdk/cpp/guides/libs/standard-cc-libraries",[SDK,CPP,GUIDE,LIBS]],
 ["content/stylus","sdk/cpp/examples/stylus",[SDK,CPP,EXAMPLE,GRAPHICS]],
 ["content/timer","sdk/cpp/examples/timer",[SDK,CPP,EXAMPLE,EVENTS]],
 ["content/unit-test","sdk/cpp/examples/unit-test",[SDK,CPP,EXAMPLE,TESTING]],
-["content/user-interfaces-nativeui-maui-0",HOME_PATH,[REDIRECT]],
-["content/using-mosync-ide-2",HOME_PATH,[REDIRECT]],
 ["content/using-mosync-reload","reload/guides/quick-start/mosync-reload-overview",[RELOAD,GUIDE,QUICK_START]],
 ["content/using-mosync-visual-studio","sdk/tools/guides/extensions/using-mosync-visual-studio",[SDK,TOOLS,GUIDE,EXTENSIONS]],
-["content/whats-new-release-notes",HOME_PATH,[REDIRECT]],
-["content/xml-soap-json",HOME_PATH,[REDIRECT]],
 ["contributions","sdk/tools/guides/extensions/extending-mosync-sdk",[SDK,TOOLS,GUIDE,EXTENSIONS]],
-["documentation/architecture",HOME_PATH,[REDIRECT]],
-["documentation/billing-app-purchases",HOME_PATH,[REDIRECT]],
-["documentation/manualpage/creating-your-first-application","sdk/cpp/tutorials/quick-start/creating-your-first-cpp-application",[SDK,CPP,TUTORIAL,QUICK_START]],
+["documentation/manualpage/creating-your-first-application","sdk/cpp/guides/quick-start/creating-your-first-cpp-application",[SDK,CPP,GUIDE,QUICK_START]],
 ["documentation/manualpage/emulating-device","sdk/tools/guides/emulators/emulating-device",[SDK,TOOLS,GUIDE,EMULATORS]],
 ["documentation/manualpage/finalizing-applications","sdk/tools/guides/ide/finalizing-applications",[SDK,TOOLS,GUIDE,IDE]],
 ["documentation/manualpage/font-tools","sdk/cpp/guides/maui/font-tools",[SDK,CPP,GUIDE,MAUI,FONTS]],
@@ -165,7 +193,7 @@ $pages = [
 ["documentation/manualpages/building-mosync-sdk-source-os-x","sdk/tools/guides/extensions/building-mosync-sdk-source-os-x",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/building-mosync-source-linux","sdk/tools/guides/extensions/building-mosync-source-linux",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/building-mosync-source-windows","sdk/tools/guides/extensions/building-mosync-source-windows",[SDK,TOOLS,GUIDE,EXTENSIONS]],
-["documentation/manualpages/building-photo-gallery","sdk/js/examples/photogallery-explained",[SDK,JS,EXAMPLE,TUTORIAL,CAMERA,COMMUNICATION]],
+["documentation/manualpages/building-photo-gallery","sdk/js/examples/photogallery-explained",[SDK,JS,EXAMPLE,CAMERA,COMMUNICATION,HYBRID]],
 ["documentation/manualpages/camerademo","sdk/cpp/examples/camerademo",[SDK,CPP,EXAMPLE,CAMERA,NATIVEUI]],
 ["documentation/manualpages/coding-conventions","sdk/tools/guides/extensions/coding-conventions",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/controlling-cameras","sdk/cpp/guides/camera/controlling-cameras",[SDK,CPP,GUIDE,CAMERA]],
@@ -175,7 +203,7 @@ $pages = [
 ["documentation/manualpages/creating-user-interfaces-mosync","sdk/cpp/guides/ui/creating-user-interfaces-mosync",[SDK,CPP,GUIDE,NATIVEUI,WEBUI,MAUI]],
 ["documentation/manualpages/c-standard-template-library-stl","sdk/cpp/guides/libs/c-standard-template-library-stl",[SDK,CPP,GUIDE,LIBS]],
 ["documentation/manualpages/databasetest","sdk/cpp/examples/databasetest",[SDK,CPP,EXAMPLE,DATABASE]],
-["documentation/manualpages/debugging-javascript-device","sdk/tools/guides/ide/debugging-javascript-device",[SDK,TOOLS,GUIDE,JS,IDE,DEBUGGING]],
+["documentation/manualpages/debugging-javascript-device","sdk/tools/guides/ide/debugging-javascript-device",[SDK,TOOLS,GUIDE,IDE,DEBUGGING]],
 ["documentation/manualpages/debugging-javascript-ios-mosync-reload","reload/guides/debugging/debugging-javascript-ios-mosync-reload",[RELOAD,GUIDE,DEBUGGING]],
 ["documentation/manualpages/debugging-javascript-rlog","reload/guides/debugging/debugging-javascript-rlog",[RELOAD,GUIDE,DEBUGGING]],
 ["documentation/manualpages/developing-android-applications","sdk/tools/guides/ide/developing-android-applications",[SDK,TOOLS,GUIDE,IDE]],
@@ -184,20 +212,15 @@ $pages = [
 ["documentation/manualpages/devicefonts","sdk/cpp/examples/devicefonts",[SDK,CPP,EXAMPLE,FONTS]],
 ["documentation/manualpages/devicefontsnativeui","sdk/cpp/examples/devicefontsnativeui",[SDK,CPP,EXAMPLE,FONTS,NATIVEUI]],
 ["documentation/manualpages/device-profile-database","sdk/tools/guides/ide/device-profile-database",[SDK,TOOLS,GUIDE,IDE]],
-["documentation/manualpages/documentation-latest-nightly-builds","",[IGNORE]],
-["documentation/manualpages/essential-guide-developing-apps-html5javascript","",[IGNORE]],
 ["documentation/manualpages/europeancountries","sdk/cpp/examples/europeancountries",[SDK,CPP,EXAMPLE,NATIVEUI]],
 ["documentation/manualpages/event-handling-mosync-hybrid-app","sdk/js/guides/basic/event-handling-mosync-hybrid-app",[SDK,JS,GUIDE,BASIC,HYBRID,ARCHITECTURE]],
 ["documentation/manualpages/facebookdemo","sdk/cpp/examples/facebookdemo",[SDK,CPP,EXAMPLE,NATIVEUI]],
-["documentation/manualpages/featureplatform-matrix-old","",[IGNORE]],
 ["documentation/manualpages/file-storage-syscall-functions","sdk/cpp/guides/storage/file-storage-syscall-functions",[SDK,CPP,GUIDE,STORAGE]],
-["documentation/manualpages/forum-posters","",[IGNORE]],
 ["documentation/manualpages/framebuffer-api","sdk/cpp/guides/graphics/framebuffer-api",[SDK,CPP,GUIDE,GRAPHICS]],
-["documentation/manualpages/getting-started-html5-and-javascript","sdk/js/tutorials/quick-start/getting-started-html5-and-javascript",[SDK,JS,TUTORIAL,QUICK_START]],
+["documentation/manualpages/getting-started-html5-and-javascript","sdk/js/guides/quick-start/getting-started-html5-and-javascript",[SDK,JS,GUIDE,QUICK_START]],
 ["documentation/manualpages/getting-started-mosync-ide","sdk/tools/guides/ide/tour-of-the-mosync-sdk-ide",[SDK,TOOLS,GUIDE,IDE]],
 ["documentation/manualpages/glmobletopengles1","sdk/cpp/examples/glmobletopengles1",[SDK,CPP,EXAMPLE,GRAPHICS,OPENGL]],
 ["documentation/manualpages/glmobletopengles2","sdk/cpp/examples/glmobletopengles2",[SDK,CPP,EXAMPLE,GRAPHICS,OPENGL]],
-["documentation/manualpages/gpsareacalculator","",[IGNORE]],
 ["documentation/manualpages/graphics-clipping-draw-targets","sdk/cpp/guides/graphics/graphics-clipping-draw-targets",[SDK,CPP,GUIDE,GRAPHICS]],
 ["documentation/manualpages/graphics-primitives","sdk/cpp/guides/graphics/graphics-primitives",[SDK,CPP,GUIDE,GRAPHICS]],
 ["documentation/manualpages/graphun","sdk/cpp/examples/graphun",[SDK,CPP,EXAMPLE,GRAPHICS,NATIVEUI,OPENGL]],
@@ -206,17 +229,15 @@ $pages = [
 ["documentation/manualpages/hellonativeui","sdk/cpp/examples/hellonativeui",[SDK,CPP,EXAMPLE,NATIVEUI]],
 ["documentation/manualpages/helloopengles","sdk/cpp/examples/helloopengles",[SDK,CPP,EXAMPLE,OPENGL]],
 ["documentation/manualpages/helloworld","sdk/cpp/examples/helloworld",[SDK,CPP,EXAMPLE,BASIC]],
-["documentation/manualpages/hello-world-deconstructed","sdk/cpp/tutorials/hello-world-deconstructed",[SDK,CPP,TUTORIAL,BASIC]],
+["documentation/manualpages/hello-world-deconstructed","sdk/cpp/guides/hello-world-deconstructed",[SDK,CPP,GUIDE,BASIC]],
 ["documentation/manualpages/how-communicate-between-javascript-and-c-mosync","sdk/js/guides/wormhole/extending-javascript-with-cpp",[SDK,CPP,JS,GUIDE,WORMHOLE,HYBRID]],
-["documentation/manualpages/how-create-html5-project-mosync","sdk/js/tutorials/quick-start/how-create-html5-project-mosync",[SDK,JS,TUTORIAL,QUICK_START]],
+["documentation/manualpages/how-create-html5-project-mosync","sdk/js/guides/quick-start/how-create-html5-project-mosync",[SDK,JS,GUIDE,QUICK_START]],
 ["documentation/manualpages/http-connections","sdk/cpp/guides/communication/http-connections",[SDK,CPP,GUIDE,COMMUNICATION]],
 ["documentation/manualpages/importing-example-applications","sdk/tools/guides/ide/importing-example-applications",[SDK,TOOLS,GUIDE,IDE]],
 ["documentation/manualpages/installing-mosync-os-x","sdk/tools/guides/ide/installing-mosync-os-x",[SDK,TOOLS,GUIDE,INSTALL]],
-["documentation/manualpages/installing-mosync-reload","reload/guides/quick-start/mosync-reload-quick-start",[REDIRECT]],
 ["documentation/manualpages/interacting-user-through-javascript","sdk/js/guides/ui/interacting-with-users-using-javascript",[SDK,JS,GUIDE,WEBUI]],
 ["documentation/manualpages/issue-tracker","sdk/tools/guides/extensions/issue-tracker",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/javascripthtml5-cross-platform-user-interfaces-0","sdk/cpp/guides/ui/javascript-html5-cross-platform-user-interfaces",[SDK,CPP,JS,GUIDE,WEBUI]],
-["documentation/manualpages/javascripthtml5-cross-platform-user-interfaces","",[IGNORE]],
 ["documentation/manualpages/jsnativeui-library","sdk/js/guides/nativeui/jsnativeui-library",[SDK,JS,GUIDE,NATIVEUI,LIBS]],
 ["documentation/manualpages/mafs-library-cc","sdk/cpp/guides/storage/mafs-library",[SDK,CPP,GUIDE,STORAGE,LIBS]],
 ["documentation/manualpages/managing-app-purchases","sdk/cpp/guides/purchases/managing-app-purchases",[SDK,CPP,GUIDE,PURCHASES]],
@@ -230,12 +251,10 @@ $pages = [
 ["documentation/manualpages/mdlbenchmark","sdk/cpp/examples/mdlbenchmark",[SDK,CPP,EXAMPLE,GRAPHICS]],
 ["documentation/manualpages/mosync-reload","reload/guides/quick-start/mosync-reload-quick-start",[RELOAD,GUIDE,QUICK_START]],
 ["documentation/manualpages/more-mosync-runtime-environment","sdk/tools/guides/emulators/more-mosync-runtime-environment",[SDK,TOOLS,GUIDE,EMULATORS]],
-["documentation/manualpages/mosync-user-forum","",[IGNORE]],
 ["documentation/manualpages/mosync-visual-studio-2010","sdk/tools/guides/extensions/mosync-visual-studio-2010",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/multitouch","sdk/cpp/examples/multitouch",[SDK,CPP,EXAMPLE,EVENTS]],
 ["documentation/manualpages/nativeuidemo","sdk/cpp/examples/nativeuidemo",[SDK,CPP,EXAMPLE,NATIVEUI,ADS]],
 ["documentation/manualpages/nativeuimap","sdk/cpp/examples/nativeuimap",[SDK,CPP,EXAMPLE,NATIVEUI]],
-["documentation/manualpages/new-doxygen-front-cover-do-not-delete-or-publish","",[IGNORE]],
 ["documentation/manualpages/nfcexample","sdk/js/examples/nfcexample",[SDK,JS,EXAMPLE,NFC,WEBUI,HYBRID]],
 ["documentation/manualpages/optimizing-mobile-applications","sdk/cpp/guides/testing/optimizing-mobile-applications",[SDK,CPP,GUIDE,TESTING]],
 ["documentation/manualpages/photogallery","sdk/js/examples/photogallery",[SDK,JS,EXAMPLE,WEBUI,NATIVEUI,CAMERA,HYBRID]],
@@ -257,8 +276,7 @@ $pages = [
 ["documentation/manualpages/setting-application-permissions","sdk/tools/guides/ide/setting-application-permissions",[SDK,TOOLS,GUIDE,IDE]],
 ["documentation/manualpages/soap","sdk/cpp/examples/soap",[SDK,CPP,EXAMPLE,COMMUNICATION]],
 ["documentation/manualpages/sql-database-api","sdk/cpp/guides/storage/sql-database-api",[SDK,CPP,GUIDE,STORAGE]],
-["documentation/manualpages/stopwatch","",[IGNORE]],
-["documentation/manualpages/symbian-packaging-parameters","sdk/tools/guides/ide/symbian-packaging-parameters",[SDK,TOOLS,IDE,SYMBIAN]],
+["documentation/manualpages/symbian-packaging-parameters","sdk/tools/guides/ide/symbian-packaging-parameters",[SDK,TOOLS,GUIDE,IDE,SYMBIAN]],
 ["documentation/manualpages/testify-test-framework","sdk/cpp/guides/testing/testify-test-framework",[SDK,CPP,GUIDE,TESTING]],
 ["documentation/manualpages/toolchain","sdk/tools/guides/architecture/toolchain",[SDK,TOOLS,GUIDE,ARCHITECTURE]],
 ["documentation/manualpages/update-wormhole","sdk/js/guides/wormhole/update-wormhole",[SDK,JS,GUIDE,WORMHOLE]],
@@ -297,29 +315,28 @@ $pages = [
 ["documentation/manualpages/writing-new-extensions-mosync","sdk/tools/guides/extensions/writing-extensions",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/xml-mtxml-parser-c","sdk/cpp/guides/xml/xml-mtxml-parser-c",[SDK,CPP,GUIDE,XML]],
 ["documentation/manualpages/xml-mtxml-parser","sdk/cpp/guides/xml/xml-mtxml-parser",[SDK,CPP,GUIDE,XML]],
-["documentation/mosync-architecture",HOME_PATH,[REDIRECT]],
-["documentation/tutorials/adding-resources-mosync-project","sdk/cpp/tutorials/adding-resources-mosync-project",[SDK,CPP,TUTORIAL,RESOURCES]],
-["documentation/tutorials/collections-mosync","sdk/cpp/tutorials/collections/collections-mosync",[SDK,CPP,TUTORIAL,COLLECTIONS]],
-["documentation/tutorials/creating-bluetooth-clients","sdk/cpp/tutorials/communication/creating-bluetooth-clients",[SDK,CPP,TUTORIAL,BLUETOOTH]],
-["documentation/tutorials/creating-bluetooth-server","sdk/cpp/tutorials/communication/creating-bluetooth-server",[SDK,CPP,TUTORIAL,BLUETOOTH]],
-["documentation/tutorials/creating-new-fonts","sdk/cpp/tutorials/maui/creating-new-fonts",[SDK,CPP,TUTORIAL,MAUI,FONTS]],
-["documentation/tutorials/creating-new-screens","sdk/cpp/tutorials/maui/creating-new-screens",[SDK,CPP,TUTORIAL,MAUI]],
-["documentation/tutorials/custom-downloaders","sdk/cpp/tutorials/communication/custom-downloaders",[SDK,CPP,TUTORIAL,COMMUNICATION]],
+["documentation/tutorials/adding-resources-mosync-project","sdk/cpp/guides/adding-resources-mosync-project",[SDK,CPP,GUIDE,RESOURCES]],
+["documentation/tutorials/collections-mosync","sdk/cpp/guides/collections/collections-mosync",[SDK,CPP,GUIDE,COLLECTIONS]],
+["documentation/tutorials/creating-bluetooth-clients","sdk/cpp/guides/communication/creating-bluetooth-clients",[SDK,CPP,GUIDE,BLUETOOTH]],
+["documentation/tutorials/creating-bluetooth-server","sdk/cpp/guides/communication/creating-bluetooth-server",[SDK,CPP,GUIDE,BLUETOOTH]],
+["documentation/tutorials/creating-new-fonts","sdk/cpp/guides/maui/creating-new-fonts",[SDK,CPP,GUIDE,MAUI,FONTS]],
+["documentation/tutorials/creating-new-screens","sdk/cpp/guides/maui/creating-new-screens",[SDK,CPP,GUIDE,MAUI]],
+["documentation/tutorials/custom-downloaders","sdk/cpp/guides/communication/custom-downloaders",[SDK,CPP,GUIDE,COMMUNICATION]],
 ["documentation/tutorials/detecting-events-cc","sdk/cpp/guides/events/detecting-events",[SDK,CPP,GUIDE,EVENTS]],
-["documentation/tutorials/determining-location","sdk/cpp/tutorials/sensors/determining-location",[SDK,CPP,TUTORIAL,LOCATION,SENSORS]],
-["documentation/tutorials/discovering-devices-and-services-bluetooth","sdk/cpp/tutorials/bluetooth/discovering-devices-and-services-bluetooth",[SDK,CPP,TUTORIAL,BLUETOOTH]],
-["documentation/tutorials/downloading-audio-internet","sdk/cpp/tutorials/communication/downloading-audio",[SDK,CPP,TUTORIAL,COMMUNICATION,SOUND]],
-["documentation/tutorials/downloading-data-internet-0","sdk/cpp/tutorials/communication/downloading-data",[SDK,CPP,TUTORIAL,COMMUNICATION]],
-["documentation/tutorials/downloading-images-internet","sdk/cpp/tutorials/communication/downloading-images",[SDK,CPP,TUTORIAL,COMMUNICATION,GRAPHICS]],
-["documentation/tutorials/introduction-maui","sdk/cpp/tutorials/maui/introduction-maui",[SDK,CPP,TUTORIAL,MAUI]],
+["documentation/tutorials/determining-location","sdk/cpp/guides/sensors/determining-location",[SDK,CPP,GUIDE,LOCATION,SENSORS]],
+["documentation/tutorials/discovering-devices-and-services-bluetooth","sdk/cpp/guides/bluetooth/discovering-devices-and-services-bluetooth",[SDK,CPP,GUIDE,BLUETOOTH]],
+["documentation/tutorials/downloading-audio-internet","sdk/cpp/guides/communication/downloading-audio",[SDK,CPP,GUIDE,COMMUNICATION,SOUND]],
+["documentation/tutorials/downloading-data-internet-0","sdk/cpp/guides/communication/downloading-data",[SDK,CPP,GUIDE,COMMUNICATION]],
+["documentation/tutorials/downloading-images-internet","sdk/cpp/guides/communication/downloading-images",[SDK,CPP,GUIDE,COMMUNICATION,GRAPHICS]],
+["documentation/tutorials/introduction-maui","sdk/cpp/guides/maui/introduction-maui",[SDK,CPP,GUIDE,MAUI]],
 ["documentation/tutorials/mosync-java-and-c-developers","sdk/cpp/guides/basic/mosync-for-java-and-csharp-developers",[SDK,CPP,GUIDE,BASIC]],
-["documentation/tutorials/processing-xml","sdk/cpp/tutorials/xml/processing-xml",[SDK,CPP,TUTORIAL,XML]],
+["documentation/tutorials/processing-xml","sdk/cpp/guides/xml/processing-xml",[SDK,CPP,GUIDE,XML]],
 ["documentation/tutorials/push-notification-tutorial","sdk/cpp/guides/notifications/push-notification-tutorial",[SDK,CPP,GUIDE,NOTIFICATIONS]],
-["documentation/tutorials/reading-and-writing-data","sdk/cpp/tutorials/storage/reading-and-writing-data",[SDK,CPP,TUTORIAL,STORAGE]],
-["documentation/tutorials/starting-mosync-development-java-and-c-developers","",[IGNORE]],
-["documentation/tutorials/starting-new-moblet-project","sdk/cpp/tutorials/maui/starting-new-moblet-project",[SDK,CPP,TUTORIAL,MAUI]],
-["documentation/tutorials/using-layouts","sdk/cpp/tutorials/maui/using-layouts",[SDK,CPP,TUTORIAL,MAUI]],
-["documentation/using-mosync-ide",HOME_PATH,[REDIRECT]],
-["documentation/wormhole-guides-tutorials-examples",HOME_PATH,[REDIRECT]],
-["widepage/feature-platform-support", "sdk/tools/references/feature-platform-support",[SDK,REFERENCE,LIBS]],
+["documentation/tutorials/reading-and-writing-data","sdk/cpp/guides/storage/reading-and-writing-data",[SDK,CPP,GUIDE,STORAGE]],
+["documentation/tutorials/starting-new-moblet-project","sdk/cpp/guides/maui/starting-new-moblet-project",[SDK,CPP,GUIDE,MAUI]],
+["documentation/tutorials/using-layouts","sdk/cpp/guides/maui/using-layouts",[SDK,CPP,GUIDE,MAUI]],
+["widepage/feature-platform-support", "sdk/tools/references/feature-platform-support",[SDK,TOOLS,REFERENCE,LIBS]],
+
+# New documentation pages not in Drupal export.
+["","reload/guides/quick-start/mosync-reload-vs-sdk",[RELOAD,GUIDE,QUICK_START]],
 ]
