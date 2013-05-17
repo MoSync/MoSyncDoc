@@ -1,3 +1,10 @@
+<!-- <mosyncheadertags>
+<meta name="description" content="This guide shows how to use the MoSync Camera API." /> <meta name="keywords" content="mobile development,sdk,ide,apps,mobile,apps,android,ios,iphone,ipad,camera,
+mobile,c,c++,open source,porting,dev,application,ide,cross
+platform,programming,mosync,camera" />
+<title>The NativeUI Camera API</title>
+</mosyncheadertags> -->
+
 # The NativeUI Camera API
 
 In this tutorial we will learn how to create a Camera widget using Native UI. With this widget you can control the display of the camera preview and control the camera functionalities like snapshot, preview frames, zoom, flash, focus and switching between the cameras of the device.
@@ -8,10 +15,10 @@ Note that if you want to deploy on Android devices you will need to add Camera p
 
 ***
 
-### **Camera widget creation**
+## **Camera widget creation**
 <a id="Camera_creation"></a>
 
-There is a corresponding NativeUI class for camera functionality. The class is `Camera` TODO link.
+There is a corresponding NativeUI class for camera functionality. The class is `Camera` (TODO Add Link to documentation - not available yet).
 If you want to use it you will need to include the Camera.h header.
 The first step is to instantiate the camera and this is very easy:
 
@@ -21,12 +28,12 @@ Please see the [NativeUI C++ Library](http://www.mosync.com/documentation/manual
 
 ***
 
-### **Camera methods**
+## **Camera methods**
 <a id="Camera_methods"></a>
 
 Here are a few camera methods that are needed for some basic camera functionalities. All the API can be found here TODO link
 
-##### **Source**
+### **Source**
 
 * **setCurrentCameraByIndex**\\
 Selects a camera from the available ones, using a camera index. The index is between 0 and the number obtained using `getNumberOfAvailableCameras()`. Since most of the available devices contain only front and back cameras, the easiest way of using this is by using the `MA_CAMERA_CONST_BACK_CAMERA` or `MA_CAMERA_CONST_FRONT_CAMERA` constants. The default/primary camera is the back (index 0) camera.
@@ -36,7 +43,7 @@ Selects a camera from the available ones, using a camera index. The index is bet
 * **getNumberOfAvailableCameras**\\
 This is useful when you find out the number of cameras available on the device. Also you can set the camera using an index between 0 and the number returned by this method. If the device has only the back/primary camera this will return 1.
 
-##### **Flash**
+### **Flash**
 
 * **isFlashSupported**\\
 This indicates if the current camera has flash support or not. The flash capabilities differ from one device to another or from one camera to another use this to see if the flash mode can be managed.
@@ -47,14 +54,14 @@ The availability of these modes depends on the model of device or camera source 
 
 		myCameraWidget->setFlashMode(FLASH_ON);
 
-##### **Focus**
+### **Focus**
 
 * **setFocusMode**\\
 This is used to set the focus mode. The focus modes are: auto, infinity, macro and fixed. Like in the flash mode the availability of this modes depend on the phone model and camera source. See [Camera values](#Camera_values) for focus values.
 
 		myCameraWidget->setFocusMode(FOCUS_AUTO);
 
-##### **Zoom**
+### **Zoom**
 
 * **isZoomSupported**\\
 This indicates if the current camera supports zoom or not. Since the zoom capabilities also differ between devices and cameras use this to find if zoom can be managed.
@@ -73,7 +80,7 @@ This must be used when the zoom level must change. The zoom value can be between
 		}
 
 
-##### **Preview**
+### **Preview**
 
 * **startPreview**\\
 Starts the camera preview. The preview will be displayed on the layout of the `Camera` widget.\\
@@ -85,7 +92,7 @@ __Note:__ This method only works after the camera widget has been shown.
 * **stopPreview**\\
 Stops the camera preview. It is a good practice to stop the preview once you no longer display the `Camera` widget<br />
 
-##### **Snapshot**
+### **Snapshot**
 
 * **takeSnapshot**\\
 Captures a still image of the camera. A place-holder's handle is needed to call this method. In this place-holder the image will be written.\\
@@ -102,9 +109,9 @@ In order to obtain snapshot notifications you need to register an `CameraSnapsho
 * **removeSnapshotListener**\\
 After you finished listening to the camera for snapshot notifications you need to remove the `CameraSnapshotListener` from the camera using this method.\\
 \\
-__Note:__ The are more methods related to the snapshot resolution and format. Details can be found in the NativeUI::Camera API TODO link.
+__Note:__ The are more methods related to the snapshot resolution and format. Details can be found in the NativeUI::Camera API (TODO link).
 
-##### **Preview frame data**
+### **Preview frame data**
 
 * **startRetrievingCameraPreviewData**\\
 With this method you can trigger the retrieval of the camera preview frames.\\
@@ -131,7 +138,7 @@ __Note:__ To make a proper deallocation of camera resources the user must call t
 
 ***
 
-### **Camera values**
+## **Camera values**
 <a id="Camera_values"></a>
 
 __Note:__ Keep in mind that not all this values are available for all devices/cameras due to device or OS limitations.
@@ -168,11 +175,11 @@ Used in retrieving preview frame data.
 		MA_CAMERA_PREVIEW_FRAME      //Whenever a frame is available
 		MA_CAMERA_PREVIEW_AUTO_FOCUS //Whenever focus is made
 
-For more camera related constants please see TODO API Link.
+For more camera related constants please see Camera API (TODO API Link).
 
 ***
 
-### **Camera listeners**
+## **Camera listeners**
 <a id="Camera_listeners"></a>
 
 * **CameraSnapshotListener**\\
@@ -270,7 +277,7 @@ __Note:__ This listener is active only when is attached to a `Camera` instance v
 
 ***
 
-### **General usage**
+## **General usage**
 <a id="General_usage"></a>
 
 
@@ -325,9 +332,21 @@ __Note:__ See the code snippets from [Camera listeners](#Camera_listeners) to ex
 
 ***
 
-### **Example program**<br />
+## **Example program**<br />
 <a id="Example_program"></a>
 
-Please see __MoCamera__ for an application dedicated to camera usage. TODO Add link and screen captures of the MoCamera here.
+Please see __MoCamera__ application found in MoSync\examples\cpp. This is an application dedicated to camera usage.
+
+### Android
+
+![gras](images/Android01.png) ![gras](images/Android02.png)
+
+### iOS
+
+![gras](images/iOS01.PNG) ![gras](images/iOS02.PNG)
+
+### Windows Phone
+
+![gras](images/WP01.png) ![gras](images/WP02.png)
 
 ***
