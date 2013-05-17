@@ -1005,7 +1005,7 @@ def htmlPrettify(html)
   html
 end
 
-# This was used for a one-shot conversion on the Durpal pages.
+# This was used for a one-shot conversion on the Drupal pages.
 def htmlReplaceSyntaxHighlighterTags(html)
   html = html.gsub(/{syntaxhighlighter brush: cpp.*?}/, "<pre class=\"mosync-code-cpp\">")
   html = html.gsub(/{syntaxhighlighter brush: jscript.*?}/, "<pre class=\"mosync-code-js\">")
@@ -1160,15 +1160,6 @@ def htmlGetTagContents(html, tagName)
   else
     result[1].split("</#{tagName}>")[0]
   end
-end
-
-# This was used for a one-shot conversion on the Durpal pages.
-def htmlReplaceSyntaxHighlighterTags(html)
-  html = html.gsub(/{syntaxhighlighter brush: cpp.*?}/, "<pre class=\"mosync-code-cpp\">")
-  html = html.gsub(/{syntaxhighlighter brush: jscript.*?}/, "<pre class=\"mosync-code-js\">")
-  html = html.gsub(/{syntaxhighlighter brush: css.*?}/, "<pre class=\"mosync-code-css\">")
-  html = html.gsub(/{syntaxhighlighter brush: xml.*?}/, "<pre class=\"mosync-code-xml\">")
-  html = html.gsub(/{\/syntaxhighlighter}/, "</pre>")
 end
 
 def htmlAddSyntaxHighligting(html)
