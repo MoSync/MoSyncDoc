@@ -196,6 +196,7 @@ def webSiteBuild what=[]
   webSiteBuildSearchPage
 
   if what.include?("sdk") then
+    webSiteBuildSdkSpecialPages
     webSiteBuildSdkHomePage
     webSiteBuildSdkDocPages
     webSiteBuildSdkIndexPages
@@ -287,6 +288,72 @@ end
 #----------------------------------------------------#
 #               Build MoSync SDK Pages               #
 #----------------------------------------------------#
+
+# Builds the feature-platform-support page.
+def webSiteBuildSdkSpecialPages
+  puts "Building special pages"
+  
+  webSiteBuildSdkFeaturePlatformSupportPage
+end
+
+# Builds the feature-platform-support page.
+# TODO: We can add all kinds of feature to the table,
+# sorting, colouring etc. This is basic version.
+def webSiteBuildSdkFeaturePlatformSupportPage
+  puts "Building Feature-Platform Support page"
+  
+  # File names.
+  dataFile = "../docs-tmp/sdk/tools/references/feature-platform-support/feature-platform-support.csv"
+  htmlFile = "../docs-tmp/sdk/tools/references/feature-platform-support/index.html"
+  
+  # Generate the table from the CSV file.
+  firstRow = true
+  rowToggle = true
+  table = "<table>\n"
+  File.readlines(dataFile).each do |line|
+    # Remove trailing newline.
+    line = line.gsub(/\n$/, "")
+    
+    # Add some basic colouring to make table easier to read.
+    # These styles are defined in the index.html file.
+    rowToggle = ! rowToggle
+    if rowToggle then
+      classAttr = "mosync-feature-table-row-odd"
+    else
+      classAttr = "mosync-feature-table-row-even"
+    end
+    # Overwrite style if first row (header row).
+    if firstRow then
+      firstRow = false
+      classAttr = "mosync-feature-table-head"
+    end
+    
+    # Open row.
+    table = table + "<tr class=\"#{classAttr}\">"
+    
+    # Get row fields.
+    line.split("\t").each do |field|
+      # Do not show NONE fields.
+      if field == "NONE"
+        field = "&nbsp;"
+      end
+      table = table + "<td>#{field}</td>"
+    end
+    
+    # Close row.
+    table = table + "</tr>\n"
+  end
+  table = table + "</table>\n"
+  
+  # Read the HTML file with table header.
+  html = fileReadContent(htmlFile)
+  
+  # Insert the table.
+  html = html.gsub("TEMPLATE_FEATURE_PLATFORM_SUPPORT_TABLE", table);
+  
+  # Save the page.
+  fileSaveContent(htmlFile, html)
+end
 
 # Build the SDK home page.
 def webSiteBuildSdkHomePage
@@ -432,9 +499,14 @@ def webSiteBuildDocPages(pages, menuFile, swatch)
     puts "Building #{pageFile} #{outputFile}"
     
     #puts "Heading: " + fileGetPageHeading(pageFile)
-	
-    # Build and save page.
+
+    # Read page content.
     pageHtml = htmlGetPageContent(fileReadContent(pageFile))
+    
+    # Insert syntax higlighter tags.
+    pageHtml = htmlAddSyntaxHighligting(pageHtml)
+    
+    # Build and save page.
     webSiteBuildPage(
       :outputFile => outputFile,
       :pageHtml => pageHtml,
@@ -694,6 +766,10 @@ end
 #                 IMPORT FROM DRUPAL                 #
 ######################################################
 
+# This code is not used any more, but is kept as a reference.
+
+=begin
+
 # Not used for now.
 def convertHtmlToMarkdown
   root = pathExports()
@@ -862,7 +938,6 @@ def docDownloadImage(url, destFile)
   end
 end
 
-
 # Update links to point to new urls.
 # This is a "one shot" operation done on 
 # pages imported from Drupal.
@@ -908,11 +983,13 @@ def htmlStripTOC(html)
   html.gsub("[toc]", "")
 end
 
-# TODO: Implement. Make a fun that insert pre tags.
+# TODO: Implement. Make a function that insert pre tags.
+# What was the purpose of this?
 def htmlClean(html)
   html
 end
 
+# This was used for a one-shot conversion on the Durpal pages.
 def htmlPrettify(html)
   newLineAfterOpeningAndClosingTags = ["html", "head", "body", "div", "ul", "ol", "table"]
   newLineAfterClosingTags = ["title", "h1", "h2", "h3", "h4", "p", "pre", "li", "tr"]
@@ -928,6 +1005,7 @@ def htmlPrettify(html)
   html
 end
 
+# This was used for a one-shot conversion on the Durpal pages.
 def htmlReplaceSyntaxHighlighterTags(html)
   html = html.gsub(/{syntaxhighlighter brush: cpp.*?}/, "<pre class=\"mosync-code-cpp\">")
   html = html.gsub(/{syntaxhighlighter brush: jscript.*?}/, "<pre class=\"mosync-code-js\">")
@@ -939,6 +1017,8 @@ end
 def htmlReplaceTabsWithSpaces(html)
   html.gsub("\t", "    ")
 end
+
+=end
 
 ######################################################
 #                   GET PAGE DATA                    #
@@ -1080,6 +1160,31 @@ def htmlGetTagContents(html, tagName)
   else
     result[1].split("</#{tagName}>")[0]
   end
+end
+
+# This was used for a one-shot conversion on the Durpal pages.
+def htmlReplaceSyntaxHighlighterTags(html)
+  html = html.gsub(/{syntaxhighlighter brush: cpp.*?}/, "<pre class=\"mosync-code-cpp\">")
+  html = html.gsub(/{syntaxhighlighter brush: jscript.*?}/, "<pre class=\"mosync-code-js\">")
+  html = html.gsub(/{syntaxhighlighter brush: css.*?}/, "<pre class=\"mosync-code-css\">")
+  html = html.gsub(/{syntaxhighlighter brush: xml.*?}/, "<pre class=\"mosync-code-xml\">")
+  html = html.gsub(/{\/syntaxhighlighter}/, "</pre>")
+end
+
+def htmlAddSyntaxHighligting(html)
+  # Replace mosync-code class attributes with syntaxhigligter attributes.
+  html = html.gsub(/<pre class=\"mosync-code-cpp\">/, "<pre class=\"brush: cpp\">")
+  html = html.gsub(/<pre class=\"mosync-code-js\">/, "<pre class=\"brush: js\">")
+  html = html.gsub(/<pre class=\"mosync-code-xml\">/, "<pre class=\"brush: xml\">")
+  html = html.gsub(/<pre class=\"mosync-code-css\">/, "<pre class=\"brush: css\">")
+  
+  # Replace <pre><code> begin and end tags (produced by Markdown).
+  # TODO: This defaults to C++ until we found a better solution.
+  html = html.gsub(/<pre><code>/, "<pre class=\"brush: css\">")
+  html = html.gsub(/<\/code><\/pre>/, "<\/pre>")
+  
+  # Return the result string.
+  html
 end
 
 ######################################################
@@ -1357,7 +1462,12 @@ end
 
 def helperGetHeaderTags(html)
   metaDescription = helperGetFirstMatch(html, /<meta name="description".*?>/)
-  metaDescription2 = helperGetFirstMatch(html, /<meta name="dcterms\.description".*?>/)
+  # Use same content for "dcterms.description" as for "description".
+  # This way documents do not have to specify "dcterms.description",
+  # only "description".
+  metaDescription2 = metaDescription.gsub(
+    "name=\"description\"",
+    "name=\"dcterms.description\"")
   metaKeywords = helperGetFirstMatch(html, /<meta name="keywords".*?>/)
   title = helperGetFirstMatch(html, /<title>.*?<\/title>/)
   "<!-- <mosyncheadertags>\n" + 
