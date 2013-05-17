@@ -1,12 +1,17 @@
 <html>
 <head>
-<title>GUI-Based Applications with MAUI</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="Using the MAUI library helps you develop powerful graphical user interface applications. You get access to a variety of ready-made user interface widgets and you can register different types of listeners with the widgets, thus responding to higher-level events." />
+<meta name="dcterms.description" content="Using the MAUI library helps you develop powerful graphical user interface applications. You get access to a variety of ready-made user interface widgets and you can register different types of listeners with the widgets, thus responding to higher-level events." />
+<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
+<title>GUI-Based Applications with MAUI | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>GUI-Based Applications with MAUI</h1>
 <p>Using the <strong>MAUI </strong>library helps you develop powerful graphical user interface applications. You get access to a variety of ready-made user interface widgets and you can register different types of listeners with the widgets, thus responding to higher-level events.</p>
 <p><!--break--></p>
-<p><strong>MAUI </strong>development is based on the <strong>Moblet </strong>system, so to create an application with it you first need to make a moblet as shown in the <a href="TEMPLATE_DOC_PATH/sdk/cpp/tutorials/basic/event-driven-object-oriented-applications/index.html">previous example</a>.</p>
+<p><strong>MAUI </strong>development is based on the <strong>Moblet </strong>system, so to create an application with it you first need to make a moblet as shown in the <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/basic/event-driven-object-oriented-applications/index.html">previous example</a>.</p>
 <p>The fundamental building block of a MAUI application is called <strong>MAUI::Screen</strong>. Each screen has their own root widget. Each time <strong>show() </strong>is called on a screen, that screen is shown and all the others are hidden. When a screen is shown, it means that the root widget of that screen is made active. It can often be very useful to group your application into several screens in order to give your program a logical structure. When a screen is shown, key events are sent to that screen only. When a screen is hidden, each widget that belongs to it is disabled. This normally means that any timer events are unregistered.</p>
 <h2><strong>Example: A Simple, Well-Behaved Application</strong></h2>
 <p><em><strong>Note</strong></em>: if you build this application in the IDE, make sure that you base it on the MAUI template or make sure that the Additional Libraries listed in the build configuration (<strong>Project </strong>&gt; <strong>Properties </strong>&gt; <strong>MoSync Project</strong> &gt; <strong>Build Settings</strong> &gt; <strong>Additional Libraries</strong>) include <strong>MAUtil.lib</strong> and <strong>MAUI.lib</strong>. You will also need to create and declare your font resources: see <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/maui/font-tools/index.html">Working With Fonts</a>.</p>
