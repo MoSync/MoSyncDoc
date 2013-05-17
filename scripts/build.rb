@@ -386,6 +386,7 @@ def webSiteBuildReloadDocPages
     swatchReload())
 end
 
+# Build all Reload index pages.
 def webSiteBuildReloadIndexPages
   title = "Reload Guides"
   webSiteBuildReloadIndexPage([RELOAD,GUIDE], "reload/guides/", title, MENU_RELOAD_GUIDES)

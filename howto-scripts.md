@@ -28,7 +28,7 @@ To build the website, make sure you have checked out MoSyncDoc and ReloadDoc rep
         ReloadDoc
         MoSyncDoc
 
-The website build script will use data from ReloadDoc when building the website.
+The website build script will use data from ReloadDoc when building the website. Specifically, the script structure.rb contains information about both MoSync SDK and MoSync Reload documentation pages.
 
 To build the website, first to to the MoSyncDoc/scripts directory:
 
@@ -46,7 +46,7 @@ To build only documentation for SDK or Reload use:
     ruby build.rb buildsdk
     ruby build.rb buildreload
     
-Note that if you build all documentation, it is important that both MoSyncDoc and ReloadDoc repos are up-to-date, because structure.rb contain references to Reload pages, and if they do not exist, you will get a build error (this is one reason for that it can be useful to build only the SDk docs).
+Note that if you build all documentation, it is important that both MoSyncDoc and ReloadDoc repos are up-to-date, because structure.rb contains references also to Reload pages, and if they do not exist, you will get a build error (this is one reason for that it can be useful to build only the SDK docs).
 
 ## Updating structure.rb
 The script structure.rb contains a list of all documentation pages, stored as a Ruby array, referenced by the global variable $pages.

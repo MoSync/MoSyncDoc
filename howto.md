@@ -3,9 +3,9 @@
 ## Introduction
 This document explains how to use the documentation system.
 
-It should be noted that the documenation in this repository is NOT in the final format displayed on the web site. A build script is used to process the pages in this repository, to produce HTML pages for the web site.
+It should be noted that the documentation in this repository is NOT in the final format displayed on the web site. A build script is used to process the pages in this repository, to produce HTML pages for the web site.
 
-The purpose with this repository is to have the documentation under version control.
+The purpose of this repository is to have the documentation under version control.
 
 An explanation of how to use the website build scripts is found in file: howto-scripts.md
 
@@ -13,7 +13,7 @@ A template for new documentation pages is found in file: howto-template.md
 
 ## File format
 
-You can use HTML or Markdown. The build script convertes Markdown to HTML. Currently kramdown is used (a Ruby Markdown converter).
+You can use HTML or Markdown. The build script converts Markdown to HTML. Currently kramdown is used (a Ruby Markdown converter).
 
 Each documentation page goes into its own subdirectory.
 
@@ -55,7 +55,7 @@ To give an example, these are the files for an actual documentation page:
                 advertising-android-annotated.png
               index.html
 
-It should be noted that the actual classification of document categories is specified in the file scripts/structure.rb. It is however essential to maintain the directory structure and place documents where they logically belong, to make it easy to update and manage documentation files. This also makes urls consistent and readable.
+It should be noted that the actual classification of document categories is specified in the file scripts/structure.rb. It is however essential to maintain the directory structure and place documents where they logically belong, to make it easy to update and manage documentation files. This also makes URLs consistent and readable.
 
 ## Images
 
