@@ -7,21 +7,23 @@ It should be noted that the documenation in this repository is NOT in the final 
 
 The purpose with this repository is to have the documentation under version control.
 
-For an explanation of how to use the website build scripts, see file howto-scripts.md.
+An explanation of how to use the website build scripts is found in file: howto-scripts.md
+
+A template for new documentation pages is found in file: howto-template.md
 
 ## File format
 
-You can use HTML or Markdown. At present Markdown files need to be manually converted to HTML. A tool for this is [Pandoc](http://johnmacfarlane.net/pandoc/).
+You can use HTML or Markdown. The build script convertes Markdown to HTML. Currently kramdown is used (a Ruby Markdown converter).
 
 Each documentation page goes into its own subdirectory.
 
 Markdown pages must be named "index.md"
 
-HTML pages  must be named "index.html"
+HTML pages must be named "index.html"
 
 Images should go into the "images" subdirectory. 
 
-See example below.
+See example of folder structure below.
 
 ## Folder structure
 
@@ -32,11 +34,9 @@ The documentation uses the following folder structure:
         cpp
           examples
           guides
-          tutorials
         js
           examples
           guides
-          tutorials
         release-notes
         tools
           guides
@@ -55,11 +55,7 @@ To give an example, these are the files for an actual documentation page:
                 advertising-android-annotated.png
               index.html
 
-It should be noted that the actual classification of document categories is specified in the file scripts/structure.rb. It is however essential to maintain the directory structure and place documents where they logically belong, to make it easy to update and manage documentation files.
-
-## Guides vs. Tutorials
-
-The difference is not clear in the current documentation, but here is a characterisation. A guide and is shorter than a tutorial, and covers a specific topic. A tutorial is longer and can have a broader scope. A tutorial can also be more of a step-by-step description compared to a guide.
+It should be noted that the actual classification of document categories is specified in the file scripts/structure.rb. It is however essential to maintain the directory structure and place documents where they logically belong, to make it easy to update and manage documentation files. This also makes urls consistent and readable.
 
 ## Images
 
@@ -77,7 +73,25 @@ On the generated website, relative URLs are used to the greatest possible extent
 
 URLs used as links should begin with the string "TEMPLATE\_DOC\_PATH" and then the full path to the page under the docs directory should follow. Here is an example:
 
-    <a href="TEMPLATE_DOC_PATH/cpp/examples/nativeuidemo/index.html>NativeUIDemo</a>
+    <a href="TEMPLATE\_DOC\_PATH/cpp/examples/nativeuidemo/index.html>NativeUIDemo</a>
+    
+## Header section
+
+Each documentation page should have a header section with meta tags and document title. This header section is added to the beginning of Markdown or HTML files, and has the format given by the following example:
+
+    <!-- <mosyncheadertags>
+    <meta name="description" content="This guide shows how to use the
+    MoSync Camera API." />
+    <meta name="keywords" content="mobile
+    development,sdk,ide,apps,mobile,apps,android,ios,iphone,ipad,camera,
+    mobile,c,c++,open source,porting,dev,application,ide,cross
+    platform,programming,,mosync" />
+    <title>NativeUI Camera API</title>
+    </mosyncheadertags> -->
+
+## Documentation template
+
+A template for documentation pages is in file: howto-template.md
 
 ## Flavour of Markdown
 
