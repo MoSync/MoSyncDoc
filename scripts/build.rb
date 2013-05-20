@@ -1386,6 +1386,18 @@ VALUES (NULL,'ORIGINAL_PATH','TARGET_PATH',NULL,NULL,'301',NOW(),'');"
   puts sql
 end
 
+# Generate a list of URLs that can be used with Google Search
+# to index pages.
+def generateListOfPageUrls
+  urls = ""
+  docPages().each do |page|
+    targetPath = pageTargetFile(page)
+    url = "http://www.mosync.com/docs/" + targetPath + "/index.html"
+    urls += url + "\n"
+  end
+  puts urls
+end
+
 def renameTutorialPaths
   puts "Renaming tutorial path names"
 
@@ -1435,7 +1447,6 @@ def pagesReferingToMoSyncCom
   
   puts hits.sort.uniq
 end
-
 
 def pageSearchTool(stringOrRegExp)
   puts "Pages that contain: " + stringOrRegExp.to_s
@@ -1597,6 +1608,8 @@ elsif (ARGV.include? "patchmeta")
   patchPagesWithMetaTags
 elsif (ARGV.include? "search")
   pageSearchTool ARGV[1]
+elsif (ARGV.include? "pageurls")
+  generateListOfPageUrls
 else
   puts "Options:"
   #puts "  html2md"

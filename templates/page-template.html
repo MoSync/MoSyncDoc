@@ -171,7 +171,7 @@
                 TEMPLATE_PAGE_MENU
             </div>
             <div id="page-content">
-				TEMPLATE_DOC_VERSION
+                TEMPLATE_DOC_VERSION
                 TEMPLATE_PAGE_CONTENT
             </div>
         </div>
@@ -188,6 +188,13 @@
 
     </div>
 
-    <script>SyntaxHighlighter.all()</script>
+    <script>
+    // This applies syntax highlighting to code blocks.
+    SyntaxHighlighter.all();
+    
+    // This makes the browser Window title display
+    // the actual value of the title tag.
+    $(":jqmData(role='page')").attr("data-title", document.title);
+    </script>
 </body>
 </html>
