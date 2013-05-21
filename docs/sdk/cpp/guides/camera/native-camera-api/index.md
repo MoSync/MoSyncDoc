@@ -7,11 +7,11 @@ platform,programming,mosync,camera" />
 
 # The NativeUI Camera API
 
-In this tutorial we will learn how to create a Camera widget using Native UI. With this widget you can control the display of the camera preview and control the camera functionalities like snapshot, preview frames, zoom, flash, focus and switching between the cameras of the device.
+In this tutorial we will learn how to create a Camera widget using Native UI. With this widget you can control the display of the camera preview and control camera functionaly like snapshot, preview frames, zoom, flash, focus and switching between the cameras of the device.
 
-As a reminder the [NativeUI C++ Library](http://www.mosync.com/documentation/manualpages/using-nativeui-library) and the underlying [Widget API](http://www.mosync.com/files/imports/doxygen/latest/html/group___widget_a_p_i.html) are designed to work with native user-interface controls. The library is designed to support platforms with native (i.e. proprietary) touch and graphical interfaces such as Android, iOS, and Windows Phone.Some widgets are specific to one particular platform. Also for other platform support information please see [Feature/Platform Support](http://www.mosync.com/widepage/feature-platform-support).
+As a reminder the [NativeUI C++ Library](TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-nativeui-library/index.html) and the underlying [Widget API](http://www.mosync.com/files/imports/doxygen/latest/html/group___widget_a_p_i.html) are designed to work with native user-interface controls. The library is designed to support platforms with native (i.e. proprietary) touch and graphical interfaces such as Android, iOS, and Windows Phone.Some widgets are specific to one particular platform. Also for other platform support information please see [Feature/Platform Support](TEMPLATE_DOC_PATH/sdk/tools/references/feature-platform-support/index.html).
 
-Note that if you want to deploy on Android devices you will need to add Camera permissions. To do this you need to select the project Properties > MoSync Project > Application Permission and check the Camera check-box. Find more info about this by taking [a tour of the MoSync IDE](http://www.mosync.com/documentation/manualpages/getting-started-mosync-ide).
+Note that if you want to deploy on Android devices you will need to add Camera permissions. To do this you need to select the project Properties > MoSync Project > Application Permission and check the Camera check-box. Find more info about this by taking [a tour of the MoSync IDE](TEMPLATE_DOC_PATH/sdk/tools/guides/ide/tour-of-the-mosync-sdk-ide/index.html).
 
 ***
 
@@ -24,7 +24,7 @@ The first step is to instantiate the camera and this is very easy:
 
 		NativeUI::Camera* myCameraWidget = new NativeUI::Camera();
 
-Please see the [NativeUI C++ Library](http://www.mosync.com/documentation/manualpages/using-nativeui-library) for the UI related properties/methods of this widget. This guide will mainly specify only camera related instructions.
+Please see the [NativeUI C++ Library](TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-nativeui-library/index.html) for the UI related properties/methods of this widget. This guide will mainly specify only camera related instructions.
 
 ***
 
