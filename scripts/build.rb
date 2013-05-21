@@ -13,6 +13,19 @@ require "kramdown"
 # The structure file contains all pages and category info.
 load 'structure.rb' 
 
+
+######################################################
+#                DOCUMENTAION VERSION                #
+######################################################
+
+def docVersionSdk
+  "<p>MoSync SDK 3.3</p>"
+end
+
+def docVersionReload
+  "<p>MoSync Reload 1.1</p>"
+end
+
 ######################################################
 #                     PATH NAMES                     #
 ######################################################
@@ -129,8 +142,11 @@ MENU_RELOAD_RELEASE_NOTES="TEMPLATE_THEME_MENU_RELOAD_RELEASE_NOTES"
 
 MENU_ALL = [
 MENU_START_HOME,
-MENU_START_SDK,
-MENU_START_RELOAD,
+# Unused here, because these will be set
+# to be highlighted also for all pages
+# in the documentation.
+#MENU_START_SDK,
+#MENU_START_RELOAD,
 MENU_START_SEARCH,
 MENU_CPP_GUIDES,
 MENU_CPP_TUTORIALS,
@@ -196,6 +212,7 @@ def webSiteBuild what=[]
   webSiteBuildSearchPage
 
   if what.include?("sdk") then
+    webSiteBuildSdkSpecialPages
     webSiteBuildSdkHomePage
     webSiteBuildSdkDocPages
     webSiteBuildSdkIndexPages
@@ -265,7 +282,7 @@ def webSiteBuildDocHomePage
     :templateFile => pathPageTemplate(),
     :swatch => swatchDocHome(),
     :pageHeading => fileGetPageTitle(pathPageDocHome()),
-	:pageHeaderTags => fileGetHeaderTags(pathPageDocHome()),
+    :pageHeaderTags => fileGetHeaderTags(pathPageDocHome()),
     :selectedMenuItem => MENU_START_HOME
     )
 end
@@ -279,7 +296,7 @@ def webSiteBuildSearchPage
     :templateFile => pathPageTemplate(),
     :swatch => swatchDocHome(),
     :pageHeading => title,
-	:pageHeaderTags => "", # TODO: Add headertags.
+    :pageHeaderTags => "", # TODO: Add headertags.
     :selectedMenuItem => MENU_START_SEARCH
     )
 end
@@ -287,6 +304,72 @@ end
 #----------------------------------------------------#
 #               Build MoSync SDK Pages               #
 #----------------------------------------------------#
+
+# Builds the feature-platform-support page.
+def webSiteBuildSdkSpecialPages
+  puts "Building special pages"
+  
+  webSiteBuildSdkFeaturePlatformSupportPage
+end
+
+# Builds the feature-platform-support page.
+# TODO: We can add all kinds of feature to the table,
+# sorting, colouring etc. This is basic version.
+def webSiteBuildSdkFeaturePlatformSupportPage
+  puts "Building Feature-Platform Support page"
+  
+  # File names.
+  dataFile = "../docs-tmp/sdk/tools/references/feature-platform-support/feature-platform-support.csv"
+  htmlFile = "../docs-tmp/sdk/tools/references/feature-platform-support/index.html"
+  
+  # Generate the table from the CSV file.
+  firstRow = true
+  rowToggle = true
+  table = "<table>\n"
+  File.readlines(dataFile).each do |line|
+    # Remove trailing newline.
+    line = line.gsub(/\n$/, "")
+    
+    # Add some basic colouring to make table easier to read.
+    # These styles are defined in the index.html file.
+    rowToggle = ! rowToggle
+    if rowToggle then
+      classAttr = "mosync-feature-table-row-odd"
+    else
+      classAttr = "mosync-feature-table-row-even"
+    end
+    # Overwrite style if first row (header row).
+    if firstRow then
+      firstRow = false
+      classAttr = "mosync-feature-table-head"
+    end
+    
+    # Open row.
+    table = table + "<tr class=\"#{classAttr}\">"
+    
+    # Get row fields.
+    line.split("\t").each do |field|
+      # Do not show NONE fields.
+      if field == "NONE"
+        field = "&nbsp;"
+      end
+      table = table + "<td>#{field}</td>"
+    end
+    
+    # Close row.
+    table = table + "</tr>\n"
+  end
+  table = table + "</table>\n"
+  
+  # Read the HTML file with table header.
+  html = fileReadContent(htmlFile)
+  
+  # Insert the table.
+  html = html.gsub("TEMPLATE_FEATURE_PLATFORM_SUPPORT_TABLE", table);
+  
+  # Save the page.
+  fileSaveContent(htmlFile, html)
+end
 
 # Build the SDK home page.
 def webSiteBuildSdkHomePage
@@ -297,8 +380,9 @@ def webSiteBuildSdkHomePage
     :templateFile => pathPageTemplate(),
     :swatch => swatchSdk(),
     :pageHeading => fileGetPageTitle(pathPageSdkHome()),
-	:pageHeaderTags => fileGetHeaderTags(pathPageSdkHome()),
-    :selectedMenuItem => MENU_START_SDK
+    :pageHeaderTags => fileGetHeaderTags(pathPageSdkHome()),
+    :selectedMenuItem => MENU_START_SDK,
+    :docVersion => docVersionSdk()
     )
 end
 
@@ -307,7 +391,8 @@ def webSiteBuildSdkDocPages
   webSiteBuildDocPages(
     docSdkPages(), 
     pathPageSdkMenu(),
-    swatchSdk())
+    swatchSdk(),
+    docVersionSdk())
 end
 
 # Build SDK index pages for all categories and page types.
@@ -357,7 +442,8 @@ def webSiteBuildSdkIndexPage(
     pageTitle,
     selectedMenuItem,
     pathPageSdkMenu(),
-    swatchSdk())
+    swatchSdk(),
+    docVersionSdk())
 end
 
 #----------------------------------------------------#
@@ -373,8 +459,9 @@ def webSiteBuildReloadHomePage
     :templateFile => pathPageTemplate,
     :swatch => swatchReload(),
     :pageHeading => fileGetPageTitle(pathPageReloadHome()),
-	:pageHeaderTags => fileGetHeaderTags(pathPageReloadHome()),
-    :selectedMenuItem => MENU_START_RELOAD
+    :pageHeaderTags => fileGetHeaderTags(pathPageReloadHome()),
+    :selectedMenuItem => MENU_START_RELOAD,
+    :docVersion => docVersionReload()
     )
 end
 
@@ -383,7 +470,8 @@ def webSiteBuildReloadDocPages
   webSiteBuildDocPages(
     docReloadPages(), 
     pathPageReloadMenu(),
-    swatchReload())
+    swatchReload(),
+    docVersionReload())
 end
 
 # Build all Reload index pages.
@@ -408,7 +496,8 @@ def webSiteBuildReloadIndexPage(
     pageTitle,
     selectedMenuItem,
     pathPageReloadMenu(),
-    swatchReload())
+    swatchReload(),
+    docVersionReload())
 end
 
 #----------------------------------------------------#
@@ -417,7 +506,7 @@ end
 
 # Build all documentation pages in the given collection
 # of page meta data, using the supplied menu file.
-def webSiteBuildDocPages(pages, menuFile, swatch)
+def webSiteBuildDocPages(pages, menuFile, swatch, docVersion)
 
   # Build web page for each documentation page.
   n = 0
@@ -432,9 +521,14 @@ def webSiteBuildDocPages(pages, menuFile, swatch)
     puts "Building #{pageFile} #{outputFile}"
     
     #puts "Heading: " + fileGetPageHeading(pageFile)
-	
-    # Build and save page.
+
+    # Read page content.
     pageHtml = htmlGetPageContent(fileReadContent(pageFile))
+    
+    # Insert syntax higlighter tags.
+    pageHtml = htmlAddSyntaxHighligting(pageHtml)
+    
+    # Build and save page.
     webSiteBuildPage(
       :outputFile => outputFile,
       :pageHtml => pageHtml,
@@ -443,7 +537,8 @@ def webSiteBuildDocPages(pages, menuFile, swatch)
       :swatch => swatch,
       :pageHeading => pageGetHeadingFromDocumentationType(page),
       :pageHeaderTags => fileGetHeaderTags(pageFile),
-      :selectedMenuItem => webSiteGetMenuItemTypeForPage(page)
+      :selectedMenuItem => webSiteGetMenuItemTypeForPage(page),
+      :docVersion => docVersion
       )
     
     # Copy images to destination directory.
@@ -463,7 +558,8 @@ def webSiteBuildIndexPage(
   pageTitle,
   selectedMenuItem,
   menuFile,
-  swatch)
+  swatch,
+  docVersion)
   
   # Create page output path.
   outputFile = pathWebSite() + pageShortPath + "index.html"
@@ -482,8 +578,9 @@ def webSiteBuildIndexPage(
     :templateFile => pathPageTemplate(),
     :swatch => swatch,
     :pageHeading => pageTitle,
-	:pageHeaderTags => "<title>" + pageTitle + "</title>",
-    :selectedMenuItem => selectedMenuItem
+    :pageHeaderTags => "<title>" + pageTitle + "</title>",
+    :selectedMenuItem => selectedMenuItem,
+    :docVersion => docVersion
     )
 end
 
@@ -545,6 +642,7 @@ def webSiteBuildPage params
   pageHeading = params[:pageHeading]
   pageHeaderTags = params[:pageHeaderTags]
   selectedMenuItem = params[:selectedMenuItem]
+  docVersion = params[:docVersion]
 
   # Create Pathname objects.
   outputPath = Pathname.new(outputFile)
@@ -589,7 +687,8 @@ def webSiteBuildPage params
     :selectedMenuItem => selectedMenuItem,
     :relativeDocPath => relativeDocPath.to_s,
     :relativeJsPath => relativeJsPath.to_s,
-    :relativeImagePath => relativeImagePath.to_s
+    :relativeImagePath => relativeImagePath.to_s,
+    :docVersion => docVersion
     )
     
   # Make sure dest path exists and save page.
@@ -612,6 +711,13 @@ def webSiteBuildPageFromTemplateData(params)
   relativeDocPath = params[:relativeDocPath]
   relativeJsPath = params[:relativeJsPath]
   relativeImagePath = params[:relativeImagePath]
+  docVersion = params[:docVersion]
+  
+  # Not all pages should display the documentation
+  # version string.
+  if nil == docVersion then
+    docVersion = ""
+  end
   
   # Substitute template placeholders.
   # Order of these statements is important since included
@@ -620,6 +726,7 @@ def webSiteBuildPageFromTemplateData(params)
   # Insert content and title.
   html = templateData.gsub("TEMPLATE_HEADER_TAGS", pageHeaderTags)
   html = html.gsub("TEMPLATE_PAGE_HEADING", pageHeading)
+  html = html.gsub("TEMPLATE_DOC_VERSION", docVersion)
   html = html.gsub("TEMPLATE_PAGE_CONTENT", pageData)
   
   # Insert menu at two places with different insets.
@@ -648,6 +755,21 @@ def webSiteBuildPageFromTemplateData(params)
     end
   end
   
+  # Special handling of the top highlight for the
+  # top menu items for SDK and Reload.
+  if docVersion == docVersionSdk() then
+    # Highlight
+    html = html.gsub(MENU_START_SDK, webSiteDataTheme(swatch))
+  else
+    html = html.gsub(MENU_START_SDK, webSiteDataTheme(swatchItem))
+  end
+  if docVersion == docVersionReload() then
+    # Highlight
+    html = html.gsub(MENU_START_RELOAD, webSiteDataTheme(swatch))
+  else
+    html = html.gsub(MENU_START_RELOAD, webSiteDataTheme(swatchItem))
+  end
+    
   # Insert relative paths for urls.
   html = html.gsub("TEMPLATE_JS_PATH", relativeJsPath)
   html = html.gsub("TEMPLATE_IMAGE_PATH", relativeImagePath)
@@ -693,6 +815,10 @@ end
 ######################################################
 #                 IMPORT FROM DRUPAL                 #
 ######################################################
+
+# This code is not used any more, but is kept as a reference.
+
+=begin
 
 # Not used for now.
 def convertHtmlToMarkdown
@@ -862,7 +988,6 @@ def docDownloadImage(url, destFile)
   end
 end
 
-
 # Update links to point to new urls.
 # This is a "one shot" operation done on 
 # pages imported from Drupal.
@@ -877,11 +1002,11 @@ def htmlUpdateLinks(html)
       "http://www.mosync.com/" + pageOriginalFile(page), 
       "/NEWDOC_UPDATED_URL_TEMPLATE_DOC_PATH/" + pageTargetFile(page) + "/index.html")
     # Replace short urls
-	# TODO: This is unsafe for short urls like "contibutions",
-	# this caused problems that is now fixed. In the future,
-	# if using this code again, be aware of this! Added quote
-	# marks to gsub, to make it a little safer. Even better
-	# is to use full regexp that targets a-tags.
+    # TODO: This is unsafe for short urls like "contibutions",
+    # this caused problems that is now fixed. In the future,
+    # if using this code again, be aware of this! Added quote
+    # marks to gsub, to make it a little safer. Even better
+    # is to use full regexp that targets a-tags.
     html = html.gsub(
       '"' + pageOriginalFile(page) + '"', 
       "\"NEWDOC_UPDATED_URL_TEMPLATE_DOC_PATH/" + pageTargetFile(page) + "/index.html\"")
@@ -908,11 +1033,13 @@ def htmlStripTOC(html)
   html.gsub("[toc]", "")
 end
 
-# TODO: Implement. Make a fun that insert pre tags.
+# TODO: Implement. Make a function that insert pre tags.
+# What was the purpose of this?
 def htmlClean(html)
   html
 end
 
+# This was used for a one-shot conversion on the Durpal pages.
 def htmlPrettify(html)
   newLineAfterOpeningAndClosingTags = ["html", "head", "body", "div", "ul", "ol", "table"]
   newLineAfterClosingTags = ["title", "h1", "h2", "h3", "h4", "p", "pre", "li", "tr"]
@@ -928,6 +1055,7 @@ def htmlPrettify(html)
   html
 end
 
+# This was used for a one-shot conversion on the Drupal pages.
 def htmlReplaceSyntaxHighlighterTags(html)
   html = html.gsub(/{syntaxhighlighter brush: cpp.*?}/, "<pre class=\"mosync-code-cpp\">")
   html = html.gsub(/{syntaxhighlighter brush: jscript.*?}/, "<pre class=\"mosync-code-js\">")
@@ -939,6 +1067,8 @@ end
 def htmlReplaceTabsWithSpaces(html)
   html.gsub("\t", "    ")
 end
+
+=end
 
 ######################################################
 #                   GET PAGE DATA                    #
@@ -1080,6 +1210,22 @@ def htmlGetTagContents(html, tagName)
   else
     result[1].split("</#{tagName}>")[0]
   end
+end
+
+def htmlAddSyntaxHighligting(html)
+  # Replace mosync-code class attributes with syntaxhigligter attributes.
+  html = html.gsub(/<pre class=\"mosync-code-cpp\">/, "<pre class=\"brush: cpp\">")
+  html = html.gsub(/<pre class=\"mosync-code-js\">/, "<pre class=\"brush: js\">")
+  html = html.gsub(/<pre class=\"mosync-code-xml\">/, "<pre class=\"brush: xml\">")
+  html = html.gsub(/<pre class=\"mosync-code-css\">/, "<pre class=\"brush: css\">")
+  
+  # Replace <pre><code> begin and end tags (produced by Markdown).
+  # TODO: This defaults to C++ until we found a better solution.
+  html = html.gsub(/<pre><code>/, "<pre class=\"brush: css\">")
+  html = html.gsub(/<\/code><\/pre>/, "<\/pre>")
+  
+  # Return the result string.
+  html
 end
 
 ######################################################
@@ -1240,6 +1386,18 @@ VALUES (NULL,'ORIGINAL_PATH','TARGET_PATH',NULL,NULL,'301',NOW(),'');"
   puts sql
 end
 
+# Generate a list of URLs that can be used with Google Search
+# to index pages.
+def generateListOfPageUrls
+  urls = ""
+  docPages().each do |page|
+    targetPath = pageTargetFile(page)
+    url = "http://www.mosync.com/docs/" + targetPath + "/index.html"
+    urls += url + "\n"
+  end
+  puts urls
+end
+
 def renameTutorialPaths
   puts "Renaming tutorial path names"
 
@@ -1254,11 +1412,11 @@ def renameTutorialPaths
     html = html.gsub("sdk/js/tutorials", "sdk/js/guides")
 
     # Write the updated file.
-	if (htmlOrig != html) then
-	  #puts "  ---> Updated!"
-	  puts filePath.to_s
+    if (htmlOrig != html) then
+      #puts "  ---> Updated!"
+      puts filePath.to_s
       fileSaveContent(filePath, html)
-	end
+    end
   end
   
   # Update all files.
@@ -1274,13 +1432,13 @@ def pagesReferingToMoSyncCom
   b = lambda do |filePath|
     n = n + 1
     html = fileReadContent(filePath)
-	match = html.scan(/.{11}mosync\.com.*?>/)
+    match = html.scan(/.{11}mosync\.com.*?>/)
     #if not match.empty? then 
-	#  puts filePath.to_s + " " + match[0].to_s
-	#end 
-	hits += match.collect do |m|  
-	  m.to_s
-	end
+    #  puts filePath.to_s + " " + match[0].to_s
+    #end 
+    hits += match.collect do |m|  
+      m.to_s
+    end
   end
   
   # Update all files.
@@ -1290,7 +1448,6 @@ def pagesReferingToMoSyncCom
   puts hits.sort.uniq
 end
 
-
 def pageSearchTool(stringOrRegExp)
   puts "Pages that contain: " + stringOrRegExp.to_s
 
@@ -1299,10 +1456,10 @@ def pageSearchTool(stringOrRegExp)
   b = lambda do |filePath|
     n = n + 1
     html = fileReadContent(filePath)
-	match = html.scan(stringOrRegExp)
-	hits += match.collect do |m|  
-	  filePath.to_s
-	end
+    match = html.scan(stringOrRegExp)
+    hits += match.collect do |m|  
+      filePath.to_s
+    end
   end
   
   # Update all files.
@@ -1323,41 +1480,46 @@ def patchPagesWithMetaTags
   docPages().each do |page|
     n = n + 1
     url = "http://www.mosync.com/" + pageOriginalFile(page)
-	if pageHasLabel?(page, SDK) then
-	  targetFile = "../docs/" + pageTargetFile(page) + "/index.html"
-	elsif pageHasLabel?(page, RELOAD) then
-	  targetFile = "../../ReloadDoc/docs/" + pageTargetFile(page) + "/index.html"
-	else
-	  puts "ERROR File has no category: " + pageTargetFile(page)
-	end
-	
-	# Get meta tags.
-	puts "Downloading " + n.to_s + ": " + url
-	puts "TargetFile: " + targetFile
-	htmlOnline = netDownloadFile(url)
-	headerTags = helperGetHeaderTags(htmlOnline)
-	
-	# Read file.
-	html = fileReadContent(targetFile)
-	
-	# Patch page.
-	match = html.scan(/<title>.*?<\/title>/)
-	if match.size == 1 then
-	  # Replace title tag with meta tags.
-	  # This is needed because we have read the file in binary format.
-	  html = html.force_encoding("UTF-8")
-	  html = html.gsub(/<title>.*?<\/title>/, headerTags)
-	  # Save target file.
-	  fileSaveContent(targetFile, html)
-	else
-	  puts "UNEXPECTED NUMBER OF TITLE TAGS: " + match.size
-	end
+    if pageHasLabel?(page, SDK) then
+      targetFile = "../docs/" + pageTargetFile(page) + "/index.html"
+    elsif pageHasLabel?(page, RELOAD) then
+      targetFile = "../../ReloadDoc/docs/" + pageTargetFile(page) + "/index.html"
+    else
+      puts "ERROR File has no category: " + pageTargetFile(page)
+    end
+    
+    # Get meta tags.
+    puts "Downloading " + n.to_s + ": " + url
+    puts "TargetFile: " + targetFile
+    htmlOnline = netDownloadFile(url)
+    headerTags = helperGetHeaderTags(htmlOnline)
+    
+    # Read file.
+    html = fileReadContent(targetFile)
+    
+    # Patch page.
+    match = html.scan(/<title>.*?<\/title>/)
+    if match.size == 1 then
+      # Replace title tag with meta tags.
+      # This is needed because we have read the file in binary format.
+      html = html.force_encoding("UTF-8")
+      html = html.gsub(/<title>.*?<\/title>/, headerTags)
+      # Save target file.
+      fileSaveContent(targetFile, html)
+    else
+      puts "UNEXPECTED NUMBER OF TITLE TAGS: " + match.size
+    end
   end
 end
 
 def helperGetHeaderTags(html)
   metaDescription = helperGetFirstMatch(html, /<meta name="description".*?>/)
-  metaDescription2 = helperGetFirstMatch(html, /<meta name="dcterms\.description".*?>/)
+  # Use same content for "dcterms.description" as for "description".
+  # This way documents do not have to specify "dcterms.description",
+  # only "description".
+  metaDescription2 = metaDescription.gsub(
+    "name=\"description\"",
+    "name=\"dcterms.description\"")
   metaKeywords = helperGetFirstMatch(html, /<meta name="keywords".*?>/)
   title = helperGetFirstMatch(html, /<title>.*?<\/title>/)
   "<!-- <mosyncheadertags>\n" + 
@@ -1446,6 +1608,8 @@ elsif (ARGV.include? "patchmeta")
   patchPagesWithMetaTags
 elsif (ARGV.include? "search")
   pageSearchTool ARGV[1]
+elsif (ARGV.include? "pageurls")
+  generateListOfPageUrls
 else
   puts "Options:"
   #puts "  html2md"

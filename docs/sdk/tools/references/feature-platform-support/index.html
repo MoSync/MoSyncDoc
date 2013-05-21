@@ -9,7 +9,7 @@
 </head>
 <body>
 <h1>Feature/Platform Support</h1>
-<p>Our platform support and feature/capability tables show you where we have implemented MoSync JavaScript functions, C++ classes, C syscall functions and IOCTLs, and widget constants across the major mobile platforms.</p>
+<p>The feature/platform support table shows which parts of the MoSync API are supported on which platforms.</p>
 
 <!--break-->
 <!-- Commented out because it is confusing.
@@ -232,7 +232,7 @@ td.num{text-align:right}.waffle-image-div{position:relative}.waffle-image-cell{d
 <td class="hd">
 <p style="height:16px;">.</p>
 </td>
-<td class="s9">n/a</td>
+<td class="s9">N/A</td>
 <td class="s12">means that none of the versions of the platform support the feature, so neither do we</td>
 </tr>
 
@@ -247,9 +247,36 @@ td.num{text-align:right}.waffle-image-div{position:relative}.waffle-image-cell{d
 </tbody>
 </table>
 
-<?php
-$qtid = 42; // write here your quicktabs id.
-$quicktabs = quicktabs_load('feature_platform_qt');
-print theme('quicktabs', $quicktabs);
-?></body>
+<p>&nbsp;</p>
+
+<style>
+table,td
+{
+    border-collapse: collapse;
+    border: 1px solid black;
+    background-color: white;
+}
+td
+{
+    padding: 5px;
+}
+tr.mosync-feature-table-head > td
+{
+    background-color: #aaaaaa;
+    font-weight: bold;
+}
+tr.mosync-feature-table-row-odd > td
+{
+    background-color: #ffffff;
+}
+tr.mosync-feature-table-row-even > td
+{
+    background-color: #cccccc;
+}
+</style>
+
+<!-- The table generated from the feature-platform-support.csv file is inserted here. -->
+TEMPLATE_FEATURE_PLATFORM_SUPPORT_TABLE
+
+</body>
 </html>

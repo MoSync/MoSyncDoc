@@ -74,6 +74,8 @@
 
     <script src="TEMPLATE_JS_PATH/jquery.mobile-1.3.1/jquery.mobile-1.3.1.min.js"></script>
 
+    <!-- Syntax Highligther -->
+    <!-- There is also a syntaxhighlighter script at the end of the body tag. -->
     <script src="TEMPLATE_JS_PATH/syntaxhighlighter/scripts/shCore.js"></script>
     <script src="TEMPLATE_JS_PATH/syntaxhighlighter/scripts/shBrushJScript.js"></script>
     <script src="TEMPLATE_JS_PATH/syntaxhighlighter/scripts/shBrushCpp.js"></script>
@@ -125,7 +127,22 @@
                 searchString;
         }
     }
-</script>
+    </script>
+
+    <!-- Google Analytics -->
+    <!-- Moved to header by pbarrientos, request from Alex based on this info
+    https://support.google.com/analytics/bin/answer.py?hl=en&answer=1008080 -->
+    <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-223119-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
 </head>
 
 <body>
@@ -143,8 +160,8 @@
                  data-role="button"
                  data-icon="bars">Menu</a>
             </div>
-            <a rel="external"
-                href="http://www.mosync.com"
+            <a data-ajax="false"
+                href="TEMPLATE_DOC_PATH/index.html"
                 class="ui-btn-right"
                 data-icon="home">Home</a>
         </div>
@@ -154,6 +171,7 @@
                 TEMPLATE_PAGE_MENU
             </div>
             <div id="page-content">
+                TEMPLATE_DOC_VERSION
                 TEMPLATE_PAGE_CONTENT
             </div>
         </div>
@@ -170,6 +188,13 @@
 
     </div>
 
-    <script>SyntaxHighlighter.all()</script>
+    <script>
+    // This applies syntax highlighting to code blocks.
+    SyntaxHighlighter.all();
+    
+    // This makes the browser Window title display
+    // the actual value of the title tag.
+    $(":jqmData(role='page')").attr("data-title", document.title);
+    </script>
 </body>
 </html>
