@@ -65,6 +65,7 @@ PURCHASES="Purchases"
 QUICK_START="Quick Start"
 RESOURCES="Resource Management"
 #ROADMAP="Roadmap"
+SCREEN_TRANSITIONS="Screen transitions"
 SENSORS="Sensors"
 SOUND="Sound"
 STORAGE="Storage"
@@ -195,6 +196,7 @@ $pages = [
 ["documentation/manualpages/building-mosync-source-windows","sdk/tools/guides/extensions/building-mosync-source-windows",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/building-photo-gallery","sdk/js/examples/photogallery-explained",[SDK,JS,EXAMPLE,CAMERA,COMMUNICATION,HYBRID]],
 ["documentation/manualpages/camerademo","sdk/cpp/examples/camerademo",[SDK,CPP,EXAMPLE,CAMERA,NATIVEUI]],
+["","sdk/cpp/examples/MoCamera",[SDK,CPP,EXAMPLE,CAMERA,NATIVEUI]],
 ["documentation/manualpages/coding-conventions","sdk/tools/guides/extensions/coding-conventions",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/controlling-cameras","sdk/cpp/guides/camera/controlling-cameras",[SDK,CPP,GUIDE,CAMERA]],
 ["","sdk/cpp/guides/camera/native-camera-api",[SDK,CPP,GUIDE,CAMERA]],
@@ -290,6 +292,7 @@ $pages = [
 ["documentation/manualpages/using-listview-widget","sdk/cpp/guides/nativeui/using-listview-widget",[SDK,CPP,GUIDE,NATIVEUI]],
 ["documentation/manualpages/using-nativeui-library","sdk/cpp/guides/nativeui/using-nativeui-library",[SDK,CPP,GUIDE,NATIVEUI]],
 ["documentation/manualpages/using-nativeui-map-widget","sdk/cpp/guides/nativeui/using-nativeui-map-widget",[SDK,CPP,GUIDE,NATIVEUI,MAPS]],
+["","sdk/cpp/guides/nativeui/using-screen-transitions",[SDK,CPP,GUIDE,NATIVEUI]],
 ["documentation/manualpages/using-pipe-tool","sdk/tools/guides/ide/using-pipe-tool",[SDK,TOOLS,GUIDE,IDE]],
 ["documentation/manualpages/using-placeholders-and-handles","sdk/cpp/guides/memory/using-placeholders-and-handles",[SDK,CPP,GUIDE,MEMORY]],
 ["documentation/manualpages/using-reloads-javascript-workbench","reload/guides/tools/using-javascript-workbench",[RELOAD,GUIDE,DEBUGGING]],
