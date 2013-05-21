@@ -111,7 +111,7 @@ $pages = [
 ["content/sensors-orientation-nfc",HOME_PATH,[REDIRECT]],
 ["content/programming-mosync","sdk",[REDIRECT]],
 ["content/user-interfaces-nativeui-maui-0",HOME_PATH,[REDIRECT]],
-["content/using-mosync-ide-2","sdk",[REDIRECT]],
+["content/using-mosync-ide-2","sdk/tools/guides/ide/tour-of-the-mosync-sdk-ide",[REDIRECT]],
 ["content/whats-new-release-notes",HOME_PATH,[REDIRECT]],
 ["content/xml-soap-json",HOME_PATH,[REDIRECT]],
 ["documentation/architecture",HOME_PATH,[REDIRECT]],
@@ -120,8 +120,12 @@ $pages = [
 ["documentation/mosync-architecture",HOME_PATH,[REDIRECT]],
 ["documentation/using-mosync-ide","sdk",[REDIRECT]],
 ["documentation/wormhole-guides-tutorials-examples",HOME_PATH,[REDIRECT]],
+#["content/using-mosync-visual-studio","sdk/tools/guides/extensions/using-mosync-visual-studio",[SDK,TOOLS,GUIDE,EXTENSIONS]],
+["content/using-mosync-visual-studio",HOME_PATH,[REDIRECT]],
 
-# Urls not handled (for example, these are pages not published).
+
+# URLs not handled (for example, these are pages not published).
+=begin
 ["documentation/manualpages/documentation-latest-nightly-builds","",[IGNORE]],
 ["documentation/manualpages/essential-guide-developing-apps-html5javascript","",[IGNORE]],
 ["documentation/manualpages/featureplatform-matrix-old","",[IGNORE]],["documentation/manualpages/forum-posters","",[IGNORE]],
@@ -132,6 +136,7 @@ $pages = [
 ["documentation/manualpages/new-doxygen-front-cover-do-not-delete-or-publish","",[IGNORE]],
 ["documentation/manualpages/stopwatch","",[IGNORE]],
 ["documentation/tutorials/starting-mosync-development-java-and-c-developers","",[IGNORE]],
+=end
 
 # New documentation pages from Drupal export.
 ["blog/2010/03/creating-xml-documents","sdk/cpp/guides/xml/creating-xml-documents",[SDK,CPP,GUIDE,XML]],
@@ -166,7 +171,6 @@ $pages = [
 ["content/timer","sdk/cpp/examples/timer",[SDK,CPP,EXAMPLE,EVENTS]],
 ["content/unit-test","sdk/cpp/examples/unit-test",[SDK,CPP,EXAMPLE,TESTING]],
 ["content/using-mosync-reload","reload/guides/quick-start/mosync-reload-overview",[RELOAD,GUIDE,QUICK_START]],
-["content/using-mosync-visual-studio","sdk/tools/guides/extensions/using-mosync-visual-studio",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["contributions","sdk/tools/guides/extensions/extending-mosync-sdk",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpage/creating-your-first-application","sdk/cpp/guides/quick-start/creating-your-first-cpp-application",[SDK,CPP,GUIDE,QUICK_START]],
 ["documentation/manualpage/emulating-device","sdk/tools/guides/emulators/emulating-device",[SDK,TOOLS,GUIDE,EMULATORS]],
