@@ -97,8 +97,8 @@ $pages = [
 ["content/demo-examples",HOME_PATH,[REDIRECT]],
 ["content/events-keys-touch-moblets",HOME_PATH,[REDIRECT]],
 ["content/example-application-descriptions","sdk",[REDIRECT]],
-# Already redirected: ["content/example-applications","sdk",[REDIRECT]],
-# Already redirected: http://www.mosync.com/content/code-examples
+# Already redirected in Drupal: http://www.mosync.comcontent/example-applications
+# Already redirected in Drupal: http://www.mosync.com/content/code-examples
 ["content/facebook-wikipedia-twitter",HOME_PATH,[REDIRECT]],
 ["content/fonts",HOME_PATH,[REDIRECT]],
 ["content/graphics-drawing-opengl-es",HOME_PATH,[REDIRECT]],
@@ -192,7 +192,6 @@ $pages = [
 ["documentation/manualpages/bluetoothclient","sdk/cpp/examples/bluetoothclient",[SDK,CPP,EXAMPLE,BLUETOOTH]],
 ["documentation/manualpages/bluetoothserver","sdk/cpp/examples/bluetoothserver",[SDK,CPP,EXAMPLE,BLUETOOTH]],
 ["documentation/manualpages/buidling-and-running-examples","sdk/tools/guides/ide/building-and-running-examples",[SDK,TOOLS,GUIDE,IDE]],
-["documentation/manualpages/build-configurations","sdk/tools/guides/ide/build-configurations",[SDK,TOOLS,GUIDE,IDE]],
 ["documentation/manualpages/build-configurations","sdk/tools/guides/ide/build-configurations",[SDK,TOOLS,GUIDE,IDE]],
 ["documentation/manualpages/building-moblin-runtimes","sdk/tools/guides/extensions/building-moblin-runtimes-linux",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/building-mosync-sdk-source-os-x","sdk/tools/guides/extensions/building-mosync-sdk-source-os-x",[SDK,TOOLS,GUIDE,EXTENSIONS]],

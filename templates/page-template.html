@@ -195,6 +195,37 @@
     // This makes the browser Window title display
     // the actual value of the title tag.
     $(":jqmData(role='page')").attr("data-title", document.title);
+
+    // This applies syntax highlighting to code blocks.
+    SyntaxHighlighter.all();
+    
+    // This makes the browser Window title display
+    // the actual value of the title tag.
+    $(":jqmData(role='page')").attr("data-title", document.title);
+
+    // Make all links that do not have a "data-ajax" or "rel" 
+    // attribute have the attribute "data-ajax='false'" set, 
+    // so that jQuery Mobile will not use Ajax to load pages.
+    $("a[href]:not([rel]):not([data-ajax]):not([data-role='button'])").attr(
+        "data-ajax", "false");
+    
+    // This makes links to anchors scroll to the taget anchor.
+    //
+    // The convention is that the anchor id must start
+    // with "#mosync-anchor", so that not all anchor links
+    // are changed in this way (we do not want to break
+    // jQuery Mobile links that use "#" links).
+    //
+    // A problem with this solution is that the back button
+    // will go to the previous page, not to the previous
+    // position in the document.
+    $("a[href^='#mosync-anchor']").bind("click", function(e)
+    {
+        var offset = $( $(this).attr("href") ).get(0).offsetTop;
+        var headerHeight = $('[data-role="header"]').height();
+        $.mobile.silentScroll(offset - headerHeight);
+        return false;
+    });
     </script>
 </body>
 </html>
