@@ -9,7 +9,7 @@ platform,programming,mosync,camera" />
 
 In this tutorial we will learn how to create a Camera widget using Native UI. With this widget you can control the display of the camera preview and control the camera functionalities like snapshot, preview frames, zoom, flash, focus and switching between the cameras of the device.
 
-As a reminder the [NativeUI C++ Library](http://www.mosync.com/documentation/manualpages/using-nativeui-library) and the underlying Widget C API are designed to work with native user-interface controls. The library is designed to support platforms with native (i.e. proprietary) touch and graphical interfaces such as Android, iOS, and Windows Phone.Some widgets are specific to one particular platform. Also for other platform support information please see [Feature/Platform Support](http://www.mosync.com/widepage/feature-platform-support).
+As a reminder the [NativeUI C++ Library](http://www.mosync.com/documentation/manualpages/using-nativeui-library) and the underlying [Widget API](http://www.mosync.com/files/imports/doxygen/latest/html/group___widget_a_p_i.html) are designed to work with native user-interface controls. The library is designed to support platforms with native (i.e. proprietary) touch and graphical interfaces such as Android, iOS, and Windows Phone.Some widgets are specific to one particular platform. Also for other platform support information please see [Feature/Platform Support](http://www.mosync.com/widepage/feature-platform-support).
 
 Note that if you want to deploy on Android devices you will need to add Camera permissions. To do this you need to select the project Properties > MoSync Project > Application Permission and check the Camera check-box. Find more info about this by taking [a tour of the MoSync IDE](http://www.mosync.com/documentation/manualpages/getting-started-mosync-ide).
 
@@ -18,7 +18,7 @@ Note that if you want to deploy on Android devices you will need to add Camera p
 ## **Camera widget creation**
 <a id="Camera_creation"></a>
 
-There is a corresponding NativeUI class for camera functionality. The class is `Camera` (TODO Add Link to documentation - not available yet).
+There is a corresponding NativeUI class for camera functionality. The class is [NativeUI::Camera](http://www.mosync.com/files/imports/doxygen/latest/html/class_native_u_i_1_1_camera.html).
 If you want to use it you will need to include the Camera.h header.
 The first step is to instantiate the camera and this is very easy:
 
@@ -31,7 +31,7 @@ Please see the [NativeUI C++ Library](http://www.mosync.com/documentation/manual
 ## **Camera methods**
 <a id="Camera_methods"></a>
 
-Here are a few camera methods that are needed for some basic camera functionalities. All the API can be found here TODO link
+Here are a few camera methods that are needed for some basic camera functionalities. All the API can be found [here](http://www.mosync.com/files/imports/doxygen/latest/html/class_native_u_i_1_1_camera.html).
 
 ### **Source**
 
@@ -109,7 +109,7 @@ In order to obtain snapshot notifications you need to register an `CameraSnapsho
 * **removeSnapshotListener**\\
 After you finished listening to the camera for snapshot notifications you need to remove the `CameraSnapshotListener` from the camera using this method.\\
 \\
-__Note:__ The are more methods related to the snapshot resolution and format. Details can be found in the NativeUI::Camera API (TODO link).
+__Note:__ The are more methods related to the snapshot resolution and format. Details can be found in the [NativeUI::Camera API](http://www.mosync.com/files/imports/doxygen/latest/html/class_native_u_i_1_1_camera.html).
 
 ### **Preview frame data**
 
@@ -175,7 +175,7 @@ Used in retrieving preview frame data.
 		MA_CAMERA_PREVIEW_FRAME      //Whenever a frame is available
 		MA_CAMERA_PREVIEW_AUTO_FOCUS //Whenever focus is made
 
-For more camera related constants please see Camera API (TODO API Link).
+For more camera related constants please see [Camera API](http://www.mosync.com/files/imports/doxygen/latest/html/class_native_u_i_1_1_camera.html).
 
 ***
 
@@ -335,18 +335,6 @@ __Note:__ See the code snippets from [Camera listeners](#Camera_listeners) to ex
 ## **Example program**<br />
 <a id="Example_program"></a>
 
-Please see __MoCamera__ application found in MoSync\examples\cpp. This is an application dedicated to camera usage.
-
-### Android
-
-![gras](images/Android01.png) ![gras](images/Android02.png)
-
-### iOS
-
-![gras](images/iOS01.PNG) ![gras](images/iOS02.PNG)
-
-### Windows Phone
-
-![gras](images/WP01.png) ![gras](images/WP02.png)
+[MoCamera](TEMPLATE_DOC_PATH/sdk/cpp/examples/MoCamera/index.html) is an application dedicated to camera usage and which uses the API described in this document.
 
 ***
