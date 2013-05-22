@@ -11,7 +11,7 @@
 <h1>Developing Windows Phone Applications</h1>
 <p>Windows Phone is a mobile platform from Microsoft that is becoming increasingly popular. Window Phone is a successor to, but is not compatible with, Microsoft's Windows Mobile platform. The Windows Phone uses the design language Metro for its user interface. Here we take a look at some of the key features of this platform.<!--break--></p>
 <h2>MoSync support for Windows Phone</h2>
-<p>From release 3.0 of the MoSync Mobile SDK, we have extensive support for version 7 of this Microsoft platform. For a list of Windows Phone capabilities supported by the MoSync Mobile SDK, see <a href="http://www.mosync.com/documentation/manualpages/featureplatform-matrix">Feature/Platform Support</a>.</p>
+<p>From release 3.0 of the MoSync Mobile SDK, we have extensive support for version 7 of this Microsoft platform. For a list of Windows Phone capabilities supported by the MoSync Mobile SDK, see <a href="TEMPLATE_DOC_PATH/sdk/tools/references/feature-platform-support/index.html">Feature/Platform Support</a>.</p>
 <h2>Requirements</h2>
 <p>To be able to create application packages for the Windows Phone platform with the MoSync SDK you need to install the Microsoft Windows Phone SDK (which includes Visual Studio). The Windows Phone SDK runs only on Windows Vista SP2 and later, needs 3 GB of RAM and 4 GB of free disk space. At Microsoft's <a href="http://www.microsoft.com/download/en/details.aspx?id=27570#system-requirements">Download Center</a> you can find more detailed requirements.</p>
 <p>The MoSync SDK outputs an application in XAP format, which you then publish through the Windows Phone SDK.</p>
@@ -27,7 +27,7 @@
 <p>To build and run Windows Phone applications from the MoSync IDE, you need Visual Studio 2010 or Visual Studio 2010 Express editions.</p>
 <ol>
 <li>Select a Windows Phone profile from the <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/using-device-profiles/index.html">Platform and Device Profiles</a> window in the MoSync IDE. (For pre-MoSync 3.0 projects, if you cannot see the platform-based profiles, check the&nbsp;"Use platform based profiles" box in project <strong>Properties</strong> &gt; <strong>MoSync Project</strong>).</li>
-<li><a href="http://www.mosync.com/documentation/manualpage/building-applications">Build your application</a>. If you are on a Windows machine, jump to step 5.</li>
+<li><a href="TEMPLATE_PATH_DOC/sdk/tools/guides/ide/build-configurations/index.html">Build your application</a>. If you are on a Windows machine, jump to step 5.</li>
 <li>On a OS X machine, the build process generates a Visual Studio project in the <strong>Output</strong> folder. Import this project into Visual Studio from where you can build the Windows Phone application package and run it in the Windows Phone emulator.</li>
 <li>An application package (.xap) will be created for you under under the <strong>ReleasePackages/Windows Phone</strong> folder. Next, you need access to a Windows machine with Visual Studio installed. Import your project in Visual Studio, build and run it.</li>
 <li>To run the application in the Windows Phone emulator, in project <strong>Properties</strong> &gt; <strong>Run As</strong>, browse... to your application and from the drop down list select Windows Phone Emulator and run it. Another option is to import the generated Windows Phone project (under Output/ folder) in Visual Studio 2010 from where you can build and run your application.</li>

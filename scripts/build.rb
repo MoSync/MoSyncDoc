@@ -19,11 +19,11 @@ load 'structure.rb'
 ######################################################
 
 def docVersionSdk
-  "<p>MoSync SDK 3.3</p>"
+  "<p><b>MoSync SDK 3.3</b></p>"
 end
 
 def docVersionReload
-  "<p>MoSync Reload 1.1</p>"
+  "<p><b>MoSync Reload 1.1</b></p>"
 end
 
 ######################################################
