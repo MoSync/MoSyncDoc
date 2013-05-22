@@ -65,6 +65,7 @@ PURCHASES="Purchases"
 QUICK_START="Quick Start"
 RESOURCES="Resource Management"
 #ROADMAP="Roadmap"
+SCREEN_TRANSITIONS="Screen transitions"
 SENSORS="Sensors"
 SOUND="Sound"
 STORAGE="Storage"
@@ -96,8 +97,8 @@ $pages = [
 ["content/demo-examples",HOME_PATH,[REDIRECT]],
 ["content/events-keys-touch-moblets",HOME_PATH,[REDIRECT]],
 ["content/example-application-descriptions","sdk",[REDIRECT]],
-# Already redirected: ["content/example-applications","sdk",[REDIRECT]],
-# Already redirected: http://www.mosync.com/content/code-examples
+# Already redirected in Drupal: http://www.mosync.comcontent/example-applications
+# Already redirected in Drupal: http://www.mosync.com/content/code-examples
 ["content/facebook-wikipedia-twitter",HOME_PATH,[REDIRECT]],
 ["content/fonts",HOME_PATH,[REDIRECT]],
 ["content/graphics-drawing-opengl-es",HOME_PATH,[REDIRECT]],
@@ -111,7 +112,7 @@ $pages = [
 ["content/sensors-orientation-nfc",HOME_PATH,[REDIRECT]],
 ["content/programming-mosync","sdk",[REDIRECT]],
 ["content/user-interfaces-nativeui-maui-0",HOME_PATH,[REDIRECT]],
-["content/using-mosync-ide-2","sdk",[REDIRECT]],
+["content/using-mosync-ide-2","sdk/tools/guides/ide/tour-of-the-mosync-sdk-ide",[REDIRECT]],
 ["content/whats-new-release-notes",HOME_PATH,[REDIRECT]],
 ["content/xml-soap-json",HOME_PATH,[REDIRECT]],
 ["documentation/architecture",HOME_PATH,[REDIRECT]],
@@ -120,8 +121,12 @@ $pages = [
 ["documentation/mosync-architecture",HOME_PATH,[REDIRECT]],
 ["documentation/using-mosync-ide","sdk",[REDIRECT]],
 ["documentation/wormhole-guides-tutorials-examples",HOME_PATH,[REDIRECT]],
+#["content/using-mosync-visual-studio","sdk/tools/guides/extensions/using-mosync-visual-studio",[SDK,TOOLS,GUIDE,EXTENSIONS]],
+["content/using-mosync-visual-studio",HOME_PATH,[REDIRECT]],
 
-# Urls not handled (for example, these are pages not published).
+
+# URLs not handled (for example, these are pages not published).
+=begin
 ["documentation/manualpages/documentation-latest-nightly-builds","",[IGNORE]],
 ["documentation/manualpages/essential-guide-developing-apps-html5javascript","",[IGNORE]],
 ["documentation/manualpages/featureplatform-matrix-old","",[IGNORE]],["documentation/manualpages/forum-posters","",[IGNORE]],
@@ -132,6 +137,7 @@ $pages = [
 ["documentation/manualpages/new-doxygen-front-cover-do-not-delete-or-publish","",[IGNORE]],
 ["documentation/manualpages/stopwatch","",[IGNORE]],
 ["documentation/tutorials/starting-mosync-development-java-and-c-developers","",[IGNORE]],
+=end
 
 # New documentation pages from Drupal export.
 ["blog/2010/03/creating-xml-documents","sdk/cpp/guides/xml/creating-xml-documents",[SDK,CPP,GUIDE,XML]],
@@ -166,7 +172,6 @@ $pages = [
 ["content/timer","sdk/cpp/examples/timer",[SDK,CPP,EXAMPLE,EVENTS]],
 ["content/unit-test","sdk/cpp/examples/unit-test",[SDK,CPP,EXAMPLE,TESTING]],
 ["content/using-mosync-reload","reload/guides/quick-start/mosync-reload-overview",[RELOAD,GUIDE,QUICK_START]],
-["content/using-mosync-visual-studio","sdk/tools/guides/extensions/using-mosync-visual-studio",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["contributions","sdk/tools/guides/extensions/extending-mosync-sdk",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpage/creating-your-first-application","sdk/cpp/guides/quick-start/creating-your-first-cpp-application",[SDK,CPP,GUIDE,QUICK_START]],
 ["documentation/manualpage/emulating-device","sdk/tools/guides/emulators/emulating-device",[SDK,TOOLS,GUIDE,EMULATORS]],
@@ -188,13 +193,13 @@ $pages = [
 ["documentation/manualpages/bluetoothserver","sdk/cpp/examples/bluetoothserver",[SDK,CPP,EXAMPLE,BLUETOOTH]],
 ["documentation/manualpages/buidling-and-running-examples","sdk/tools/guides/ide/building-and-running-examples",[SDK,TOOLS,GUIDE,IDE]],
 ["documentation/manualpages/build-configurations","sdk/tools/guides/ide/build-configurations",[SDK,TOOLS,GUIDE,IDE]],
-["documentation/manualpages/build-configurations","sdk/tools/guides/ide/build-configurations",[SDK,TOOLS,GUIDE,IDE]],
 ["documentation/manualpages/building-moblin-runtimes","sdk/tools/guides/extensions/building-moblin-runtimes-linux",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/building-mosync-sdk-source-os-x","sdk/tools/guides/extensions/building-mosync-sdk-source-os-x",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/building-mosync-source-linux","sdk/tools/guides/extensions/building-mosync-source-linux",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/building-mosync-source-windows","sdk/tools/guides/extensions/building-mosync-source-windows",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/building-photo-gallery","sdk/js/examples/photogallery-explained",[SDK,JS,EXAMPLE,CAMERA,COMMUNICATION,HYBRID]],
 ["documentation/manualpages/camerademo","sdk/cpp/examples/camerademo",[SDK,CPP,EXAMPLE,CAMERA,NATIVEUI]],
+["","sdk/cpp/examples/MoCamera",[SDK,CPP,EXAMPLE,CAMERA,NATIVEUI]],
 ["documentation/manualpages/coding-conventions","sdk/tools/guides/extensions/coding-conventions",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/controlling-cameras","sdk/cpp/guides/camera/controlling-cameras",[SDK,CPP,GUIDE,CAMERA]],
 ["","sdk/cpp/guides/camera/native-camera-api",[SDK,CPP,GUIDE,CAMERA]],
@@ -290,6 +295,7 @@ $pages = [
 ["documentation/manualpages/using-listview-widget","sdk/cpp/guides/nativeui/using-listview-widget",[SDK,CPP,GUIDE,NATIVEUI]],
 ["documentation/manualpages/using-nativeui-library","sdk/cpp/guides/nativeui/using-nativeui-library",[SDK,CPP,GUIDE,NATIVEUI]],
 ["documentation/manualpages/using-nativeui-map-widget","sdk/cpp/guides/nativeui/using-nativeui-map-widget",[SDK,CPP,GUIDE,NATIVEUI,MAPS]],
+["","sdk/cpp/guides/nativeui/using-screen-transitions",[SDK,CPP,GUIDE,NATIVEUI]],
 ["documentation/manualpages/using-pipe-tool","sdk/tools/guides/ide/using-pipe-tool",[SDK,TOOLS,GUIDE,IDE]],
 ["documentation/manualpages/using-placeholders-and-handles","sdk/cpp/guides/memory/using-placeholders-and-handles",[SDK,CPP,GUIDE,MEMORY]],
 ["documentation/manualpages/using-reloads-javascript-workbench","reload/guides/tools/using-javascript-workbench",[RELOAD,GUIDE,DEBUGGING]],

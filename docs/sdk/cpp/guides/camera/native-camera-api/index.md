@@ -7,31 +7,33 @@ platform,programming,mosync,camera" />
 
 # The NativeUI Camera API
 
-In this tutorial we will learn how to create a Camera widget using Native UI. With this widget you can control the display of the camera preview and control the camera functionalities like snapshot, preview frames, zoom, flash, focus and switching between the cameras of the device.
+In this tutorial we will learn how to create a Camera widget using Native UI. With this widget you can control the display of the camera preview and control camera functionaly like snapshot, preview frames, zoom, flash, focus and switching between the cameras of the device.
 
-As a reminder the [NativeUI C++ Library](http://www.mosync.com/documentation/manualpages/using-nativeui-library) and the underlying Widget C API are designed to work with native user-interface controls. The library is designed to support platforms with native (i.e. proprietary) touch and graphical interfaces such as Android, iOS, and Windows Phone.Some widgets are specific to one particular platform. Also for other platform support information please see [Feature/Platform Support](http://www.mosync.com/widepage/feature-platform-support).
+As a reminder the [NativeUI C++ Library](TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-nativeui-library/index.html) and the underlying [Widget API](http://www.mosync.com/files/imports/doxygen/latest/html/group___widget_a_p_i.html) are designed to work with native user-interface controls. The library is designed to support platforms with native (i.e. proprietary) touch and graphical interfaces such as Android, iOS, and Windows Phone.Some widgets are specific to one particular platform. Also for other platform support information please see [Feature/Platform Support](TEMPLATE_DOC_PATH/sdk/tools/references/feature-platform-support/index.html).
 
-Note that if you want to deploy on Android devices you will need to add Camera permissions. To do this you need to select the project Properties > MoSync Project > Application Permission and check the Camera check-box. Find more info about this by taking [a tour of the MoSync IDE](http://www.mosync.com/documentation/manualpages/getting-started-mosync-ide).
+Note that if you want to deploy on Android devices you will need to add Camera permissions. To do this you need to select the project Properties > MoSync Project > Application Permission and check the Camera check-box. Find more info about this by taking [a tour of the MoSync IDE](TEMPLATE_DOC_PATH/sdk/tools/guides/ide/tour-of-the-mosync-sdk-ide/index.html).
 
 ***
 
-## **Camera widget creation**
-<a id="Camera_creation"></a>
+<a id="mosync-anchor-camera-creation"></a>
 
-There is a corresponding NativeUI class for camera functionality. The class is `Camera` (TODO Add Link to documentation - not available yet).
+## **Camera widget creation**
+
+There is a corresponding NativeUI class for camera functionality. The class is [NativeUI::Camera](http://www.mosync.com/files/imports/doxygen/latest/html/class_native_u_i_1_1_camera.html).
 If you want to use it you will need to include the Camera.h header.
 The first step is to instantiate the camera and this is very easy:
 
 		NativeUI::Camera* myCameraWidget = new NativeUI::Camera();
 
-Please see the [NativeUI C++ Library](http://www.mosync.com/documentation/manualpages/using-nativeui-library) for the UI related properties/methods of this widget. This guide will mainly specify only camera related instructions.
+Please see the [NativeUI C++ Library](TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-nativeui-library/index.html) for the UI related properties/methods of this widget. This guide will mainly specify only camera related instructions.
 
 ***
 
-## **Camera methods**
-<a id="Camera_methods"></a>
+<a id="mosync-anchor-camera-methods"></a>
 
-Here are a few camera methods that are needed for some basic camera functionalities. All the API can be found here TODO link
+## **Camera methods**
+
+Here are a few camera methods that are needed for some basic camera functionalities. All the API can be found [here](http://www.mosync.com/files/imports/doxygen/latest/html/class_native_u_i_1_1_camera.html).
 
 ### **Source**
 
@@ -50,14 +52,14 @@ This indicates if the current camera has flash support or not. The flash capabil
 
 * **setFlashMode**\\
 This is used to set the flash mode. The flash modes are: auto, on, off and torch.
-The availability of these modes depends on the model of device or camera source (front, back). For example most of the front cameras support only the "off" flash mode. See [Camera values](#Camera_values) for flash values.<br />
+The availability of these modes depends on the model of device or camera source (front, back). For example most of the front cameras support only the "off" flash mode. See [Camera values](#mosync-anchor-camera-values).
 
 		myCameraWidget->setFlashMode(FLASH_ON);
 
 ### **Focus**
 
 * **setFocusMode**\\
-This is used to set the focus mode. The focus modes are: auto, infinity, macro and fixed. Like in the flash mode the availability of this modes depend on the phone model and camera source. See [Camera values](#Camera_values) for focus values.
+This is used to set the focus mode. The focus modes are: auto, infinity, macro and fixed. Like in the flash mode the availability of this modes depend on the phone model and camera source. See [Camera values](#mosync-anchor-camera-values) for focus values.
 
 		myCameraWidget->setFocusMode(FOCUS_AUTO);
 
@@ -97,19 +99,19 @@ Stops the camera preview. It is a good practice to stop the preview once you no 
 * **takeSnapshot**\\
 Captures a still image of the camera. A place-holder's handle is needed to call this method. In this place-holder the image will be written.\\
 This is an asynchronous operation and the notification of its completion is given
-via `CameraSnapshotListener` interface ( [Camera listeners](#Camera_listeners) ).\\
+via `CameraSnapshotListener` interface ( [Camera listeners](#mosync-anchor-camera-listeners) ).\\
 Also remember that the ownership of the place-holder given as argument remains at its creator.
 
 		MAHandle snapshotHandle = maCreatePlaceholder();
 		mCamera->takeSnapshot(snapshotHandle);
 
 * **addSnapshotListener**\\
-In order to obtain snapshot notifications you need to register an `CameraSnapshotListener` using this method. See more on [Camera listeners](#Camera_listeners)
+In order to obtain snapshot notifications you need to register an `CameraSnapshotListener` using this method. See more on [Camera listeners](#mosync-anchor-camera-listeners)
 
 * **removeSnapshotListener**\\
 After you finished listening to the camera for snapshot notifications you need to remove the `CameraSnapshotListener` from the camera using this method.\\
 \\
-__Note:__ The are more methods related to the snapshot resolution and format. Details can be found in the NativeUI::Camera API (TODO link).
+__Note:__ The are more methods related to the snapshot resolution and format. Details can be found in the [NativeUI::Camera API](http://www.mosync.com/files/imports/doxygen/latest/html/class_native_u_i_1_1_camera.html).
 
 ### **Preview frame data**
 
@@ -126,7 +128,7 @@ You also need to specify a rectangle inside the bounds of the complete preview f
 		imageRect.height = EXTENT_Y(previewFrameSize);
 		mCamera->startRetrievingCameraPreviewData(MA_CAMERA_PREVIEW_FRAME, imageRect);
 
-	Please see the `CameraPreviewDataListener` in [Camera listeners](#Camera_listeners) to see how to obtain the preview frames data.
+	Please see the `CameraPreviewDataListener` in [Camera listeners](#mosync-anchor-camera-listeners) to see how to obtain the preview frames data.
 
 * **setCameraPreviewDataListener**\\
 This sets the `CameraPreviewDataListener` for this camera. Such an listener is needed in order to obtain/manage camera preview data.
@@ -138,8 +140,9 @@ __Note:__ To make a proper deallocation of camera resources the user must call t
 
 ***
 
+<a id="mosync-anchor-camera-values"></a>
+
 ## **Camera values**
-<a id="Camera_values"></a>
 
 __Note:__ Keep in mind that not all this values are available for all devices/cameras due to device or OS limitations.
 
@@ -175,12 +178,13 @@ Used in retrieving preview frame data.
 		MA_CAMERA_PREVIEW_FRAME      //Whenever a frame is available
 		MA_CAMERA_PREVIEW_AUTO_FOCUS //Whenever focus is made
 
-For more camera related constants please see Camera API (TODO API Link).
+For more camera related constants please see [Camera API](http://www.mosync.com/files/imports/doxygen/latest/html/class_native_u_i_1_1_camera.html).
 
 ***
 
+<a id="mosync-anchor-camera-listeners"></a>
+
 ## **Camera listeners**
-<a id="Camera_listeners"></a>
 
 * **CameraSnapshotListener**\\
 To get snapshot related notifications you need to inherit the `CameraSnapshotListener` interface and implement the `snapshotFinished` method.\\
@@ -277,9 +281,9 @@ __Note:__ This listener is active only when is attached to a `Camera` instance v
 
 ***
 
-## **General usage**
-<a id="General_usage"></a>
+<a id="mosync-anchor-general-usage"></a>
 
+## **General usage**
 
 		class NativeUIMoblet : public Moblet, public ButtonListener
 		{
@@ -328,25 +332,14 @@ __Note:__ This listener is active only when is attached to a `Camera` instance v
 		    Button* mButton;            //A Native UI button
 		};
 
-__Note:__ See the code snippets from [Camera listeners](#Camera_listeners) to extend the camera functionality.
+__Note:__ See the code snippets from [Camera listeners](#mosync-anchor-camera-listeners) to extend the camera functionality.
 
 ***
 
+<a id="mosync-anchor-example-program"></a>
+
 ## **Example program**<br />
-<a id="Example_program"></a>
 
-Please see __MoCamera__ application found in MoSync\examples\cpp. This is an application dedicated to camera usage.
-
-### Android
-
-![gras](images/Android01.png) ![gras](images/Android02.png)
-
-### iOS
-
-![gras](images/iOS01.PNG) ![gras](images/iOS02.PNG)
-
-### Windows Phone
-
-![gras](images/WP01.png) ![gras](images/WP02.png)
+[MoCamera](TEMPLATE_DOC_PATH/sdk/cpp/examples/MoCamera/index.html) is an application dedicated to camera usage and which uses the API described in this document.
 
 ***
