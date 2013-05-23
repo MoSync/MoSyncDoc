@@ -1,3 +1,6 @@
+# This is just a test script. Not used by the documentation system.
+# It can be removed in the future, but is good to have as a rerefence.
+
 require "open-uri"
 
 =begin
