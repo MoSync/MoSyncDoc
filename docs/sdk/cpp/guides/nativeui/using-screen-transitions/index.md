@@ -7,6 +7,8 @@ platform,programming,mosync,screen transitions" />
 
 # Screen transitions
 
+**Note: This page is only valid for the upcoming MoSync SDK 3.3 release.**
+
 Now it is easy to add animated transitions for all the screens pushed and popped into a [StackScreen](http://www.mosync.com/files/imports/doxygen/latest/html/class_native_u_i_1_1_stack_screen.html) or for any [Screen](http://www.mosync.com/files/imports/doxygen/latest/html/class_native_u_i_1_1_screen.html) shown separately.
 
 In this way your application will be better integrated in the environment in which it is deployed and the user experience will be enhanced.

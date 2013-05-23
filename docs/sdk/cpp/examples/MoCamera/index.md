@@ -7,6 +7,8 @@ platform,programming,mosync,camera,example" />
 
 # MoCamera
 
+**Note: This page is only valid for the upcoming MoSync SDK 3.3 release.**
+
 MoCamera is a C++ application built with the MoSync SDK, that makes use of the [NativeUI::Camera](http://www.mosync.com/files/imports/doxygen/latest/html/class_native_u_i_1_1_camera.html) widget in order to control camera functionality and camera preview layout.
 
 Everything that this application uses is explained in [the NativeUI Camera guide](TEMPLATE_DOC_PATH/sdk/cpp/guides/camera/native-camera-api/index.html).
