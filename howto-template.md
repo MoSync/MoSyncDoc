@@ -28,7 +28,7 @@ Save files as UTF-8.
 
 ## Line breaks
 
-Do not line-break paragraps, make the editor soft-wrap your lines. Like in this paragraph that is written as one long line that wraps in the editor.
+Do not line-break paragraphs, make the editor soft-wrap your lines. Like in this paragraph that is written as one long line that wraps in the editor.
 
 If you want to make a line break, you can end the line with two backslash characters (\\\\). This is [kramdown syntax](http://kramdown.rubyforge.org/syntax.html#paragraphs). This can for example be useful to insert breaks in list items, like in this example:
 
