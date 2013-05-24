@@ -512,13 +512,13 @@ def webSiteBuildDocPages(pages, menuFile, swatch, docVersion)
   n = 0
   pages.each do |page|
     n = n + 1
-    puts "Processing file " + n.to_s + ": " + pageTargetFile(page)
+    puts "Building page " + n.to_s + ": " + pageTargetFile(page)
     
     # Set up path names.
     pageFile = pathDocs() + pageTargetFile(page) + "/index.html"
     outputFile = pathWebSite() + pageTargetFile(page) + "/index.html"
 
-    puts "Building #{pageFile} #{outputFile}"
+    #puts "Building #{pageFile} #{outputFile}"
     
     #puts "Heading: " + fileGetPageHeading(pageFile)
 
@@ -544,7 +544,7 @@ def webSiteBuildDocPages(pages, menuFile, swatch, docVersion)
     # Copy images to destination directory.
     imageSourceDir = pathDocs() + pageTargetFile(page) + "/images"
     imageDestDir = pathWebSite() + pageTargetFile(page)
-    puts "Copy images from " + imageSourceDir + " to " + imageDestDir
+    #puts "Copy images from " + imageSourceDir + " to " + imageDestDir
     FileUtils.cp_r(Dir[imageSourceDir], imageDestDir)
   end
 end
@@ -616,15 +616,25 @@ end
 # target page, e.g. "cpp/guides/".
 # TODO: Sort list by title of pages.
 def webSiteBuildLinkListForPages(pages, label, baseDir, swatch)
-  html = "<ul data-role=\"listview\" data-inset=\"true\" data-theme=\"#{swatch}\">\n"
-  html += "<li data-role=\"list-divider\" data-theme=\"#{swatch}\">#{label}</li>\n"
-  pages.each do |page|
+  # First collect data in an array so we can sort it by title.
+  entries = pages.collect do |page|
     title = pageGetTitleFromTargetFile(page)
     target = pageTargetFile(page) + "/index.html"
     url = target.split(baseDir)[1]
+	[title, url]
+  end
+
+  entries = entries.sort
+  
+  # Next generate the HTML list.
+  html = "<ul data-role=\"listview\" data-inset=\"true\" data-theme=\"#{swatch}\">\n"
+  html += "<li data-role=\"list-divider\" data-theme=\"#{swatch}\">#{label}</li>\n"
+  entries.each do |title,url|
     html += "<li data-theme=\"#{swatchItem()}\"><a data-ajax=\"false\" href=\"#{url}\">#{title}</a></li>\n"
   end
   html += "</ul>\n"
+  
+  # Return the result.
   html
 end
 
@@ -726,7 +736,8 @@ def webSiteBuildPageFromTemplateData(params)
   # Insert content and title.
   html = templateData.gsub("TEMPLATE_HEADER_TAGS", pageHeaderTags)
   html = html.gsub("TEMPLATE_PAGE_HEADING", pageHeading)
-  html = html.gsub("TEMPLATE_DOC_VERSION", docVersion)
+  # Doc version info is now on the menu pages for SDK and Reload.
+  # html = html.gsub("TEMPLATE_DOC_VERSION", docVersion)
   html = html.gsub("TEMPLATE_PAGE_CONTENT", pageData)
   
   # Insert menu at two places with different insets.
@@ -1291,7 +1302,7 @@ TEMPLATE_BODY
   n = 0
   Pathname.glob(pathDocs() + "**/*.md").each do |path|
     n = n + 1
-    puts "Converting File " + n.to_s + ": " + path.to_s
+    puts "Converting file " + n.to_s + ": " + path.to_s
     infile = path.to_s
     outfile = path.sub_ext(".html").to_s
     markdown = fileReadContent(infile)
