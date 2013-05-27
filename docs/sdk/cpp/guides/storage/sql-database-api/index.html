@@ -11,8 +11,11 @@
 <h1>The Database C API</h1>
 <p>The MoSync Database API provides a set of syscall functions that enable you to create and access databases from your C/C++ code using the SQL query language. The Database API makes use of the SQLite database manager.<br><!--break--></p>
 <p></p>
-<blockquote><p>For a list of the platforms on which this API is supported, see <a href="TEMPLATE_DOC_PATH/sdk/tools/references/feature-platform-support/index.html">Feature/Platform Support</a>.</p>
-</blockquote><h2>Database API functions</h2>
+
+<blockquote><p>Supported platforms: Android, iOS, MoSync MoRE emulator.</p>
+</blockquote>
+
+<h2>Database API functions</h2>
 <p>The <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___d_b_a_p_i.html">MoSync Database API</a> consists of a set of low-level syscall functions:</p>
 <ul>
 <li><strong></strong><strong>maDBOpen</strong> — Opens a database file. The database is created if it does not exist.</li>
@@ -68,7 +71,8 @@ if (numberOfPersons &gt; 0)
     printf("Average age is: %.1f\n", ageAverage); 
 }
 </pre>
+
 <h2>Example application</h2>
-<p>Our example application <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/databasetest/index.html">DatabaseTest</a> which is included in the MoSync SDK demonstrates more features of the Database API.<br><br></p>
+<p>Have a look at the Database API in action by running the example application <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/databasetest/index.html">DatabaseTest</a>. This example is included in the MoSync SDK and demonstrates the features of the Database API.<br><br></p>
 </body>
 </html>
