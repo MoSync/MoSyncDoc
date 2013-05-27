@@ -5,7 +5,7 @@ platform,programming,mosync,screen transitions" />
 <title>Screen Transitions</title>
 </mosyncheadertags> -->
 
-# Screen transitions
+# Screen Transitions
 
 **Note: This page is only valid for the upcoming MoSync SDK 3.3 release.**
 

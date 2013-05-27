@@ -9,25 +9,22 @@
 </head>
 <body>
 <h1>DatabaseTest</h1>
-<p>This simple example application demonstrates how to use the MoSync <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/storage/sql-database-api/index.html">Database API</a>. This example works on all platforms supported by the API (see <a href="TEMPLATE_DOC_PATH/sdk/tools/references/feature-platform-support/index.html">Feature/Platfom Support</a>).<!--break--></p>
+<p>This example application demonstrates how to use the MoSync <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/storage/sql-database-api/index.html">Database API</a>. The example works on all platforms supported by the API: Android, iOS, and the MoSync MoRE emulator.</p>
 <table class="doclayout" border="0"><tbody><tr><td><img src="images/DatabaseTest1_0.png" align="none" width="240" height="320"></td><td><img src="images/DatabaseTest2.png" align="none" width="240" height="320"></td></tr>
 <tr><td><em>Initial screen (MoSync Emulator)</em></td><td><em>After test (MoSync Emulator)</em></td></tr>
 </tbody></table>
-<h2><br>Getting the source code</h2>
-<p><span>Unfortunately, <span>DatabaseTest</span> is missing from the examples folder included with MoSync SDK. You can get the code for the example from <span>GitHub</span>. The most recent version is here:</span><a href="https://github.com/MoSync/MoSync/blob/master/examples/cpp/DatabaseTest/main.cpp"><span>https://github.com/MoSync/MoSync/blob/master/examples/<span>cpp</span>/<span>DatabaseTest</span>/main.<span>cpp</span></span></a></p>
-<p>But unless you are using nightly builds, it is recommended to use this version:<a href="https://github.com/MoSync/MoSync/blob/ThreeOne/examples/cpp/DatabaseTest/main.cpp"><span>https://github.com/MoSync/MoSync/blob/<span>ThreeOne</span>/examples/<span>cpp</span>/<span>DatabaseTest</span>/main.<span>cpp</span></span></a></p>
-<p><span>This version is written to work with the current release (3.1). The latest version uses <span>maDBExecSQLParams</span>, which not yet in the release version of MoSync SDK.</span> If you create a new C++ project in the MoSync IDE and paste that code, it should work to run the example.</p>
+
 <h2>Behaviour</h2>
 <ul>
 <li>The program has one screen that displays textual output.</li>
 <li>Touch the screen to start running the database tests (or click on the screen in the MoSync Emulator).</li>
-<li>A database file will be created on the device, in the local file system of the application.</li>
-<li>If the test is successful, the text "Database test passed successfully" is displayed at the end of the output.</li>
-<li>The program exits with a <a href="TEMPLATE_DOC_PATH/sdk/tools/references/mosync-panics-reference/index.html">panic message</a> if a test fails.</li>
+<li>A database file will be created on the device, on the local file system of the application.</li>
+<li>The status of the tests (success/fail) is displayed on the screen.</li>
 <li>Quit the program by pressing back (on Android) or key zero (in the MoSync Emulator).</li>
 </ul>
+
 <h2>In the code</h2>
-<p>The project consists of one file, <strong>main.cpp</strong>, which contains commented source code to help understand the Database API. The example database used has a table called "pet" which contains data about pets. The database is created by the program. The tests made include making queries and checking that the results match the expected values.</p>
-<p>&nbsp;</p>
+<p>The project consists of one source file, <a href="https://github.com/MoSync/MoSync/blob/ThreeThree/examples/cpp/DatabaseTest/main.cpp"><strong>main.cpp</strong></a>, which contains commented code to help understand the Database API. The example database used has a table called "pet" which contains data about pets. The database is created by the program. The tests made include making queries and checking that the results match the expected values.</p>
+
 </body>
 </html>
