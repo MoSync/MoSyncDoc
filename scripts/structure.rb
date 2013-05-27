@@ -1,9 +1,6 @@
 # Page table contains mappings from old to new pages
 # and labels for each page.
 
-# Check new camera doc at:
-# mvasiliniuc
-
 # Special labels
 # Do not create the target page. Used for redirect from old site.
 REDIRECT="REDIRECT"
@@ -291,7 +288,6 @@ $pages = [
 ["documentation/manualpages/using-listview-widget","sdk/cpp/guides/nativeui/using-listview-widget",[SDK,CPP,GUIDE,NATIVEUI]],
 ["documentation/manualpages/using-nativeui-library","sdk/cpp/guides/nativeui/using-nativeui-library",[SDK,CPP,GUIDE,NATIVEUI]],
 ["documentation/manualpages/using-nativeui-map-widget","sdk/cpp/guides/nativeui/using-nativeui-map-widget",[SDK,CPP,GUIDE,NATIVEUI,MAPS]],
-["","sdk/cpp/guides/nativeui/using-screen-transitions",[SDK,CPP,GUIDE,NATIVEUI]],
 ["documentation/manualpages/using-pipe-tool","sdk/tools/guides/ide/using-pipe-tool",[SDK,TOOLS,GUIDE,IDE]],
 ["documentation/manualpages/using-placeholders-and-handles","sdk/cpp/guides/memory/using-placeholders-and-handles",[SDK,CPP,GUIDE,MEMORY]],
 ["documentation/manualpages/using-reloads-javascript-workbench","reload/guides/tools/using-javascript-workbench",[RELOAD,GUIDE,DEBUGGING]],
@@ -341,8 +337,12 @@ $pages = [
 
 # New documentation pages not in Drupal export.
 ["","reload/guides/quick-start/mosync-reload-vs-sdk",[RELOAD,GUIDE,QUICK_START]],
-["","sdk/cpp/guides/camera/native-camera-api",[SDK,CPP,GUIDE,CAMERA,NATIVEUI]],
 ["","sdk/cpp/examples/MoCamera",[SDK,CPP,EXAMPLE,CAMERA,NATIVEUI]],
+["","sdk/cpp/examples/mograph",[SDK,CPP,EXAMPLE,GRAPHICS]],
+["","sdk/cpp/guides/camera/native-camera-api",[SDK,CPP,GUIDE,CAMERA,NATIVEUI]],
+["","sdk/cpp/guides/graphics/mograph",[SDK,CPP,GUIDE,GRAPHICS]],
 ["","sdk/cpp/guides/nativeui/using-custom-picker",[SDK,CPP,GUIDE,NATIVEUI]],
+["","sdk/cpp/guides/nativeui/using-screen-transitions",[SDK,CPP,GUIDE,NATIVEUI]],
+["","sdk/release-notes/whats-new-mosync-sdk-33",[SDK,TOOLS,RELEASE_NOTE]],
 
 ]
