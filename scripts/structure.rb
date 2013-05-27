@@ -53,7 +53,7 @@ LIBS="Libraries"
 LOCATION="Location"
 LUA="Lua"
 MAPS="Maps"
-MAUI="MAUI"
+MAUI="MAUI (old UI library)"
 MEMORY="Memory Management"
 NFC="Near Field Communication (NFC)"
 NATIVEUI="Native UI"
@@ -64,8 +64,6 @@ PRODUCTS="Products"
 PURCHASES="Purchases"
 QUICK_START="Quick Start"
 RESOURCES="Resource Management"
-#ROADMAP="Roadmap"
-SCREEN_TRANSITIONS="Screen transitions"
 SENSORS="Sensors"
 SOUND="Sound"
 STORAGE="Storage"
@@ -199,10 +197,8 @@ $pages = [
 ["documentation/manualpages/building-mosync-source-windows","sdk/tools/guides/extensions/building-mosync-source-windows",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/building-photo-gallery","sdk/js/examples/photogallery-explained",[SDK,JS,EXAMPLE,CAMERA,COMMUNICATION,HYBRID]],
 ["documentation/manualpages/camerademo","sdk/cpp/examples/camerademo",[SDK,CPP,EXAMPLE,CAMERA,NATIVEUI]],
-["","sdk/cpp/examples/MoCamera",[SDK,CPP,EXAMPLE,CAMERA,NATIVEUI]],
 ["documentation/manualpages/coding-conventions","sdk/tools/guides/extensions/coding-conventions",[SDK,TOOLS,GUIDE,EXTENSIONS]],
 ["documentation/manualpages/controlling-cameras","sdk/cpp/guides/camera/controlling-cameras",[SDK,CPP,GUIDE,CAMERA]],
-["","sdk/cpp/guides/camera/native-camera-api",[SDK,CPP,GUIDE,CAMERA]],
 ["documentation/manualpages/controlling-sensors","sdk/cpp/guides/sensors/controlling-sensors",[SDK,CPP,GUIDE,SENSORS]],
 ["documentation/manualpages/creating-new-workspace","sdk/tools/guides/ide/creating-new-workspace",[SDK,TOOLS,GUIDE,IDE]],
 ["documentation/manualpages/creating-user-interfaces-mosync","sdk/cpp/guides/ui/creating-user-interfaces-mosync",[SDK,CPP,GUIDE,NATIVEUI,WEBUI,MAUI]],
@@ -229,7 +225,7 @@ $pages = [
 ["documentation/manualpages/graphics-clipping-draw-targets","sdk/cpp/guides/graphics/graphics-clipping-draw-targets",[SDK,CPP,GUIDE,GRAPHICS]],
 ["documentation/manualpages/graphics-primitives","sdk/cpp/guides/graphics/graphics-primitives",[SDK,CPP,GUIDE,GRAPHICS]],
 ["documentation/manualpages/graphun","sdk/cpp/examples/graphun",[SDK,CPP,EXAMPLE,GRAPHICS,NATIVEUI,OPENGL]],
-["documentation/manualpages/hellomap","sdk/cpp/examples/hellomap",[SDK,CPP,EXAMPLE,MAUI,MAPS]],
+["documentation/manualpages/hellomap","sdk/cpp/examples/hellomap",[SDK,CPP,EXAMPLE,MAUI]],
 ["documentation/manualpages/hellomaui","sdk/cpp/examples/hellomaui",[SDK,CPP,EXAMPLE,MAUI]],
 ["documentation/manualpages/hellonativeui","sdk/cpp/examples/hellonativeui",[SDK,CPP,EXAMPLE,NATIVEUI]],
 ["documentation/manualpages/helloopengles","sdk/cpp/examples/helloopengles",[SDK,CPP,EXAMPLE,OPENGL]],
@@ -345,4 +341,8 @@ $pages = [
 
 # New documentation pages not in Drupal export.
 ["","reload/guides/quick-start/mosync-reload-vs-sdk",[RELOAD,GUIDE,QUICK_START]],
+["","sdk/cpp/guides/camera/native-camera-api",[SDK,CPP,GUIDE,CAMERA,NATIVEUI]],
+["","sdk/cpp/examples/MoCamera",[SDK,CPP,EXAMPLE,CAMERA,NATIVEUI]],
+["","sdk/cpp/guides/nativeui/using-custom-picker",[SDK,CPP,GUIDE,NATIVEUI]],
+
 ]
