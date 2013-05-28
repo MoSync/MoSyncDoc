@@ -12,18 +12,18 @@
 <li>For MoSync Reload you have to update the file wormhole.js and the Reload Client.</li>
 </ul>
 <ul>
-<li>For apps you build using MoSync SDK you have to update to MoSync SDK 3.2.1, and update wormhole.js and the C++ code in main.cpp.</li>
+<li>For apps you build using MoSync SDK you have to update to MoSync SDK 3.3, and update wormhole.js and the C++ code in main.cpp.</li>
 </ul>
 <h2>Update wormhole.js</h2>
 <p>The file wormhole.js contains the JavaScript source code for the Wormhole library. Make sure your project uses the latest version of this file. This file is located in the LocalFiles/js folder in your project. Just delete the old version and paste in the new version.</p>
-<p>If you use MoSync Reload (version 1.0), here are ways to obtain the new version of wormhole.js:</p>
+<p>If you use MoSync Reload (version 1.1), here are ways to obtain the new version of wormhole.js:</p>
 <ul>
 <li>Make a copy of this file from a project created with the new version of Reload, and paste it into your existing project to replace the old version.</li>
 </ul>
 <ul>
 <li>Get it from the Reload install directory. On <strong>OS X</strong> this is: <strong><br>/Applications/Reload/Contents/Resources/templates/ReloadTemplates/LocalFiles/js/wormhole.js</strong> <br>On <strong>Windows </strong>and<strong> Linux</strong> the directory is:<strong><br>&lt;directory-where-you-unpacked-reload&gt;/server/templates/ReloadTemplate/LocalFiles/js/wormhole.js</strong></li>
 </ul>
-<p>If you use MoSync SDK (version 3.2.1), here is where to find wormhole.js (note that Reload and the SDK uses the same version or wormhole.js):</p>
+<p>If you use MoSync SDK (version 3.3), here is where to find wormhole.js (note that Reload and the SDK uses the same version or wormhole.js):</p>
 <ul>
 <li>Make a copy of this file from a project created with the HTML5/JS WebUI Template, and paste it into your existing project to replace the old version.</li>
 </ul>
@@ -31,10 +31,10 @@
 <li>Get it from the MoSync SDK install directory. On <strong>OS X</strong> this is: <strong><br>/Applications/MoSync/templates/HTML5 JS WebUI Project/wormhole.js</strong> <br>On <strong>Windows </strong>the directory is:<strong><br>&lt;directory-where-you-installed-mosync&gt;/templates<strong>/HTML5 JS WebUI Project/wormhole.js</strong></strong></li>
 </ul>
 <h2>Update the MoSync SDK</h2>
-<p>If you use MoSync SDK to develop Wormhole apps, or build native apps from your Reload projects, you need to install the MoSync SDK 3.2.1. Get it from the <a href="http://www.mosync.com/download">download page</a>.</p>
+<p>If you use MoSync SDK to develop Wormhole apps, or build native apps from your Reload projects, you need to install the MoSync SDK 3.3. Get it from the <a href="http://www.mosync.com/download">download page</a>.</p>
 <h2>Update your C++ code</h2>
 <p>If you have existing projects you build using MoSync SDK, you need to update them if they were created with MoSync SDK 3.1.1 or earlier versions. Class WebAppMoblet has been deprecated, and is replaced by class HybridMoblet.</p>
-<p>If you just created an HTML5 project created from a template without modifying any of the C++ code, you can create a new project using Reload 1.0 or MoSync SKD 3.2.1 and paste your HTML/JS files and resources into the new project. This should work out-of-the-box.</p>
+<p>If you just created an HTML5 project created from a template without modifying any of the C++ code, you can create a new project using Reload 1.1 or MoSync SDK 3.3 and paste your HTML/JS files and resources into the new project. This should work out-of-the-box.</p>
 <p>If you have projects with custom C++ code you have to replace references to WebAppMoblet with HybridMoblet, and then manually update your code. The best way of knowing what needs to be changed, is to create a new HTML5/JS project in the MoSync SDK IDE (Eclipse) and inspect that code to see what changes have been made.</p>
 <h2>Update the Reload Client</h2>
 <p>If you use MoSync Reload, make sure you have the latest version of the Reload Client installed on your devices and emulators/simulators. The old client will not work with the latest version of Reload. Go to the <a href="http://www.mosync.com/download/reload">Reload download page</a> to get the latest version.</p>
