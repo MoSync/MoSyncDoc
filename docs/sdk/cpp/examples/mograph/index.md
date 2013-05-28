@@ -24,9 +24,9 @@ Supported platforms: Android and iOS.
 
 MoGraph is a C++ library for creating 3D graphs and diagrams.
 
-MoSync SDK comes with three example applications that show how to use this library. These applications are described below. All these example apps come bundled with the MoSync SDK download.
+MoSync SDK comes with three example applications that show how to use this library. These applications are described below. All these example apps come bundled with the MoSync SDK download. The examples are found in the MoSync SDK installation in the /examples/cpp folder. For how to import the examples into your workspace, see [Importing the Examples](TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html).
 
-To learn the basics, go to the [MoGraph Library guide](http://www.mosync.com/docs/sdk/cpp/guides/graphics/mograph/index.html) for a short tutorial.
+To learn the basics about MoGraph, go to the [MoGraph Library guide](http://www.mosync.com/docs/sdk/cpp/guides/graphics/mograph/index.html) for a short tutorial.
 
 ## MoGraphWave
 
@@ -37,7 +37,7 @@ Screenshots from the app:
 ![MoGraphWave 1](images/MoGraphWave-1.png){: .screenshot}
 ![MoGraphWave 2](images/MoGraphWave-2.png){: .screenshot}
 
-Rotate the diagram by dragging the finger across the screen.
+Rotate the diagram by dragging your finger across the screen. Zoom by using two fingers.
 
 The [source code for MoGraphWave](https://github.com/MoSync/MoSync/blob/ThreeThree/examples/cpp/MoGraph/MoGraphWave/main.cpp) can be browsed online at GitHub.
 
@@ -50,7 +50,7 @@ Screenshots from the app:
 ![MoGraphWave2 1](images/MoGraphWave2-1.png){: .screenshot}
 ![MoGraphWave2 2](images/MoGraphWave2-2.png){: .screenshot}
 
-Rotate the diagram by dragging the finger across the screen.
+Rotate the diagram by dragging your finger across the screen. Zoom by using two fingers.
 
 The [source code for MoGraphWave2](https://github.com/MoSync/MoSync/blob/ThreeThree/examples/cpp/MoGraph/MoGraphWave2/main.cpp) can be browsed online at GitHub.
 
@@ -63,6 +63,6 @@ Screenshots from the app:
 ![MoGraphWaveFinance 1](images/MoGraphFinance-1.png){: .screenshot}
 ![MoGraphWaveFinance 2](images/MoGraphFinance-2.png){: .screenshot}
 
-As with the other apps, rotate the diagram by dragging the finger across the screen.
+As with the other apps, rotate the diagram by dragging your finger across the screen, and zoom by using two fingers.
 
 The [source code for MoGraphFinance](https://github.com/MoSync/MoSync/blob/ThreeThree/examples/cpp/MoGraph/MoGraphFinance/main.cpp) can be browsed online at GitHub.

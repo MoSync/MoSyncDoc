@@ -11,7 +11,7 @@ platform,programming,mosync,native ui,nativeui" />
 
 ## Summary of new features
 
-The release of the MoSync SDK 3.3 includes new Native UI features and updates, a brand new 3D Graph library, and several other improvements.
+The release of the MoSync SDK 3.3 includes new Native UI features and updates, a new 3D Graph library, UDP networking support, and several other improvements.
 
 Download the new SDK from the [MoSync SDK download page](http://www.mosync.com/download).
 
@@ -47,11 +47,11 @@ Learn more by trying out the new camera example app, [MoCamera](http://www.mosyn
 
 Supported platforms: Android, iOS.
 
-With the OpenGL-based MoGraph 3D Graph Library, you can create beautiful 3D diagrams and charts, visualise data, animate diagrams, display real-time data (like weather data, traffic data, business data and market information), and create artistic applications and animations, and make various kinds of games.
+With the OpenGL-based MoGraph 3D Graph Library, you can create 3D diagrams and charts, visualise data, animate diagrams, display real-time data (like weather data, traffic data, business data and market information), and create artistic applications and animations, and make various kinds of games.
 
 Check out the [MoGraph example apps](http://www.mosync.com/docs/sdk/cpp/examples/mograph/index.html) to get a feel for what is possible with this library. Commented source code helps you to get started.
 
-For an easy start, go to the [MoGraph Library guide](http://www.mosync.com/docs/sdk/cpp/guides/graphics/mograph/index.html).
+For a short tutorial and a basic code example, go to the [MoGraph Library guide](http://www.mosync.com/docs/sdk/cpp/guides/graphics/mograph/index.html).
 
 ## Screen transitions for Native UI (New!)
 
