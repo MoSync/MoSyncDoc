@@ -16,13 +16,11 @@ platform,programming,mosync,native ui,nativeui" />
 
 # MoGraph C++ Library Guide
 
-**Note: This page is only valid for the upcoming MoSync SDK 3.3 release.**
-
 Supported platforms: Android and iOS.
 
 ## Overview
 
-With the OpenGL-based MoGraph 3D Graph Library, you can create 3D diagrams and charts, visualise data, animate diagrams, display real-time data (like weather data, traffic data, business data and market information), create artistic applications and animations, and make various kinds of games.
+With the OpenGL-based MoGraph 3D Graph Library, you can create 3D diagrams and charts, visualise data, animate diagrams, display real-time data (like weather data, traffic data, business data and market information), and create artistic applications and animations.
 
 Check out the [MoGraph example apps](TEMPLATE_DOC_PATH/sdk/cpp/examples/mograph/index.html) to get a feel for what is possible with this library. Commented source code helps you to get started.
 
