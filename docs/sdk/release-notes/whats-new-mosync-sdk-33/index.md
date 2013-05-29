@@ -5,9 +5,15 @@ platform,programming,mosync,native ui,nativeui" />
 <title>MoSync SDK 3.3 Release Notes</title>
 </mosyncheadertags> -->
 
-# MoSync SDK 3.3 Release Notes
+<style>
+.screenshot
+{
+  width: 240px;
+  height: 400px;
+}
+</style>
 
-**Note: This page is only valid for the upcoming MoSync SDK 3.3 release.**
+# MoSync SDK 3.3 Release Notes
 
 ## Summary of new features
 
@@ -39,19 +45,29 @@ The Camera widget is fully integrated into the MoSync NativeUI C++ library, whic
 
 This widget is available on the Android, iOS, and Windows Phone platforms, but depending on the OS and the device, some functionality can be limited. Zoom is available only on Android, and receiving a frame data flow is not yet possible on Windows Phone.
 
-Find out more by reading the [NativeUI Camera API](http://www.mosync.com/docs/sdk/cpp/guides/camera/native-camera-api/index.html) guide. This guide is dedicated to the new Camera API.
+Try out the new [MoCamera](TEMPLATE_DOC_PATH/sdk/cpp/examples/MoCamera/index.html) example app, which uses the C++ Camera API. This example program is included in the MoSync SDK 3.3 download.
 
-Learn more by trying out the new camera example app, [MoCamera](http://www.mosync.com/docs/sdk/cpp/examples/MoCamera/index.html), which uses the C++ Camera API. This example program is included in the MoSync SDK 3.3 download.
+Screenshots from the MoCamera app:
+
+![](TEMPLATE_DOC_PATH/sdk/cpp/examples/MoCamera/images/Android01.png){: .screenshot} ![](TEMPLATE_DOC_PATH/sdk/cpp/examples/MoCamera/images/Android02.png){: .screenshot}
+
+Learn more by reading the [NativeUI Camera API](TEMPLATE_DOC_PATH/sdk/cpp/guides/camera/native-camera-api/index.html) guide. This guide is dedicated to the new Camera API.
 
 ## MoGraph - C++ 3D Graph Library (New!)
 
 Supported platforms: Android, iOS.
 
-With the OpenGL-based MoGraph 3D Graph Library, you can create 3D diagrams and charts, visualise data, animate diagrams, display real-time data (like weather data, traffic data, business data and market information), and create artistic applications and animations, and make various kinds of games.
+With the OpenGL-based MoGraph 3D Graph Library, you can create 3D diagrams and charts, visualise data, animate diagrams, display real-time data (like weather data, traffic data, business data and market information), and create artistic applications and animations.
 
-Check out the [MoGraph example apps](http://www.mosync.com/docs/sdk/cpp/examples/mograph/index.html) to get a feel for what is possible with this library. Commented source code helps you to get started.
+Check out the [MoGraph example apps](TEMPLATE_DOC_PATH/sdk/cpp/examples/mograph/index.html) to get a feel for what is possible with this library. Commented source code helps you to get started.
 
-For a short tutorial and a basic code example, go to the [MoGraph Library guide](http://www.mosync.com/docs/sdk/cpp/guides/graphics/mograph/index.html).
+Sample screenshots:
+
+![MoGraphWave 1](TEMPLATE_DOC_PATH/sdk/cpp/examples/mograph/images/MoGraphWave-1.png){: .screenshot}
+![MoGraphWaveFinance 1](TEMPLATE_DOC_PATH/sdk/cpp/examples/mograph/images/MoGraphFinance-1.png){: .screenshot}
+![MoGraphWave 2](TEMPLATE_DOC_PATH/sdk/cpp/examples/mograph/images/MoGraphWave2-1.png){: .screenshot}
+
+For a short tutorial and a basic code example, go to the [MoGraph Library guide](TEMPLATE_DOC_PATH/sdk/cpp/guides/graphics/mograph/index.html).
 
 ## Screen transitions for Native UI (New!)
 
@@ -65,9 +81,9 @@ Screen transitions available in this release:
 **Android** | Fade-in/out, Slide-left/right
 **Windows Phone** | Slide-left/right, Swivel-in/out, Turnstile-forward/backward
 
-Find out more in the [Screen transition documentation guide](http://www.mosync.com/docs/sdk/cpp/guides/nativeui/using-screen-transitions/index.html).
+Find out more in the [Screen transition documentation guide](TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-screen-transitions/index.html).
 
-The example app [MoCamera](http://www.mosync.com/docs/sdk/cpp/examples/MoCamera/index.html) uses screen transitions.
+The example app [MoCamera](TEMPLATE_DOC_PATH/sdk/cpp/examples/MoCamera/index.html) uses screen transitions.
 
 There is also a [Screen transition test program](https://github.com/MoSync/MoSync/tree/ThreeThree/testPrograms/native_ui_lib/ScreenTransitionTest) available on GitHub you can try out.
 
@@ -79,7 +95,12 @@ With the new NativeUI CustomPicker widget it becomes easy to implement drop-down
 
 This is very handy when you wish to display selection lists on as needed, and can be used as an alternative to hierarchically organised lists, for a flatter UI structure and faster navigation experience.
 
-Find out more in the [CustomPicker guide](http://www.mosync.com/docs/sdk/cpp/guides/nativeui/using-custom-picker/index.html). It is easy to get started with the sample code included in the guide.
+Find out more in the [CustomPicker guide](TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-custom-picker/index.html). It is easy to get started with the sample code included in the guide.
+
+Here are screenshots from the code example in the guide:
+
+![CustomPicker initial state](TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-custom-picker/images/CustomPicker_Android_1.png){: .screenshot}
+![CustomPicker open state](TEMPLATE_DOC_PATH/sdk/cpp/guides/nativeui/using-custom-picker/images/CustomPicker_Android_2.png){: .screenshot}
 
 ## Windows Phone Native UI performance improvements (New!)
 
@@ -93,7 +114,7 @@ Supported platforms: Android.
 
 In MoSync SDK 3.3 you can use Toast notifications on Android.
 
-The syscall that has been added is [maToast TODO: Add link URL](), which is very easy to use.
+The syscall that has been added is [maToast](), which is very easy to use.
 
 Toasts display a text string on the device screen, which is visible for a short or long time (duration is controlled by the Android OS).
 
@@ -116,7 +137,7 @@ The maConnect syscall is in the C API for MoSync networking. For a C++ API, see 
 
 Two test programs are available, [udpDns](https://github.com/MoSync/MoSync/blob/ThreeThree/testPrograms/udpDns/main.cpp) and [udpMulti](https://github.com/MoSync/MoSync/blob/ThreeThree/testPrograms/udpMulti/main.cpp). Note that these are internal test programs used during development, they are provided on an as-is basis, and are not included in the official MoSync SDK examples.
 
-You can also see an example of using datagrams for UDP multicast in the ReloadClient in class BroadcastHander (see files [BroadcastHandler.h](https://github.com/MoSync/Reload/blob/OneOne/ReloadClient/BroadcastHandler.h) and [BroadcastHandler.cpp](https://github.com/MoSync/Reload/blob/OneOne/ReloadClient/BroadcastHandler.cpp)).
+You can also see an example of using datagrams for UDP broadcast in the ReloadClient in class BroadcastHander (see files [BroadcastHandler.h](https://github.com/MoSync/Reload/blob/OneOne/ReloadClient/BroadcastHandler.h) and [BroadcastHandler.cpp](https://github.com/MoSync/Reload/blob/OneOne/ReloadClient/BroadcastHandler.cpp)).
 
 ## Mobile-friendly Developer website (New!)
 
@@ -166,7 +187,7 @@ With the new syscall, screen orientation values can be OR:ed together, as in thi
 
 (Note that this actually is the same as the MA_SCREEN_ORIENTATION_LANDSCAPE orientation.)
 
-To see the Screen orientation API in action, run the example app [ScreenOrientation](http://www.mosync.com/docs/sdk/cpp/examples/screenorientation/index.html), which comes with the MoSync SDK download.
+To see the Screen orientation API in action, run the example app [ScreenOrientation](TEMPLATE_DOC_PATH/sdk/cpp/examples/screenorientation/index.html), which comes with the MoSync SDK download.
 
 ## Database SQL API (Updated)
 
@@ -174,14 +195,26 @@ Platforms supported: Android, iOS, MoRE.
 
 The MoSync C Database API has been updated to support the full API on both iOS and Android. The Database API is also supported on the MoSync MoRE emulator.
 
-To see the Databse API in action, run the [DatabaseTest example app](http://www.mosync.com/docs/sdk/cpp/examples/databasetest/index.html), which is included in the MoSync SDK download. Learn more about the details in the [Database API guide](http://www.mosync.com/docs/sdk/cpp/guides/storage/sql-database-api/index.html).
+To see the Databse API in action, run the [DatabaseTest example app](TEMPLATE_DOC_PATH/sdk/cpp/examples/databasetest/index.html), which is included in the MoSync SDK download. Learn more about the details in the [Database API guide](TEMPLATE_DOC_PATH/sdk/cpp/guides/storage/sql-database-api/index.html).
 
 ## In-app Purchase API on Android (Updated)
 
 The MoSync C/C++ Purchase API has been updated on Android to use [In-app Billing Version 3](http://developer.android.com/google/play/billing/billing_overview.html). This means that your apps now support the latest version of the Google Play In-app Billing API.
 
-To find out more about the MoSync SDK Purchase API, check out the [In-app Purchase guide](http://www.mosync.com/docs/sdk/cpp/guides/purchases/managing-app-purchases/index.html).
+To find out more about the MoSync SDK Purchase API, check out the [In-app Purchase guide](TEMPLATE_DOC_PATH/sdk/cpp/guides/purchases/managing-app-purchases/index.html).
+
+## Known limitations
+
+### iOS
+
+If the project name contains spaces, the app will not work on iOS. The iOS Simulator will fail to run. See issue: [MOSYNC-2561](http://jira.mosync.com/browse/MOSYNC-2561)
+
+### Symbian
+
+Building apps for Symbian does not work when building on a Mac running OS X 10.7.5 or lower. See issue: [MOSYNC-2940](http://jira.mosync.com/browse/MOSYNC-2940)
 
 ## Fixed Bugs
 
-TODO: Link to Jira filter.
+A list of bugs fixed for MoSync SDK 3.3 release is found in the [MoSync Issue Tracker](http://jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&requestId=11217).
+
+

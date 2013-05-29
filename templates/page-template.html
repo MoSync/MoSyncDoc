@@ -53,9 +53,23 @@
       }
     }
 
-    .ui-btn-inner {
+    .ui-btn-inner
+	{
       white-space: normal !important;
     }
+	
+	/* This is a style that can be used with a div to
+	   give it a frame with rounder corners. */
+	.mosync-box
+	{
+		margin: 1em 0;
+		padding: 0.5em 1em;
+		border: 1px solid #B0B0B0;
+		-webkit-border-radius: 0.5em;
+		border-radius: 0.5em;
+		background-color: #FEFEFE;
+		font-weight: normal;
+	}
     </style>
 
     <script src="TEMPLATE_JS_PATH/jquery.mobile-1.3.1/jquery.js"></script>
@@ -75,6 +89,7 @@
     <script src="TEMPLATE_JS_PATH/jquery.mobile-1.3.1/jquery.mobile-1.3.1.min.js"></script>
 
     <!-- Syntax Highligther -->
+	<!-- Credits go to: http://alexgorbatchev.com/SyntaxHighlighter/ -->
     <!-- There is also a syntaxhighlighter script at the end of the body tag. -->
     <script src="TEMPLATE_JS_PATH/syntaxhighlighter/scripts/shCore.js"></script>
     <script src="TEMPLATE_JS_PATH/syntaxhighlighter/scripts/shBrushJScript.js"></script>
@@ -189,6 +204,11 @@
     </div>
 
     <script>
+	// Syntax highlighter settings.
+	// Set tab size.
+	SyntaxHighlighter.defaults['tab-size'] = 4;
+	// Turn on line numbers.
+	SyntaxHighlighter.defaults['gutter'] = true; 
     // This applies syntax highlighting to code blocks.
     SyntaxHighlighter.all();
     
