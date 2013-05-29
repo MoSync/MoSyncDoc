@@ -73,19 +73,19 @@
 using namespace MAUtil;
 using namespace IAP;
 
-NativeUIMoblet()
+NativeUIMoblet::NativeUIMoblet()
 {
-   int result = PurchaseManager::getInstance()-&gt;checkPurchaseSupported();
-   if ( result != MA_PURCHASE_RES_OK )
-   {
-      maAlert("Error", “Purchase is not supported”, "OK", NULL, NULL);
-   }
+	int result = PurchaseManager::getInstance()-&gt;checkPurchaseSupported();
+	if ( result != MA_PURCHASE_RES_OK )
+	{
+		maAlert("Error", “Purchase is not supported”, "OK", NULL, NULL);
+	}
 
-   else
-   {
-      // Create Application controller.
-      mController = new ApplicationController();
-   }
+	else
+	{
+		// Create Application controller.
+		mController = new ApplicationController();
+	}
 }</pre>
 <h3 dir="ltr">Creating the user interface</h3>
 <p>The layout of your user interface will of course reflect the purpose of your app. Take a look at our <span style="color: #ff0000;"></span><a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/purchaseexample/index.html">PurchaseExample</a> application to see how we did it. There we created a <strong>MainScreen</strong> class to serve as our user interface. The <strong>MainScreen</strong> class has two sections:</p>
@@ -96,7 +96,7 @@ NativeUIMoblet()
 <p>For each purchased item a receipt is available. When one of the purchased items is selected, a dialog shows its receipt details.</p>
 <h3 dir="ltr">Setting the keys/URLs needed for receipt validation</h3>
 <p>Before any purchase request can be made from Google Play, you need to set your Android developer public Key. (This is available in your <a href="https://accounts.google.com/ServiceLogin?service=androiddeveloper">Android Developer Console</a>. Always check that the key you provide is not malformed: the syscall should return MA_PURCHASE_RES_OK).<br><br>And before a purchase request can be made to Apple iTunes you need to set the iOS store URL for receipt validation.</p>
-<pre class="mosync-code-cpp">PurchaseManager::getInstance()-&gt;setPublicKey(“Your key here”); 
+<pre class="mosync-code-cpp">PurchaseManager::getInstance()-&gt;setPublicKey(“Your key here”);
 PurchaseManager::getInstance()-&gt;setStoreURL(sAppStoreSandboxURL);</pre>
 <h3 dir="ltr">Handling purchase-related events</h3>
 <p>Create a class for handling all events that are related to in-app purchases. This will be the <strong>ApplicationController</strong> class and it will be responsible for updating the UI whenever a purchase event is detected.<br><br>To create this class, first add the <strong>#include</strong> directives for the Purchase library files:</p>
@@ -106,47 +106,47 @@ PurchaseManager::getInstance()-&gt;setStoreURL(sAppStoreSandboxURL);</pre>
 #include &lt;Purchase/Receipt.h&gt;</pre>
 <p>(If you want, you can also include <strong>PurchaseManagerListener.h</strong> to listen for events that notify the user of restored transactions or refunds.)<br><br>Then add the <strong>PurchaseListener</strong> to the <strong>ApplicationController</strong> class:</p>
 <pre class="mosync-code-cpp">class ApplicationController:
-   public PurchaseListener
+	public PurchaseListener
 {</pre>
 <p>Now, implement the listener methods:</p>
 <pre class="mosync-code-cpp">virtual void productValid(const Purchase&amp; purchase)
 {
-    // Product has been validated. We can now request a purchase:
-    mPurchase-&gt;requestPurchase();
+	// Product has been validated. We can now request a purchase:
+	mPurchase-&gt;requestPurchase();
 }
 virtual void productInvalid(const Purchase&amp; purchase)
 {
-    // Notify UI that the product cannot be purchased.
-    mMainScreen-&gt;productError("Product " + purchase.getProductId() + “ is invalid!”);
+	// Notify UI that the product cannot be purchased.
+	mMainScreen-&gt;productError("Product " + purchase.getProductId() + “ is invalid!”);
 }
 virtual void requestInProgress(const Purchase&amp; purchase)
 {
-    mMainScreen-&gt;productEvent(“Server receive request, in progress...”);
+	mMainScreen-&gt;productEvent(“Server receive request, in progress...”);
 }
 virtual void requestCompleted(const Purchase&amp; purchase)
 {
-    // Notify the UI that a product was pruchased.
-    mMainScreen-&gt;productPurchased(purchase.getProductId);
+	// Notify the UI that a product was pruchased.
+	mMainScreen-&gt;productPurchased(purchase.getProductId);
 }
 virtual void requestFailed(const Purchase&amp; purchase)
 {
-    mMainScreen-&gt;productError("Purchase failed for product " + purchase.getProductId()) ;
+	mMainScreen-&gt;productError("Purchase failed for product " + purchase.getProductId()) ;
 }
 virtual void receiptValid(const Purchase&amp; purchase,Receipt&amp; receipt)
 {
-       // Display the dialog containing the receipt information.
-       mMainScreen-&gt;fillReceiptDialog(receipt.getAppID(), receipt.getProductID(),
-               receipt.getTransactionDate(), receipt.getTransactionID(),
-               receipt.getVersionExternalID(), receipt.getBID());
+	// Display the dialog containing the receipt information.
+	mMainScreen-&gt;fillReceiptDialog(receipt.getAppID(), receipt.getProductID(),
+		receipt.getTransactionDate(), receipt.getTransactionID(),
+		receipt.getVersionExternalID(), receipt.getBID());
 }
 virtual void receiptInvalid(const Purchase&amp; purchase)
 {
-    mMainScreen-&gt;productError("Product " + purchase.getProductId()+ " has an invalid receipt!");
+	mMainScreen-&gt;productError("Product " + purchase.getProductId()+ " has an invalid receipt!");
 }
 
 virtual void receiptError(const Purchase&amp; purchase, const int errorCode)
 {
-    mMainScreen-&gt;productError("Product " + purchase.getProductId()+ " does not have a receipt!");
+	mMainScreen-&gt;productError("Product " + purchase.getProductId()+ " does not have a receipt!");
 }
 </pre>
 <h3 dir="ltr">The main purchase flow</h3>
@@ -163,29 +163,29 @@ virtual void receiptError(const Purchase&amp; purchase, const int errorCode)
 <p>In our <a href="TEMPLATE_DOC_PATH/sdk/cpp/examples/purchaseexample/index.html">PurchaseExample</a> application there is a list of available products from which you can choose:</p>
 <pre class="mosync-code-cpp">void MainScreen::createProductIdList()
 {
-   if ( getPlatform() == ANDROID )
-   {
-       /**
-        * This Android test productId can be bought multiple times.
-        * If you want to run the example for your own product ids,
-        * add them to the mProductIdList list.
-        */
-       mProductIdList.add(sGooglePlayPurchasedProductId);
-   }
-   else
-   {
-      // Add you own product Ids, even if it’s just for testing.
-      mProductIdList.add("Your own product ID");
-   }
+	if ( getPlatform() == ANDROID )
+	{
+		/**
+		* This Android test productId can be bought multiple times.
+		* If you want to run the example for your own product ids,
+		* add them to the mProductIdList list.
+		*/
+		mProductIdList.add(sGooglePlayPurchasedProductId);
+	}
+	else
+	{
+		// Add you own product Ids, even if it’s just for testing.
+		mProductIdList.add("Your own product ID");
+	}
 }</pre>
 <p>When a product is selected, and the <strong>Buy</strong> button is pressed, the <strong>ApplicationController</strong> will create a <strong>Purchase</strong> object with that <strong>productId</strong>.</p>
 <p>The <strong>Purchase</strong> constructor sets the parent as the listener so that it will receive purchase events: <strong>PurchaseListener::productValid</strong>, and <strong>PurchaseListener::productInvalid</strong>.</p>
 <pre class="mosync-code-cpp">void ApplicationController::buttonClicked(Widget* button)
 {
-Purchase* purchaseObj = new Purchase(
-               mMainScreen-&gt;getSelectedAvailableProduct(), this);
-       mPurchases.add(purchaseObj);
-       mCurrentPurchase = mPurchases.size()-1;
+	Purchase* purchaseObj = new Purchase(
+		mMainScreen-&gt;getSelectedAvailableProduct(), this);
+	mPurchases.add(purchaseObj);
+	mCurrentPurchase = mPurchases.size()-1;
 }</pre>
 <p>From now on, the current purchase object will point to <strong>mCurrentPurchase</strong>, and all purchases will be held in the <strong>mPurchases</strong> vector.</p>
 <p>After the product assigned to <strong>mCurrentPurchase</strong> is validated ( receives PurchaseListener::<strong>productValid</strong> event), the ApplicationController will call mCurrentPurchase-&gt;<strong>requestPurchase()</strong> that will launch the checkoutUI ( the platform independent UI that handles the financial transaction details).</p>
