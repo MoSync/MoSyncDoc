@@ -353,7 +353,17 @@ def webSiteBuildSdkFeaturePlatformSupportPage
       if field == "NONE"
         field = "&nbsp;"
       end
-      table = table + "<td>#{field}</td>"
+	  # Add classes that colour "Yes", "No", and "N/A" fields.
+	  # Default is no colour class.
+	  colorClass = ""
+	  if field == "Yes" then
+	    colorClass = " class='color-yes'"
+	  elsif field == "No" then
+	    colorClass = " class='color-no'"
+	  elsif field == "N/A" then
+	    colorClass = " class='color-na'"
+	  end
+      table = table + "<td#{colorClass}>#{field}</td>"
     end
     
     # Close row.

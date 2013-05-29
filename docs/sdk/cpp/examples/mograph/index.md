@@ -16,8 +16,6 @@ platform,programming,mosync,native ui,nativeui" />
 
 # MoGraph Example Apps
 
-**Note: This page is only valid for the upcoming MoSync SDK 3.3 release.**
-
 Supported platforms: Android and iOS.
 
 ## Overview

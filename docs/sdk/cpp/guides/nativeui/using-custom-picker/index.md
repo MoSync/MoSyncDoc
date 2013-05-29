@@ -15,8 +15,6 @@ platform,programming,mosync,native ui,nativeui" />
 </style>
 # CustomPicker Widget
 
-**Note: This page is only valid for the upcoming MoSync SDK 3.3 release.**
-
 Supported platforms: Android and iOS.
 
 ***
