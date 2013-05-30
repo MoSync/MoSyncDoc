@@ -15,8 +15,9 @@ In this way your application will be better integrated in the environment in whi
 
 ## Available transitions
 
-You can find the animated transition available in MoSync [here](http://www.mosync.com/files/imports/doxygen/latest/html/group___screen_transition_types.html#ga2d86f91cd1a9b9aea0e5f55b5b9ce0cb). Please read carefully their platform availability.\\
-All of these transition types are compliant with the user experience of the platform they are available on since the native animations are used.
+You can find the animated transition available in MoSync [here](http://www.mosync.com/files/imports/doxygen/latest/html/group___screen_transition_types.html#ga2d86f91cd1a9b9aea0e5f55b5b9ce0cb). Please read carefully their platform availability.
+
+All transition types are compliant with the user experience of the platform they are available on since the native animations are used.
 
 For example:
 
