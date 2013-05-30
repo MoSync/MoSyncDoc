@@ -13,6 +13,20 @@
 	height: 149px;
 	float: right;
 }
+table,td
+{
+    border-collapse: collapse;
+    border: 1px solid black;
+    background-color: white;
+}
+td
+{
+    padding: 5px;
+}
+thead > tr > td
+{
+    background-color: #cccccc;
+}
 </style>
 
 <a href="http://www.mosync.com" rel="external"><img src="TEMPLATE_DOC_PATH/images/reload_logo.png" class="reload-logo"/></a>
@@ -45,7 +59,7 @@
 </div>
 
 <div class="mosync-box">
-	<h2>Reload compared to the SDK</h2>
+	<h2>Reload compared to the MoSync SDK</h2>
 
 	<p>
 	To find out about the differences between Reload and the MoSync SDK, examine the <a data-ajax="false" href="TEMPLATE_DOC_PATH/reload/guides/quick-start/mosync-reload-vs-sdk/index.html">Reload/SDK Compared Guide</a>.
@@ -58,6 +72,21 @@
 	<p>
 	If you have projects created with an old version of Reload, make sure to update them. Specifically, you need to update the file <b>wormhole.js</b> to the latest version. Please read the <a data-ajax="false" href="TEMPLATE_DOC_PATH/sdk/js/guides/wormhole/update-wormhole/index.html">Wormhole Upgrade Guide</a> for further details.
 	</p>
+	
+	<p>
+	Note that since Reload is built on top of the MoSync SDK, it is important to use the correct SDK version when you wish to build a native app from a Reload project. The following table shows the recommended versions:
+	</p>
+
+	<table>
+		<thead>
+			<tr><td><strong>MoSync Reload</strong></td><td><strong>MoSync SDK</strong></td></tr>
+		</thead>
+		<tbody>
+			<tr><td>Reload 1.0.1</td><td>SDK 3.2.1 or SDK 3.3</td></tr>
+			<tr><td>Reload 1.1<br/>(to be released)</td><td>SDK 3.3</td></tr>
+		</tbody>
+	</table>
+	<br/>
 </div>
 
 

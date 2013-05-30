@@ -21,7 +21,7 @@ Supported platforms: Android and iOS.
 
 ## Overview
 
-The **NativeUI::CustomPicker** widget is used to select one value from a set.
+The [NativeUI::CustomPicker](http://www.mosync.com/files/imports/doxygen/latest/html/class_native_u_i_1_1_custom_picker.html) widget is used to select one value from a set.
 
 The picker is displayed as a widget with a drop-down arrow. Touching the widget displays the selection list ("spinning-wheel"), where items are shown as rows.
 
@@ -32,7 +32,7 @@ Here are Android screenshots from the CustomPickerApp code example (see source c
 
 ## Classes and methods
 
-The widget class is **NativeUI::CustomPicker**.
+The widget class is [NativeUI::CustomPicker](http://www.mosync.com/files/imports/doxygen/latest/html/class_native_u_i_1_1_custom_picker.html).
 
 The class used for items can be of type NativeUI::Layout or NativeUI::Widget subclasses. 
 
@@ -153,4 +153,4 @@ File main.cpp:
 
 ## Test program
 
-Another test program is [CustomPickerTest](https://github.com/MoSync/MoSync/tree/ThreeThree/testPrograms/native_ui_lib/CustomPickerTest), which is available on GitHub.
+Another program you can try out is [CustomPickerTest](https://github.com/MoSync/MoSync/tree/ThreeThree/testPrograms/native_ui_lib/CustomPickerTest), which is available on GitHub.
