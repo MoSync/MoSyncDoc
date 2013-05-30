@@ -149,7 +149,7 @@ The Developer website is found at: [www.mosync.com/docs](http://www.mosync.com/d
 
 Supported platforms: Android (New!), iOS, Windows Phone.
 
-The MoSync Orientation API has been updated. Syscall maScreenSetOrientation is deprecated. Use syscall [maScreenSetSupportedOrientations](http://www.mosync.com/files/imports/doxygen/latest/html/maapi_8h.html#aab6b4b40f88c9375984e37c085e339c8) instead. See examples below.
+The MoSync Orientation API has been updated. Syscall maScreenSetOrientation is deprecated. Use syscall [maScreenSetSupportedOrientations](http://www.mosync.com/files/imports/doxygen/latest/html/group___orientation_functions.html#gaab6b4b40f88c9375984e37c085e339c8) instead. See examples below.
 
 The updated API works consistently across platforms, and allow for specific orientation settings. For example MA_SCREEN_ORIENTATION_LANDSCAPE_RIGHT, will make the orientation landscape with the home button on the right.
 
