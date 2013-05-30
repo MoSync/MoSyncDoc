@@ -37,11 +37,11 @@ The example code uses a Moblet class that inherits from GLMoblet. This is the ba
         ...
     };
     
-The main graph class is MoGraph::Graph. Create an instance of this class like this:
+The main graph class is [MoGraph::Graph](http://www.mosync.com/files/imports/doxygen/latest/html/class_mo_graph_1_1_graph.html). Create an instance of this class like this:
 
     mGraph = new MoGraph::Graph();
     
-Use class MoGraph::GraphDesc to specify the properties of the graph. Here is a basic example:
+Use class [MoGraph::GraphDesc](http://www.mosync.com/files/imports/doxygen/latest/html/struct_mo_graph_1_1_graph_desc.html) to specify the properties of the graph. Here is a basic example:
 
     MoGraph::GraphDesc desc;
     desc.scrWidth = EXTENT_X(maGetScrSize());

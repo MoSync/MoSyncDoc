@@ -114,7 +114,7 @@ Supported platforms: Android.
 
 In MoSync SDK 3.3 you can use Toast notifications on Android.
 
-The syscall that has been added is [maToast](), which is very easy to use.
+The syscall that has been added is [maToast](http://www.mosync.com/files/imports/doxygen/latest/html/maapi_8h.html#a34e8dcb79eb5bfca2126ac7414aabd07), which is very easy to use.
 
 Toasts display a text string on the device screen, which is visible for a short or long time (duration is controlled by the Android OS).
 
@@ -149,7 +149,7 @@ The Developer website is found at: [www.mosync.com/docs](http://www.mosync.com/d
 
 Supported platforms: Android (New!), iOS, Windows Phone.
 
-The MoSync Orientation API has been updated. Syscall maScreenSetOrientation is deprecated. Use syscalls maScreenSetSupportedOrientations instead. See examples below.
+The MoSync Orientation API has been updated. Syscall maScreenSetOrientation is deprecated. Use syscall [maScreenSetSupportedOrientations](http://www.mosync.com/files/imports/doxygen/latest/html/maapi_8h.html#aab6b4b40f88c9375984e37c085e339c8) instead. See examples below.
 
 The updated API works consistently across platforms, and allow for specific orientation settings. For example MA_SCREEN_ORIENTATION_LANDSCAPE_RIGHT, will make the orientation landscape with the home button on the right.
 
@@ -213,7 +213,19 @@ If the project name contains spaces, the app will not work on iOS. The iOS Simul
 
 Building apps for Symbian does not work when building on a Mac running OS X 10.7.5 or lower. See issue: [MOSYNC-2940](http://jira.mosync.com/browse/MOSYNC-2940)
 
-## Fixed Bugs
+### Downloader limitations
+
+Class MAUtil::Downloader has some known problems, see issues [MOSYNC-3271](http://jira.mosync.com/browse/MOSYNC-3271) and [MOSYNC-3131](http://jira.mosync.com/browse/MOSYNC-3131).
+
+### Issues scheduled for next release
+
+List of [issues to be fixed in the MoSync SDK 3.3.1 release](http://jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&requestId=11219).
+
+### Limitations
+
+List of [long-standing limitations](jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&requestId=11218) that cannot be fixed for various reasons, such as platform/operating system limitations.
+
+## Fixed bugs
 
 A list of bugs fixed for MoSync SDK 3.3 release is found in the [MoSync Issue Tracker](http://jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&requestId=11217).
 
