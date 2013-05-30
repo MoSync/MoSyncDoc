@@ -223,7 +223,7 @@ List of [issues to be fixed in the MoSync SDK 3.3.1 release](http://jira.mosync.
 
 ### Limitations
 
-List of [long-standing limitations](jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&requestId=11218) that cannot be fixed for various reasons, such as platform/operating system limitations.
+List of [long-standing limitations](http://jira.mosync.com/secure/IssueNavigator.jspa?mode=hide&requestId=11218) that cannot be fixed for various reasons, such as platform/operating system limitations.
 
 ## Fixed bugs
 
