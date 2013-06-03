@@ -106,9 +106,10 @@ Code      Symbol                             Description
 40079     ERR_DB_INVALID_COLUMN_INDEX        // Invalid database column index.
 40080     ERR_RES_PLACEHOLDER_NOT_DYNAMIC    // Placeholder not created using  
                                              // maCreatePlaceholder.
-40081     ERR_RES_PLACEHOLDER_ALREADY_DESTROYED// Placeholder is already destroyed.
-
- 
+40081     ERR_RES_PLACEHOLDER_ALREADY_DESTROYED // Placeholder is already destroyed.
+40082     ERR_ORIENTATION_INVALID            // Invalid orientation.
+40083     ERR_DB_PARAM_TYPE_INVALID          // DB: Invalid parameter type.
+	
 80001     SDLERR_SOUND_LOOP_FAILED           // Failed to loop sound.
 80002     SDLERR_SOUND_LOAD_FAILED           // Failed to load sound.
 80003     SDLERR_MOSYNCDIR_NOT_FOUND         // Environment variable MOSYNCDIR  
@@ -143,7 +144,9 @@ Code      Symbol                             Description
 200004    SYMERR_VIBRATION_DURATION_NEGATIVE // Negative vibration duration.
 200005    SYMERR_NO_MATCHING_DECODER         // No matching decoder found.
 200006    SYMERR_SOUND_DECODING_ERROR        // Error while decoding sound.
-
+200007    SYMERR_IAP_METHOD                  // Invalid IAP method.
+200008    SYMERR_IAP_FILTER                  // Invalid IAP filter.
+	
 240001    WCEERR_SOUND_LOOP_FAILED           // Failed to loop sound.
 240002    WCEERR_SOUND_LOAD_FAILED           // Failed to load sound.
 240003    WCEERR_SOUND_MIME_CORRUPTED        // Corrupted mime string for sound media.
@@ -167,6 +170,8 @@ Code      Symbol                             Description
 280002    ERR_HTTP_NONPOST_WRITE             // Attempted to write to a non-POST  
                                              // HTTP connection.
 280003    ERR_URL_SPACE                      // Whitespace is not allowed in URLs.
+280004    ERR_CONN_READFROM                  // readFrom not allowed on this connection.
+280005    ERR_CONN_WRITETO                   // writeTo not allowed on this connection.
 </pre>
 </body>
 </html>
