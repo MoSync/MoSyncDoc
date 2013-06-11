@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" dir="ltr">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta property="fb:app_id" content=""/>
+
+<link rel="next" href="/content/using-mosync-ide-2" />
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+<link rel="shortcut icon" href="http://www.mosync.com/files/mosync_favicon.ico" type="image/x-icon" />
+<meta name="description" content="The documentation for MoSync includes many guides, tutorials, reference manuals, glossaries, and code examples." />
+<meta name="dcterms.description" content="OverviewsMoSync SDKMoSync ReloadArchitectureWhat's NewInstallation" />
+<meta name="abstract" content="The documentation for MoSync includes many guides, tutorials, reference manuals, glossaries, and code examples." />
+<meta name="dcterms.date" content="2013-02-27T00:00:00Z" />
+<meta name="copyright" content="MoSync AB | © 2004-2010 All Rights Reserved" />
+<link rel="canonical" href="http://www.mosync.com/documentation" />
+<meta name="revisit-after" content="1 day" />
+	<title>User guides, tutorials, example applications, reference manuals, documentation | MoSync Guide</title>
+	<link type="text/css" rel="stylesheet" media="all" href="http://www.mosync.com/files/css/css_a04e2621778c9763cfb2c9b8b13dcaa9.css" />
+<link type="text/css" rel="stylesheet" media="screen" href="http://www.mosync.com/files/css/css_b440922e50496296213ea60ba2e79d42.css" />
+<link type="text/css" rel="stylesheet" media="print" href="http://www.mosync.com/files/css/css_19c0f62b2be81aea750c5f1497f4fa2a.css" />
+    <style type="text/css"> 
+    	html .fb_share_link { 
+    		padding:2px 0 0 20px; 
+    		height:16px; 
+    		background:url("http://static.ak.facebook.com/images/share/facebook_share_icon.gif?6:26981") no-repeat top left; 
+    		}
+    </style>
+
+    <!--Moved to header by pbarrientos, request from Alex based on this info
+		https://support.google.com/analytics/bin/answer.py?hl=en&answer=1008080-->
+ <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-223119-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+		function recordOutboundLink(link, category, action) {
+		  try {
+		    var pageTracker=_gat._getTracker("UA-223119-1");
+		    pageTracker._trackEvent(category, action);
+		    setTimeout('document.location = "' + link.href + '"', 100)
+		  }catch(err){}
+		}
+	</script>
+	
+	<!--[if IE]>
+    <link rel="stylesheet" type="text/css" href="/sites/all/themes/mosync/css/ie.css" />
+    <![endif]-->
+</head>
+<body class="not-front not-logged-in page-node node-type-book one-sidebar sidebar-right documentation">
+	<div class="wrapper">
+				<div class="header">
+			<div id="headerbar"> 
+				<span class="menu-mos-logo"><a href="/">MoSync</a></span>
+                  			 <div class="mos-ync-sitewide-header">Cross-platform SDK and HTML5 tools for mobile app development</div>                 <div class="mos-right">
+					<div class= "mos-login-block mos-left">
+					<a href="/user">Login</a> | <a href="/user/register">Register</a>					</div>
+                    <div class= "mos-right">
+                    <form action="/documentation"  accept-charset="UTF-8" method="post" id="search-block-form-1">
+<div><!-- <li class="search"><a href="#">Search</a></li> -->
+<li id="searchbox"> 
+	<div  class="form-item" id="edit-search-block-form-3-wrapper">
+    <input type="text" maxlength="128" name="search_block_form" id="edit-search-block-form-3" size="15" value="" title="Enter the terms you wish to search for." class="form-text" />  </div>
+	<input type="hidden" name="form_build_id" id="form-77ffbeb4d9d769f6a8dd62884f62ba8a" value="form-77ffbeb4d9d769f6a8dd62884f62ba8a"  />
+<input type="hidden" name="form_id" id="edit-search-block-form-2" value="search_block_form"  />
+    <input type="submit" name="op" id="edit-submit-2" value="Search"  class="form-submit" />
+</li>
+
+
+</div></form>
+                   </div>
+                  </div>
+            </div>
+			      <div id="menubar"> 
+                  <ul class="nice-menu nice-menu-right" id="nice-menu-1"><li class="menu-17788 menuparent menu-path-sdk first  odd "><a href="/sdk" title="">Products</a><ul><li class="menu-18463 menu-path-sdk first  odd "><a href="/sdk" title="">MoSync SDK</a></li>
+<li class="menu-18464 menu-path-reload even  last "><a href="/reload" title="">MoSync Reload</a></li>
+</ul>
+</li>
+<li class="menu-8861 menuparent menu-path-download-sdk even "><a href="/download" title="Download MoSync">Downloads</a><ul><li class="menu-23286 menu-path-download-sdk first  odd "><a href="/download" title="">Download SDK</a></li>
+<li class="menu-23287 menu-path-download-reload even  last "><a href="/download/reload" title="">Download Reload</a></li>
+</ul>
+</li>
+<li class="menu-17768 menuparent menu-path-node-9 active-trail odd "><a href="/documentation" title="" class="active">Documentation</a><ul><li class="menu-25302 menu-path-node-9 first  odd "><a href="/documentation" title="" class="active">Main doc index</a></li>
+<li class="menu-18060 menu-path-node-1912 even "><a href="/content/using-mosync-ide-2" title="">SDK Quick Start</a></li>
+<li class="menu-25303 menu-path-node-8218 odd "><a href="/content/using-mosync-reload" title="">Reload Quick Start</a></li>
+<li class="menu-25304 menu-path-node-7927 even "><a href="/documentation/manualpages/getting-started-mosync-ide" title="">IDE Tour</a></li>
+<li class="menu-25305 menu-path-node-9469 odd "><a href="/documentation/using-mosync-ide" title="">IDE User Guides</a></li>
+<li class="menu-17697 menu-path-node-8001 even "><a href="/content/creating-html5javascript-apps" title="">HTML5 Programming</a></li>
+<li class="menu-17692 menu-path-node-1913 odd "><a href="/content/programming-mosync" title="">C/C++ Programming</a></li>
+<li class="menu-20209 menu-path-node-8040 even "><a href="/widepage/feature-platform-support" title="">Feature/Platform Support</a></li>
+<li class="menu-18085 menu-path-node-8034 odd "><a href="/content/c-libraries-and-c-apis" title="">Coding Guides, Tutorials</a></li>
+<li class="menu-18603 menu-path-mosynccom-content-example-applications even "><a href="http://www.mosync.com/content/example-applications" title="">Example Applications</a></li>
+<li class="menu-18057 menu-path-node-1885 odd "><a href="/content/api-reference-manuals" title="">API References</a></li>
+<li class="menu-18492 menu-path-node-8000 even "><a href="/content/screencasts" title="">Screencasts</a></li>
+<li class="menu-18059 menu-path-node-7307 odd  last "><a href="/content/whats-new-release-notes" title="">Release Notes</a></li>
+</ul>
+</li>
+<li class="menu-8859 menuparent menu-path-node-6744 even "><a href="/developer" title="Developer Center">Dev Center</a><ul><li class="menu-18480 menu-path-node-6744 first  odd "><a href="/developer" title="">Dev Center home</a></li>
+<li class="menu-18479 menu-path-blog even "><a href="/blog" title="">MoSync Blogs</a></li>
+<li class="menu-18490 menu-path-node-1970 odd "><a href="/documentation/manualpages/issue-tracker" title="">Issue Tracker</a></li>
+<li class="menu-18491 menu-path-https--githubcom-MoSync-MoSync even  last "><a href="https://github.com/MoSync/MoSync" title="">MoSync on github</a></li>
+</ul>
+</li>
+<li class="menu-22496 menu-path-showcase odd "><a href="/showcase" title="">Showcase</a></li>
+<li class="menu-10060 menuparent menu-path-forum even "><a href="/forum" title="">Forums</a><ul><li class="menu-18465 menu-path-forum first  odd "><a href="/forum" title="">Forum home</a></li>
+<li class="menu-18468 menu-path-forum-latest1day even "><a href="/forum/latest1day" title="">Today&#039;s posts</a></li>
+<li class="menu-18469 menu-path-mosynccom-forum-latest7day odd  last "><a href="http://www.mosync.com/forum/latest7day" title="">This week&#039;s posts</a></li>
+</ul>
+</li>
+<li class="menu-18481 menuparent menu-path-node-8855 odd "><a href="/pages/newsletter-archives" title=""><span class="menu-newsletter">Newsletter</span></a><ul><li class="menu-23415 menu-path-eepurlcom-qyDT first  odd "><a href="http://eepurl.com/qyDT" title=""><span class="menu-newsletter">Subscribe</span></a></li>
+<li class="menu-23416 menu-path-node-8855 even  last "><a href="/pages/newsletter-archives" title="Newsletter Archives">Newsletter Archive</a></li>
+</ul>
+</li>
+<li class="menu-17693 menuparent menu-path-node-317 even  last "><a href="/the_company" title="">About Us</a><ul><li class="menu-17694 menu-path-node-317 first  odd "><a href="/the_company" title="">The Team</a></li>
+<li class="menu-18986 menu-path-node-383 even "><a href="/mosync-dual-licence-model" title="">Licensing</a></li>
+<li class="menu-19579 menu-path-mosynccom-services odd "><a href="http://www.mosync.com/services" title="">Our services</a></li>
+<li class="menu-19580 menu-path-mosynccom-news even "><a href="http://www.mosync.com/news" title="">News and events</a></li>
+<li class="menu-24944 menu-path-job-openings odd "><a href="/job-openings" title="">Job Openings</a></li>
+<li class="menu-19150 menu-path-image-tid-4 even "><a href="/gallery" title="">Image Gallery</a></li>
+<li class="menu-17696 menu-path-mosynccom-contact_mosync odd "><a href="http://www.mosync.com/contact_mosync" title="">Contact us</a></li>
+<li class="menu-18473 menu-path-user-login even  last "><a href="/user/login" title="">Log in</a></li>
+</ul>
+</li>
+</ul>
+			
+							</div>
+			<div id = "mos-news-letter">
+			 	 <!-- Begin MailChimp Signup Form --><div id="mc_embed_signup"><div class="close-newsletter">X</div><form id="mc-embedded-subscribe-form" class="validate" action="http://mosync.us1.list-manage.com/subscribe/post?u=08fd1a6f31dc45915bf31788f&amp;id=5986d4d892" method="post" name="mc-embedded-subscribe-form" target="_blank"><div class="mc-field-group"><label for="mce-EMAIL">Email Address <span class="asterisk">*</span> </label> <input id="mce-EMAIL" class="required email" name="EMAIL" value="" type="email"></div><div class="mc-field-group"><label for="mce-FNAME">First Name </label> <input id="mce-FNAME" name="FNAME" value="" type="text"></div><div class="mc-field-group"><label for="mce-LNAME">Last Name </label> <input id="mce-LNAME" name="LNAME" value="" type="text"></div><div class="mc-field-group"><label for="mce-MMERGE4">Company </label> <input id="mce-MMERGE4" name="MMERGE4" value="" type="text"></div><div class="mc-field-group"><label for="mce-MMERGE5">Country </label> <input id="mce-MMERGE5" name="MMERGE5" value="" type="text"></div><div id="mce-responses" class="clear">&nbsp;</div><div class="clear"><input id="mc-embedded-subscribe" class="button" onclick="checkemail();return false;" name="subscribe" value="Subscribe" type="submit"></div></form></div><!--End mc_embed_signup--> 			</div>
+		</div>
+				
+			<div class="content container clearfix">
+		    					<!-- MAIN CONTENT -->
+				<div class="main docs-content">
+				
+				<div class="breadcrumb"><ul><li><a href="/">Home</a></li><li class="last">MoSync Documentation</li></ul></div>		        		        <h1 class="title">MoSync Documentation</h1>		        <p></p><div class="taxonomy"><!-- --></div>
+		        								
+		        <div id="node-9" class="node node-book">
+	            <div class="node-content clear-block prose">
+          <table class="doclayout" border="0"><tbody><tr><td style="background-color: #bacaec;"><span style="color: #ff4500;"><strong>Overviews</strong></span><ul><li><a href="http://www.mosync.com/sdk">MoSync SDK</a></li><li><a href="http://www.mosync.com/reload">MoSync Reload</a></li><li><a href="http://www.mosync.com/documentation/architecture">Architecture</a></li><li><a href="http://www.mosync.com/content/whats-new-release-notes">What's New</a></li></ul></td><td style="background-color: #dbe0ec;"><span style="color: #ff4500;"><strong>Installation</strong></span><ul><li><a href="http://www.mosync.com/documentation/manualpage/installing-mosync">MoSync SDK on Windows</a></li><li><a href="http://www.mosync.com/documentation/manualpages/installing-mosync-os-x">MoSync SDK on OS X</a></li><li><a href="http://www.mosync.com/documentation/manualpage/emulating-device#Installing_and_Working_with_Native_Emulators">Native Emulators</a></li><li><a href="http://www.mosync.com/documentation/manualpages/installing-mosync-reload">MoSync Reload</a></li></ul></td><td style="background-color: #d3f6ce;"><span style="color: #ff4500;"><strong>Quick start</strong></span><br><ul><li><a href="http://www.mosync.com/documentation/manualpages/getting-started-mosync-ide">Eclipse IDE</a></li><li><a href="http://www.mosync.com/documentation/manualpages/mosync-reload">MoSync Reload</a></li><li><a href="http://www.mosync.com/documentation/manualpages/getting-started-html5-and-javascript">HTML5/JavaScript</a></li><li><a href="http://www.mosync.com/documentation/manualpage/creating-your-first-application">C/C++</a></li></ul></td><td style="background-color: #d8eceb;"><strong><span style="color: #ff4500;">In depth</span><br></strong><ul><li><a href="http://www.mosync.com/content/using-mosync-ide-2">All IDE Guides</a></li><li><a href="http://www.mosync.com/content/creating-html5javascript-apps">All HTML5 Guides</a></li><li><a href="http://www.mosync.com/content/programming-mosync">All C/C++ Guides</a></li><li><a href="http://www.mosync.com/content/example-application-descriptions">Example Apps</a></li></ul></td></tr></tbody></table><table class="doclayout" border="0"><tbody><tr><td style="background-color: #f0d1b7;"><span style="color: #ff4500;"><strong>API references</strong></span><ul><li><strong></strong><a href="http://www.mosync.com/files/imports/doxygen/latest/html5/index.html">JavaScript API</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/files/imports/doxygen/latest/html/index.html">C/C++ API</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/mosync-panics-reference">Panics</a></li><li><a href="http://www.mosync.com/documentation/manualpages/resource-compiler-reference">Resource Compiler</a></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/widepage/feature-platform-support">Feature Support</a></li></ul><span style="color: #ff4500;"><strong>Dev resources</strong></span><br><ul><li><a href="http://www.mosync.com/documentation/architecture">Architecture</a></li><li><a href="http://www.mosync.com/mobile-development-forums/getting-started-mosync/code-swapping-cookbook">Code Snippets</a></li><li><a href="http://www.mosync.com/forum">Forums</a></li><li><a href="https://github.com/MoSync/MoSync">GitHub Repository</a></li><li><a href="http://www.mosync.com/documentation/manualpages/issue-tracker">Issue Tracker</a></li><li><a href="http://www.mosync.com/content/mosync-roadmap">Roadmap</a></li><li><a href="http://www.mosync.com/content/screencasts">Screencasts</a></li><li><a href="http://www.mosync.com/showcase">Showcase</a></li></ul></td><td style="background-color: #f0e5dc;"><span style="color: #ff4500;"><strong>Coding guides</strong></span><ul><li><a href="http://www.mosync.com/content/sensors-orientation-nfc">Accelerometer</a></li><li><a href="http://www.mosync.com/content/pim-contacts">Address Books</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/advertising-banner-ads">Advertising</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/documentation/manualpages/adding-application-icons">Application Icons</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/audio-sound-music-0">Audio</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/advertising-banner-ads">Banner Ads</a></li><li><a href="http://www.mosync.com/documentation/billing-app-purchases">Billing</a></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/resources-binaries-placeholders-0">Binaries</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/communications-http-bluetooth">Bluetooth</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/cameras-capture">Cameras</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/cameras-capture">Capture</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/collections-containers-0">Collections</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/communications-http-bluetooth">Communications</a></li><li><a href="http://www.mosync.com/content/sensors-orientation-nfc">Compass</a></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/pim-contacts">Contacts</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/collections-containers-0">Containers</a></li><li><a href="http://www.mosync.com/content/databases-stores-files-storage">Databases</a><span style="color: #999999;"><span style="color: #999999;"></span></span></li></ul></td><td style="background-color: #f0e5dc;"><br><ul><li><a href="http://www.mosync.com/content/debugging-testing-performance">Debugging</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/platforms-devices-profiles">Devices</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/graphics-drawing-opengl-es">Drawing</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/events-keys-touch-moblets">Events</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/facebook-wikipedia-twitter">Facebook</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/databases-stores-files-storage">Files</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/fonts">Fonts</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/location-gps-maps-0">GPS</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/graphics-drawing-opengl-es">Graphics</a></li><li><a href="http://www.mosync.com/content/sensors-orientation-nfc">Gyroscope</a></li><li><a href="http://www.mosync.com/content/memory-heap-stack-0">Heap</a></li><li><a href="http://www.mosync.com/content/communications-http-bluetooth">HTTP</a></li><li><a href="http://www.mosync.com/content/xml-soap-json">JSON</a></li><li><a href="http://www.mosync.com/content/events-keys-touch-moblets">Keys</a></li><li><a href="http://www.mosync.com/content/location-gps-maps-0">Location</a></li><li><a href="http://www.mosync.com/content/sensors-orientation-nfc">Magnetic field</a></li><li><a href="http://www.mosync.com/content/location-gps-maps-0">Maps</a></li></ul></td><td style="background-color: #f0e5dc;"><br><ul><li><a href="http://www.mosync.com/content/user-interfaces-nativeui-maui-0">MAUI</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/memory-heap-stack-0">Memory</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/events-keys-touch-moblets">Moblets</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/audio-sound-music-0">Music</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/user-interfaces-nativeui-maui-0">NativeUI</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/sensors-orientation-nfc">NFC</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/notifications-1">Notifications</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/graphics-drawing-opengl-es">OpenGL ES</a><span style="color: #999999;"></span></li><li><a href="http://www.mosync.com/content/sensors-orientation-nfc">Orientation</a></li><li><a href="http://www.mosync.com/content/debugging-testing-performance">Performance</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/pim-contacts">PIM</a></li><li><a href="http://www.mosync.com/content/resources-binaries-placeholders-0">Placeholders</a></li><li><a href="http://www.mosync.com/content/platforms-devices-profiles">Platforms</a></li><li><a href="http://www.mosync.com/content/platforms-devices-profiles">Profiles</a></li><li><a href="http://www.mosync.com/content/sensors-orientation-nfc">Proximity</a></li><li><a href="http://www.mosync.com/documentation/billing-app-purchases">Purchases</a></li><li><a href="http://www.mosync.com/content/resources-binaries-placeholders-0">Resources</a></li></ul></td><td style="background-color: #f0e5dc;"><br><ul><li><a href="http://www.mosync.com/content/sensors-orientation-nfc">Rotation</a></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/sensors-orientation-nfc">Sensors</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/xml-soap-json">SOAP</a></li><li><a href="http://www.mosync.com/content/communications-http-bluetooth">Sockets</a></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/audio-sound-music-0">Sound</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/memory-heap-stack-0">Stack</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/standard-cc-libraries-0">Standard Libs</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/databases-stores-files-storage">Stores</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/debugging-testing-performance">Testing</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/events-keys-touch-moblets">Touch</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/facebook-wikipedia-twitter">Twitter</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/user-interfaces-nativeui-maui-0">User Interfaces</a><span style="color: #999999;"></span></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/facebook-wikipedia-twitter">Wikipedia</a></li><li><a href="http://www.mosync.com/documentation/wormhole-guides-tutorials-examples">Wormhole</a></li><li><span style="color: #999999;"></span><a href="http://www.mosync.com/content/xml-soap-json">XML</a></li></ul></td></tr></tbody></table><table class="doclayout docdescription"><tbody><tr><td><a href="http://www.mosync.com/documentation/manualpages/getting-started-mosync-ide"><img src="http://www.mosync.com/files/images/teaserbookgreen.png" alt="book icon"></a></td><td><h2><a href="http://www.mosync.com/content/using-mosync-ide-2">Getting Started with the MoSync SDK</a></h2>How to install and set up the MoSync SDK and its Eclipse-based IDE. Our detailed guides give you a tour of the development environment, show you how to work with projects and templates,&nbsp; build projects, transfer applications via Bluetooth, and finalize your application packages. <a href="http://www.mosync.com/content/using-mosync-ide-2">Read more...</a></td></tr><tr><td>&nbsp;<a href="http://www.mosync.com/content/using-mosync-reload"><img src="http://www.mosync.com/files/images/reload_2.png" alt="reload icon" width="60" height="65"></a></td><td><h2><a href="http://www.mosync.com/content/using-mosync-reload">Getting Started with MoSync Reload</a></h2>How to install MoSync Reload, our rapid HTML5/JavaScript development tool. This guide will show you how to quickly get started with the Reload Server and Client and have you developing HTML5 apps in no time! <a href="http://www.mosync.com/content/using-mosync-reload">Read more...</a><br><br></td></tr><tr><td><a href="http://www.mosync.com/content/creating-html5javascript-apps"><img src="http://www.mosync.com/files/images/teaserbookhtml5.png" alt="book icon"></a></td><td><h2><a href="http://www.mosync.com/content/creating-html5javascript-apps">Creating HTML5/JavaScript Apps</a></h2><p>With the MoSync Mobile SDK you can build applications with HTML5, JavaScript, and CSS without writing a single line of C/C++ code. Or you can build fantastic hybrid apps that use HTML5/JavaScript for the user interface and C/C++ for the heavy lifting. <a href="http://www.mosync.com/content/creating-html5javascript-apps">Read more...</a></p></td></tr><tr><td><a href="http://www.mosync.com/content/programming-mosync"><img src="http://www.mosync.com/files/images/teaserbookcpp.png" alt="book icon"></a></td><td><h2><a href="http://www.mosync.com/content/programming-mosync">Creating C/C++ Apps</a></h2><p>There is more to the MoSync SDK than HTML5! You can write complete cross-platform mobile applications using just our C/C++ libraries and APIs, or create powerful hybrid applications that leverage both HTML5 and C/C++ with MoSync. <a href="http://www.mosync.com/content/programming-mosync">Read more...</a></p></td></tr><tr><td><a href="http://www.mosync.com/content/c-libraries-and-c-apis"><img src="http://www.mosync.com/files/images/teaserbook.png" alt="book icon"></a></td><td><h2><a href="http://www.mosync.com/content/c-libraries-and-c-apis">Coding Guides and Tutorials</a></h2><p>Our coding guides contain overviews of the libraries and APIs available to the programmer, step-by-step tutorials, and hints, tips and guidlines for mobile application development. They are organized according to device features and capabilities. <a href="http://www.mosync.com/content/c-libraries-and-c-apis">Read more...</a></p></td></tr><tr><td><a href="http://www.mosync.com/content/example-application-descriptions"><img src="http://www.mosync.com/files/images/teaserbook.png" alt="book icon"></a></td><td><h2><a href="http://www.mosync.com/content/example-application-descriptions">Example Applications</a></h2><p>The MoSync SDK ships with dozens of example apps in its /examples directory. They highlight many of the features and capabilities of the MoSync libraries and APIs and are a great source of pre-written code for your own apps. <a href="http://www.mosync.com/content/example-application-descriptions">Read more...</a></p></td></tr><tr><td><a href="http://www.mosync.com/content/api-reference-manuals"><img src="http://www.mosync.com/files/images/teaserbook.png" alt="book icon"></a></td><td><h2><a href="http://www.mosync.com/content/api-reference-manuals">API Reference Manuals</a></h2><p>Our API Reference Manuals provide a detailed description of the MoSync sycalls, function libraries, panics, and resource files. Here we describe the reference documents are available for the latest featured release of the MoSync SDK. <a href="http://www.mosync.com/content/api-reference-manuals">Read more...</a></p></td></tr><tr><td><img src="http://www.mosync.com/files/images/teaserbook.png" alt="book icon"></td><td><h2>More Resources</h2><p>More information about common issues, using MoSync, and programming with MoSync</p><ul><li><a href="http://www.mosync.com/mobile-development-forums/getting-started-mosync/code-swapping-cookbook">MoSync Cookbook (snippets)</a></li><li><a href="/forum/">Developer's Forum</a></li><li><a href="http://www.mosync.com/screencasts">Screencasts</a></li><li><a href="http://www.mosync.com/mosync-dual-licence-model">Licensing information</a></li><li><a href="http://www.mosync.com/documentation/manualpage/mosync-glossary">MoSync Glossary</a></li></ul></td></tr></tbody></table>   <div id="book-navigation-9" class="book-navigation">
+    <ul class="menu"><li class="collapsed first"><a href="/content/using-mosync-ide-2">Getting Started with the MoSync SDK</a></li>
+<li class="collapsed"><a href="/content/using-mosync-reload">MoSync Reload</a></li>
+<li class="collapsed"><a href="/documentation/using-mosync-ide">Using the MoSync IDE</a></li>
+<li class="collapsed"><a href="/content/creating-html5javascript-apps">Creating HTML5/JavaScript Apps</a></li>
+<li class="collapsed"><a href="/content/programming-mosync">Creating C/C++ Apps</a></li>
+<li class="leaf"><a href="/widepage/feature-platform-support">Feature/Platform Support</a></li>
+<li class="collapsed"><a href="/content/c-libraries-and-c-apis">Coding Guides and Tutorials</a></li>
+<li class="leaf"><a href="/content/example-application-descriptions">Example Applications</a></li>
+<li class="leaf"><a href="/content/api-reference-manuals">API Reference Manuals</a></li>
+<li class="collapsed"><a href="/documentation/architecture">Architectural Overviews</a></li>
+<li class="collapsed"><a href="/contributions">Extending the MoSync SDK</a></li>
+<li class="leaf"><a href="/content/screencasts">Screencasts</a></li>
+<li class="leaf"><a href="/documentation/manualpages/issue-tracker">The Issue Tracker</a></li>
+<li class="leaf last"><a href="/content/mosync-roadmap">Products Roadmap</a></li>
+</ul>
+        <div class="page-links clear-block">
+                          <a href="/content/using-mosync-ide-2" class="page-next" title="Go to next page">Getting Started with the MoSync SDK ›</a>
+          </div>
+    
+  </div>
+    </div>
+        <div class="node-links clear-content"><ul class="links inline"><li class="book_printer first last"><a href="/print/9" title="Display a printer-friendly version of this page." class="print-page" rel="nofollow">Printer-friendly version</a></li>
+</ul></div>
+    </div><div class="block"><div class="service-links"><div class="item-list"><ul><li class="first"><a href="http://twitter.com/share?url=http%3A%2F%2Fwww.mosync.com%2Fdocumentation&amp;text=" title="Share this on Twitter" class="service-links-twitter" rel="nofollow" target="_blank"><img src="/sites/all/modules/service_links/images/twitter.png" alt="" title="" width="16" height="16" /> </a></li>
+<li><a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.mosync.com%2Fdocumentation&amp;t=" title="Share this on Facebook" class="service-links-facebook" rel="nofollow" target="_blank"><img src="/sites/all/modules/service_links/images/facebook.png" alt="" title="" width="16" height="16" /> </a></li>
+<li><a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http%3A%2F%2Fwww.mosync.com%2Fdocumentation&amp;title=&amp;summary=&amp;source=MoSync" title="Publish this post to LinkedIn" class="service-links-linkedin" rel="nofollow" target="_blank"><img src="/sites/all/modules/service_links/images/linkedin.png" alt="" title="" width="16" height="16" /> </a></li>
+<li><a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fwww.mosync.com%2Fdocumentation&amp;title=" title="Digg this post on digg.com" class="service-links-digg" rel="nofollow" target="_blank"><img src="/sites/all/modules/service_links/images/digg.png" alt="" title="" width="16" height="16" /> </a></li>
+<li class="last"><a href="http://www.mosync.com/documentation" title="Plus it" class="service-links-google-plus-one" rel="nofollow" target="_blank"><span style="display:none;">Google Plus One</span></a></li>
+</ul></div></div></div><div class="block"><div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<div class="facebook-like"><div class="fb-like" data-href="http://www.facebook.com/MoSync" data-send="true" data-layout="box_count" data-width="50" data-show-faces="false"></div></div></div><div class="block"> <div class="developer-survery-banner"><a href="http://www.visionmobile.com/DS13MoSync" target = "_blank"><img src="sites/all/themes/mosync/css/img/DevEconomics-survey.png"></a></div> </div>				</div>
+				<!-- SIDEBAR -->
+				
+						        <div id="sidebar-right" class="sidebar">
+		        	<div class="box book"><h3><span><a href="/documentation" class="book-title active">MoSync Documentation</a></span></h3><ul class="menu"><li class="collapsed first"><a href="/content/using-mosync-ide-2">Getting Started with the MoSync SDK</a></li>
+<li class="collapsed"><a href="/content/using-mosync-reload">MoSync Reload</a></li>
+<li class="collapsed"><a href="/documentation/using-mosync-ide">Using the MoSync IDE</a></li>
+<li class="collapsed"><a href="/content/creating-html5javascript-apps">Creating HTML5/JavaScript Apps</a></li>
+<li class="collapsed"><a href="/content/programming-mosync">Creating C/C++ Apps</a></li>
+<li class="leaf"><a href="/widepage/feature-platform-support">Feature/Platform Support</a></li>
+<li class="collapsed"><a href="/content/c-libraries-and-c-apis">Coding Guides and Tutorials</a></li>
+<li class="leaf"><a href="/content/example-application-descriptions">Example Applications</a></li>
+<li class="leaf"><a href="/content/api-reference-manuals">API Reference Manuals</a></li>
+<li class="collapsed"><a href="/documentation/architecture">Architectural Overviews</a></li>
+<li class="collapsed"><a href="/contributions">Extending the MoSync SDK</a></li>
+<li class="leaf"><a href="/content/screencasts">Screencasts</a></li>
+<li class="leaf"><a href="/documentation/manualpages/issue-tracker">The Issue Tracker</a></li>
+<li class="leaf last"><a href="/content/mosync-roadmap">Products Roadmap</a></li>
+</ul></div><div class="box user"><h3><span>User login</span></h3><form action="/documentation?destination=node%2F9"  accept-charset="UTF-8" method="post" id="user-login-form">
+<div><div id="user-login-form-elements">
+<div  class="form-item form-item-labeled" id="edit-name-wrapper">
+      <label  for="edit-name">Username: <span class='form-required' title='This field is required.'>*</span></label>
+    <input type="text" maxlength="60" name="name" id="edit-name" size="15" value="" class="form-text required" />  </div>
+<div  class="form-item form-item-labeled" id="edit-pass-wrapper">
+      <label  for="edit-pass">Password: <span class='form-required' title='This field is required.'>*</span></label>
+    <input type="password" name="pass" id="edit-pass"  maxlength="60"  size="15"  class="form-text required" />  </div>
+<input type="submit" name="op" id="edit-submit" value="Log in"  class="form-submit" />
+</div>
+
+<div class="item-list"><ul><li class="first"><a href="/user/register" title="Create a new user account.">Create new account</a></li>
+<li class="last"><a href="/user/password" title="Request new password via e-mail.">Request new password</a></li>
+</ul></div><input type="hidden" name="form_build_id" id="form-f5fa2eceeb878c585d35e661a2d04532" value="form-f5fa2eceeb878c585d35e661a2d04532"  />
+<input type="hidden" name="form_id" id="edit-user-login-block" value="user_login_block"  />
+
+</div></form>
+</div><div class="box user"><h3><span>Navigation</span></h3><ul class="menu"><li class="leaf first"><a href="/cart" title="">My shopping cart</a></li>
+<li class="leaf"><a href="/mailchimp/subscribe">Newsletter Subscription</a></li>
+<li class="leaf"><a href="/contact">Contact</a></li>
+<li class="leaf"><a href="/user/login" title="">Login</a></li>
+<li class="leaf last"><a href="/popular">Popular content</a></li>
+</ul></div>		        </div>
+		    				</div>
+			<div class="footer">	
+			<div class="links footer_links"><div class="linkbox"><h3></h3> <div><ul><li class="links_title">product info</li><li><a href="http://www.mosync.com/what-is-mosync">MoSync SDK</a></li><li><a href="http://www.mosync.com/reload">MoSync Reload</a></li><li><a href="http://www.mosync.com/HTML5-JavaScript-App-Development"> Reload Info</a></li><li><a href="http://www.mosync.com/widepage/feature-platform-support"> Feature/Platform Support</a></li><li><a href="http://www.mosync.com/content/mosync-roadmap">MoSync Roadmap</a></li><li><a href="http://www.mosync.com/content/mosync-customers"> Who's Using MoSync?</a></li><li><a href="http://www.mosync.com/services">Our Services</a></li><li><a href="http://www.mosync.com/mosync-dual-licence-model"> Licensing</a></li><li><a href="http://www.mosync.com/category/image-galleries/awards"> Awards</a></li></ul></div><div><ul><li class="links_title">developer links</li><li><a href="http://www.mosync.com/download">Downloads</a></li><li><a href="http://www.mosync.com/developer">Developer Center</a></li><li><a href="http://www.mosync.com/documentation"> Documentation</a></li><li><a href="http://jira.mosync.com">Issue Tracker</a></li><li><a href="http://www.mosync.com/forum">Mobile Developer Forums</a></li><li><a href="https://github.com/MoSync/MoSync">GitHub Repository</a></li><li><a href="http://eepurl.com/qyDT">Subscribe to Newsletter</a></li><li><a href="http://www.mosync.com/pages/privacy-statement"> Privacy Statement</a></li></ul></div><div><ul><li class="links_title">related sites</li><li><a href="http://appseed.org/">appseed.org</a></li><li><a href="http://www.codefessions.com">codefessions.com</a></li></ul><a href="http://mobilejavascript.com"></a> <a href="http://www.straightforward.se"></a> <br><ul><li class="links_title">follow us on</li><li><a href="http://www.facebook.com/MoSync">Facebook</a></li><li><a href="http://groups.google.com/group/mosync-dev">Google Groups</a></li><li><a href="http://twitter.com/#%21/MoSync">Twitter</a></li><li><a href="http://www.youtube.com/user/MoSyncDevTeam"> YouTube</a></li></ul></div><div class="mos-footer-contact"><ul><ul><li class="links_title">contact us</li><li><a href="http://www.mosync.com/the_company">MoSync AB</a> <br>Saltmätargatan 8, <br>113 59 Stockholm, <br>Sweden. <br>Phone: +46 (0)8 20 77 45 <br>Email: <a href="mailto:info@mosync.com">info@mosync.com</a></li><li><a href="http://www.mosync.com/contact_mosync">More office addresses...</a></li><li><a href="http://www.mosync.com/contact_mosync">Contact Form</a></li></ul></ul></div> </div> </div><br/><div id = "footer-message">Copyright © 2004-2013 MoSync AB. All rights reserved.</div>
+	</div>
+		<div class="push"></div> 	
+	</div>
+	<script type="text/javascript" src="http://www.mosync.com/files/js/js_b195442e1565f0a237f38b65ee4f64a8.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, {"basePath":"\/","fivestar":{"titleUser":"Your rating: ","titleAverage":"Average: ","feedbackSavingVote":"Saving your vote...","feedbackVoteSaved":"Your vote has been saved.","feedbackDeletingVote":"Deleting your vote...","feedbackVoteDeleted":"Your vote has been deleted."},"lightbox2":{"rtl":0,"file_path":"\/(\\w\\w\/)files","default_image":"\/sites\/all\/modules\/lightbox2\/images\/brokenimage.jpg","border_size":10,"font_color":"000","box_color":"fff","top_position":"","overlay_opacity":"0.8","overlay_color":"000","disable_close_click":1,"resize_sequence":0,"resize_speed":400,"fade_in_speed":400,"slide_down_speed":600,"use_alt_layout":1,"disable_resize":0,"disable_zoom":0,"force_show_nav":0,"show_caption":0,"loop_items":0,"node_link_text":"View Image Details","node_link_target":0,"image_count":"Image !current of !total","video_count":"Video !current of !total","page_count":"Page !current of !total","lite_press_x_close":"press \u003ca href=\"#\" onclick=\"hideLightbox(); return FALSE;\"\u003e\u003ckbd\u003ex\u003c\/kbd\u003e\u003c\/a\u003e to close","download_link_text":"","enable_login":false,"enable_contact":false,"keys_close":"c x 27","keys_previous":"p 37","keys_next":"n 39","keys_zoom":"z","keys_play_pause":"32","display_image_size":"","image_node_sizes":"(\\.thumbnail)","trigger_lightbox_classes":"","trigger_lightbox_group_classes":"img.inline,img.flickr-photo-img,img.flickr-photoset-img,img.ImageFrame_image,img.ImageFrame_none,img.image-img_assist_custom,img.thumbnail, img.image-thumbnail","trigger_slideshow_classes":"","trigger_lightframe_classes":"","trigger_lightframe_group_classes":"","custom_class_handler":0,"custom_trigger_classes":"","disable_for_gallery_lists":true,"disable_for_acidfree_gallery_lists":true,"enable_acidfree_videos":true,"slideshow_interval":5000,"slideshow_automatic_start":true,"slideshow_automatic_exit":true,"show_play_pause":true,"pause_on_next_click":false,"pause_on_previous_click":true,"loop_slides":false,"iframe_width":600,"iframe_height":400,"iframe_border":1,"enable_video":1,"flvPlayer":"\/sites\/all\/modules\/lightbox2\/player\/player.swf","flvFlashvars":""},"nice_menus_options":{"delay":800,"speed":1},"cron":{"basePath":"\/poormanscron","runNext":1368038116},"syntaxhighlighter":{"clipboard":"\/sites\/all\/libraries\/syntaxhighlighter_OLD\/scripts\/clipboard.swf"},"ws_gpo":{"type":"small","counter":false},"jsInit":{"misc\/jquery.js":true,"misc\/drupal.js":true,"sites\/all\/modules\/fivestar\/js\/fivestar.js":true,"sites\/all\/modules\/img_assist\/img_assist.js":true,"sites\/all\/modules\/lightbox2\/js\/auto_image_handling.js":true,"sites\/all\/modules\/lightbox2\/js\/lightbox_video.js":true,"sites\/all\/modules\/lightbox2\/js\/lightbox.js":true,"sites\/all\/modules\/masked_input\/jquery.maskedinput-1.2.2.js":true,"sites\/all\/modules\/mollom\/mollom.js":true,"sites\/all\/modules\/nice_menus\/superfish\/js\/superfish.js":true,"sites\/all\/modules\/nice_menus\/superfish\/js\/jquery.bgiframe.min.js":true,"sites\/all\/modules\/nice_menus\/superfish\/js\/jquery.hoverIntent.minified.js":true,"sites\/all\/modules\/nice_menus\/nice_menus.js":true,"sites\/all\/modules\/panels\/js\/panels.js":true,"sites\/all\/modules\/poormanscron\/poormanscron.js":true,"sites\/all\/libraries\/syntaxhighlighter_OLD\/scripts\/shCore.js":true,"sites\/all\/libraries\/syntaxhighlighter_OLD\/scripts\/shBrushCpp.js":true,"sites\/all\/libraries\/syntaxhighlighter_OLD\/scripts\/shBrushCss.js":true,"sites\/all\/libraries\/syntaxhighlighter_OLD\/scripts\/shBrushDiff.js":true,"sites\/all\/libraries\/syntaxhighlighter_OLD\/scripts\/shBrushJScript.js":true,"sites\/all\/libraries\/syntaxhighlighter_OLD\/scripts\/shBrushJava.js":true,"sites\/all\/libraries\/syntaxhighlighter_OLD\/scripts\/shBrushPhp.js":true,"sites\/all\/libraries\/syntaxhighlighter_OLD\/scripts\/shBrushPython.js":true,"sites\/all\/libraries\/syntaxhighlighter_OLD\/scripts\/shBrushRuby.js":true,"sites\/all\/libraries\/syntaxhighlighter_OLD\/scripts\/shBrushSql.js":true,"sites\/all\/libraries\/syntaxhighlighter_OLD\/scripts\/shBrushXml.js":true,"sites\/all\/modules\/tableofcontents\/jquery.scrollTo-min.js":true,"sites\/all\/modules\/tableofcontents\/jquery.localscroll-min.js":true,"sites\/all\/modules\/tableofcontents\/tableofcontents.js":true,"sites\/all\/modules\/ubercart\/uc_file\/uc_file.js":true,"sites\/all\/modules\/video\/js\/video.js":true,"sites\/all\/modules\/custom\/mosync_site_tweaks\/js\/mosync_site_tweaks.js":true,"sites\/all\/modules\/service_links\/js\/google_plus_one.js":true,"sites\/all\/themes\/mosync\/js\/clear_search.js":true,"sites\/all\/themes\/tao\/js\/tao.js":true,"sites\/all\/themes\/mosync\/script.js":true},"cssInit":{"aggregator.css":true,"book.css":true,"node.css":true,"poll.css":true,"defaults.css":true,"system.css":true,"system-menus.css":true,"user.css":true,"content-module.css":true,"ctools.css":true,"date.css":true,"jquery-ui.css":true,"datepicker.css":true,"jquery.timeentry.css":true,"filefield.css":true,"fivestar.css":true,"img_assist.css":true,"lightbox_alt.css":true,"mollom.css":true,"nice_menus.css":true,"nice_menus_default.css":true,"panels.css":true,"quote.css":true,"shCore.css":true,"shThemeDefault.css":true,"tableofcontents.css":true,"tagadelic.css":true,"uc_quote.css":true,"uc_file.css":true,"uc_order.css":true,"uc_product.css":true,"uc_store.css":true,"video.css":true,"forum.css":true,"fieldgroup.css":true,"views.css":true,"admin.css":true,"block.css":true,"comment.css":true,"dblog.css":true,"help.css":true,"maintenance.css":true,"openid.css":true,"profile.css":true,"search.css":true,"taxonomy.css":true,"tracker.css":true,"update.css":true}});
+//--><!]]>
+</script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+$(function(){ 
+$("#edit-field-builddate-0-value").mask("999999-9999");
+ });
+//--><!]]>
+</script>
+	<script type="text/javascript" src="http://www.mosync.com/files/js/js_c67fa3ee84522453b52ec7d1f2ac9c58.js"></script>
+	<script type="text/javascript">
+	$('#mc_embed_signup').hide();
+
+   $(".menu-23415").toggle(
+      function () {
+        $('#mc_embed_signup').show('slow');
+      },
+      function () {
+        $('#mc_embed_signup').hide('slow');
+      }
+    );
+ //hide newsletter form when signup button is clicked
+ $("#mc_embed_signup button").click(function () {
+      $('#mc_embed_signup').hide('slow');
+    });
+ //hide newsletter form when content class is clicked
+ $(".content").click(function () {
+      $('#mc_embed_signup').hide('slow');
+    });
+ //hide newsletter form when menubar id is clicked
+  $("#menubar").click(function () {
+      $('#mc_embed_signup').hide('slow');
+    });
+  //hide newsletter form when menubar id is clicked
+  $(".close-newsletter").click(function () {
+      $('#mc_embed_signup').hide('slow');
+    });
+
+var test_email
+
+//function that check email used in the newsletter
+function checkemail(){
+var str=document.validation.emailcheck.value
+var filter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
+if (filter.test(str))
+test_email=true
+else{
+alert("Please input a valid email address!")
+test_email=false
+}
+return (test_email)
+}
+
+</script>
+
+</body>
+</html>

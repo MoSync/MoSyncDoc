@@ -1,18 +1,30 @@
 <html>
 <head>
-<title>ScreenOrientation</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="This is a well-commented example application for beginners. It demonstrates how to detect and respond to changes in screen orientation, and also how to set the orientation mode on platforms that support it. This application is based on the MoSync Moblet framework." />
+<meta name="dcterms.description" content="This is a well-commented example application for beginners. It demonstrates how to detect and respond to changes in screen orientation, and also how to set the orientation mode on platforms that support it. This application is based on the MoSync Moblet framework." />
+<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
+<title>ScreenOrientation | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>ScreenOrientation</h1>
 <p>This is a well-commented example application for beginners. It demonstrates how to detect and respond to changes in screen orientation, and also how to set the orientation mode on platforms that support it. This application is based on the MoSync Moblet framework.<!--break--></p>
-<p><img src="images/screenorientation1.png" align="left" width="240" height="320">&nbsp; <img src="images/screenorientation2.png" align="none" width="320" height="240"></p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<table>
+<tr>
+<td valign="top">
+<img src="images/screenorientation1.png" align="none" width="240" height="400">
+</td>
+<td valign="top">
+<img src="images/screenorientation2.png" align="none" width="400" height="240">
+</td>
+</tr>
+</table>
 <p>This example is included in the MoSync SDK installation in the <em>/examples</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
 <h2>Behaviour</h2>
-<p>When the application runs, the screen initially displays the message "Started". Turn the device. The screen will repaint showing the new orientation and dimensions.</p>
+<p>The application draws the screen size and orientation. Turn the device. The screen will repaint showing the new values.</p>
 <p>Examine the source code of the application to learn how the program works.</p>
-<p>Note the use of the <strong>maScreenSetOrientation</strong> syscall to set the screen orientation mode. For platforms that support it (for example, Android), this sycall enables you to lock the orientation mode to just portrait or landscape mode, or to enable switching between them (dynamic mode).</p>
+<p>Note the use of the <strong>maScreenSetSupportedOrientations</strong> syscall to set the screen orientation mode. For platforms that support it, this sycall enables you to lock the orientation mode to just portrait or landscape mode, or to enable switching between them (dynamic mode).</p>
 <h2>Key Presses</h2>
 <ul>
 <li>Any key - exits the program.</li>
