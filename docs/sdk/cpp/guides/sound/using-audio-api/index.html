@@ -1,12 +1,17 @@
 <html>
 <head>
-<title>The Audio C API</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="The MoSync Audio C API make it possible to play multiple audio tracks simultaneously on Android and iOS. In this guide we take a  look at the functions in this API and give you two example programs which demonstrate the capabilities of this API." />
+<meta name="dcterms.description" content="The MoSync Audio C API make it possible to play multiple audio tracks simultaneously on Android and iOS. In this guide we take a  look at the functions in this API and give you two example programs which demonstrate the capabilities of this API." />
+
+<title>Audio API user guide for the MoSync Mobile SDK | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>The Audio C API</h1>
 <p>The MoSync Audio C API make it possible to play multiple audio tracks simultaneously on Android and iOS. In this guide we take a&nbsp; look at the functions in this API and give you two example programs which demonstrate the capabilities of this API.<!--break--></p>
 <p></p>
-<p>For a list of the platforms supported by the Audio C API, see <a href="http://www.mosync.com/documentation/manualpages/featureplatform-matrix">Feature/Platform Support</a>.</p>
+<p>For a list of the platforms supported by the Audio C API, see <a href="TEMPLATE_DOC_PATH/sdk/tools/references/feature-platform-support/index.html">Feature/Platform Support</a>.</p>
 <h2 dir="ltr">Creating something to play</h2>
 <p>The <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___audio_a_p_i.html">MoSync Audio C API</a> provides a set of functions that make it possible to play background music and sound effects at the same time. The API is based on using two basic handles,&nbsp;<strong>MAAudioData</strong> and&nbsp;<strong>MAAudioInstance</strong>.</p>
 <p><strong>MoSyncs old Sound API made use of resources created as .media or .umedia resources in the resource .lst file. The new system uses .ubin resources.</strong> These are just binary resources which will be loaded and used by the Audio APIs maAudioDataCreateFromResource call.<br><br>To create an <strong>MAAudioData</strong> resource, use the <strong>maAudioDataCreateFromResource</strong> or <strong>maAudioDataCreateFromURL</strong> functions. The first takes a bundled MoSync resource; the latter a URL.</p>
@@ -14,7 +19,7 @@
 <li>On Android, the URL accepts the protocols “http://”, “https://”, and "file:///".</li>
 <li>On iOS it only accepts the "file://" protocol.</li>
 <li>If no protocol is added it assumes it's a file path.</li>
-<li>For protocol support on other platforms, see&nbsp; <a href="http://www.mosync.com/content/mosync-cross-platform-mobile-development-made-easy">Feature/Platform Support</a>.</li>
+<li>For protocol support on other platforms, see&nbsp; <a href="TEMPLATE_DOC_PATH/sdk/tools/references/feature-platform-support/index.html">Feature/Platform Support</a>.</li>
 </ul>
 <h2 dir="ltr">Streaming versus non-streaming resources</h2>
 <p>Audio resources can be streaming or non-streaming. General platform limitations mean that you can only stream one audio resource at the time. Use the flag MA_AUDIO_DATA_STREAM to identify the audio resource as a streaming resource that should not be loaded into memory but should instead be streamed from disk or over HTTP. Set the flag to 0 (zero) for all other sounds otherwise you may get an error.</p>

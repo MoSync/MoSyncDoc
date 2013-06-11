@@ -1,6 +1,11 @@
 <html>
 <head>
-<title>PhotoGallery</title>
+<!-- <mosyncheadertags>
+<meta name="description" content="This example application demonstrates the MoSync Wormhole JavaScript Library, in particular its support for file uploads and camera capture. It shows how to use NativeUI from JavaScript, and how to use multiple WebViews that can send mesages to each other." />
+<meta name="dcterms.description" content="This example application demonstrates the MoSync Wormhole JavaScript Library, in particular its support for file uploads and camera capture. It shows how to use NativeUI from JavaScript, and how to use multiple WebViews that can send mesages to each other." />
+
+<title>PhotoGallery | MoSync Guide/Tutorial</title>
+</mosyncheadertags> -->
 </head>
 <body>
 <h1>PhotoGallery</h1>
@@ -9,19 +14,23 @@
 <tr><td><em>Camera Screen (Android)<br></em></td><td><em><em>Gallery Screen (Android)<br></em></em></td></tr>
 </tbody></table>
 <p>This example is included in the MoSync SDK installation in the <em>/examples/html5</em> folder. For information on importing the examples into your workspace, see <a href="TEMPLATE_DOC_PATH/sdk/tools/guides/ide/importing-example-applications/index.html">Importing the Examples</a>.</p>
-<p>This application runs on Android and iOS (Window Phone does not have Capture support yet, but file upload is supported, see <a href="http://www.mosync.com/documentation/manualpages/featureplatform-matrix">Feature/Platform Support</a>).</p>
+<p>This application runs on Android and iOS (Window Phone does not have Capture support yet, but file upload is supported, see <a href="TEMPLATE_DOC_PATH/sdk/tools/references/feature-platform-support/index.html">Feature/Platform Support</a>).</p>
+
 <h2>Programming techniques demonstrated</h2>
 <p>The PhotoGallery exampel application makes use of a wide range of programming techniques, with file upload and camera capture being the central ones. It also demonstrates how to use WebView Widgets in a NativeUI Tab Screen. For a full discussion of the programing techniques used, see the <a href="TEMPLATE_DOC_PATH/sdk/js/examples/photogallery-explained/index.html">PhotoGallery Explained</a> article.</p>
+
 <h2>Behaviour</h2>
 <p>The user interface has three tabs, Camera, Gallery and About. Use the Camera screen to snap a picture and upload it to the server. Use the Gallery screen to view uploaded pictures (you don't have to take picture to do this). The About screen contains information about the program.</p>
+<p>Please note that the server to which the pictures are uploaded is a test server, which means that it may not have the up time and reliability of a production server. If you find that upload of photos do not work, it may be because the test server is down.</p>
+<p>You can put the PHP server script included with the example source code on your own server, and update the application code to upload to that server instead, if you experience problems with the test server.</p>
+
 <h2>In the code</h2>
 <p>Please see the <a href="TEMPLATE_DOC_PATH/sdk/js/examples/photogallery-explained/index.html">PhotoGallery Explained</a> article for a full discussion of the programming techniques used to create this application.</p>
+
 <h2>Make your own</h2>
 <p>The PhotoGallery example is a good starting point for making applications based on a Tabbed UI with screens programmed in HTML/CSS/JavaScript displayed in WebView widgets. Specifcially, the example demonstrates how to communicate between WebViews using JavaScript.</p>
+
 <h2>Disclaimer</h2>
-<p>This application can be used to upload photos to the Internet, which will make them publicly available. MoSync AB takes no responsibility for uploaded photos or any damage the use of this application may cause.<br><br></p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<p>This application can be used to upload photos to the Internet, which will make them publicly available. MoSync AB takes no responsibility for uploaded photos or any damage the use of this application may cause.</p>
 </body>
 </html>
