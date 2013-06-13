@@ -2,7 +2,7 @@
 <meta name="description" content="MoSync SDK 3.3 Release Notes." />
 <meta name="keywords" content="mobile development,sdk,ide,apps,mobile,apps,android,ios,iphone,ipad,mobile,c,c++,open source,porting,dev,application,ide,cross
 platform,programming,mosync,native ui,nativeui" />
-<title>MoSync SDK 3.3 Release Notes</title>
+<title>What's New in MoSync SDK 3.3</title>
 </mosyncheadertags> -->
 
 <style>
@@ -13,7 +13,7 @@ platform,programming,mosync,native ui,nativeui" />
 }
 </style>
 
-# MoSync SDK 3.3 Release Notes
+# What's New in MoSync SDK 3.3
 
 ## Summary of new features
 
