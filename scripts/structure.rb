@@ -336,7 +336,12 @@ $pages = [
 ["widepage/feature-platform-support", "sdk/tools/references/feature-platform-support",[SDK,TOOLS,REFERENCE,LIBS]],
 
 # New documentation pages not in Drupal export.
+
 ["","reload/guides/quick-start/mosync-reload-vs-sdk",[RELOAD,GUIDE,QUICK_START]],
+["","reload/guides/tools/configuring-reload",[RELOAD,GUIDE,TOOLS]],
+["","reload/guides/tools/reload-client-app",[RELOAD,GUIDE,TOOLS]],
+["","reload/release-notes/whats-new-mosync-reload-11",[RELOAD,TOOLS,RELEASE_NOTE]],
+
 ["","sdk/cpp/examples/MoCamera",[SDK,CPP,EXAMPLE,CAMERA,NATIVEUI]],
 ["","sdk/cpp/examples/mograph",[SDK,CPP,EXAMPLE,GRAPHICS]],
 ["","sdk/cpp/guides/camera/native-camera-api",[SDK,CPP,GUIDE,CAMERA,NATIVEUI]],
