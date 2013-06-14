@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=1">
+    <meta name="copyright" content="MoSync AB | © 2004-2013 All Rights Reserved" />
+    <meta name="revisit-after" content="1 day" />
+
+    TEMPLATE_HEADER_TAGS
+
+    <link rel="shortcut icon" href="TEMPLATE_DOC_PATH/images/mosync_favicon.ico" type="image/x-icon" />
+
+    <link rel="stylesheet" href="TEMPLATE_JS_PATH/themes/MoSyncDoc.min.css" />
+    <link rel="stylesheet" href="TEMPLATE_JS_PATH/jquery.mobile-1.3.1/jquery.mobile.structure-1.3.1.min.css" />
+
+    <style>
+    .ui-header .ui-title
+    {
+        margin-right: 10%;
+        margin-left: 10%;
+    }
+
+    @media all and (min-width: 800px)
+    {
+      #page-menu
+      {
+        width: 272px;
+        float: left;
+      }
+      #page-content
+      {
+        /*width: 70%;*/
+        /*float: right;*/
+        margin-left: 300px;
+        left: -300px;
+      }
+      #button-panel-menu
+      {
+        display: none;
+      }
+    }
+
+    @media all and (max-width: 799px)
+    {
+      #page-menu
+      {
+        width: 100%;
+        display: none;
+      }
+      #page-content
+      {
+        width: 100%;
+      }
+    }
+
+    .ui-btn-inner
+	{
+      white-space: normal !important;
+    }
+	
+	/* This is a style that can be used with a div to
+	   give it a frame with rounder corners. */
+	.mosync-box
+	{
+		margin: 1em 0;
+		padding: 0.5em 1em;
+		border: 1px solid #B0B0B0;
+		-webkit-border-radius: 0.5em;
+		border-radius: 0.5em;
+		background-color: #FEFEFE;
+		font-weight: normal;
+	}
+    </style>
+
+    <script src="TEMPLATE_JS_PATH/jquery.mobile-1.3.1/jquery.js"></script>
+
+    <script>
+    // Do one-time initialisation here.
+    $(document).on('mobileinit', function() {
+        // Set default transitions.
+        $.mobile.defaultPageTransition = "none";
+        $.mobile.defaultDialogTransition = "none";
+        $.mobile.ajaxEnabled = false;
+        $.mobile.hashListeningEnabled = false;
+        $.mobile.buttonMarkup.hoverDelay = 50;
+    });
+    </script>
+
+    <script src="TEMPLATE_JS_PATH/jquery.mobile-1.3.1/jquery.mobile-1.3.1.min.js"></script>
+
+    <!-- Syntax Highligther -->
+	<!-- Credits go to: http://alexgorbatchev.com/SyntaxHighlighter/ -->
+    <!-- There is also a syntaxhighlighter script at the end of the body tag. -->
+    <script src="TEMPLATE_JS_PATH/syntaxhighlighter/scripts/shCore.js"></script>
+    <script src="TEMPLATE_JS_PATH/syntaxhighlighter/scripts/shBrushJScript.js"></script>
+    <script src="TEMPLATE_JS_PATH/syntaxhighlighter/scripts/shBrushCpp.js"></script>
+    <script src="TEMPLATE_JS_PATH/syntaxhighlighter/scripts/shBrushCss.js"></script>
+    <script src="TEMPLATE_JS_PATH/syntaxhighlighter/scripts/shBrushXml.js"></script>
+    <link rel="stylesheet" href="TEMPLATE_JS_PATH/syntaxhighlighter/styles/shCoreDefault.css"/>
+
+    <script>
+    /*
+    // Insert header and panel into page.
+    $(document).on("pagebeforecreate", function(event)
+    {
+        console.log("pagebeforecreate: " + event.target.id);
+        $("#" + event.target.id).append($("#slide-panel").html());
+        $("#" + event.target.id).prepend($("#slide-header").html());
+        // No need to call .trigger('create') here.
+    });
+
+    function showSlide(slideId)
+    {
+        console.log("Show slide: " + slideId);
+        console.log($("#" + slideId).html());
+        $("#slide-container").html(
+            $("#" + slideId).html());
+        $("#page-slide").trigger("create");
+        //$("#panel-content").panel("close");
+    }
+    */
+
+    // Not used.
+    function showDocPage(path)
+    {
+        /*$.mobile.changePage(path, {
+            //pageContainer: $("#page-content"),
+            //role: "content",
+            transition: "none" });
+        */
+        $("#page-container").load(path);
+    }
+
+    function performSearch(event)
+    {
+        if (event.which == 13)
+        {
+            var searchString = encodeURIComponent($(event.target).val());
+            console.log("search string: " + searchString);
+            window.location =
+                "http://www.mosync.com/content/search-mosync?as_q=" +
+                searchString;
+        }
+    }
+    </script>
+
+    <!-- Google Analytics -->
+    <!-- Moved to header by pbarrientos, request from Alex based on this info
+    https://support.google.com/analytics/bin/answer.py?hl=en&answer=1008080 -->
+    <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-223119-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+</head>
+
+<body>
+    <div data-role="page" id="page-template" TEMPLATE_THEME_PAGE_MAIN>
+
+        <div data-role="header" data-position="fixed" TEMPLATE_THEME_PAGE_HEADER>
+            <h1>TEMPLATE_PAGE_HEADING</h1>
+             <div data-type="horizontal" data-role="controlgroup" class="ui-btn-left">
+               <a href="#"
+                 data-rel="back"
+                 data-role="button"
+                 data-icon="back">Back</a>
+               <a href="#panel-menu"
+                 id="button-panel-menu"
+                 data-role="button"
+                 data-icon="bars">Menu</a>
+            </div>
+            <a data-ajax="false"
+                href="TEMPLATE_DOC_PATH/index.html"
+                class="ui-btn-right"
+                data-icon="home">Home</a>
+        </div>
+
+        <div data-role="content" id="page-container">
+            <div id="page-menu">
+                TEMPLATE_PAGE_MENU
+            </div>
+            <div id="page-content">
+                <!-- TEMPLATE_DOC_VERSION -->
+                TEMPLATE_PAGE_CONTENT
+            </div>
+        </div>
+
+        <!-- Dynamic Panel -->
+        <div data-role="panel"
+            id="panel-menu"
+            data-position="left"
+            data-display="overlay"
+            data-mini="false"
+            TEMPLATE_THEME_MENU_PANEL>
+           TEMPLATE_PANEL_MENU
+        </div>
+
+    </div>
+
+    <script>
+	// Syntax highlighter settings.
+	// Set tab size.
+	SyntaxHighlighter.defaults['tab-size'] = 4;
+	// Turn on line numbers.
+	SyntaxHighlighter.defaults['gutter'] = true; 
+    // This applies syntax highlighting to code blocks.
+    SyntaxHighlighter.all();
+    
+    // This makes the browser Window title display
+    // the actual value of the title tag.
+    $(":jqmData(role='page')").attr("data-title", document.title);
+
+    // This applies syntax highlighting to code blocks.
+    SyntaxHighlighter.all();
+    
+    // This makes the browser Window title display
+    // the actual value of the title tag.
+    $(":jqmData(role='page')").attr("data-title", document.title);
+
+    // Make all links that do not have a "data-ajax" or "rel" 
+    // attribute have the attribute "data-ajax='false'" set, 
+    // so that jQuery Mobile will not use Ajax to load pages.
+    $("a[href]:not([rel]):not([data-ajax]):not([data-role='button'])").attr(
+        "data-ajax", "false");
+    
+    // This makes links to anchors scroll to the taget anchor.
+    //
+    // The convention is that the anchor id must start
+    // with "#mosync-anchor", so that not all anchor links
+    // are changed in this way (we do not want to break
+    // jQuery Mobile links that use "#" links).
+    //
+    // A problem with this solution is that the back button
+    // will go to the previous page, not to the previous
+    // position in the document.
+    $("a[href^='#mosync-anchor']").bind("click", function(e)
+    {
+        var offset = $( $(this).attr("href") ).get(0).offsetTop;
+        var headerHeight = $('[data-role="header"]').height();
+        $.mobile.silentScroll(offset - headerHeight);
+        return false;
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<html>
+<head>
+<!-- <mosyncheadertags>
+<meta name="description" content="A &quot;panic&quot; is an unrecoverable error. The MoSync API will throw a panic in a range of situations. Your application code should always handle the situations that might throw a panic, for example insufficient memory, indexes out-of-bounds, division by zero, and read/write failed." />
+<meta name="dcterms.description" content="A &quot;panic&quot; is an unrecoverable error. The MoSync API will throw a panic in a range of situations. Your application code should always handle the situations that might throw a panic, for example insufficient memory, indexes out-of-bounds, division by zero, and read/write failed." />
+<meta name="keywords" content="mobile development,sdk,android,windows mobile,moblin,j2me,symbian,meego,maemo,brew,iphone,c,c++,open source,porting,dev,application,ide,cross platform,programming,deployment,mosync" />
+<title>MoSync Panics Reference (maPanic codes) | MoSync</title>
+</mosyncheadertags> -->
+</head>
+<body>
+<h1>MoSync Panics Reference (maPanic codes)</h1>
+<p>A "panic" is an unrecoverable error. The MoSync API will throw a panic in a range of situations. Your application code should always handle the situations that might throw a panic, for example insufficient memory, indexes out-of-bounds, division by zero, and read/write failed.</p>
+<pre>
+Code      Symbol                             Description
+
+1         ERR_INTERNAL                       // Internal error.
+2         ERR_OOM                            // Out of memory.
+3         ERR_FIFO_OVERRUN                   // FIFO overrun.
+4         ERR_FUNCTION_UNIMPLEMENTED         // Function is not yet implemented on
+                                             // this platform.
+
+40001     ERR_RES_INVALID_TYPE               // Invalid resource type.
+40002     ERR_RES_DESTROY_FLUX               // Attempted to destroy a resource that
+                                             // is in flux.
+40003     ERR_RES_INVALID_INDEX              // Resource handle out of bounds.
+40004     ERR_RES_OVERWRITE                  // Attempted to overwrite an existing 
+                                             // resource.
+40005     ERR_RES_LOAD_UBIN                  // Attempted to load a UBIN from memory.
+40006     ERR_DATA_OOB                       // Data object access out of bounds.
+40007     ERR_RES_FILE_INCONSISTENT          // Resource file inconsistent.
+40008     ERR_DIVISION_BY_ZERO               // Division by zero.
+40012     ERR_CONN_HANDLE_INVALID            // Connection handle invalid.
+40013     ERR_CONN_ALREADY_READING           // Connection already reading.
+40014     ERR_CONN_ALREADY_WRITING           // Connection already writing.
+40015     ERR_DATA_READ_ONLY                 // Data object is read-only.
+40016     ERR_CONN_NOT_HTTP                  // Connection is not HTTP.
+40017     ERR_HTTP_NOT_SETUP                 // HTTP connection is not in Setup 
+                                             // state.
+40018     ERR_HTTP_NOT_FINISHED              // HTTP connection is not Finished.
+40019     ERR_HTTP_ALREADY_FINISHED          // HTTP connection is already Finished.
+40020     ERR_CONN_ACTIVE                    // Connection is not idle.
+40021     ERR_SOUND_CHANNEL_INVALID          // Sound channel handle invalid.
+40022     ERR_SOUND_CHANNEL_INACTIVE         // Sound channel inactive.
+40023     ERR_SOUND_LOOP_COUNT_INVALID       // Sound loop count invalid.
+40024     ERR_STORE_HANDLE_INVALID           // Store handle invalid.
+40025     ERR_DATA_ACCESS_FAILED             // Data object access failed.
+40026     ERR_STORE_WRITE_FAILED             // Store write failed.
+40027     ERR_STORE_READ_FAILED              // Store read failed.
+40028     ERR_MEMORY_ALIGNMENT               // Memory alignment error.
+40029     ERR_MIME_READ_FAILED               // Failed to read MIME type.
+40030     ERR_PROGRAM_FILE_BROKEN            // The program file is broken.
+40031     ERR_MEMORY_OOB                     // Data memory access out of bounds.
+40032     ERR_BAD_SYSCALL                    // Attempted to use an unallocated 
+                                             // syscall number.
+40033     ERR_IMEM_OOB                       // Instruction memory access out of  
+                                             // bounds.
+40034     ERR_ILLEGAL_INSTRUCTION_FORM       // Illegal instruction form.
+40035     ERR_ILLEGAL_INSTRUCTION            // Illegal instruction.
+40036     ERR_FUNCTION_UNSUPPORTED           // Function is not supported on this  
+                                             // platform.
+40037     ERR_PROGRAM_LOAD_FAILED            // Failed to load program.
+40038     ERR_POLYGON_TOO_FEW_POINTS         // Too few points in polygon.
+40039     ERR_IMAGE_TRANSFORM_INVALID        // Invalid transformation type.
+40040     ERR_IMAGE_OOB                      // Image access out of bounds.
+40041     ERR_SLD_LOAD_FAILED                // Failed to load SLD file.
+40042     ERR_STREAM_TOO_MANY                // Tried to open too many media streams.
+40043     ERR_STREAM_HANDLE                  // Invalid stream handle.
+40044     ERR_IDL_VERSION                    // IDL version mismatch.
+40045     ERR_UNSUPPORTED_BPP                // Unsupported bpp.
+40046     ERR_SOURCE_RECT_OOB                // Source rect out of bounds.
+40047     ERR_RES_OOM                        // Out of resource memory.
+40048     ERR_CONN_NOT_STREAM                // Connection is not a stream.
+40049     ERR_CONN_NOT_SERVER                // Connection is not a server.
+40050     ERR_CONN_ALREADY_ACCEPTING         // Connection already accepting.
+40051     ERR_MEMORY_PROTECTED               // Attempted access protected memory.
+40052     ERR_IMAGE_SIZE_INVALID             // Invalid image size.
+40053     ERR_MEMORY_NULL                    // Attempted to access null pointer..
+40054     ERR_GDB_SERVER_OPEN                // Gdb stub failed to open listening  
+                                             // server socket..
+40055     ERR_RES_NO_RESOURCES               // Attempted to use a resource, but  
+                                             // no resources exist..
+40056     ERR_FILE_HANDLE_INVALID            // File handle invalid.
+40057     ERR_INVALID_FILE_ACCESS_MODE       // Invalid file access mode.
+40058     ERR_FILE_CLOSED                    // The file is closed.
+40059     ERR_INVALID_FILE_SEEK_MODE         // Invalid file seek mode.
+40060     ERR_INVALID_CAMERA_FORMAT_INDEX    // Invalid camera format index.
+40061     ERR_INVALID_PIM_HANDLE             // Invalid PIM handle.
+40062     ERR_INVALID_PIM_FIELD_INDEX        // Invalid PIM field index.
+40063     ERR_INVALID_PIM_VALUE_INDEX        // Invalid PIM value index.
+40064     ERR_MISSING_PIM_FIELD              // Missing PIM field.
+40065     ERR_STACK_OOB                      // Stack pointer out of bounds. Try to  
+                                             // increase the stack size..
+40066     ERR_PIM_LIST_CLOSED                // The PIM item's parent list is closed.
+40067     ERR_CAMERA_UNPOWERED               // Camera viewfinder is not active.
+40068     ERR_TEXTBOX_ACTIVE                 // Text box is already active.
+40069     ERR_INVALID_PIM_BUFFER_SIZE        // Invalid PIM value buffer size.
+40070     ERR_PIM_UNTERMINATED_STRING        // Unterminated PIM string value.
+40071     ERR_PIM_EMPTY_STRING_ARRAY         // Empty PIM string array.
+40072     ERR_IMAGE_LOAD_FAILED              // Image could not be loaded..
+40073     ERR_EXT_VERSION                    // Extension version mismatch.
+40074     ERR_EXT_LOAD                       // Failed to load extensions.
+40075     ERR_EXT_CALL                       // Invalid extension call.
+40076     ERR_FILE_LIST_SORT                 // Invalid file list sorting option.
+40077     ERR_FILE_PATH_INVALID              // Invalid file path.
+40078     ERR_DB_INVALID_HANDLE              // Invalid database handle.
+40079     ERR_DB_INVALID_COLUMN_INDEX        // Invalid database column index.
+40080     ERR_RES_PLACEHOLDER_NOT_DYNAMIC    // Placeholder not created using  
+                                             // maCreatePlaceholder.
+40081     ERR_RES_PLACEHOLDER_ALREADY_DESTROYED // Placeholder is already destroyed.
+40082     ERR_ORIENTATION_INVALID            // Invalid orientation.
+40083     ERR_DB_PARAM_TYPE_INVALID          // DB: Invalid parameter type.
+	
+80001     SDLERR_SOUND_LOOP_FAILED           // Failed to loop sound.
+80002     SDLERR_SOUND_LOAD_FAILED           // Failed to load sound.
+80003     SDLERR_MOSYNCDIR_NOT_FOUND         // Environment variable MOSYNCDIR  
+                                             // could not be found.
+80004     SDLERR_IMAGE_LOAD_FAILED           // Failed to load image.
+80005     SDLERR_SPRITE_LOAD_FAILED          // Failed to load sprite.
+80007     SDLERR_SCREEN_NOT_32BIT            // The screen is not set to 32-bit  
+                                             // color depth.
+80008     SDLERR_UNDEFINED_KEYCODE           // Undefined keycode.
+80009     SDLERR_TEXT_SIZE_FAILED            // Failed to calculate text size.
+80010     SDLERR_TEXT_RENDER_FAILED          // Failed to render text.
+80011     SDLERR_SOUND_DECODE_FAILED         // Failed to decode sound.
+80012     SDLERR_NOSKIN                      // Selected skin unavailable.
+
+ 
+120001    BTERR_MAX_SDP_LEVEL                // Maximum SDP level reached.
+120002    BTERR_DISCOVERY_IN_PROGRESS        // Discovery already in progress.
+120003    BTERR_NEGATIVE_BUFFER_SIZE         // Negative buffer size.
+120004    BTERR_READ_BUFFER_OVERFLOW         // Read buffer overflow.
+120005    BTERR_NONAME                       // No name supplied.
+
+ 
+160001    WINERR_STORE_FILE_NOT_FOUND        // Store file not found.
+160002    WINERR_STORE_ACCESS_DENIED         // Store file access denied.
+160003    WINERR_STORE_DELETE_FAILED         // Store file delete failed.
+160004    WINERR_TIMEZONE                    // Could not retrieve time zone  
+                                             // information.
+
+200001    SYMERR_BAD_COMMAND_LINE            // Bad command line.
+200002    SYMERR_EVENT_BUFFER_FULL           // Event buffer full.
+200003    SYMERR_IMAGE_LOAD_FAILED           // Failed to load image.
+200004    SYMERR_VIBRATION_DURATION_NEGATIVE // Negative vibration duration.
+200005    SYMERR_NO_MATCHING_DECODER         // No matching decoder found.
+200006    SYMERR_SOUND_DECODING_ERROR        // Error while decoding sound.
+200007    SYMERR_IAP_METHOD                  // Invalid IAP method.
+200008    SYMERR_IAP_FILTER                  // Invalid IAP filter.
+	
+240001    WCEERR_SOUND_LOOP_FAILED           // Failed to loop sound.
+240002    WCEERR_SOUND_LOAD_FAILED           // Failed to load sound.
+240003    WCEERR_SOUND_MIME_CORRUPTED        // Corrupted mime string for sound media.
+240004    WCEERR_SOUND_UNKNOWN_MIME          // Unknown mime type for sound media.
+240005    WCEERR_IMAGE_LOAD_FAILED           // Failed to load image.
+240006    WCEERR_SPRITE_LOAD_FAILED          // Failed to load sprite.
+240008    WCEERR_UNDEFINED_KEYCODE           // Undefined keycode.
+240009    WCEERR_TEXT_SIZE_FAILED            // Failed to calculate text size.
+240010    WCEERR_TEXT_RENDER_FAILED          // Failed to render text.
+240011    WCEERR_TIMEZONE                    // Could not retrieve time zone  
+                                             // information.
+240012    WCEERR_UNSUPPORTED_BPP             // Unsupported pixel color depth.
+240013    WCEERR_SOURCE_RECT_OOB             // Source rect out of bounds.
+240014    WCEERR_STORE_FILE_NOT_FOUND        // Store file not found.
+240015    WCEERR_STORE_ACCESS_DENIED         // Store file access denied.
+240016    WCEERR_STORE_CLOSE_FAILED          // Store close failed.
+240017    WCEERR_UNSUPPORTED_OS_VERSION      // Unsupported OS version.
+240018    WCEERR_COULD_NOT_CREATE_EVENT      // Could not create windows event..
+
+280001    ERR_HTTP_METHOD_INVALID            // HTTP method invalid.
+280002    ERR_HTTP_NONPOST_WRITE             // Attempted to write to a non-POST  
+                                             // HTTP connection.
+280003    ERR_URL_SPACE                      // Whitespace is not allowed in URLs.
+280004    ERR_CONN_READFROM                  // readFrom not allowed on this connection.
+280005    ERR_CONN_WRITETO                   // writeTo not allowed on this connection.
+</pre>
+</body>
+</html>
