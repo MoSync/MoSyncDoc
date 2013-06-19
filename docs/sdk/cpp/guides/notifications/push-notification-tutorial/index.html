@@ -10,15 +10,17 @@
 <body>
 <h1>Push Notification Handling in C/C++</h1>
 <p>Push notifications are a useful way to inform users of external events, such as game updates or mail deliveries. In this tutorial we will take you through the steps of creating a simple application that uses the MoSync <span style="color: #ff0000;"><a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/notifications/using-notification-library/index.html">C++ Notification Library</a></span> to register and receive push notifications.<!--break--><em>&nbsp;</em></p>
-<blockquote><p>From MoSync 3.1.1, the Notification API can use the new GCM service. The C2DM service is deprecated, but is still available only for already registered users. The only needed change for the client side now will be supplying the projectId param instead of the senderId when calling<br>NotificationManager::registerPushNotification().</p>
-</blockquote><p><em><strong>Note</strong>: to complete this tutorial you will need a <em>a server-side application</em> and a provisioning profile (for iOS). To create a server side application follow <a href="http://mobiforge.com/developing/story/programming-apple-push-notification-services">this</a> tutorial for iOS. To create the server side application for an Android application that uses the old C2DM service check <a href="https://developers.google.com/android/c2dm/#push">here</a>, and for the the GCM service check <a href="http://developer.android.com/guide/google/gcm/demo.html#webserver-setup">here</a>.<br></em></p>
+<blockquote><p>From MoSync 3.1.1, the Notification API can use the new GCM service. The C2DM service is deprecated, but is still available only for already registered users. The only needed change for the client side now will be supplying the <em>projectId</em> param instead of the <em>senderId</em> when calling<br>NotificationManager::registerPushNotification().</p>
+</blockquote>
+<p><em><strong>Note 1</strong>: to complete this tutorial you will need a <em>a server-side application</em> and a provisioning profile (for iOS). To create a server side application follow for example <a href="http://mobiforge.com/developing/story/programming-apple-push-notification-services">mobiForge's tutorial</a> for iOS and the <a href="http://developer.android.com/google/gcm/server.html">GCM Server guide</a> for Android.</em></p>
+<p><em><strong>Note 2:</strong>: for Android apps, the push notification message sent to GCM must be put inside a JSON object having the key "payload". Read the <a href="#sendingmessage">notes regarding Android</a> for more info.</em></p>
 <h2>About push notifications</h2>
-<p>Push notifications are messages that are sent by external applications to the device. They allow the user to be notified without needing to open an application. When the device receives a push notification a sound can be played, an application icon badged, or a message can appear on the screen. &nbsp;When the user receives a push notification message, they can launch the appropriate application and see the change or they can choose to ignore the notification.<br><br>Push notifications originate on a remote server—the application provider—and are pushed to applications on devices via a service :</p>
+<p>Push notifications are messages that are sent by external applications to the device. They allow the user to be notified without needing to open an application. When the device receives a push notification a sound can be played, an application icon badged, or a message can appear on the screen. &nbsp;When the user receives a push notification message, they can launch the appropriate application and see the change or they can choose to ignore the notification.<br><br>Push notifications originate on a remote server—the application provider—and are pushed to applications on devices via a service:</p>
 <ul>
-<li>&nbsp;on the iOS platform by the Apple Push Notification service.</li>
+<li>on the iOS platform by the <a href="http://developer.apple.com/library/mac/#documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/ApplePushService.html#//apple_ref/doc/uid/TP40008194-CH100-SW9">Apple Push Notification service</a>.</li>
 </ul>
 <ul>
-<li>&nbsp;on Android by Google Cloud To Device Messaging(C2DM) service. From Android 2.2 the Android platform allows push notifications from the Internet to an Android phone. C2DM is available to all Android developers. To use C2DM with your Android applications, go to the<a href="http://code.google.com/android/c2dm/signup.html"> signup page</a> to request access. It normally takes a day or so before you are ready to roll.</li>
+<li>on Android by the <a href="http://developer.android.com/google/gcm/index.html">Google Cloud Messaging for Android</a> service.</li>
 </ul>
 <h2>MoSync Notification Libraries and APIs</h2>
 <p>The MoSync Application Framework provides functions for handling notifications (both push and local) at different layers in your code:</p>
@@ -28,7 +30,7 @@
 <li>Syscalls in the <a href="http://www.mosync.com/files/imports/doxygen/latest/html/group___notification_a_p_i.html">C Notifications API</a>.</li>
 </ul>
 <p>In this tutorial we will take a look at implementing push notifications in the C/C++ layers.</p>
-<h2>Creating a push notification application</h2>
+<h2><a name="creatingpushapp"></a>Creating a push notification application</h2>
 <p>Let's create a simple application that sends a push notification, via the application provider, to the device. (The complete listing of this application is given at the end of this tutorial.)<br><br>Start by creating a new NativeUI project:</p>
 <ol>
 <li>Open the MoSync IDE and select <strong>File </strong>&gt; <strong>New </strong>&gt; <strong>Project</strong>.</li>
@@ -72,7 +74,8 @@ class NativeUIMoblet : public Moblet,
 <p>On Android, if registration was not successful due to SERVICE_NOT_AVAILABLE, a registration retry is automatically triggered after 3 seconds.<br><br>There are some differences between platforms:</p>
 <ul>
 <li>On iOS, the application will be registered as a receiver of push notifications that can contain badges, alerts and sounds. The <strong>senderID </strong>parameter is not used.</li>
-<li>On Android, the application will be registered as a receiver of only text notifications. The <strong>senderID </strong>parameter is the identifier of the account that is authorized to send messages to the application—-typically the email account associated with the application's developer. The <strong>senderID </strong>is used in the<a href="http://code.google.com/android/c2dm/#registering"> registration process</a> to identify an Android application that is permitted to send messages to the device. This ID is typically role-based rather than being a personal account—- for example, <em>my-app@gmail.com.</em> Read <a href="#C2DM%20Registration">here </a>for more info on C2DM registration.</li>
+<li>On Android, the application will be registered as a receiver of only text notifications. The <strong>senderID</strong> parameter is the identifier of the account that is authorized to send messages to the application. The <strong>senderID</strong> should be set to the <strong>Project Number</strong> obtained from the Google APIs Dashboard (see the <a href="http://developer.android.com/google/gcm/gs.html">Getting Started with GCM</a> guide for more details).</li>
+<li>For the old and deprecated Android <strong>C2DM</strong> service, see the <a href="#C2DM%20Registration">C2DM registration notes</a>.</li>
 </ul>
 <p>Now let’s implement listener’s methods:</p>
 <pre class="mosync-code-cpp">//For Android and iOS platforms:
@@ -115,10 +118,28 @@ maMessageBox("Application has unregistered","");
 <h2>Running the application</h2>
 <p>First, check that you have followed the <a href="#C2DM%20Prerequisites">prerequisites </a>for running an application.<br>Transfer the application to a device and run it. If the application has been correctly registered for push notifications, a message box will pop up with the device token (on iOS) or the application ID on Android.<br><br>Go to your server-side application and send a push notification for this device token (on iOS) or application ID (on Android). Your application will now receive the notification:</p>
 <p><img src="images/pushnotification.png" align="none" width="210" height="314"></p>
-<h2><a name="C2DM Prerequisites"></a>Android C2DM prerequisites when running an application</h2>
-<p>C2DM requires the device to be running Android 2.2 or higher and have the Market application installed. (However, you are not limited to deploying your applications through the Android Market.)<br><br>C2DM uses an existing connection for Google services. This requires users to set up their Google account on their mobile devices.<br><br>To use C2DM on the Android emulator you need to emulate a device with Google API 8 or higher. You also have to register a Google user on the virtual device under Settings &gt; Accounts Sync.<br><br>Developer’s requirements: the client application has to signup <a href="http://code.google.com/android/c2dm/signup.html">here </a>for Android Cloud to Device Messaging in order to be able to receive push messages from the Google server. This requires the developer’s google account that will not be presented to the end user, but will be later used on the server side for authentication. When your server tries to register to the Google server will have to authenticate itself by providing this Google account credentials ( username and password).</p>
-<h2><a name="C2DM Registration"></a>Android &nbsp;C2DM registration notes</h2>
-<p>To enable C2DM, an application on the device registers with Google and gets a unique registration ID. The registration ID is tied to a particular application running on a particular device.<br>You must send that ID to your servers and store it so you can communicate with the user. <br><br>It is recommended that the application registers with Google C2DM only the first time it’s launched, and then stores the registration ID for later use. Note however that Google may periodically refresh the registration ID, so you should design your application with the understanding that the registration request may be called multiple times. Your application needs to be able to respond accordingly.<br><br>The registration ID lasts until the application explicitly unregisters itself, or until Google refreshes the registration ID for your application. Uninstalling the application also has the effect of unregistering.</p>
+
+<h2><a name="sendingmessage"></a>Note regarding message contents for Android</h2>
+For making your Android app receive push notification messages, the JSON data sent to GCM must contain the key "payload". The following JSON code is an example of what should be sent to your app through GCM:
+<pre class="mosync-code-cpp">
+{
+  "registration_ids" : ["APA91bHun4MxP5egoKMwt2KZFBaFUH-1RYqx..."],
+  "data" : {
+    "payload" : {
+        "test" : "everything in the payload object will be received by MoSync's Android runtime",
+        "msg" : "This key-value pair will also be received."
+    }
+  },
+}
+</pre>
+<p>The example is based on the information given under <a href="http://developer.android.com/google/gcm/gcm.html#request">Request format</a> in the GCM Architectural Overview. This page can also be consulted regarding how to test sending push notifications to your Android app using e.g. a REST client.</p>
+
+<h2><a name="C2DM Registration"></a>Notes about the old C2DM service</h2>
+<p>If you are using the deprecated C2DM service, see the <a href="https://developers.google.com/android/c2dm/">Android Cloud to Device Messaging Framework</a> guide. Regarding <strong>senderID</strong> see the <a href="https://developers.google.com/android/c2dm/#registering">Registering for C2DM</a> section. For information regarding how to send messages to the application, see the section <a href="https://developers.google.com/android/c2dm/#push">How the Application Server Sends Messages</a>.</p>
+<p>The <strong>senderID</strong> parameter should be used in the call to registerPushNotification. The <strong>senderID</strong> is used in to identify an Android application that is permitted to send messages to the device. This ID is typically role-based rather than being a personal account—- for example, <em>my-app@gmail.com.</em>.</p>
+<p>When the mobile application wants to use C2DM it first registers with Google and gets a unique registration ID, which is different than senderID. The registration ID is tied to a particular application running on a particular device. You must send that ID to your servers and store it so you can communicate with the user.</p>
+<p>It is recommended that the application registers with Google C2DM only the first time it’s launched, and then stores the registration ID for later use. Note however that Google may periodically refresh the registration ID, so you should design your application with the understanding that the registration request may be called multiple times. Your application needs to be able to respond accordingly. The registration ID lasts until the application explicitly unregisters itself, or until Google refreshes the registration ID for your application. Uninstalling the application also has the effect of unregistering.</p>
+
 <h2>main.cpp</h2>
 <p>Here is a complete listing of our application:</p>
 <pre class="mosync-code-cpp">#include &lt;ma.h&gt;
