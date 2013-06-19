@@ -20,7 +20,7 @@
 <li>On iOS push notifications are handled by Apple Push Service, and on Android by Google C2DM Service, so the registration process is slightly different. On Android there is a Google account requirement in the registration process via <strong>registerPushNotification</strong> function: the <strong>accountID</strong> param. Is the ID of the account authorized to send messages to the application — typically the email address of an account set up by the application's developer.</li>
 </ul>
 <ul>
-<li>Display flags are available on Android using the<span style="font-family: Arial; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline;"> setDisplayFlag</span><span style="font-size: small; font-family: Arial; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline;"> </span> function, which may enable the notification to be shown even if the application is in foreground.<br><br></li>
+<li>Display flags are available on Android using the <span style="font-family: Arial; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline;">setDisplayFlag</span> function, which may enable the notification to be shown even if the application is in foreground.<br><br></li>
 <li>There are a couple of Android specific methods on local notifications:</li>
 <ul>
 <li><strong>setFlag</strong> to control how local notifications are shown/canceled.</li>
@@ -187,6 +187,6 @@ else
 {
     maMessageBox("New local notification with the message", localNotification.getContentBody().c_str());
 }</pre>
-<p>For receiving push notifications in your &nbsp;application please see the Creating a push notification application section in the tutorial page.</p>
+<p>For receiving push notifications in your &nbsp;application please see the <a href="TEMPLATE_DOC_PATH/sdk/cpp/guides/notifications/push-notification-tutorial/index.html#creatingpushapp">Creating a push notification application</a> section in the tutorial page.</p>
 </body>
 </html>
